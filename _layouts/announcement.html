@@ -1,0 +1,21 @@
+<div class="announcement">
+  {% if page.anchor %}
+  <h2 id="{{ page.anchor }}">{{ page.title }}</h2>
+  {% else %}
+  <h2>{{ page.title }}</h2>
+  {% endif %}
+  <span class="announcement-meta">
+    {% if page.date %}
+    <b>{{ page.date | date: '%b %e' }}</b>
+      {% if page.author %}
+      &middot;
+      {% endif %}
+    {% endif %}
+    {% if page.author %}
+    {{ page.author }}
+    {% endif %}
+  </span>
+  <div>
+    {{ content }}
+  </div>
+</div>
