@@ -7,4 +7,4 @@ website: https://www.tejovanparker.com
 photo: assets/images/parker.jpg
 ---
 
-Office Hours: Wednesday 3:30-5:00pm and Friday 11:30am-1:00pm
+Office Hours: Wednesday 3:15-4:45pm and Friday 12:00-1:30pm, in CDS room 1325 or 1324

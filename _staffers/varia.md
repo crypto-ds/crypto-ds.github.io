@@ -7,4 +7,4 @@ website: https://www.mvaria.com
 photo: assets/images/varia.png
 ---
 
-Office Hours: Thursday 3:30-5:00pm in CDS 1324
+Office Hours: Thursday 3:30-5:00pm, in CDS room 1324
