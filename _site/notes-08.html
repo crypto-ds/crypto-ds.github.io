@@ -3274,7 +3274,7 @@ window.Quarto = {
 <ul>
 <li>Homework 3 is due on Saturday 2/15 at 10pm</li>
 <li>Test 1 is next Tuesday 2/18 during discussion lab</li>
-<li>Today’s office hours will start at 3:45pm (rather than 3:30pm), still in CDS 1343</li>
+<li>Today’s office hours will start at 3:45pm (rather than 3:30pm), still in CDS 1324</li>
 </ul>
 <hr>
 </section>
@@ -3504,7 +3504,7 @@ window.Quarto = {
 <section id="quality-of-life-improvement-2-a-human-memorable-seed" class="level3">
 <h3 class="anchored" data-anchor-id="quality-of-life-improvement-2-a-human-memorable-seed">Quality of life improvement #2: a human-memorable seed</h3>
 <p>We have made Alice’s life somewhat easier: now all she has to do is remember the 32 byte main key. It might look something like this:</p>
-<div id="e2e27509" class="cell" data-execution_count="1">
+<div id="d871942f" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> os <span class="im">import</span> urandom</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3514,8 +3514,8 @@ window.Quarto = {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> base64 <span class="im">import</span> b64encode</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Base 64 output:&quot;</span>, b64encode(main_key))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Base 16 output: b&#39;1cb3c741067a45773bc3675f507b623da6bd7b888ad1b60595ad66522d75ef15&#39;
-Base 64 output: b&#39;HLPHQQZ6RXc7w2dfUHtiPaa9e4iK0bYFla1mUi117xU=&#39;</code></pre>
+<pre><code>Base 16 output: b&#39;97740985ac6206fdc97716f842cd0ba43793bf8d7c32a7d3a056cb5e09991f33&#39;
+Base 64 output: b&#39;l3QJhaxiBv3Jdxb4Qs0LpDeTv418MqfToFbLXgmZHzM=&#39;</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -3553,7 +3553,7 @@ Base 64 output: b&#39;HLPHQQZ6RXc7w2dfUHtiPaa9e4iK0bYFla1mUi117xU=&#39;</code></
 <p>Let’s look at its set of words. I’ll use English in this example, although other languages are specified in the standard too.</p>
 </div>
 <div class="fragment">
-<div id="ff890019" class="cell" data-execution_count="2">
+<div id="1ba3c3ef" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># source: https://github.com/trezor/python-mnemonic</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install mnemonic</span></span>
@@ -3571,16 +3571,16 @@ Base 64 output: b&#39;HLPHQQZ6RXc7w2dfUHtiPaa9e4iK0bYFla1mUi117xU=&#39;</code></
 <p>We can create Alice’s main key by sampling 24 of these words at random, each of which encodes 11 bits of data. So collectively, they encode the 256 bits of entropy that we need.</p>
 </div>
 <div class="fragment">
-<div id="b5dd3805" class="cell" data-execution_count="3">
+<div id="8066cf9f" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> mnemo.generate(strength<span class="op">=</span><span class="dv">256</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(words)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>seed <span class="op">=</span> mnemo.to_seed(words, passphrase<span class="op">=</span><span class="st">&quot;&quot;</span>)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Base 64 encoding:&quot;</span>, b64encode(seed))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>brain boy shell story express priority hobby name kiss kitten grocery cloth carbon kitten mammal remember install girl filter frame case fashion fan planet
+<pre><code>already swarm pause jelly capital civil enroll giraffe joke blossom together ocean kidney clog above wheel toward mother auto egg market crumble song faculty
 
-Base 64 encoding: b&#39;VETPKHXV221XWQYm96Teg8YZOKoU7mU52WGyCzZG2OxW4PMVYJAhbvPuxDHetF6pOd/LrRcAgSRmxKJ6sdtmgw==&#39;</code></pre>
+Base 64 encoding: b&#39;UqQSSM5xJCvmTzt/5ikYhNetocCu3Ng8hhSazfp5oS93vN61qc/mzm3Pnaqewl92HQBB1vb1Q0D+/apWt+yvRw==&#39;</code></pre>
 </div>
 </div>
 <div class="callout callout-style-simple callout-important">
