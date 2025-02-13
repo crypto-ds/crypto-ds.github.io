@@ -3503,19 +3503,19 @@ window.Quarto = {
 </section>
 <section id="quality-of-life-improvement-2-a-human-memorable-seed" class="level3">
 <h3 class="anchored" data-anchor-id="quality-of-life-improvement-2-a-human-memorable-seed">Quality of life improvement #2: a human-memorable seed</h3>
-<p>We have made Alice’s life somewhat easier: now all she has to do is remember a 32 byte master key. It might look something like this:</p>
-<div id="84f2598e" class="cell" data-execution_count="1">
+<p>We have made Alice’s life somewhat easier: now all she has to do is remember the 32 byte main key. It might look something like this:</p>
+<div id="e2e27509" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> os <span class="im">import</span> urandom</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>master_key <span class="op">=</span> urandom(<span class="dv">32</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Base 16 output:&quot;</span>, hexlify(master_key))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>main_key <span class="op">=</span> urandom(<span class="dv">32</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Base 16 output:&quot;</span>, hexlify(main_key))</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> base64 <span class="im">import</span> b64encode</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Base 64 output:&quot;</span>, b64encode(master_key))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Base 64 output:&quot;</span>, b64encode(main_key))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Base 16 output: b&#39;5d37e61e6c88812a216654516ccc17464a30129a371ff85a282ec575a61be874&#39;
-Base 64 output: b&#39;XTfmHmyIgSohZlRRbMwXRkowEpo3H/haKC7FdaYb6HQ=&#39;</code></pre>
+<pre><code>Base 16 output: b&#39;1cb3c741067a45773bc3675f507b623da6bd7b888ad1b60595ad66522d75ef15&#39;
+Base 64 output: b&#39;HLPHQQZ6RXc7w2dfUHtiPaa9e4iK0bYFla1mUi117xU=&#39;</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -3549,11 +3549,11 @@ Base 64 output: b&#39;XTfmHmyIgSohZlRRbMwXRkowEpo3H/haKC7FdaYb6HQ=&#39;</code></
 <p>Or we can choose any other representation that gives us <span class="math inline">\(2^{12}\)</span> possible values that the data can take… perhaps one that is even easier for humans to remember.</p>
 </div>
 <div class="fragment">
-<p>There is another Bitcoin Improvement Protocol standard made for this purpose: creating human-memorable seeds. It defines a set of <span class="math inline">\(2^{11} = 2048\)</span> words and records every 11 bits of the master key using one word.</p>
+<p>There is another Bitcoin Improvement Protocol standard made for this purpose: creating human-memorable seeds. It defines a set of <span class="math inline">\(2^{11} = 2048\)</span> words and records every 11 bits of the main key using one word.</p>
 <p>Let’s look at its set of words. I’ll use English in this example, although other languages are specified in the standard too.</p>
 </div>
 <div class="fragment">
-<div id="bcc595a4" class="cell" data-execution_count="2">
+<div id="ff890019" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># source: https://github.com/trezor/python-mnemonic</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install mnemonic</span></span>
@@ -3571,16 +3571,16 @@ Base 64 output: b&#39;XTfmHmyIgSohZlRRbMwXRkowEpo3H/haKC7FdaYb6HQ=&#39;</code></
 <p>We can create Alice’s main key by sampling 24 of these words at random, each of which encodes 11 bits of data. So collectively, they encode the 256 bits of entropy that we need.</p>
 </div>
 <div class="fragment">
-<div id="6b9e629c" class="cell" data-execution_count="3">
+<div id="b5dd3805" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> mnemo.generate(strength<span class="op">=</span><span class="dv">256</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(words)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>seed <span class="op">=</span> mnemo.to_seed(words, passphrase<span class="op">=</span><span class="st">&quot;&quot;</span>)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Base 64 encoding:&quot;</span>, b64encode(seed))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>disagree north empower giggle suspect almost file battle amazing once sand thunder attend idea strong dolphin alter record nut stem abuse firm travel hazard
+<pre><code>brain boy shell story express priority hobby name kiss kitten grocery cloth carbon kitten mammal remember install girl filter frame case fashion fan planet
 
-Base 64 encoding: b&#39;xu/Z8dEHVnBEnEopcLSGg9LJmO1wLC7v337nwxHO9BX0MJHPTEUV5KBPvbLwYtSDtym2vy7bzoPaAqg+bP2DRg==&#39;</code></pre>
+Base 64 encoding: b&#39;VETPKHXV221XWQYm96Teg8YZOKoU7mU52WGyCzZG2OxW4PMVYJAhbvPuxDHetF6pOd/LrRcAgSRmxKJ6sdtmgw==&#39;</code></pre>
 </div>
 </div>
 <div class="callout callout-style-simple callout-important">
