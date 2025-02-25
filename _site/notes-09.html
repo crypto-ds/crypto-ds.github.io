@@ -3374,7 +3374,7 @@ window.Quarto = {
 <p>Note that there are two important goals to satisfy in this problem:</p>
 <ol type="1">
 <li><p>The loyal generals must be <strong>consistent</strong>. They could all decide to <code>Attack</code>, or they could all decide to <code>Retreat</code>. But if the army is divided, then they will fail for sure.</p></li>
-<li><p>If a particular general (who we will call the “commander”) has some keen insight into whether the army should <code>Attack</code> or <code>Retreat</code>, then the generals should obey this order if the commander is honest.</p></li>
+<li><p>If a particular general (who we will call the “commander”) has some keen insight into whether the army should <code>Attack</code> or <code>Retreat</code>, then the generals should <strong>validly</strong> obey this order if the commander is honest.</p></li>
 </ol>
 </div>
 <div class="fragment">
@@ -3642,11 +3642,11 @@ _Output decision rule_:
 <p>Remember that the parties have no idea who else is honest. The only thing we know for sure is that there are at moest <span class="math inline">\(f\)</span> malicious parties. So if any message has been approved by <span class="math inline">\(f + 1\)</span> other people, then by the pigeonhole principle, at least one of them is honest!</p>
 </div>
 <div class="fragment">
-<p>As a result, the Dolev-Strong protocol runs for <span class="math inline">\(f + 1\)</span> rounds. When an honest party receives a message from the dealer, it forwards it along and <em>adds its own</em> signature on top of it. In some sense, the honest party is <em>endorsing</em> any message that it receives.</p>
+<p>As a result, the Dolev-Strong protocol runs for <span class="math inline">\(f + 1\)</span> rounds. When an honest party receives a message from the leader, it forwards it along and <em>adds its own</em> signature on top of it. In some sense, the honest party is <em>endorsing</em> any message that it receives.</p>
 <p>By the last round, an honest party should only accept a message if it sees <span class="math inline">\(f + 1\)</span> signatures on it.</p>
 </div>
 <div class="fragment">
-<p>More specifically: the objective is to (eventually) show all parties a <strong>signature chain</strong> where the message is initially signed by the dealer and then by <span class="math inline">\(f\)</span> other parties too.</p>
+<p>More specifically: the objective is to (eventually) show all parties a <strong>signature chain</strong> where the message is initially signed by the leader and then by <span class="math inline">\(f\)</span> other parties too.</p>
 <p>You can think of a signature chain as though each party is appending its name to the bottom of a contract. So you could see:</p>
 <ul>
 <li>a message that was initially signed by party 1,</li>
@@ -3713,7 +3713,7 @@ _Round 1_:
 
 _Round $j$_ (where $1 < j \leq f+1$), from the perspective of party $i$ (all parties do this in parallel):
 - Party $i$ reviews all messages $m$ received from the previous round $j - 1$.
-- For any message $m$ that contains the bit $b$ together with $j - 1$ signatures from $j - 1$ distinct parties, where the first signature is from the dealer, then:
+- For any message $m$ that contains the bit $b$ together with $j - 1$ signatures from $j - 1$ distinct parties, where the first signature is from the leader, then:
     - The party adds bit $b$ to the set $B_i$.
     - The party sends `<m, sign(m, i)>` to all parties.
     
