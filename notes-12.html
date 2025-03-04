@@ -3307,7 +3307,7 @@ window.Quarto = {
 <p>In the synchronous setting, our goal is to design a protocol – that is, a method that each party can use to decide what messages to send and to whom – that protects the honest parties as follows.</p>
 <ul>
 <li><strong>Termination</strong>: All honest parties eventually complete the protocol and output something (i.e., the protocol doesn’t go on forever).</li>
-<li><strong>Validity</strong>: If the sender is honest and sends the bit <span class="math inline">\(b\)</span>, then all honest parties should output <span class="math inline">\(b\)</span></li>
+<li><strong>Validity</strong>: If the leader is honest and sends the bit <span class="math inline">\(b\)</span>, then all honest parties should output <span class="math inline">\(b\)</span></li>
 <li><strong>Consistency</strong>: If two honest parties output <span class="math inline">\(b\)</span> and <span class="math inline">\(b&#39;\)</span> respectively, then <span class="math inline">\(b = b&#39;\)</span>.</li>
 </ul>
 </div>
@@ -3440,7 +3440,7 @@ constant
 <p>Recall the broadcast properties we have seen:</p>
 <ul>
 <li><strong>Termination</strong>: all honest parties eventually reach a decision.</li>
-<li><strong>Validity</strong>: if the sender is honest, then its value is the decision value.</li>
+<li><strong>Validity</strong>: if the leader is honest, then its value is the decision value.</li>
 <li><strong>Consistency</strong>: all honest parties decide the same value.</li>
 </ul>
 <div class="fragment">
@@ -3449,7 +3449,7 @@ constant
 <div class="incremental">
 <ol class="incremental" type="1">
 <li><p>There is no termination property</p>
-<p>The reason for this is that the adversary can delay messages arbitrarly, and there is no failure detector. As a result, honest parties don’t know whether they are dealing with a slow message/party or a failed party that didn’t send anything. In particular, if the sender is malicious, then they can simply choose not to send anything. The honest recipients will then wait forever for a message that in reality is never coming but that they believe is just very slow to arrive.</p></li>
+<p>The reason for this is that the adversary can delay messages arbitrarly, and there is no failure detector. As a result, honest parties don’t know whether they are dealing with a slow message/party or a failed party that didn’t send anything. In particular, if the leader is malicious, then they can simply choose not to send anything. The honest recipients will then wait forever for a message that in reality is never coming but that they believe is just very slow to arrive.</p></li>
 <li><p>We add the word “eventually” to the consistency and validity definitions.</p>
 <p>The reason for adding this disclaimer is that the adversary can delay messages for a long time, but it must eventually let them pass between honest parties.</p></li>
 </ol>
@@ -3458,7 +3458,7 @@ constant
 <p><strong>Definition.</strong> An Asynchronous Byzantine Reliable Broadcast protocol satisfies the following two properties:</p>
 <ul>
 <li><strong>Consistency</strong>: all honest parties <em>eventually</em> decide the same value.</li>
-<li><strong>Validity</strong>: if the sender is honest, then <em>eventually</em> its value is the decision value.</li>
+<li><strong>Validity</strong>: if the leader is honest, then <em>eventually</em> its value is the decision value.</li>
 </ul>
 </div>
 <hr>
@@ -3481,8 +3481,8 @@ constant
 <p>We will construct a protocol in which each party has at most two “steps,” or occasions to send data. These would be called “rounds” in synchronous protocols, but now they no longer have to occur at the same time by all parties.</p>
 <p>In each step, an honest party will send a maximum of only one message. (As always, we can never impose limits on what the malicious parties do.)</p>
 <ul>
-<li>Leader send step: This is the step where the sender sends one value <span class="math inline">\(v\)</span> to all parties.</li>
-<li>Echo step: When a party hears <span class="math inline">\(v\)</span> the first time from the dealer, it sends an echo message <span class="math inline">\(v\)</span> to everyone.</li>
+<li>Leader send step: This is the step where the leader sends one value <span class="math inline">\(v\)</span> to all parties.</li>
+<li>Echo step: When a party hears <span class="math inline">\(v\)</span> the first time from the leader, it sends an echo message <span class="math inline">\(v\)</span> to everyone.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -3493,13 +3493,13 @@ constant
 </ul>
 </div>
 <div class="fragment">
-<p>Once again, we provide pseudocode from the perspective of a single honest party <span class="math inline">\(P_i\)</span>. (By convention, we presume that the first party <span class="math inline">\(P_1\)</span> is the sender.)</p>
+<p>Once again, we provide pseudocode from the perspective of a single honest party <span class="math inline">\(P_i\)</span>. (By convention, we presume that the first party <span class="math inline">\(P_1\)</span> is the leader.)</p>
 <p>Note that our code is written in an event-driven programming style. That’s because we have no idea when messages arrive. Whenever they do come though, a party can react to it and potentially send a message of its own.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="wa">input: </span>the sender has an input message v, other parties have no input</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="wa">input: </span>the leader has an input message v, other parties have no input</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="wa">leader_send: </span>the sender party <span class="cn">P_1</span> sends <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> to all parties (the other parties send nothing)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="wa">leader_send: </span>the leader party <span class="cn">P_1</span> sends <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> to all parties (the other parties send nothing)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="wa">echo: </span>upon hearing <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> from the sender <span class="cn">P_1</span> <span class="cf">for</span> the first time,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="wa">echo: </span>upon hearing <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> from the leader <span class="cn">P_1</span> <span class="cf">for</span> the first time,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      send <span class="kw">&lt;</span>echo, v<span class="kw">&gt;</span> to all parties</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="wa">output: </span>upon hearing n<span class="kw">-</span>f <span class="kw">&lt;</span>echo, v<span class="kw">&gt;</span> messages coming from n<span class="kw">-</span>f distinct parties containing the same value v,</span>
@@ -3510,7 +3510,7 @@ constant
 <p><strong>Question.</strong> Does this protocol satisfy the two properties of an asynchronous Byzantine reliable broadcast protocol, reproduced below?</p>
 <ul>
 <li><em>Consistency</em>: all honest parties <em>eventually</em> decide the same value.</li>
-<li><em>Validity</em>: if the sender is honest, then <em>eventually</em> its value is the decision value.</li>
+<li><em>Validity</em>: if the leader is honest, then <em>eventually</em> its value is the decision value.</li>
 </ul>
 </div>
 <hr>
@@ -3531,7 +3531,7 @@ constant
 <div class="fragment">
 <p><em>Proof of validity:</em></p>
 <ul>
-<li>If the sender is honest, then every honest party is going to hear the value <span class="math inline">\(v\)</span> after the broadcast step, and therefore every honest party will echo <span class="math inline">\(v\)</span> to all other parties.</li>
+<li>If the leader is honest, then every honest party is going to hear the value <span class="math inline">\(v\)</span> after the leader step, and therefore every honest party will echo <span class="math inline">\(v\)</span> to all other parties.</li>
 <li>Hence, every honest party will eventually hear at least <span class="math inline">\(n-f\)</span> echo messages with the value <span class="math inline">\(v\)</span> coming from the honest parties and will be able to terminate.</li>
 <li>Since there are only <span class="math inline">\(f\)</span> malicious parties, the adversary Mallory cannot convince even a single honest party to output a different value <span class="math inline">\(v&#39;\)</span>.</li>
 </ul>
@@ -3567,22 +3567,22 @@ constant
 <hr>
 <section id="first-attempt" class="level3">
 <h3 class="anchored" data-anchor-id="first-attempt">First attempt</h3>
-<p>After the broadcast and echo steps from before, let’s add a third communication round that essentially serves as a kind of second echo. Only if a party hears <span class="math inline">\(n-f\)</span> of these new <code>ready</code> messages do they complete the protocol.</p>
+<p>After the leader and echo steps from before, let’s add a third communication round that essentially serves as a kind of second echo. Only if a party hears <span class="math inline">\(n-f\)</span> of these new <code>ready</code> messages do they complete the protocol.</p>
 <div class="incremental">
 <ul class="incremental">
-<li>Leader send step: This is the step where the sender sends one value <span class="math inline">\(v\)</span> to all parties.</li>
-<li>Echo step: When a party hears <span class="math inline">\(v\)</span> the first time from the dealer, it sends the message <span class="math inline">\(\langle \text{echo}, v \rangle\)</span> to everyone.</li>
+<li>Leader send step: This is the step where the leader sends one value <span class="math inline">\(v\)</span> to all parties.</li>
+<li>Echo step: When a party hears <span class="math inline">\(v\)</span> the first time from the leader, it sends the message <span class="math inline">\(\langle \text{echo}, v \rangle\)</span> to everyone.</li>
 <li><em><del>Output decision</del> Ready step: If a party hears <span class="math inline">\(n-f\)</span> echo messages coming from <span class="math inline">\(n-f\)</span> different parties with same <span class="math inline">\(v\)</span>, then the party<del> terminates with v </del> sends the message <span class="math inline">\(\langle \text{ready}, v \rangle\)</span> to everyone.</em></li>
 <li>Output decision: if a party hears <span class="math inline">\(n-f\)</span> <del>echo</del> ready messages coming from <span class="math inline">\(n-f\)</span> different parties with the same <span class="math inline">\(v\)</span>, then the party terminates with <span class="math inline">\(v\)</span>.</li>
 </ul>
 </div>
 <div class="fragment">
 <p>Here is pseudocode of this new protocol. Only the ready and output procedures are changed from before.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="wa">input: </span>the sender has an input message v, other parties have no input</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="wa">input: </span>the leader has an input message v, other parties have no input</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="wa">leader_send: </span>the sender party <span class="cn">P_1</span> sends <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> to all parties (the other parties send nothing)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="wa">leader_send: </span>the leader party <span class="cn">P_1</span> sends <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> to all parties (the other parties send nothing)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="wa">echo: </span>upon hearing <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> from the sender <span class="cn">P_1</span> <span class="cf">for</span> the first time,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="wa">echo: </span>upon hearing <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> from the leader <span class="cn">P_1</span> <span class="cf">for</span> the first time,</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      send <span class="kw">&lt;</span>echo, v<span class="kw">&gt;</span> to all parties</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="wa">ready: </span>upon hearing n<span class="kw">-</span>f <span class="kw">&lt;</span>echo, v<span class="kw">&gt;</span> messages coming from n<span class="kw">-</span>f distinct parties containing the same value v,</span>
@@ -3616,11 +3616,11 @@ constant
 <p>Gabriel Bracha’s solution to this problem is to add an amplification step. We should amplify the number of <code>ready</code> messages from <span class="math inline">\(f+1\)</span> honest parties to <span class="math inline">\(n-f\)</span> honest parties, so that all honest parties can eventually finish!’</p>
 <div class="fragment">
 <p>Specifically, there are now <em>two</em> events that will cause an honest party to send a <code>ready</code> message: either it has received <span class="math inline">\(n - f\)</span> echo messages or it has received <span class="math inline">\(f + 1\)</span> ready messages. The latter constraint means that at least one honest party is ready to finish the protocol.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="wa">input: </span>the sender has an input message v, other parties have no input</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="wa">input: </span>the leader has an input message v, other parties have no input</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="wa">leader_send: </span>the sender party <span class="cn">P_1</span> sends <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> to all parties (the other parties send nothing)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="wa">leader_send: </span>the leader party <span class="cn">P_1</span> sends <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> to all parties (the other parties send nothing)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="wa">echo: </span>upon hearing <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> from the sender <span class="cn">P_1</span> <span class="cf">for</span> the first time,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="wa">echo: </span>upon hearing <span class="kw">&lt;</span>leader, v<span class="kw">&gt;</span> from the leader <span class="cn">P_1</span> <span class="cf">for</span> the first time,</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      send <span class="kw">&lt;</span>echo, v<span class="kw">&gt;</span> to all parties</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="wa">ready_event1: </span>upon hearing n<span class="kw">-</span>f <span class="kw">&lt;</span>echo, v<span class="kw">&gt;</span> messages from n<span class="kw">-</span>f distinct parties containing the same value v,</span>
@@ -3642,7 +3642,7 @@ constant
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li><p>If the sender is honest, then every honest party is going to hear the value <span class="math inline">\(v\)</span> after the broadcast step, and therefore every honest party will echo <span class="math inline">\(v\)</span> to all other parties.</p></li>
+<li><p>If the leader is honest, then every honest party is going to hear the value <span class="math inline">\(v\)</span> after the leader step, and therefore every honest party will echo <span class="math inline">\(v\)</span> to all other parties.</p></li>
 <li><p>Hence, every honest party will eventually hear at least <span class="math inline">\(n-f\)</span> echo messages with the value <span class="math inline">\(v\)</span> coming from the honest parties and will <del>be able to terminate</del> send a ready message with <span class="math inline">\(v\)</span>.</p></li>
 <li><p>Therefore, every honest party will eventually hear at least <span class="math inline">\(n - f\)</span> ready messages with the same <span class="math inline">\(v\)</span> and at most <span class="math inline">\(f\)</span> ready messages containing other values. Since there are only <span class="math inline">\(f\)</span> malicious parties, the adversary Mallory cannot convince even a single honest party to output a different value <span class="math inline">\(v&#39;\)</span>.</p></li>
 </ul>
@@ -3695,13 +3695,13 @@ constant
 </ul>
 <div class="fragment">
 <p>Actually, this doesn’t quite work. The problem is that Bracha’s broadcast protocol doesn’t guarantee <strong>termination</strong>.</p>
-<p>The synchronous blockchain protocol that we designed last time relied on the idea that each party takes a turn being the designated sender and creating a new block (first party <span class="math inline">\(P_1\)</span>, then party <span class="math inline">\(P_2\)</span>, and so on). But in the asynchronous setting, we may never be certain when the epoch where Party 1 is the designated sender has ended, so that we can move on to the next epoch with Party 2 as the designated sender.</p>
+<p>The synchronous blockchain protocol that we designed last time relied on the idea that each party takes a turn being the designated leader and creating a new block (first party <span class="math inline">\(P_1\)</span>, then party <span class="math inline">\(P_2\)</span>, and so on). But in the asynchronous setting, we may never be certain when the epoch where Party 1 is the designated leader has ended, so that we can move on to the next epoch with Party 2 as the designated leader.</p>
 </div>
 <div class="fragment">
-<p>At first glance, this looks to be an insurmountable problem. It is actually impossible to build an asynchronous Byzantine Broadcast protocol that guarantees termination. The problem is that the designated sender might simply refuse to participate in the protocol, and the honest parties will wait forever to listen for a message that may never arrive.</p>
+<p>At first glance, this looks to be an insurmountable problem. It is actually impossible to build an asynchronous Byzantine Broadcast protocol that guarantees termination. The problem is that the designated leader might simply refuse to participate in the protocol, and the honest parties will wait forever to listen for a message that may never arrive.</p>
 </div>
 <div class="fragment">
-<p>In some sense, the problem here stems from the fact that we are putting all of our faith in a single party to serve as the designated sender.</p>
+<p>In some sense, the problem here stems from the fact that we are putting all of our faith in a single party to serve as the designated leader.</p>
 <p>So let’s back away from that. We can define a new, slightly more general question called <strong>Byzantine Agreement</strong>. This is like Byzantine Broadcast, except that now everyone gets to send a message at the same time.</p>
 </div>
 <div class="fragment">
@@ -3739,7 +3739,7 @@ constant
 </blockquote>
 </div>
 <div class="fragment">
-<p>In the <strong>synchronous</strong> setting, there are many ways to build Byzantine Agreement. One simple approach is to run <span class="math inline">\(n\)</span> copies of a Byzantine Broadcast protocol (e.g., Dolev-Strong) in parallel, where everyone is the designated sender in one of them, and then take a majority vote of the results.</p>
+<p>In the <strong>synchronous</strong> setting, there are many ways to build Byzantine Agreement. One simple approach is to run <span class="math inline">\(n\)</span> copies of a Byzantine Broadcast protocol (e.g., Dolev-Strong) in parallel, where everyone is the designated leader in one of them, and then take a majority vote of the results.</p>
 <p>This works as long as <span class="math inline">\(f &lt; \frac{n}{2}\)</span>, since otherwise the malicious parties are in the majority and can overrule the honest parties’ values. (And it turns out that <span class="math inline">\(f &lt; \frac{n}{2}\)</span> is the best that one can do.)</p>
 </div>
 <div class="fragment">
@@ -3752,7 +3752,7 @@ constant
 <ul>
 <li>But: using a <code>CommonCoin</code>, it <em>is possible</em> to build a randomized protocol for asynchronous Byzantine Agreement that can withstand up to <span class="math inline">\(f &lt; \frac{n}{3}\)</span> malicious parties!</li>
 </ul>
-<p>In other words, we can achieve liveness with Byzantine Agreement, even though it was impossible to accomplish with Byzantine Broadcast. This is because we are no longer relying on a single sender who might just refuse to participate in the protocol; instead, everyone is allowed to contribute equally.</p>
+<p>In other words, we can achieve liveness with Byzantine Agreement, even though it was impossible to accomplish with Byzantine Broadcast. This is because we are no longer relying on a single leader who might just refuse to participate in the protocol; instead, everyone is allowed to contribute equally.</p>
 </div>
 <div class="fragment">
 <p>I don’t have time to describe the randomized protocol for asynchronous Byzantine Agreement in today’s class. You will read it for yourself in Chapter 13 of <a href="http://elaineshi.com/docs/blockchain-book.pdf">Elaine Shi’s textbook</a>.</p>
