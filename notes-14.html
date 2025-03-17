@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Lecture 14: Data Confidentiality</title>
+<title>Lecture 14: Data Encryption</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3246,6 +3246,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#caesar-cipher" id="toc-caesar-cipher" class="nav-link" data-scroll-target="#caesar-cipher">Caesar cipher</a></li>
   <li><a href="#fixing-the-cipher" id="toc-fixing-the-cipher" class="nav-link" data-scroll-target="#fixing-the-cipher">Fixing the cipher</a></li>
+  <li><a href="#downsides-of-one-time-pad" id="toc-downsides-of-one-time-pad" class="nav-link" data-scroll-target="#downsides-of-one-time-pad">Downsides of one-time pad</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -3254,7 +3255,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lecture 14: Data Confidentiality</h1>
+<h1 class="title">Lecture 14: Data Encryption</h1>
 </div>
 
 
@@ -3275,7 +3276,8 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
 <ul>
 <li>Test 2 is this Thursday during lecture</li>
-<li>Challenge problems 3-4 have been released, and are due on Friday 3/28</li>
+<li>This week’s reading: <a href="https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf">Boneh-Shoup, pages 4-18</a></li>
+<li>Challenge problems 3-4 have been released, and are due on Sunday 3/30</li>
 </ul>
 <hr>
 </section>
@@ -3315,18 +3317,19 @@ window.Quarto = {
 <div class="fragment">
 <p>Collectively, we have designed cryptographic tools that protect data integrity and availability.</p>
 </div>
-<p>Starting today, we will study <em>encryption</em> and its role in protecting data <strong>confidentiality</strong>.</p>
-<blockquote class="blockquote">
-<p>“Cryptography is about communication in the presence of an adversary.”</p>
-<p>– Prof. Ron Rivest</p>
-</blockquote>
 <hr>
 </section>
 <section id="encryption" class="level2">
 <h2 class="anchored" data-anchor-id="encryption">13.1 Encryption</h2>
+<p>Starting today, we will study <strong>encryption</strong> and its role in protecting data <strong>confidentiality</strong>.</p>
+<blockquote class="blockquote">
+<p>“Cryptography is about communication in the presence of an adversary.”</p>
+<p>– Prof. Ron Rivest</p>
+</blockquote>
 <div class="fragment">
 <p>Remember that a digital signature does <strong>not</strong> provide data confidentiality. Instead, its goal is <em>unforgeability</em>.</p>
-<div id="0c7e41c2" class="cell" data-execution_count="1">
+<p>In this example, the 64-byte signature is added to the message, but the original message contents remain in the clear.</p>
+<div id="c1907f15" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using libsodium</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.signing <span class="im">import</span> SigningKey, VerifyKey</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3337,19 +3340,16 @@ window.Quarto = {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Bob&#39;s message and its signature</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="st">b&quot;Hello, Alice!&quot;</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>signed_message <span class="op">=</span> secret_key.sign(message)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> public_key.verify(signed_message), <span class="st">&quot;invalid signature&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<div class="fragment">
-<p>The 64-byte signature is added to the message, but the original message contents remain in the clear. (You might need to scroll right to see it.)</p>
-<div id="b9392c19" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Length of original message:&quot;</span>, <span class="bu">len</span>(message), <span class="st">&quot;bytes&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Length of signed message:  &quot;</span>, <span class="bu">len</span>(signed_message), <span class="st">&quot;bytes&quot;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(signed_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> public_key.verify(signed_message), <span class="st">&quot;invalid signature&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Length of original message:&quot;</span>, <span class="bu">len</span>(message), <span class="st">&quot;bytes&quot;</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Length of signed message:  &quot;</span>, <span class="bu">len</span>(signed_message), <span class="st">&quot;bytes</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Signed message:&quot;</span>, signed_message[:<span class="dv">5</span>] <span class="op">+</span> <span class="st">b&quot;...&quot;</span> <span class="op">+</span> signed_message[<span class="op">-</span><span class="dv">15</span>:])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Length of original message: 13 bytes
 Length of signed message:   77 bytes
-b&#39;\xd1Y\xc2F\xf6d\x9dW\xf2\x82\x95\xb2|Sh\xbe|h\xb9\xa9.\xc7?-\x80\x8a\xa9\xff\x17\x9a\x96\xb0rP\xcb\\\xa9\xb0\xcaq\x07[\x7f\x11\xbe\xd6\x91\xe165\xf4\xc5\xaf\xb7\x8a\x8c(\xb8kl\x13\xcc\x99\x0bHello, Alice!&#39;</code></pre>
+
+Signed message: b&#39;U\xeb\xe1\x88\xda...\xdc\x0cHello, Alice!&#39;</code></pre>
 </div>
 </div>
 </div>
@@ -3378,32 +3378,32 @@ b&#39;\xd1Y\xc2F\xf6d\x9dW\xf2\x82\x95\xb2|Sh\xbe|h\xb9\xa9.\xc7?-\x80\x8a\xa9\x
 <p>The result is a <strong>public key encryption</strong> scheme! This new primitive <em>does</em> protect data confidentiality.</p>
 </div>
 <div class="fragment">
-<div id="b60d0a79" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.public <span class="im">import</span> PrivateKey, PublicKey, SealedBox</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bob&#39;s key pair</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>secret_key <span class="op">=</span> PrivateKey.generate()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>public_key <span class="op">=</span> secret_key.public_key</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>sealed_box <span class="op">=</span> SealedBox(public_key)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Alice&#39;s message and its encryption</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="st">b&quot;Hello, Bob!&quot;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>encrypted_message <span class="op">=</span> sealed_box.encrypt(message)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(encrypted_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="32ae744b" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.public <span class="im">import</span> PrivateKey, PublicKey, SealedBox</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bob&#39;s key pair</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>secret_key <span class="op">=</span> PrivateKey.generate()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>public_key <span class="op">=</span> secret_key.public_key</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>sealed_box <span class="op">=</span> SealedBox(public_key)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Alice&#39;s message and its encryption</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="st">b&quot;Hello, Bob!&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>encrypted_message <span class="op">=</span> sealed_box.encrypt(message)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(encrypted_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>b&#39;\xf5$\xa6i\r\x83\xef\x0b\xc4\x9c\xf7\xa2\xb6F/\xe7v\t\xbe\xa9\x7f\xdf\xc5\xe8\xf50\xf6\xc21=O(\xad\xc6\xea\x11\x1f\x7f\xf0[\x08\xe09\xf4+\xd5\x8b\xa7Z\x9e\xce\t\xb8B9\xa4n(\xc2&#39;</code></pre>
+<pre><code>b&#39;\x82\xcaGZ\xe9\x1dqX:)(\xbd/\x92\x0c\xf9.\x058\x87\xf1\x90:\xdc\xa6\xb8$\xff~\x92\xfd^\xd0\xbbi\x07Z\xecr| k%\xdd\xd3v\xd4\x7f\xbc\x1eT\x1a\xdc]!\r\xcb\xbcD&#39;</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
 <p>Also as we will see, encryption schemes are <em>randomized</em>: if you encrypt the same message twice, you will get different results. Hence, encryption requires good sources of randomness.</p>
 <div class="fragment">
-<div id="a9ea4471" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>encrypted_message <span class="op">=</span> sealed_box.encrypt(message)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(encrypted_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="88e9d34e" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>encrypted_message <span class="op">=</span> sealed_box.encrypt(message)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(encrypted_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>b&#39;UR\x8a\xfa\xc7\x96\xc8\xe8H\x06\xe0S\x08+\xa3\xcf\xeax]N\xe8\xa8\t\xd6\xbd\xbf\xb7-U\xe3kj\x175\xc8/Z\xa8\xb5\x95@\xb9P\xc9\xd7 e\x02N\x95\x1en\x0b\x08\x96\x9e\xcc\xb5A&#39;</code></pre>
+<pre><code>b&#39;\x86&gt;\x08!m\x1d\xd5\x98g&quot;\x07iZ\xf8\t@\xbc\x84\x8bk\xaf\xb39a\x83`\xad\xb5O\xfb\x0f\r\xfd\xfeZ\xd8!$\ne\xf2n\xd1\xd4\xb1\n\xbd\xeeZZu%\x16\x1d(\xf28s\x8d&#39;</code></pre>
 </div>
 </div>
 </div>
@@ -3658,7 +3658,7 @@ kaggle.com
 </ul>
 </div>
 <div class="fragment">
-<p>Companies that use encryption sometimes forget about this fact, and learn it the hard way.</p>
+<p>Companies that use encryption sometimes forget about this fact!</p>
 </div>
 <div class="fragment">
 <p><strong>Example 1.</strong> Here is a real interaction between Sen. Ron Wyden and Match, the parent company of Tinder.</p>
@@ -3711,7 +3711,7 @@ kaggle.com
 <p>Like signatures, an encryption scheme has three methods: <code>KeyGen</code>, <code>Enc</code>, and <code>Dec</code>.</p>
 <div class="incremental">
 <ul class="incremental">
-<li><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(K\)</span> (say, a uniformly random bytestring of fixed length)</li>
+<li><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(k\)</span> from a distribution <span class="math inline">\(\mathcal{K}\)</span> (say, a uniformly random bytestring of fixed length)</li>
 <li><code>Enc</code><span class="math inline">\((k, P; r) \to C\)</span>: Alice transforms plaintext message <span class="math inline">\(P\)</span> into a ciphertext <span class="math inline">\(C\)</span>, with one-time randomness <span class="math inline">\(R\)</span></li>
 <li><code>Dec</code><span class="math inline">\((k, C) \to P\)</span>: Bob transforms the ciphertext back into the original plaintext message <span class="math inline">\(P\)</span></li>
 </ul>
@@ -3721,8 +3721,8 @@ kaggle.com
 </div>
 <div class="incremental">
 <ol class="incremental" type="1">
-<li><p><strong>Correctness</strong>: <code>Dec</code> undoes the action of <code>Enc</code>. That is, for any key <span class="math inline">\(K\)</span>, message <span class="math inline">\(P\)</span>, and randomness <span class="math inline">\(R\)</span> it holds that <span class="math display">\[\text{Dec}(K, \text{Enc}(K, P; R)) = P.\]</span></p></li>
-<li><p><strong>Secrecy</strong> (informally): If an attacker Mallory sees the ciphertext <span class="math inline">\(C\)</span> but not the symmetric key <span class="math inline">\(K\)</span>, then she has no chance of learning any part of the plaintext message <span class="math inline">\(P\)</span>.</p></li>
+<li><p><strong>Correctness</strong>: <code>Dec</code> undoes the action of <code>Enc</code>. That is, for any key <span class="math inline">\(k\)</span>, message <span class="math inline">\(P\)</span>, and randomness <span class="math inline">\(R\)</span> it holds that <span class="math display">\[\text{Dec}(k, \text{Enc}(k, P; R)) = P.\]</span></p></li>
+<li><p><strong>Secrecy</strong> (informally): If an attacker Mallory sees the ciphertext <span class="math inline">\(C\)</span> but not the symmetric key <span class="math inline">\(k\)</span>, then she has no chance of learning any part of the plaintext message <span class="math inline">\(P\)</span>.</p></li>
 </ol>
 </div>
 <div class="fragment">
@@ -3738,8 +3738,8 @@ kaggle.com
 <p>Today, we will study one way to formalize the secrecy guarantee.</p>
 <div class="fragment">
 <p><strong>Definition.</strong> An encryption scheme satisfies <strong>perfect secrecy</strong> if for any two messages <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P_1\)</span>, and for any ciphertext <span class="math inline">\(C\)</span>,</p>
-<p><span class="math display">\[ \Pr[\text{Enc}(K, P_0) = C] = \Pr[\text{Enc}(K, P_1) = C],\]</span></p>
-<p>where this probability is taken over the random choice of the key K.</p>
+<p><span class="math display">\[ \Pr[\text{Enc}(k, P_0) = C] = \Pr[\text{Enc}(k, P_1) = C],\]</span></p>
+<p>where this probability is taken over the random choice of the key <span class="math inline">\(k \gets \mathcal{K}\)</span>.</p>
 </div>
 <div class="fragment">
 <p>Here is another way to think about perfect secrecy.</p>
@@ -3799,7 +3799,7 @@ kaggle.com
 </ul>
 <div class="columns">
 <div class="column" style="width:70%;">
-<p>The idea is to choose a key between 0 and 25, and rotate all characters by this amount. This figure shows the cipher with symmetric key <span class="math inline">\(K = 3\)</span>.</p>
+<p>The idea is to choose a key between 0 and 25, and rotate all characters by this amount. This figure shows the cipher with symmetric key <span class="math inline">\(k = 3\)</span>.</p>
 <ul>
 <li><code>one</code> <span class="math inline">\(\mapsto\)</span> <code>lkb</code></li>
 <li><code>two</code> <span class="math inline">\(\mapsto\)</span> <code>qtl</code></li>
@@ -3813,7 +3813,7 @@ kaggle.com
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li>If Eve observes the ciphertext <span class="math inline">\(C\)</span> for a known plaintext message <span class="math inline">\(P\)</span>, then she learns <span class="math inline">\(K\)</span></li>
+<li>If Eve observes the ciphertext <span class="math inline">\(C\)</span> for a known plaintext message <span class="math inline">\(P\)</span>, then she learns <span class="math inline">\(k\)</span></li>
 <li>Even if Eve knows a single character of <span class="math inline">\(P\)</span> and <span class="math inline">\(C\)</span>, she can encipher a new message: <code>three</code> <span class="math inline">\(\mapsto\)</span> <code>qeobb</code></li>
 </ul>
 </div>
@@ -3902,17 +3902,19 @@ kaggle.com
 </div>
 <div class="fragment">
 <p><strong>Theorem.</strong> The one-time pad satisfies perfect secrecy!</p>
-<p>There is a proof of this theorem in <a href="https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf">Section 2.1 of Boneh-Shoup</a>, but I encourage you to try to prove this claim on your own before looking there. Remember that perfect secrecy says that for any two plaintext messages <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P_1\)</span> and any ciphertext <span class="math inline">\(C\)</span>, then over the random choice of the key <span class="math inline">\(K\)</span></p>
-<p><span class="math display">\[ \Pr[\text{Enc}(K, P_0) = C] = \Pr[\text{Enc}(K, P_1) = C].\]</span></p>
+<p>There is a proof of this theorem in <a href="https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf">Section 2.1 of Boneh-Shoup</a>, but I encourage you to try to prove this claim on your own before looking there. Remember that perfect secrecy says that for any two plaintext messages <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P_1\)</span> and any ciphertext <span class="math inline">\(C\)</span>,</p>
+<p><span class="math display">\[ \Pr_{k \gets \mathcal{K}}[\text{Enc}(k, P_0) = C] = \Pr_{k \gets \mathcal{K}}[\text{Enc}(k, P_1) = C].\]</span></p>
 </div>
-<div class="fragment">
-<p>The one-time pad is rarely used on its own in practice today. Here are some downsides of the OTP:</p>
-</div>
+<hr>
+</section>
+<section id="downsides-of-one-time-pad" class="level3">
+<h3 class="anchored" data-anchor-id="downsides-of-one-time-pad">Downsides of one-time pad</h3>
+<p>Even though it satisfies perfect secrecy, the one-time pad is rarely used on its own in practice today for a few reasons:</p>
 <div class="incremental">
 <ol class="incremental" type="1">
-<li>The symmetric key must be as long as the message.</li>
+<li>The symmetric key <span class="math inline">\(k\)</span> must be as long as the plaintext message <span class="math inline">\(P\)</span>.</li>
 <li>Reusing the same key for two or more messages breaks perfect security, and brings back the cryptograms issue.</li>
-<li>The message is malleable! While OTP is safe against a passive eavesdropper Eve, an active attacker Mallory can manipulate the message in transit and cause the same change in the decrypted plaintext.</li>
+<li>The cipher is malleable! While OTP is safe against a passive eavesdropper Eve, an active attacker Mallory can manipulate the ciphertext in transit and cause the same change in the decrypted plaintext.</li>
 </ol>
 </div>
 <div class="fragment">
@@ -3923,7 +3925,11 @@ kaggle.com
 </code></pre>
 </div>
 <div class="fragment">
-<p>Next week, we will design new ciphers that combine encryption and message authentication into a single primitive, so as to protect our data even against an active attacker Mallory.</p>
+<p>Next week, we will design new ciphers that:</p>
+<ul>
+<li>Can encrypt many long messages from a single, short key</li>
+<li>Combine encryption and message authentication into a single primitive, so as to protect our data even against an active attacker Mallory.</li>
+</ul>
 <blockquote class="blockquote">
 <p>“Confidentiality xor authenticity is not possible. If you don’t have both, often you don’t have either.”</p>
 <p>– Prof. Matthew Green (Johns Hopkins)</p>
