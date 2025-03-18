@@ -1107,7 +1107,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2">
-<h2>13.1 Encryption</h2>
+<h2>14.1 Encryption</h2>
 <p>Starting today, we will study <strong>encryption</strong> and its role in protecting data <strong>confidentiality</strong>.</p>
 <blockquote>
 <p>“Cryptography is about communication in the presence of an adversary.”</p>
@@ -1116,7 +1116,7 @@ margin-right: 0; }
 <div class="fragment">
 <p>Remember that a digital signature does <strong>not</strong> provide data confidentiality. Instead, its goal is <em>unforgeability</em>.</p>
 <p>In this example, the 64-byte signature is added to the message, but the original message contents remain in the clear.</p>
-<div id="8f8d9440" class="cell" data-execution_count="1">
+<div id="d046f55b" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href></a><span class="co"># using libsodium</span></span>
 <span id="cb1-2"><a href></a><span class="im">from</span> nacl.signing <span class="im">import</span> SigningKey, VerifyKey</span>
 <span id="cb1-3"><a href></a></span>
@@ -1136,7 +1136,7 @@ margin-right: 0; }
 <pre><code>Length of original message: 13 bytes
 Length of signed message:   77 bytes
 
-Signed message: b&#39;\xa9\xe4l&gt;\xda...w\x03Hello, Alice!&#39;</code></pre>
+Signed message: b&#39;\x8ai4\xf8\xec...,\x07Hello, Alice!&#39;</code></pre>
 </div>
 </div>
 </div>
@@ -1165,7 +1165,7 @@ Signed message: b&#39;\xa9\xe4l&gt;\xda...w\x03Hello, Alice!&#39;</code></pre>
 <p>The result is a <strong>public key encryption</strong> scheme! This new primitive <em>does</em> protect data confidentiality.</p>
 </div>
 <div class="fragment">
-<div id="b0dbe67b" class="cell" data-execution_count="2">
+<div id="5916d18e" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href></a><span class="im">from</span> nacl.public <span class="im">import</span> PrivateKey, PublicKey, SealedBox</span>
 <span id="cb3-2"><a href></a></span>
 <span id="cb3-3"><a href></a><span class="co"># Bob&#39;s key pair</span></span>
@@ -1179,18 +1179,18 @@ Signed message: b&#39;\xa9\xe4l&gt;\xda...w\x03Hello, Alice!&#39;</code></pre>
 <span id="cb3-11"><a href></a></span>
 <span id="cb3-12"><a href></a><span class="bu">print</span>(encrypted_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>b&quot;\xd8\xe3O\x10\xc8i\xfe46O$S\xca\xd2\xbe\xda\xb5~\xa0n\xdc)\x8bQ\xe7yQ\x01{VrH\x7f\x10\x0b}\x9b\xfa\\\xdb\xeb\x8anU}D\xe8\xa6\xdch\xc2\xad\x8b\x9d&#39;W\xbc\xc3Q&quot;</code></pre>
+<pre><code>b&quot;\xb0X\xd8\xe8\xa3\x01[od\xf5\xb5\x90\xec\xcfX!3D\x1c\x8b+\x02$\x97)&#39;\t\xa3\x8aa\xa70p\x06\xbf\xa8\xc7\xcd\\\x93\xb9\x05\x8f9\xbc\xcd\x83#6O\x05\xf1n\x1c\x959&#39;5\xa1&quot;</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
 <p>Also as we will see, encryption schemes are <em>randomized</em>: if you encrypt the same message twice, you will get different results. Hence, encryption requires good sources of randomness.</p>
 <div class="fragment">
-<div id="0f895e3e" class="cell" data-execution_count="3">
+<div id="ccfb3c55" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href></a>encrypted_message <span class="op">=</span> sealed_box.encrypt(message)</span>
 <span id="cb5-2"><a href></a><span class="bu">print</span>(encrypted_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>b&#39;Hc\xd8|Ba\xb9\x91.\xcc\xd7\xfb\xa7\xc4\xfdQ\xd5\xd5\x91\x9f\x87\xcfb\x03@*\x9d\x14\xad6b~\x1f1\x95^\x11hY\x7f\xbe\xeaJ\x16\xb98t\n\xf5\xb9F \x04\xa1WV\x82\xe5&lt;&#39;</code></pre>
+<pre><code>b&#39;\xd2=\xb3\x03C\xa7\xf9\xfa9\xce\xa08\xfa\xa1\x16\xf2\xdaPQ\xbd\x18\xf0\xe1Ib(\xd3#\x91)\x8e\x06\xb7L\xee\x04\x1e\xb6\xcfZE\xd1.2N\x99p\x18\xb0\x164C\xa9\x1f\x03\xda9V~&#39;</code></pre>
 </div>
 </div>
 </div>
@@ -1328,7 +1328,7 @@ Bob
 </div>
 </section>
 <section class="slide level2 scrollable">
-<h2>13.2 Symmetric key cryptography</h2>
+<h2>14.2 Symmetric key cryptography</h2>
 <p>It is possible to construct public key encryption based on hard math problems like factoring and discrete logarithms.</p>
 <div class="fragment">
 <p>But we will not study public key encryption in this course. In fact, I’m going to make a bold claim: even though it exists, in nearly all data science applications you should <strong>not</strong> use public key encryption!</p>
@@ -1498,11 +1498,11 @@ kaggle.com
 </div>
 </section>
 <section class="slide level2 scrollable">
-<h2>13.3 Defining symmetric encryption</h2>
+<h2>14.3 Defining symmetric encryption</h2>
 <p>Like signatures, an encryption scheme has three methods: <code>KeyGen</code>, <code>Enc</code>, and <code>Dec</code>.</p>
 <div>
 <ul>
-<li class="fragment"><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(k\)</span> from a distribution <span class="math inline">\(\mathcal{K}\)</span> (say, a uniformly random bytestring of fixed length)</li>
+<li class="fragment"><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(k\)</span> from a distribution <span class="math inline">\(K\)</span> (say, a uniformly random bytestring of fixed length)</li>
 <li class="fragment"><code>Enc</code><span class="math inline">\((k, P; r) \to C\)</span>: Alice transforms plaintext message <span class="math inline">\(P\)</span> into a ciphertext <span class="math inline">\(C\)</span>, with one-time randomness <span class="math inline">\(R\)</span></li>
 <li class="fragment"><code>Dec</code><span class="math inline">\((k, C) \to P\)</span>: Bob transforms the ciphertext back into the original plaintext message <span class="math inline">\(P\)</span></li>
 </ul>
@@ -1531,7 +1531,7 @@ kaggle.com
 <div class="fragment">
 <p><strong>Definition.</strong> An encryption scheme satisfies <strong>perfect secrecy</strong> if for any two messages <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P_1\)</span>, and for any ciphertext <span class="math inline">\(C\)</span>,</p>
 <p><span class="math display">\[ \Pr[\text{Enc}(k, P_0) = C] = \Pr[\text{Enc}(k, P_1) = C],\]</span></p>
-<p>where this probability is taken over the random choice of the key <span class="math inline">\(k \gets \mathcal{K}\)</span>.</p>
+<p>where this probability is taken over the random choice of the key <span class="math inline">\(k \gets K\)</span>.</p>
 </div>
 <div class="fragment">
 <p>Here is another way to think about perfect secrecy.</p>
@@ -1545,7 +1545,7 @@ kaggle.com
 </div>
 </section>
 <section class="slide level2">
-<h2>13.4 One-time pads</h2>
+<h2>14.4 One-time pads</h2>
 <p>Let’s build an encryption scheme that satisfies perfect secrecy.</p>
 <div>
 <ul>
@@ -1691,7 +1691,7 @@ kaggle.com
 <div class="fragment">
 <p><strong>Theorem.</strong> The one-time pad satisfies perfect secrecy!</p>
 <p>There is a proof of this theorem in <a href="https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf">Section 2.1 of Boneh-Shoup</a>, but I encourage you to try to prove this claim on your own before looking there. Remember that perfect secrecy says that for any two plaintext messages <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P_1\)</span> and any ciphertext <span class="math inline">\(C\)</span>,</p>
-<p><span class="math display">\[ \Pr_{k \gets \mathcal{K}}[\text{Enc}(k, P_0) = C] = \Pr_{k \gets \mathcal{K}}[\text{Enc}(k, P_1) = C].\]</span></p>
+<p><span class="math display">\[ \Pr_{k \gets K}[\text{Enc}(k, P_0) = C] = \Pr_{k \gets K}[\text{Enc}(k, P_1) = C].\]</span></p>
 </div>
 </section>
 <section class="slide level2 scrollable">
@@ -1711,26 +1711,6 @@ kaggle.com
       -----------------------               -----------------------
       cipher   0101 1010 0111               message  0110 0110 0110
 </code></pre>
-</div>
-</section>
-<section class="slide level2">
-
-<h3>Looking ahead</h3>
-<p>What if we want to encrypt a long message using a short key?</p>
-<ul>
-<li>It turns out that perfect secrecy is impossible.</li>
-<li>But that’s okay; we can resort back to computational hardness (e.g., “energy of the sun” work required to break the scheme)</li>
-</ul>
-<div class="fragment">
-<p>Modern encryption schemes rely on <strong>pseudorandomness</strong> — the same technique that we used for Bitcoin light clients to generate multiple secrets from a single key. Specifically:</p>
-</div>
-<div>
-<ul>
-<li class="fragment"><p>Alice and Bob generate a short symmetric key <span class="math inline">\(k\)</span>.</p></li>
-<li class="fragment"><p>When Alice wants to send a private message <span class="math inline">\(P\)</span>, she creates a one-time secret <span class="math inline">\(S = f_k(\text{iv})\)</span> as a function of the symmetric key. This function also takes a public input called the <strong>initialization vector</strong>, or <code>iv</code>.</p></li>
-<li class="fragment"><p>Alice sends the ciphertext <span class="math inline">\(C = P \oplus S\)</span>, along with the <code>iv</code>.</p></li>
-<li class="fragment"><p>Bob reconstructs the same secret <span class="math inline">\(S = f_k(\text{iv})\)</span> on his computer.</p></li>
-</ul>
 </div>
 <div class="fragment">
 <p>Next week, we will design pseudorandom functions and use them to build ciphers that:</p>

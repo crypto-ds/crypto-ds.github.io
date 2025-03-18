@@ -1149,7 +1149,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2">
-<h2>11.1 Relying on Trusted Setup</h2>
+<h2>10.1 Relying on Trusted Setup</h2>
 <p>Dolev-Strong protocol is an elegant protocol for broadcast in the face of adversaries. So why don’t we use it as the basis for a cryptocurrency like Bitcoin?</p>
 <p>There are many answers to this question, but one important reason is the need for trusted setup.</p>
 <div class="fragment">
@@ -1216,7 +1216,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2">
-<h2>11.2 Broadcast without Trusted Setup</h2>
+<h2>10.2 Broadcast without Trusted Setup</h2>
 <p>Great, so let’s try to build a Byzantine Broadcast protocol <em>without</em> using trusted setup like a PKI!</p>
 <p>Unfortunately, that’s difficult to do.</p>
 <div class="fragment">
@@ -1284,7 +1284,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2">
-<h2>11.3 Constructing Byzantine Broadcast Without Setup</h2>
+<h2>10.3 Constructing Byzantine Broadcast Without Setup</h2>
 <p>This leads to the question: so can we actually construct a Byzantine Broadcast protocol with <span class="math inline">\(f &lt; n/3\)</span> malicious parties?</p>
 <p>The good news is that the answer is <strong>yes</strong>.</p>
 <div class="fragment">
@@ -1312,7 +1312,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2">
-<h2>11.4 The Gradecast protocol</h2>
+<h2>10.4 The Gradecast protocol</h2>
 <p>Let there be <span class="math inline">\(n\)</span> parties, which we label as <span class="math inline">\(P_1, P_2, \ldots, P_n\)</span>. The <code>Gradecast</code> protocol is <em>not</em> about broadcasting a value. Instead it is about checking or verifying whether the parties have reached consensus about the value.</p>
 <ul>
 <li>Each party <span class="math inline">\(P_i\)</span> has an input value <span class="math inline">\(v_i \in \{0, 1\}\)</span>.</li>
@@ -1435,7 +1435,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2">
-<h2>11.5 The Phase-King protocol</h2>
+<h2>10.5 The Phase-King protocol</h2>
 <p>Finally, let’s construct a new Byzantine Broadcast protocol based on <code>Gradecast</code>.</p>
 <p>This new protocol is called the <strong>phase-king protocol</strong>. The name comes from the fact that the main idea is for everyone to take a turn being the “king.” (There are actually many variations of the phase-king protocol; I will present just one of them in this class.)</p>
 <div class="fragment">
@@ -1555,17 +1555,6 @@ Phase-King<br>
 <tbody>
 <tr>
 <td>
-PKI
-</td>
-<td>
-YES <br>
-</td>
-<td>
-NO
-</td>
-</tr>
-<tr>
-<td>
 Synchronous network<br>
 </td>
 <td>
@@ -1577,7 +1566,18 @@ YES
 </tr>
 <tr>
 <td>
-Number of fauly parties <br>
+PKI
+</td>
+<td>
+YES <br>
+</td>
+<td>
+NO
+</td>
+</tr>
+<tr>
+<td>
+Number of malicious parties <br>
 </td>
 <td>
 <span class="math inline">\(f \leq n\)</span>

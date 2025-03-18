@@ -3229,26 +3229,25 @@ window.Quarto = {
   <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
   <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
   <li><a href="#review" id="toc-review" class="nav-link" data-scroll-target="#review">Review</a></li>
-  <li><a href="#encryption" id="toc-encryption" class="nav-link" data-scroll-target="#encryption">13.1 Encryption</a>
+  <li><a href="#encryption" id="toc-encryption" class="nav-link" data-scroll-target="#encryption">14.1 Encryption</a>
   <ul class="collapse">
   <li><a href="#the-power-of-encryption" id="toc-the-power-of-encryption" class="nav-link" data-scroll-target="#the-power-of-encryption">The power of encryption</a></li>
   </ul></li>
-  <li><a href="#symmetric-key-cryptography" id="toc-symmetric-key-cryptography" class="nav-link" data-scroll-target="#symmetric-key-cryptography">13.2 Symmetric key cryptography</a>
+  <li><a href="#symmetric-key-cryptography" id="toc-symmetric-key-cryptography" class="nav-link" data-scroll-target="#symmetric-key-cryptography">14.2 Symmetric key cryptography</a>
   <ul class="collapse">
   <li><a href="#security-over-time" id="toc-security-over-time" class="nav-link" data-scroll-target="#security-over-time">Security over time</a></li>
   <li><a href="#one-key-rather-than-two" id="toc-one-key-rather-than-two" class="nav-link" data-scroll-target="#one-key-rather-than-two">One key, rather than two</a></li>
   <li><a href="#goals-and-non-goals" id="toc-goals-and-non-goals" class="nav-link" data-scroll-target="#goals-and-non-goals">Goals and non-goals</a></li>
   </ul></li>
-  <li><a href="#defining-symmetric-encryption" id="toc-defining-symmetric-encryption" class="nav-link" data-scroll-target="#defining-symmetric-encryption">13.3 Defining symmetric encryption</a>
+  <li><a href="#defining-symmetric-encryption" id="toc-defining-symmetric-encryption" class="nav-link" data-scroll-target="#defining-symmetric-encryption">14.3 Defining symmetric encryption</a>
   <ul class="collapse">
   <li><a href="#perfect-secrecy" id="toc-perfect-secrecy" class="nav-link" data-scroll-target="#perfect-secrecy">Perfect secrecy</a></li>
   </ul></li>
-  <li><a href="#one-time-pads" id="toc-one-time-pads" class="nav-link" data-scroll-target="#one-time-pads">13.4 One-time pads</a>
+  <li><a href="#one-time-pads" id="toc-one-time-pads" class="nav-link" data-scroll-target="#one-time-pads">14.4 One-time pads</a>
   <ul class="collapse">
   <li><a href="#caesar-cipher" id="toc-caesar-cipher" class="nav-link" data-scroll-target="#caesar-cipher">Caesar cipher</a></li>
   <li><a href="#fixing-the-cipher" id="toc-fixing-the-cipher" class="nav-link" data-scroll-target="#fixing-the-cipher">Fixing the cipher</a></li>
   <li><a href="#downsides-of-one-time-pad" id="toc-downsides-of-one-time-pad" class="nav-link" data-scroll-target="#downsides-of-one-time-pad">Downsides of one-time pad</a></li>
-  <li><a href="#looking-ahead" id="toc-looking-ahead" class="nav-link" data-scroll-target="#looking-ahead">Looking ahead</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -3322,7 +3321,7 @@ window.Quarto = {
 <hr>
 </section>
 <section id="encryption" class="level2">
-<h2 class="anchored" data-anchor-id="encryption">13.1 Encryption</h2>
+<h2 class="anchored" data-anchor-id="encryption">14.1 Encryption</h2>
 <p>Starting today, we will study <strong>encryption</strong> and its role in protecting data <strong>confidentiality</strong>.</p>
 <blockquote class="blockquote">
 <p>“Cryptography is about communication in the presence of an adversary.”</p>
@@ -3331,7 +3330,7 @@ window.Quarto = {
 <div class="fragment">
 <p>Remember that a digital signature does <strong>not</strong> provide data confidentiality. Instead, its goal is <em>unforgeability</em>.</p>
 <p>In this example, the 64-byte signature is added to the message, but the original message contents remain in the clear.</p>
-<div id="8817426c" class="cell" data-execution_count="1">
+<div id="548faf3e" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using libsodium</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.signing <span class="im">import</span> SigningKey, VerifyKey</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3351,7 +3350,7 @@ window.Quarto = {
 <pre><code>Length of original message: 13 bytes
 Length of signed message:   77 bytes
 
-Signed message: b&#39;\x04+,D\x19...\xea\nHello, Alice!&#39;</code></pre>
+Signed message: b&#39;\xd4~\xe8\xd7h...\xbc\rHello, Alice!&#39;</code></pre>
 </div>
 </div>
 </div>
@@ -3380,7 +3379,7 @@ Signed message: b&#39;\x04+,D\x19...\xea\nHello, Alice!&#39;</code></pre>
 <p>The result is a <strong>public key encryption</strong> scheme! This new primitive <em>does</em> protect data confidentiality.</p>
 </div>
 <div class="fragment">
-<div id="d905470a" class="cell" data-execution_count="2">
+<div id="21dc3ce1" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.public <span class="im">import</span> PrivateKey, PublicKey, SealedBox</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bob&#39;s key pair</span></span>
@@ -3394,18 +3393,18 @@ Signed message: b&#39;\x04+,D\x19...\xea\nHello, Alice!&#39;</code></pre>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(encrypted_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>b&quot;g+\xc1p&#39;:\xd0\xc4\n\xe6\x0f_\xa2\x1f0\xccc\xc4\xe2I\xebz\xc2\xaa\xdb\xabA\xb1n\n\x97.\x8f\xd3\xffw\xc0)!\xf9Z\x13\xd4W\x94\xd3\xb4\x13\xd0KW\xb3\xe0\xb4\x9e\xe3\x03jE&quot;</code></pre>
+<pre><code>b&quot;\x9c\x8a\xc3\xc2\xa3~R\xd8\xd2\\\x81gW\xa1k\x18;3\x0f&#39;\xfc\x05^\xa5!|.\xe4\xed$\xb7c\xe6j\xcf%\xb4\xb2\xb59\xc3+*\x85F\x84\xed\xf1\x15\xc6Q\n\x81\x8c\xa5\x88W\x8d\xb0&quot;</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
 <p>Also as we will see, encryption schemes are <em>randomized</em>: if you encrypt the same message twice, you will get different results. Hence, encryption requires good sources of randomness.</p>
 <div class="fragment">
-<div id="d146ebb9" class="cell" data-execution_count="3">
+<div id="fb75d6b6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>encrypted_message <span class="op">=</span> sealed_box.encrypt(message)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(encrypted_message)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>b&#39;-\x0cA\xf9l\xd0#_\x86\xaa\x8d&gt;\xb9\xae\x81\x94\xa1p4\xf6^\x1e\x13\x8a\x1b\xde\xa7|\xa0\xdb\xbcW\xa0\x90\xc8c\xc4\xfb\xb3\x1f\x7f\x1c\xeaBBy_vW\x11aGY\x89\xf1*\xa5\xcfr&#39;</code></pre>
+<pre><code>b&quot;L*\xf9M\x19\x9bG6\x7f\xeaJ56\xbc\xf1\xcf~\xd3\x94\x9a\x14-\x1e\xae\xd7\xd1f\xa3^\xad\x14QF&#39;\xb7s\x9dr\xff`\xb4T\xe085\x90.Y\x00\xc4\x9b\xc5m\xdb\xf4\xca\x17\xe5\xe8&quot;</code></pre>
 </div>
 </div>
 </div>
@@ -3545,7 +3544,7 @@ Bob
 </section>
 </section>
 <section id="symmetric-key-cryptography" class="level2">
-<h2 class="anchored" data-anchor-id="symmetric-key-cryptography">13.2 Symmetric key cryptography</h2>
+<h2 class="anchored" data-anchor-id="symmetric-key-cryptography">14.2 Symmetric key cryptography</h2>
 <p>It is possible to construct public key encryption based on hard math problems like factoring and discrete logarithms.</p>
 <div class="fragment">
 <p>But we will not study public key encryption in this course. In fact, I’m going to make a bold claim: even though it exists, in nearly all data science applications you should <strong>not</strong> use public key encryption!</p>
@@ -3719,11 +3718,11 @@ kaggle.com
 </section>
 </section>
 <section id="defining-symmetric-encryption" class="level2">
-<h2 class="anchored" data-anchor-id="defining-symmetric-encryption">13.3 Defining symmetric encryption</h2>
+<h2 class="anchored" data-anchor-id="defining-symmetric-encryption">14.3 Defining symmetric encryption</h2>
 <p>Like signatures, an encryption scheme has three methods: <code>KeyGen</code>, <code>Enc</code>, and <code>Dec</code>.</p>
 <div class="incremental">
 <ul class="incremental">
-<li><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(k\)</span> from a distribution <span class="math inline">\(\mathcal{K}\)</span> (say, a uniformly random bytestring of fixed length)</li>
+<li><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(k\)</span> from a distribution <span class="math inline">\(K\)</span> (say, a uniformly random bytestring of fixed length)</li>
 <li><code>Enc</code><span class="math inline">\((k, P; r) \to C\)</span>: Alice transforms plaintext message <span class="math inline">\(P\)</span> into a ciphertext <span class="math inline">\(C\)</span>, with one-time randomness <span class="math inline">\(R\)</span></li>
 <li><code>Dec</code><span class="math inline">\((k, C) \to P\)</span>: Bob transforms the ciphertext back into the original plaintext message <span class="math inline">\(P\)</span></li>
 </ul>
@@ -3751,7 +3750,7 @@ kaggle.com
 <div class="fragment">
 <p><strong>Definition.</strong> An encryption scheme satisfies <strong>perfect secrecy</strong> if for any two messages <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P_1\)</span>, and for any ciphertext <span class="math inline">\(C\)</span>,</p>
 <p><span class="math display">\[ \Pr[\text{Enc}(k, P_0) = C] = \Pr[\text{Enc}(k, P_1) = C],\]</span></p>
-<p>where this probability is taken over the random choice of the key <span class="math inline">\(k \gets \mathcal{K}\)</span>.</p>
+<p>where this probability is taken over the random choice of the key <span class="math inline">\(k \gets K\)</span>.</p>
 </div>
 <div class="fragment">
 <p>Here is another way to think about perfect secrecy.</p>
@@ -3767,7 +3766,7 @@ kaggle.com
 </section>
 </section>
 <section id="one-time-pads" class="level2">
-<h2 class="anchored" data-anchor-id="one-time-pads">13.4 One-time pads</h2>
+<h2 class="anchored" data-anchor-id="one-time-pads">14.4 One-time pads</h2>
 <p>Let’s build an encryption scheme that satisfies perfect secrecy.</p>
 <div class="incremental">
 <ul class="incremental">
@@ -3915,7 +3914,7 @@ kaggle.com
 <div class="fragment">
 <p><strong>Theorem.</strong> The one-time pad satisfies perfect secrecy!</p>
 <p>There is a proof of this theorem in <a href="https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf">Section 2.1 of Boneh-Shoup</a>, but I encourage you to try to prove this claim on your own before looking there. Remember that perfect secrecy says that for any two plaintext messages <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P_1\)</span> and any ciphertext <span class="math inline">\(C\)</span>,</p>
-<p><span class="math display">\[ \Pr_{k \gets \mathcal{K}}[\text{Enc}(k, P_0) = C] = \Pr_{k \gets \mathcal{K}}[\text{Enc}(k, P_1) = C].\]</span></p>
+<p><span class="math display">\[ \Pr_{k \gets K}[\text{Enc}(k, P_0) = C] = \Pr_{k \gets K}[\text{Enc}(k, P_1) = C].\]</span></p>
 </div>
 <hr>
 </section>
@@ -3935,26 +3934,6 @@ kaggle.com
       -----------------------               -----------------------
       cipher   0101 1010 0111               message  0110 0110 0110
 </code></pre>
-</div>
-<hr>
-</section>
-<section id="looking-ahead" class="level3">
-<h3 class="anchored" data-anchor-id="looking-ahead">Looking ahead</h3>
-<p>What if we want to encrypt a long message using a short key?</p>
-<ul>
-<li>It turns out that perfect secrecy is impossible.</li>
-<li>But that’s okay; we can resort back to computational hardness (e.g., “energy of the sun” work required to break the scheme)</li>
-</ul>
-<div class="fragment">
-<p>Modern encryption schemes rely on <strong>pseudorandomness</strong> — the same technique that we used for Bitcoin light clients to generate multiple secrets from a single key. Specifically:</p>
-</div>
-<div class="incremental">
-<ul class="incremental">
-<li><p>Alice and Bob generate a short symmetric key <span class="math inline">\(k\)</span>.</p></li>
-<li><p>When Alice wants to send a private message <span class="math inline">\(P\)</span>, she creates a one-time secret <span class="math inline">\(S = f_k(\text{iv})\)</span> as a function of the symmetric key. This function also takes a public input called the <strong>initialization vector</strong>, or <code>iv</code>.</p></li>
-<li><p>Alice sends the ciphertext <span class="math inline">\(C = P \oplus S\)</span>, along with the <code>iv</code>.</p></li>
-<li><p>Bob reconstructs the same secret <span class="math inline">\(S = f_k(\text{iv})\)</span> on his computer.</p></li>
-</ul>
 </div>
 <div class="fragment">
 <p>Next week, we will design pseudorandom functions and use them to build ciphers that:</p>
