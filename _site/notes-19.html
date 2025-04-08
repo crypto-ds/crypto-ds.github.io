@@ -3194,24 +3194,24 @@ window.Quarto = {
   <ul>
   <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
   <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
-  <li><a href="#introduction-to-unit-4" id="toc-introduction-to-unit-4" class="nav-link" data-scroll-target="#introduction-to-unit-4">19.1 Introduction to Unit 4</a></li>
+  <li><a href="#protecting-data-in-use" id="toc-protecting-data-in-use" class="nav-link" data-scroll-target="#protecting-data-in-use">19.1 Protecting data in use</a></li>
   <li><a href="#cryptographic-secret-sharing" id="toc-cryptographic-secret-sharing" class="nav-link" data-scroll-target="#cryptographic-secret-sharing">19.2 Cryptographic secret sharing</a>
   <ul class="collapse">
   <li><a href="#secret-sharing-informally" id="toc-secret-sharing-informally" class="nav-link" data-scroll-target="#secret-sharing-informally">Secret sharing, informally</a></li>
   <li><a href="#defining-secret-sharing" id="toc-defining-secret-sharing" class="nav-link" data-scroll-target="#defining-secret-sharing">Defining secret sharing</a></li>
   <li><a href="#constructing-secret-sharing" id="toc-constructing-secret-sharing" class="nav-link" data-scroll-target="#constructing-secret-sharing">Constructing secret sharing</a></li>
   <li><a href="#arithmetic-secret-sharing" id="toc-arithmetic-secret-sharing" class="nav-link" data-scroll-target="#arithmetic-secret-sharing">Arithmetic secret sharing</a></li>
-  <li><a href="#protecting-data-in-use" id="toc-protecting-data-in-use" class="nav-link" data-scroll-target="#protecting-data-in-use">Protecting data in use</a></li>
+  <li><a href="#secret-sharing-to-secure-computing" id="toc-secret-sharing-to-secure-computing" class="nav-link" data-scroll-target="#secret-sharing-to-secure-computing">Secret sharing <span class="math inline">\(\to\)</span> secure computing</a></li>
   </ul></li>
-  <li><a href="#measuring-the-wage-gap-in-boston" id="toc-measuring-the-wage-gap-in-boston" class="nav-link" data-scroll-target="#measuring-the-wage-gap-in-boston">19.3 Measuring the Wage Gap in Boston</a></li>
-  <li><a href="#secure-addition" id="toc-secure-addition" class="nav-link" data-scroll-target="#secure-addition">19.4 Secure Addition</a>
+  <li><a href="#measuring-the-wage-gap-in-boston" id="toc-measuring-the-wage-gap-in-boston" class="nav-link" data-scroll-target="#measuring-the-wage-gap-in-boston">19.3 Measuring the wage gap in Boston</a></li>
+  <li><a href="#secure-addition" id="toc-secure-addition" class="nav-link" data-scroll-target="#secure-addition">19.4 Secure addition</a>
   <ul class="collapse">
   <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
   <li><a href="#contributing-data" id="toc-contributing-data" class="nav-link" data-scroll-target="#contributing-data">Contributing data</a></li>
   <li><a href="#aggregating-data" id="toc-aggregating-data" class="nav-link" data-scroll-target="#aggregating-data">Aggregating data</a></li>
   </ul></li>
-  <li><a href="#defining-secure-multi-party-computation" id="toc-defining-secure-multi-party-computation" class="nav-link" data-scroll-target="#defining-secure-multi-party-computation">19.5 Defining Secure Multi-Party Computation</a></li>
-  <li><a href="#secure-computation-of-all-functions" id="toc-secure-computation-of-all-functions" class="nav-link" data-scroll-target="#secure-computation-of-all-functions">19.6 Secure Computation of All Functions</a>
+  <li><a href="#defining-secure-multi-party-computation" id="toc-defining-secure-multi-party-computation" class="nav-link" data-scroll-target="#defining-secure-multi-party-computation">19.5 Defining secure multi-party computation</a></li>
+  <li><a href="#securely-computing-all-functions" id="toc-securely-computing-all-functions" class="nav-link" data-scroll-target="#securely-computing-all-functions">19.6 Securely computing all functions</a>
   <ul class="collapse">
   <li><a href="#mpc-of-linear-functions" id="toc-mpc-of-linear-functions" class="nav-link" data-scroll-target="#mpc-of-linear-functions">MPC of linear functions</a></li>
   <li><a href="#secure-multiplication" id="toc-secure-multiplication" class="nav-link" data-scroll-target="#secure-multiplication">Secure multiplication</a></li>
@@ -3264,8 +3264,8 @@ window.Quarto = {
 </ul>
 <hr>
 </section>
-<section id="introduction-to-unit-4" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-to-unit-4">19.1 Introduction to Unit 4</h2>
+<section id="protecting-data-in-use" class="level2">
+<h2 class="anchored" data-anchor-id="protecting-data-in-use">19.1 Protecting data in use</h2>
 <p>Today, we will begin Unit 4 of the course on secure data analysis. This unit continues our investigation into data confidentiality (and we will sometimes also discuss data integrity).</p>
 <div class="fragment">
 <p>We can sub-divide data confidentiality into three different scenarios.</p>
@@ -3457,8 +3457,8 @@ window.Quarto = {
 </div>
 <hr>
 </section>
-<section id="protecting-data-in-use" class="level3">
-<h3 class="anchored" data-anchor-id="protecting-data-in-use">Protecting data in use</h3>
+<section id="secret-sharing-to-secure-computing" class="level3">
+<h3 class="anchored" data-anchor-id="secret-sharing-to-secure-computing">Secret sharing <span class="math inline">\(\to\)</span> secure computing</h3>
 <p>But hang on a second. I started today by discussing three types of data protection: data at rest, data in transit, and data in use.</p>
 <div class="fragment">
 <p>So far, we have just discussed secret sharing as a new way for Susie to protect data at rest. Granted, the data is stored at rest <em>with Alice and Bob</em> rather than on Susie’s own laptop… but still the data is being protected at rest.</p>
@@ -3476,7 +3476,7 @@ window.Quarto = {
 </section>
 </section>
 <section id="measuring-the-wage-gap-in-boston" class="level2">
-<h2 class="anchored" data-anchor-id="measuring-the-wage-gap-in-boston">19.3 Measuring the Wage Gap in Boston</h2>
+<h2 class="anchored" data-anchor-id="measuring-the-wage-gap-in-boston">19.3 Measuring the wage gap in Boston</h2>
 <p>Let me introduce this new way to conduct data science by way of a story – a true story.</p>
 <p>In 2013, then-Boston Mayor Tom Menino commissioned a working group to write a report about how to “make Boston the premier city for working women.”</p>
 <p>The Mayor’s office wrote a report, and they established a new group called the <a href="https://thebwwc.org/">Boston Women’s Workforce Council</a> that brought together leading women in the state from government, industry, and academia to find and implement ways to close the gender and racial wage gap.</p>
@@ -3532,7 +3532,7 @@ window.Quarto = {
 <hr>
 </section>
 <section id="secure-addition" class="level2">
-<h2 class="anchored" data-anchor-id="secure-addition">19.4 Secure Addition</h2>
+<h2 class="anchored" data-anchor-id="secure-addition">19.4 Secure addition</h2>
 <p>Several of us at Boston University have worked with the Boston Women’s Workforce Council and the city to design, build, and deploy a web-based survey form. This webpage allows companies to contribute their data toward the wage gap calculation <em>without</em> anyone learning their salary data – not even us!</p>
 <div class="fragment">
 <p>Here’s what our website looks like. The intention is for someone in (say) the HR department of each participating company to input the <em>number</em> and <em>total annual compensation</em> of all employees in each group of gender, race/ethnicity, and job category.</p>
@@ -3838,7 +3838,7 @@ window.Quarto = {
 </section>
 </section>
 <section id="defining-secure-multi-party-computation" class="level2">
-<h2 class="anchored" data-anchor-id="defining-secure-multi-party-computation">19.5 Defining Secure Multi-Party Computation</h2>
+<h2 class="anchored" data-anchor-id="defining-secure-multi-party-computation">19.5 Defining secure multi-party computation</h2>
 <p>Great! We now know how to perform data analysis over data that we cannot see … well, as long as the only data analysis we want to perform is addition.</p>
 <p>The good news is that you can perform cryptographically secure multi-party computation of <strong>any</strong> function!</p>
 <div class="fragment">
@@ -3941,8 +3941,8 @@ window.Quarto = {
 </div>
 <hr>
 </section>
-<section id="secure-computation-of-all-functions" class="level2">
-<h2 class="anchored" data-anchor-id="secure-computation-of-all-functions">19.6 Secure Computation of All Functions</h2>
+<section id="securely-computing-all-functions" class="level2">
+<h2 class="anchored" data-anchor-id="securely-computing-all-functions">19.6 Securely computing all functions</h2>
 <p>Secure multi-party computation protocols have three steps:</p>
 <ol type="1">
 <li>The data holders split their secrets <span class="math inline">\(x_1, x_2, \ldots, x_m\)</span>, and send one share to each computing party.</li>

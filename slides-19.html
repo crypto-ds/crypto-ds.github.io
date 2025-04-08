@@ -1018,7 +1018,7 @@ margin-right: 0; }
 </ul>
 </section>
 <section class="slide level2">
-<h2>19.1 Introduction to Unit 4</h2>
+<h2>19.1 Protecting data in use</h2>
 <p>Today, we will begin Unit 4 of the course on secure data analysis. This unit continues our investigation into data confidentiality (and we will sometimes also discuss data integrity).</p>
 <div class="fragment">
 <p>We can sub-divide data confidentiality into three different scenarios.</p>
@@ -1209,7 +1209,7 @@ margin-right: 0; }
 </section>
 <section class="slide level2">
 
-<h3>Protecting data in use</h3>
+<h3>Secret sharing <span class="math inline">\(\to\)</span> secure computing</h3>
 <p>But hang on a second. I started today by discussing three types of data protection: data at rest, data in transit, and data in use.</p>
 <div class="fragment">
 <p>So far, we have just discussed secret sharing as a new way for Susie to protect data at rest. Granted, the data is stored at rest <em>with Alice and Bob</em> rather than on Susie’s own laptop… but still the data is being protected at rest.</p>
@@ -1225,7 +1225,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2 scrollable">
-<h2>19.3 Measuring the Wage Gap in Boston</h2>
+<h2>19.3 Measuring the wage gap in Boston</h2>
 <p>Let me introduce this new way to conduct data science by way of a story – a true story.</p>
 <p>In 2013, then-Boston Mayor Tom Menino commissioned a working group to write a report about how to “make Boston the premier city for working women.”</p>
 <p>The Mayor’s office wrote a report, and they established a new group called the <a href="https://thebwwc.org/">Boston Women’s Workforce Council</a> that brought together leading women in the state from government, industry, and academia to find and implement ways to close the gender and racial wage gap.</p>
@@ -1280,7 +1280,7 @@ margin-right: 0; }
 <p>So how did they do it? The answer lies in a new cryptographic primitive that we will study for the next week: <strong>secure multi-party computation</strong>.</p>
 </section>
 <section class="slide level2">
-<h2>19.4 Secure Addition</h2>
+<h2>19.4 Secure addition</h2>
 <p>Several of us at Boston University have worked with the Boston Women’s Workforce Council and the city to design, build, and deploy a web-based survey form. This webpage allows companies to contribute their data toward the wage gap calculation <em>without</em> anyone learning their salary data – not even us!</p>
 <div class="fragment">
 <p>Here’s what our website looks like. The intention is for someone in (say) the HR department of each participating company to input the <em>number</em> and <em>total annual compensation</em> of all employees in each group of gender, race/ethnicity, and job category.</p>
@@ -1585,7 +1585,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2">
-<h2>19.5 Defining Secure Multi-Party Computation</h2>
+<h2>19.5 Defining secure multi-party computation</h2>
 <p>Great! We now know how to perform data analysis over data that we cannot see … well, as long as the only data analysis we want to perform is addition.</p>
 <p>The good news is that you can perform cryptographically secure multi-party computation of <strong>any</strong> function!</p>
 <div class="fragment">
@@ -1688,7 +1688,7 @@ margin-right: 0; }
 </div>
 </section>
 <section class="slide level2 scrollable">
-<h2>19.6 Secure Computation of All Functions</h2>
+<h2>19.6 Securely computing all functions</h2>
 <p>Secure multi-party computation protocols have three steps:</p>
 <ol type="1">
 <li>The data holders split their secrets <span class="math inline">\(x_1, x_2, \ldots, x_m\)</span>, and send one share to each computing party.</li>
