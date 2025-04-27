@@ -3,5 +3,5 @@ gem 'github-pages', group: :jekyll_plugins
 gem "webrick", "~> 1.7"
 gem "jekyll-remote-theme", "~> 0.4.2"
 gem 'just-the-docs', '~> 0.3.3'
-gem "nokogiri", ">= 1.18.4"
+gem "nokogiri", ">= 1.18.8"
 gem "uri", ">= 1.0.3"
