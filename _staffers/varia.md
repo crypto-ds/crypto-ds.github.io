@@ -1,10 +1,11 @@
 ---
 name: Mayank Varia
 anchor: varia
-role: Instructor
+role: Professor
 email: varia@bu.edu
 website: https://www.mvaria.com
-photo: assets/images/varia.png
 ---
 
-Office Hours: Thursday 3:30-5:00pm, in CDS room 1324
+Lectures: Monday and Wednesday, 10:10-11:55am in [EPIC room 207](https://maps.bu.edu/?id=647#!m/534718)
+
+Office Hours: TBD, in CDS room 1324

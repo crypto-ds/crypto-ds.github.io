@@ -23,7 +23,6 @@ CDS DS 653 at Boston University investigates techniques for performing trustwort
 ## Course Information
 
 {% include staff.md %}
-{% include logistics.md %}
 {% include textbooks.md %}
 {% include policies.md %}
 
@@ -35,15 +34,13 @@ CDS DS 653 at Boston University investigates techniques for performing trustwort
 
 Here are the objectives that students are expected to learn by the end of each unit of the course.
 
-1. **Secure ledgers (currencies without centralization).** Define the security guarantees of digital signatures and hash functions. Explain their role in authenticating people and data. Describe the goal of decentralization and distributed consensus, in the context of financial payments via cryptocurrencies. Determine if a potential transaction is valid. Explain the mining algorithm and its role to incentivize honest participation.
+1. **Protecting Data Integrity (authenticity without trust).** Describe the properties of hash functions, and explain how to use them in protecting passwords and message commitments. Define the security guarantees of MACS and digital signatures and hash functions, and explain their role in authenticating people and data.
 
-2. **Secure consensus (agreement without trust).** Describe the goal of decentralization and distributed consensus abstractly, in any scenario needing data liveness and safety. Show how to build Byzantine broadcast and agreement, with and without network synchrony or a public key infrastructure.
+2. **Protecting Data Availability (communication without censorship).** Describe the goal of decentralization and distributed consensus abstractly, in any scenario needing data liveness and safety. Explain the components of a cryptocurrency including transactions, mining algorithms, and the blockchain data structure.
 
-3. **Secure transport (messaging without meeting).** Explain how encryption protects data on the Internet, and the role that (pseudo)randomness plays within encryption. Describe how secure messaging applications provide end-to-end encryption, as well as pre- and post-compromise security.
+3. **Protecting Data Confidentiality (messaging without meeting).** Explain how encryption protects data on the Internet, and the role that (pseudo)randomness plays within encryption. Describe how secure messaging applications provide end-to-end encryption, as well as pre- and post-compromise security.
 
-4. **Secure analysis (data science without data sharing).** Describe the design of protocols that provide cryptographically secure multi-party computation, and explain how it enables a collection of data-holders to perform data science together, without sharing data with each other or anyone else. Define the security guarantees of zero knowledge proofs. Explain how they allow people to participate in the digital economy while preserving their privacy, and hold powerful entities to account without the need for full transparency.
-
-5. **Crypto and society.** Assess the environmental and ethical risks that blockchains introduce, and current efforts to improve their sustainability. Engage with ethical, legal, regulatory, and policy questions about the role of crypto toward addressing social issues.
+4. **Protecting Data Science (analyzing without sharing).** Describe how multi-party computation enables people to perform data science together, without data sharing. Explain how zero knowledge proofs allow people to participate in the digital economy while preserving their privacy. Engage with ethical, legal, regulatory, and policy questions about the role of crypto toward addressing social issues.
 
 
 ---
