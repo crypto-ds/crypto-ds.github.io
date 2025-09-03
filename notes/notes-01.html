@@ -2374,8 +2374,8 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="syllabus-overview">Syllabus Overview</h2>
 <p>Instructors</p>
 <ul>
-<li>Professor: Mayank Varia (<a href="mailto:varia@bu.edu" class="email">varia@bu.edu</a>)</li>
-<li>TF: Julie Ha (<a href="mailto:hajulie@bu.edu" class="email">hajulie@bu.edu</a>)</li>
+<li>Professor: Mayank Varia</li>
+<li>TF: Julie Ha</li>
 </ul>
 <p>Meetings</p>
 <ul>
@@ -2929,7 +2929,7 @@ Bob
 <p>In more detail, a secret key is a long, random sequence of bytes. One common choice is to pick a key that is <span class="math inline">\(32\)</span> bytes (or <span class="math inline">\(32 \times 8 = 256\)</span> bits) in length.</p>
 <div class="fragment">
 <p>For example, here is a secret key (also known as a private key):</p>
-<div id="e4b6403d" class="cell" data-execution_count="1">
+<div id="602c1b1e" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first install PyCryptoDome with, e.g., &quot;pip install pycryptodomex&quot;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.PublicKey <span class="im">import</span> ECC</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>secretKey <span class="op">=</span> ECC.generate(curve<span class="op">=</span><span class="st">&#39;P-256&#39;</span>)</span>
@@ -2937,9 +2937,9 @@ Bob
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(secretKey.export_key(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;PEM&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-----BEGIN PRIVATE KEY-----
-MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgQOKyJi7cs5PTS7yO
-bP0QyFxnnkrg0rKoLS1OGaqxCbShRANCAAQAIjKdbLmA7uYMl4TqMyYHqbJTBoZ2
-ZyHhL5uAH64fZgXSiQ9GqU3OOcXkYxnciFacCM8fRPcfgETbPVKKyTxQ
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgqF0DMQ/DZF9xKeRp
+wtOMQ2ffKS/3R5OEKxG8MLOi7BehRANCAATpLITbjRBZBokdGTUMIXLwWJxFQYAY
+19udOB01TMLOaFmdZvHLkDowzRN+sLk0GIB9hvXDNMuRxy4f/wcsNVt/
 -----END PRIVATE KEY-----</code></pre>
 </div>
 </div>
@@ -2966,7 +2966,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 <div class="fragment">
 <p>Concretely, suppose I create a <code>for</code> loop that iterates from:</p>
-<div id="57e4c0a8" class="cell" data-execution_count="2">
+<div id="ac32be74" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b&#39;</span><span class="ch">\x00</span><span class="st">&#39;</span>)) <span class="co"># 32 copies of the byte value 0 (printed in hex)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2974,7 +2974,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 </div>
 <p>to this:</p>
-<div id="ec253c62" class="cell" data-execution_count="3">
+<div id="7089d557" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b&#39;</span><span class="ch">\xff</span><span class="st">&#39;</span>)) <span class="co"># 32 copies of the byte value 255 (printed in hex)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>b&#39;ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff&#39;</code></pre>
