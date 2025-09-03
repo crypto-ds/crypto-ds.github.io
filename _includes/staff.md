@@ -1,4 +1,4 @@
-#### Instructor
+#### Professor
 
 {% assign professors = site.staffers | where: 'role', 'Professor' %}
 {% for staffer in professors %}
