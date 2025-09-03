@@ -20,7 +20,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 # everything beyond this point is common across all configs
 
 title: DS 653
-tagline: Crypto for Data Science (DS 653) in Spring 2025
+tagline: Crypto for Data Science (DS 653) in Fall 2025
 description: ""
 author: Mayank Varia
 exclude: ["Gemfile", "Gemfile.lock", "LICENSE", "readme.md", "CNAME"]
