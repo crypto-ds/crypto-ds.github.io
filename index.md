@@ -31,6 +31,10 @@ CDS DS 653 at Boston University investigates techniques for performing trustwort
 
 ## Calendar
 
-This schedule includes the learning objectives that students are expected to learn by the end of each unit of the course, along with the weekly lesson plan and course materials. The schedule will be continually updated as new lectures and assignments are posted. The password to watch the recorded videos is available on [Piazza](https://piazza.com/class/meyslgzymrs7n/post/6).
+This schedule includes the learning objectives that students are expected to learn by the end of each unit of the course, along with the weekly lesson plan and course materials. The schedule will be continually updated as new lectures and assignments are posted.
+
+- The password to watch the recorded videos is available on [Piazza](https://piazza.com/class/meyslgzymrs7n/post/6)
+- All homework assignments and lab worksheets can be downloaded from the [Piazza resources](https://piazza.com/bu/fall2025/ds653/resources) page
+
 
 {% include calendar.md %}
