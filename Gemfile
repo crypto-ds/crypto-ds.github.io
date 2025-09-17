@@ -5,3 +5,4 @@ gem "jekyll-remote-theme", "~> 0.4.2"
 gem 'just-the-docs', '~> 0.3.3'
 gem "nokogiri", ">= 1.18.9"
 gem "uri", ">= 1.0.3"
+gem "rexml", ">= 3.4.2"
