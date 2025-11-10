@@ -2377,13 +2377,11 @@ window.Quarto = {
 </section>
 <section id="review-from-last-lecture" class="level3">
 <h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
-<div class="fragment">
 <p>The goal of Unit 3 of this course is to study encryption and its role in:</p>
 <ul>
 <li>Protecting data at rest on your laptop or phone (last week)</li>
 <li>Protecting data in transit over the Internet or messaging app (this week)</li>
 </ul>
-</div>
 <div class="fragment">
 <p>Encryption on the Internet is often performed in one of two ways.</p>
 <table class="caption-top table">
@@ -2436,7 +2434,7 @@ window.Quarto = {
 </section>
 <section id="tls-overview" class="level2">
 <h2 class="anchored" data-anchor-id="tls-overview">17.1 TLS overview</h2>
-<p>Today, we will study discuss encryption in transit in a different scenario: <strong>client-server encryption</strong> between your computer and websites on the Internet.</p>
+<p>Today, we will study discuss encryption in transit in a different scenario: <em>client-server encryption</em> between your computer and websites on the Internet.</p>
 <div class="fragment">
 <div class="columns">
 <div class="column" style="width:75%;">
@@ -2704,18 +2702,34 @@ example.com
 </ol>
 </div>
 <div class="fragment">
-<p><em>Answer</em>. The server computes a MAC of all messages sent and received so far. Client Alice verifies this MAC against her own view of the messages sent/received in the handshake.</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div class="incremental">
-<ul class="incremental">
-<li>Note that the first three messages did not adhere to the <em>cryptographic doom principle</em> <!--
-> "If you have to perform any cryptographic operation before verifying the MAC on a message you’ve received, it will somehow inevitably lead to doom!"
->
-> – Moxie Marlinspike
---></li>
-<li>This was a necessarily evil so that TLS can be flexible and several crypto algorithms</li>
-<li>But we must now fix this problem: a MAC convinces Alice that the messages were not tampered in transit <em>and</em> that she is the intended recipient</li>
+<div class="callout-body-container">
+<p>This answer has been updated since the lecture, in order to address a mistake I made in class. Sorry about that!</p>
+</div>
+</div>
+</div>
+<p><em>Answer</em>. We need <strong>both</strong> a digital signature and a MAC here! They both provide data integrity, but in <a href="https://www.iacr.org/cryptodb/archive/2003/CRYPTO/1495/1495.pdf">different ways</a>.</p>
+<ul>
+<li>The digital signature provides <em>sender authenticity</em>: convincing Alice that she is talking to the real server <code>example.com</code> (whereas a MAC would only convince Alice that she is talking to the same person she previously shared a symmetric key with, but this might be Mallory)</li>
+<li>The MAC provides <em>receiver authenticity</em>: convincing Alice that the message is intended for her (remember that a digital signature does not provide receiver authenticity)</li>
+<li>The MAC goes last, so that Alice verifies it first in accordance with the <em>cryptographic doom principle</em> (and this order also improves <em>forward secrecy</em>)</li>
 </ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>TLS 1.3 uses some clever ideas to compress the TLS handshake down from 4 messages to 2 messages, while still achieving the same objectives. This reduces the latency of the handshake protocol so that Alice can download the website data quicker.</p>
+</div>
+</div>
+</div>
 </div>
 <hr>
 </section>
