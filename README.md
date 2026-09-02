@@ -1,1 +1,1 @@
-Website for Boston University's CDS DS 453/653 course
+Website for Boston University's CDS DS 453/653 course in fall 2026
