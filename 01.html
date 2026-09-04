@@ -315,6 +315,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#representations-of-numbers" id="toc-representations-of-numbers" class="nav-link" data-scroll-target="#representations-of-numbers">Representations of numbers</a></li>
   <li><a href="#discussion-practice" id="toc-discussion-practice" class="nav-link" data-scroll-target="#discussion-practice">Discussion Practice</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -806,7 +807,7 @@ Note
 <p>In more detail, a secret key is a long, random sequence of bytes. One common choice is to pick a key that is <span class="math inline">\(32\)</span> bytes (or <span class="math inline">\(32 \times 8 = 256\)</span> bits) in length.</p>
 <div class="fragment">
 <p>For example, here is a secret key (also known as a private key):</p>
-<div id="77df6e1f" class="cell" data-execution_count="1">
+<div id="ab792b88" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install PyCryptodome with "pip install pycryptodomex"</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.PublicKey <span class="im">import</span> ECC</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>secretKey <span class="op">=</span> ECC.generate(curve<span class="op">=</span><span class="st">'P-256'</span>)</span>
@@ -814,9 +815,9 @@ Note
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(secretKey.export_key(<span class="bu">format</span><span class="op">=</span><span class="st">'PEM'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-----BEGIN PRIVATE KEY-----
-MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgqoCRqivS5VxwBXvI
-sFIEpdfxujjy/pRpuverGy2s8V2hRANCAAQLYW2DpWYX59PuJJI9xlv49a2IPo5W
-twt9n0BVVW8VHKX3qG+YFDMfttalA0/ZEISkdDFc6rtEo9epbGpRwkXT
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgdwbD9wAkeZbjkc22
+3B3aXkYICpDL6y+16JiCGB5Lxf2hRANCAARY6/PZMfDpZzYV/6GMyZUzht+YeAyC
+pUeohGkeCDtEZcB+RfNmP2o+JI2lTjfvHUudIJqsfupXOVHTK3+iaOz3
 -----END PRIVATE KEY-----</code></pre>
 </div>
 </div>
@@ -846,7 +847,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 <div class="fragment">
 <p>Concretely, suppose I create a <code>for</code> loop that iterates from:</p>
-<div id="d1c2d936" class="cell" data-execution_count="2">
+<div id="f2b3ef45" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\x00</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 0</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># (printed as 64 hex characters)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -855,7 +856,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 </div>
 <p>to this:</p>
-<div id="9b38f725" class="cell" data-execution_count="3">
+<div id="945cbd70" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\xff</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 255</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># (printed as 64 hex characters)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -902,7 +903,7 @@ Note
 <ul>
 <li>A <strong>byte</strong> is a sequence of eight bits. In other words, a byte is an element of the set <span class="math inline">\(\{0, 1\}^8\)</span>. (Note that there is a one-to-one mapping between bytes and integers in the range 0-255.)</li>
 </ul>
-<div id="230f76cb" class="cell" data-execution_count="4">
+<div id="8f171f88" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table of all 256 values of a byte, in decimal and binary formats</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"byte  bits"</span>)</span>
@@ -940,7 +941,7 @@ Note
 </div>
 <div class="fragment">
 <p>Within <code>Python</code>, you can represent a value of type <code>byte</code> using a string with the letter <code>b</code> in front of it. For example, here is a byte that holds the ASCII value of the character <strong>A</strong>.</p>
-<div id="50763066" class="cell" data-execution_count="5">
+<div id="4d881fe9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">b'A'</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(s)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -954,7 +955,7 @@ Note
 </div>
 <div class="fragment">
 <p>Some (but not all!) bytes correspond to printable characters in the American character encoding standard, or <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>.</p>
-<div id="e1257899" class="cell" data-execution_count="6">
+<div id="5e429407" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"byte  ASCII character"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>): <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#4d'</span>), <span class="bu">chr</span>(x))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" ..."</span>)</span>
@@ -1015,7 +1016,7 @@ Note
 <div class="fragment">
 <p>The <em>hexadecimal</em>, or base 16, representation of a number uses the symbols 0-9 and a-f to denote the values 0 through 15.</p>
 <p>By convention, Python places a <code>0x</code> prefix in front of a number to remind you that it is written in <code>hex</code> format.</p>
-<div id="e913f7bf" class="cell" data-execution_count="7">
+<div id="7a589619" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"int   hex"</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">16</span>):</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#3d'</span>), <span class="st">" "</span>, <span class="bu">format</span>(x, <span class="st">'#04x'</span>))</span>
@@ -1068,7 +1069,7 @@ Note
 </div>
 <div class="fragment">
 <p><code>bytes_to_long</code> converts a byte string to a long integer (big endian, most significant bytes come first). <code>long_to_bytes</code> is converts a positive integer to a byte string using big endian coding.</p>
-<div id="ef6b49cd" class="cell" data-execution_count="8">
+<div id="011bc6ad" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.Util.number <span class="im">import</span> bytes_to_long, long_to_bytes <span class="co"># requires PyCrypto</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify, unhexlify</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1090,7 +1091,7 @@ j: b'A'
 </div>
 <div class="fragment">
 <p><code>hexlify</code> returns a hexadecimal representation of the binary data. <code>unhexlify</code> returns binary data of hexademical representation.</p>
-<div id="639b8e41" class="cell" data-execution_count="9">
+<div id="43b58a28" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'s:'</span>, s)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> hexlify(s)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'u:'</span>, u)</span>
@@ -1109,7 +1110,7 @@ w: b'A'
 </div>
 <div class="fragment">
 <p><code>bin</code> returns the binary version of an integer.</p>
-<div id="919a0686" class="cell" data-execution_count="10">
+<div id="2d0bf4b7" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'t:'</span>, t) </span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> <span class="bu">bin</span>(t)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'v:'</span>, v)</span>
@@ -1156,7 +1157,10 @@ z: 65
 </section>
 <section id="discussion-practice" class="level3">
 <h3 class="anchored" data-anchor-id="discussion-practice">Discussion Practice</h3>
-<p>https://tinyurl.com/ds653disc ### References {.unnumbered}</p>
+<p>https://tinyurl.com/ds653disc</p>
+</section>
+<section id="references" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="references">References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Adida2018" class="csl-entry" role="listitem">
 Adida, Ben. 2018. <em>Crypto as in Crypto</em>. <a href="https://benlog.com/2018/01/07/crypto-as-in-crypto/" class="uri">Https://benlog.com/2018/01/07/crypto-as-in-crypto/</a>.
