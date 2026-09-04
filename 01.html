@@ -310,7 +310,11 @@ window.Quarto = {
   <li><a href="#what-could-go-wrong" id="toc-what-could-go-wrong" class="nav-link" data-scroll-target="#what-could-go-wrong">What could go wrong?</a></li>
   <li><a href="#digital-signatures-a-cryptographic-primitive" id="toc-digital-signatures-a-cryptographic-primitive" class="nav-link" data-scroll-target="#digital-signatures-a-cryptographic-primitive">Digital signatures: a cryptographic primitive</a></li>
   <li><a href="#cryptographic-keys" id="toc-cryptographic-keys" class="nav-link" data-scroll-target="#cryptographic-keys">Cryptographic keys</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  <li><a href="#representations-of-data" id="toc-representations-of-data" class="nav-link" data-scroll-target="#representations-of-data"><span class="header-section-number">1.5</span> Representations of data</a>
+  <ul class="collapse">
+  <li><a href="#representations-of-numbers" id="toc-representations-of-numbers" class="nav-link" data-scroll-target="#representations-of-numbers">Representations of numbers</a></li>
+  <li><a href="#discussion-practice" id="toc-discussion-practice" class="nav-link" data-scroll-target="#discussion-practice">Discussion Practice</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -802,7 +806,7 @@ Note
 <p>In more detail, a secret key is a long, random sequence of bytes. One common choice is to pick a key that is <span class="math inline">\(32\)</span> bytes (or <span class="math inline">\(32 \times 8 = 256\)</span> bits) in length.</p>
 <div class="fragment">
 <p>For example, here is a secret key (also known as a private key):</p>
-<div id="a652195b" class="cell" data-execution_count="1">
+<div id="77df6e1f" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install PyCryptodome with "pip install pycryptodomex"</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.PublicKey <span class="im">import</span> ECC</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>secretKey <span class="op">=</span> ECC.generate(curve<span class="op">=</span><span class="st">'P-256'</span>)</span>
@@ -810,9 +814,9 @@ Note
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(secretKey.export_key(<span class="bu">format</span><span class="op">=</span><span class="st">'PEM'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-----BEGIN PRIVATE KEY-----
-MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgRER8q5GmZOjBRQaQ
-HPL/4QXIn80IL4LUKY3FrXfjfXihRANCAAT4Z/QN2ewDEtMXq3LV6g7nKqesNZRP
-+sQ4pAz5NHOYkJwbT6Mqw+UEhVwzfpv7RZ1F/iW/58SwImXDOEhRR2CJ
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgqoCRqivS5VxwBXvI
+sFIEpdfxujjy/pRpuverGy2s8V2hRANCAAQLYW2DpWYX59PuJJI9xlv49a2IPo5W
+twt9n0BVVW8VHKX3qG+YFDMfttalA0/ZEISkdDFc6rtEo9epbGpRwkXT
 -----END PRIVATE KEY-----</code></pre>
 </div>
 </div>
@@ -842,7 +846,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 <div class="fragment">
 <p>Concretely, suppose I create a <code>for</code> loop that iterates from:</p>
-<div id="e74d188a" class="cell" data-execution_count="2">
+<div id="d1c2d936" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\x00</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 0</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># (printed as 64 hex characters)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -851,7 +855,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 </div>
 <p>to this:</p>
-<div id="663070f3" class="cell" data-execution_count="3">
+<div id="9b38f725" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\xff</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 255</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># (printed as 64 hex characters)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -872,9 +876,287 @@ Granted, there are surely more effective ways for an attacker to try to break ou
 <div class="fragment">
 <p>Our goal for Unit 1 of the course is to build up our toolbox of cryptographic primitives that are practically infeasible to break… via this <em>brute force attack</em> or any other method known to humanity (remember <a href="#schneier-law">Schneier’s law</a>).</p>
 </div>
+<hr>
 </section>
-<section id="references" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="references">References</h3>
+</section>
+<section id="representations-of-data" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="representations-of-data"><span class="header-section-number">1.5</span> Representations of data</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following material was discussed in Lab 1 on Friday, Sept 4.</p>
+</div>
+</div>
+<p>Let’s explore how computers — and specifically, <code>Python</code> programs — represent data. Throughout this course, we will typically represent data as abstractly as possible: as a sequence of bits of a particular length.</p>
+<ul>
+<li>A <strong>bit</strong> is a single 0 or 1 value. That is, a bit is an element of the set <span class="math inline">\(\{0, 1\}\)</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>A <strong>byte</strong> is a sequence of eight bits. In other words, a byte is an element of the set <span class="math inline">\(\{0, 1\}^8\)</span>. (Note that there is a one-to-one mapping between bytes and integers in the range 0-255.)</li>
+</ul>
+<div id="230f76cb" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table of all 256 values of a byte, in decimal and binary formats</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"byte  bits"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">9</span>): <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#4d'</span>), <span class="st">""</span>, <span class="bu">format</span>(x, <span class="st">'#010b'</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" ..."</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">248</span>,<span class="dv">256</span>): <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#4d'</span>), <span class="st">""</span>, <span class="bu">format</span>(x, <span class="st">'#010b'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>byte  bits
+   0  0b00000000
+   1  0b00000001
+   2  0b00000010
+   3  0b00000011
+   4  0b00000100
+   5  0b00000101
+   6  0b00000110
+   7  0b00000111
+   8  0b00001000
+ ...
+ 248  0b11111000
+ 249  0b11111001
+ 250  0b11111010
+ 251  0b11111011
+ 252  0b11111100
+ 253  0b11111101
+ 254  0b11111110
+ 255  0b11111111</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><p>A <strong>bitstring</strong> is an arbitrary-length sequence of bits. The set of all bitstrings of length <span class="math inline">\(n\)</span> is denoted as <span class="math inline">\(\{0, 1\}^n\)</span>. The set of bitstrings of any possible length is denoted as <span class="math inline">\(\{0, 1\}^*\)</span>.</p>
+<p>(We will typically, though not always, consider bitstrings that are a multiple of 8 bits; i.e., that can be decomposed into bytes with no “leftover” bits.)</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Within <code>Python</code>, you can represent a value of type <code>byte</code> using a string with the letter <code>b</code> in front of it. For example, here is a byte that holds the ASCII value of the character <strong>A</strong>.</p>
+<div id="50763066" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">b'A'</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(s)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'A'</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>bytes</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Some (but not all!) bytes correspond to printable characters in the American character encoding standard, or <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>.</p>
+<div id="e1257899" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"byte  ASCII character"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>): <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#4d'</span>), <span class="bu">chr</span>(x))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" ..."</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">65</span>,<span class="dv">70</span>): <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#4d'</span>), <span class="bu">chr</span>(x))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" ..."</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">251</span>,<span class="dv">256</span>): <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#4d'</span>), <span class="bu">chr</span>(x))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>byte  ASCII character
+   0 
+   1 
+   2 
+   3 
+ ...
+  65 A
+  66 B
+  67 C
+  68 D
+  69 E
+ ...
+ 251 û
+ 252 ü
+ 253 ý
+ 254 þ
+ 255 ÿ</code></pre>
+</div>
+</div>
+</div>
+<hr>
+<section id="representations-of-numbers" class="level3">
+<h3 class="anchored" data-anchor-id="representations-of-numbers">Representations of numbers</h3>
+<p><code>Python</code> natively represents numbers in the following formats:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Data type</th>
+<th style="text-align: left;">Base</th>
+<th style="text-align: left;"># bits encoded in each symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>bin</code></td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">about 3.32</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>hex</code></td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">4</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>The <em>hexadecimal</em>, or base 16, representation of a number uses the symbols 0-9 and a-f to denote the values 0 through 15.</p>
+<p>By convention, Python places a <code>0x</code> prefix in front of a number to remind you that it is written in <code>hex</code> format.</p>
+<div id="e913f7bf" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"int   hex"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">16</span>):</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#3d'</span>), <span class="st">" "</span>, <span class="bu">format</span>(x, <span class="st">'#04x'</span>))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"..."</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">240</span>,<span class="dv">256</span>):</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#3d'</span>), <span class="st">" "</span>, <span class="bu">format</span>(x, <span class="st">'#04x'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>int   hex
+  0   0x00
+  1   0x01
+  2   0x02
+  3   0x03
+  4   0x04
+  5   0x05
+  6   0x06
+  7   0x07
+  8   0x08
+  9   0x09
+ 10   0x0a
+ 11   0x0b
+ 12   0x0c
+ 13   0x0d
+ 14   0x0e
+ 15   0x0f
+...
+240   0xf0
+241   0xf1
+242   0xf2
+243   0xf3
+244   0xf4
+245   0xf5
+246   0xf6
+247   0xf7
+248   0xf8
+249   0xf9
+250   0xfa
+251   0xfb
+252   0xfc
+253   0xfd
+254   0xfe
+255   0xff</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<section id="converting-between-bytestrings-and-numbers" class="level4">
+<h4 class="anchored" data-anchor-id="converting-between-bytestrings-and-numbers">Converting between bytestrings and numbers</h4>
+<p>The Python libraries <code>binascii</code> and <code>PyCryptodome</code> provide commands to convert between raw <code>bytes</code> and numbers in <code>bin</code>, <code>int</code>, or <code>hex</code> formats. (You can install <code>PyCryptodome</code> on your computer using the command “<code>pip install pycryptodomex</code>.”)</p>
+</section>
+</div>
+<div class="fragment">
+<p><code>bytes_to_long</code> converts a byte string to a long integer (big endian, most significant bytes come first). <code>long_to_bytes</code> is converts a positive integer to a byte string using big endian coding.</p>
+<div id="ef6b49cd" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.Util.number <span class="im">import</span> bytes_to_long, long_to_bytes <span class="co"># requires PyCrypto</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify, unhexlify</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'s:'</span>, s) </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> bytes_to_long(s)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'t:'</span>, t)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(t))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>j <span class="op">=</span> long_to_bytes(t) </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'j:'</span>, j)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(j))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>s: b'A'
+t: 65
+&lt;class 'int'&gt;
+j: b'A'
+&lt;class 'bytes'&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><code>hexlify</code> returns a hexadecimal representation of the binary data. <code>unhexlify</code> returns binary data of hexademical representation.</p>
+<div id="639b8e41" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'s:'</span>, s)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> hexlify(s)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'u:'</span>, u)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(u))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> unhexlify(u)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'w:'</span>, w)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(w))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>s: b'A'
+u: b'41'
+&lt;class 'bytes'&gt;
+w: b'A'
+&lt;class 'bytes'&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><code>bin</code> returns the binary version of an integer.</p>
+<div id="919a0686" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'t:'</span>, t) </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> <span class="bu">bin</span>(t)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'v:'</span>, v)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(v))</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> <span class="bu">int</span>(v, <span class="dv">2</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'z:'</span>, z)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(z))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>t: 65
+v: 0b1000001
+&lt;class 'str'&gt;
+z: 65
+&lt;class 'int'&gt;</code></pre>
+</div>
+</div>
+<p>Note that Python uses the prefix <code>0b</code> to denote a number in binary format.</p>
+</div>
+<div class="fragment">
+<p>The <code>base64</code> <a href="https://docs.python.org/3/library/base64.html">library</a> and <code>base58</code> <a href="https://pypi.org/project/base58/">library</a> offer additional options.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Base</th>
+<th style="text-align: left;"># bits encoded in each symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">58</td>
+<td style="text-align: left;">about 5.86</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">6</td>
+</tr>
+</tbody>
+</table>
+<p>(There are other valid bases in which to represent numbers, although these are all the representations we will see in this course)</p>
+</div>
+</section>
+<section id="discussion-practice" class="level3">
+<h3 class="anchored" data-anchor-id="discussion-practice">Discussion Practice</h3>
+<p>https://tinyurl.com/ds653disc ### References {.unnumbered}</p>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Adida2018" class="csl-entry" role="listitem">
 Adida, Ben. 2018. <em>Crypto as in Crypto</em>. <a href="https://benlog.com/2018/01/07/crypto-as-in-crypto/" class="uri">Https://benlog.com/2018/01/07/crypto-as-in-crypto/</a>.
