@@ -780,7 +780,7 @@ Note
 <p>In more detail, a secret key is a long, random sequence of bytes. One common choice is to pick a key that is <span class="math inline">\(32\)</span> bytes (or <span class="math inline">\(32 \times 8 = 256\)</span> bits) in length.</p>
 <div class="fragment">
 <p>For example, here is a secret key (also known as a private key):</p>
-<div id="3f670f30" class="cell" data-execution_count="1">
+<div id="5e8f7349" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install PyCryptoDome with "pip install pycryptodomex"</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.PublicKey <span class="im">import</span> ECC</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>secretKey <span class="op">=</span> ECC.generate(curve<span class="op">=</span><span class="st">'P-256'</span>)</span>
@@ -788,9 +788,9 @@ Note
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(secretKey.export_key(<span class="bu">format</span><span class="op">=</span><span class="st">'PEM'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-----BEGIN PRIVATE KEY-----
-MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgBs1ea2ryv9lVtX+F
-3t5wJclpagwALQrJYOPOE1ljfOahRANCAATpNrm7jO6zEOKiB9NcnAOokKr5Khtt
-mVn3a1gbxxatLb2PYxPTLWyMjL9R2+zpQ6/KMos7pABO+u5kYtHRXTf1
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgtas1bl6yRv2I0neX
+LK8f9ReDXXke0HC2jOn4NBDWmH2hRANCAASVQ0Jp6o0HMiwLwD9NnLVW/t1C9FDv
+D+3o5DW2ehco4W/L7fVWwiJHGDDBO31vSSiwSveeRBAqKXtyTiwOlECE
 -----END PRIVATE KEY-----</code></pre>
 </div>
 </div>
@@ -820,7 +820,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 <div class="fragment">
 <p>Concretely, suppose I create a <code>for</code> loop that iterates from:</p>
-<div id="ed2f4078" class="cell" data-execution_count="2">
+<div id="23e40825" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\x00</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 0 (printed in hex)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -828,7 +828,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 </div>
 <p>to this:</p>
-<div id="bec3d9fe" class="cell" data-execution_count="3">
+<div id="99858125" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\xff</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 255 (printed in hex)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>b'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'</code></pre>

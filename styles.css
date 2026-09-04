@@ -2,3 +2,7 @@
   max-width: 140px;
   height: auto;
 }
+
+#TOC .toc-hide {
+  display: none;
+}
