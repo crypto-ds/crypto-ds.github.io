@@ -61,7 +61,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -291,6 +310,7 @@ window.Quarto = {
   <li><a href="#what-could-go-wrong" id="toc-what-could-go-wrong" class="nav-link" data-scroll-target="#what-could-go-wrong">What could go wrong?</a></li>
   <li><a href="#digital-signatures-a-cryptographic-primitive" id="toc-digital-signatures-a-cryptographic-primitive" class="nav-link" data-scroll-target="#digital-signatures-a-cryptographic-primitive">Digital signatures: a cryptographic primitive</a></li>
   <li><a href="#cryptographic-keys" id="toc-cryptographic-keys" class="nav-link" data-scroll-target="#cryptographic-keys">Cryptographic keys</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -350,7 +370,7 @@ window.Quarto = {
 <div class="fragment">
 <blockquote class="blockquote">
 <p>“Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”</p>
-<p>– Ben Adida</p>
+<p>– Ben Adida <span class="citation" data-cites="Adida2018">(<a href="01.html#ref-Adida2018" role="doc-biblioref">Adida 2018</a>)</span></p>
 </blockquote>
 </div>
 <hr>
@@ -369,12 +389,14 @@ window.Quarto = {
 </ul>
 </div>
 <div class="fragment">
+<div id="schneier-law">
 <!-- Both cryptography and cryptanalysis are challenging, multi-disciplinary fields of study. -->
 <p>Cryptography and cryptanalysis reinforce each other, due to <em>Schneier’s law</em>.</p>
 <blockquote class="blockquote">
 <p>“Anyone, from the most clueless amateur to the best cryptographer, can create an algorithm that he himself can’t break.”</p>
-<p>– Bruce Schneier</p>
+<p>– Bruce Schneier <span class="citation" data-cites="Schneier1998">(<a href="01.html#ref-Schneier1998" role="doc-biblioref">Schneier 1998</a>)</span></p>
 </blockquote>
+</div>
 </div>
 <div class="fragment">
 <!--
@@ -400,7 +422,7 @@ Even though I won't say too much about cryptanalysis in this course, it is impor
 </div>
 <div class="fragment">
 <p>This class will primarily make use of the first two skills: software engineering and algorithms.</p>
-<p>While we won’t delve into the specific type of math used in cryptanalysis, nevertheless we will often use concepts from algebra and probability.</p>
+<p>While we won’t delve into the full depth of math used in cryptanalysis, we will often use concepts from algebra and probability.</p>
 </div>
 <hr>
 </section>
@@ -546,7 +568,7 @@ Even though I won't say too much about cryptanalysis in this course, it is impor
 <p>As a result, encryption is a powerful tool with immense social consequences.</p>
 <blockquote class="blockquote">
 <p>“Cryptography rearranges power: it configures who can do what, from what.”</p>
-<p>– Prof.&nbsp;Phillip Rogaway (UC Davis)</p>
+<p>– Prof.&nbsp;Phillip Rogaway, UC Davis <span class="citation" data-cites="Rogaway2015">(<a href="01.html#ref-Rogaway2015" role="doc-biblioref">Rogaway 2015</a>)</span></p>
 </blockquote>
 <p>In particular, having the secret key gives someone the power to decrypt and read a message.</p>
 </div>
@@ -557,7 +579,7 @@ Even though I won't say too much about cryptanalysis in this course, it is impor
 <p>Crypto can be used in many applications beyond network transmissions on the Internet. Still, this example highlights a general theme that we will see in this course:</p>
 <blockquote class="blockquote">
 <p>Crypto is a <em>social science</em> that masquerades as a <em>mathematical science</em>.</p>
-<p>– Me! (<a href="https://www.cs.umd.edu/~kaptchuk/blog/post/work-with-me.html">source</a>)</p>
+<p>– Me! (source: <span class="citation" data-cites="Kaptchuk2024">(<a href="01.html#ref-Kaptchuk2024" role="doc-biblioref">Kaptchuk 2024</a>)</span>)</p>
 </blockquote>
 <p>The goal of this course is to use the tools from math, computer science, and data science in order to design systems that help people.</p>
 <div class="fragment">
@@ -780,7 +802,7 @@ Note
 <p>In more detail, a secret key is a long, random sequence of bytes. One common choice is to pick a key that is <span class="math inline">\(32\)</span> bytes (or <span class="math inline">\(32 \times 8 = 256\)</span> bits) in length.</p>
 <div class="fragment">
 <p>For example, here is a secret key (also known as a private key):</p>
-<div id="c29d6d50" class="cell" data-execution_count="1">
+<div id="a652195b" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install PyCryptodome with "pip install pycryptodomex"</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.PublicKey <span class="im">import</span> ECC</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>secretKey <span class="op">=</span> ECC.generate(curve<span class="op">=</span><span class="st">'P-256'</span>)</span>
@@ -788,9 +810,9 @@ Note
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(secretKey.export_key(<span class="bu">format</span><span class="op">=</span><span class="st">'PEM'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-----BEGIN PRIVATE KEY-----
-MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgm3SAa9rLVqPWZW1U
-V3Vl8A4HrJ0Jt3Nfj/5lDVSRwiyhRANCAAQfoj2mLAOTVvI/Ue7ZmnxP4OobJnjl
-c9nEDpORJ8Q17FUp+riR4GHOT3zh4aYzhbctgyT3ZHdhiGC4l2QpKIAD
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgRER8q5GmZOjBRQaQ
+HPL/4QXIn80IL4LUKY3FrXfjfXihRANCAAT4Z/QN2ewDEtMXq3LV6g7nKqesNZRP
++sQ4pAz5NHOYkJwbT6Mqw+UEhVwzfpv7RZ1F/iW/58SwImXDOEhRR2CJ
 -----END PRIVATE KEY-----</code></pre>
 </div>
 </div>
@@ -820,7 +842,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 <div class="fragment">
 <p>Concretely, suppose I create a <code>for</code> loop that iterates from:</p>
-<div id="55129c46" class="cell" data-execution_count="2">
+<div id="e74d188a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\x00</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 0</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># (printed as 64 hex characters)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -829,7 +851,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 </div>
 <p>to this:</p>
-<div id="af00408d" class="cell" data-execution_count="3">
+<div id="663070f3" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\xff</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 255</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># (printed as 64 hex characters)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -848,7 +870,25 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 Granted, there are surely more effective ways for an attacker to try to break our digital signature scheme (i.e., to forge a signature) that are smarter than this guess-and-check method. But a good digital signature scheme ensures that *any* method of forging signatures is infeasible in practice.
 -->
 <div class="fragment">
-<p>Our goal for Unit 1 of the course is to build up our toolbox of cryptographic primitives that are practically infeasible to break… via this <em>brute force attack</em> or any other method known to humanity (remember Schneier’s law).</p>
+<p>Our goal for Unit 1 of the course is to build up our toolbox of cryptographic primitives that are practically infeasible to break… via this <em>brute force attack</em> or any other method known to humanity (remember <a href="#schneier-law">Schneier’s law</a>).</p>
+</div>
+</section>
+<section id="references" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="references">References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Adida2018" class="csl-entry" role="listitem">
+Adida, Ben. 2018. <em>Crypto as in Crypto</em>. <a href="https://benlog.com/2018/01/07/crypto-as-in-crypto/" class="uri">Https://benlog.com/2018/01/07/crypto-as-in-crypto/</a>.
+</div>
+<div id="ref-Kaptchuk2024" class="csl-entry" role="listitem">
+Kaptchuk, Gabriel. 2024. <em>Interested in Working with Me?</em> <a href="https://www.cs.umd.edu/~kaptchuk/blog/post/work-with-me.html" class="uri">Https://www.cs.umd.edu/~kaptchuk/blog/post/work-with-me.html</a>.
+</div>
+<div id="ref-Rogaway2015" class="csl-entry" role="listitem">
+Rogaway, Phillip. 2015. <em>The Moral Character of Cryptographic
+Work</em>. Cryptology <span>ePrint</span> Archive, Paper 2015/1162. <a href="https://eprint.iacr.org/2015/1162">https://eprint.iacr.org/2015/1162</a>.
+</div>
+<div id="ref-Schneier1998" class="csl-entry" role="listitem">
+Schneier, Bruce. 1998. <em>Memo to the Amateur Cipher Designer</em>. <a href="https://www.schneier.com/crypto-gram/archives/1998/1015.html#cipherdesign" class="uri">Https://www.schneier.com/crypto-gram/archives/1998/1015.html#cipherdesign</a>.
+</div>
 </div>
 
 
