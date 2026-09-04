@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Mayank Varia">
-<meta name="dcterms.date" content="2026-09-02">
 
-<title>Crypto for Data Science</title>
+<title>6&nbsp; Digital signatures – Crypto for Data Science</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -38,7 +36,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01.html" rel="next">
+<link href="./07.html" rel="next">
+<link href="./05.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -90,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Course description</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit1.html">Protecting data integrity</a></li><li class="breadcrumb-item"><a href="./06.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -130,7 +129,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Course description</span></a>
   </div>
 </li>
@@ -175,7 +174,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06.html" class="sidebar-item-text sidebar-link">
+  <a href="./06.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></span></a>
   </div>
 </li>
@@ -204,51 +203,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#course-description" id="toc-course-description" class="nav-link active" data-scroll-target="#course-description">Course description</a>
-  <ul class="collapse">
-  <li><a href="#course-info" id="toc-course-info" class="nav-link" data-scroll-target="#course-info">Course info</a></li>
-  <li><a href="#textbooks" id="toc-textbooks" class="nav-link" data-scroll-target="#textbooks">Textbooks</a></li>
-  <li><a href="#calendar" id="toc-calendar" class="nav-link" data-scroll-target="#calendar">Calendar</a>
-  <ul class="collapse">
-  <li><a href="#unit-1-protecting-data-integrity-authenticity-without-trust" id="toc-unit-1-protecting-data-integrity-authenticity-without-trust" class="nav-link" data-scroll-target="#unit-1-protecting-data-integrity-authenticity-without-trust">Unit 1 – Protecting Data Integrity (authenticity without trust)</a></li>
-  <li><a href="#unit-2-protecting-data-availability-communication-without-censorship" id="toc-unit-2-protecting-data-availability-communication-without-censorship" class="nav-link" data-scroll-target="#unit-2-protecting-data-availability-communication-without-censorship">Unit 2 – Protecting Data Availability (communication without censorship)</a></li>
-  <li><a href="#unit-3-protecting-data-confidentiality-messaging-without-meeting" id="toc-unit-3-protecting-data-confidentiality-messaging-without-meeting" class="nav-link" data-scroll-target="#unit-3-protecting-data-confidentiality-messaging-without-meeting">Unit 3 – Protecting Data Confidentiality (messaging without meeting)</a></li>
-  <li><a href="#unit-4-protecting-data-science-analyzing-without-sharing" id="toc-unit-4-protecting-data-science-analyzing-without-sharing" class="nav-link" data-scroll-target="#unit-4-protecting-data-science-analyzing-without-sharing">Unit 4 – Protecting Data Science (analyzing without sharing)</a></li>
-  </ul></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit1.html">Protecting data integrity</a></li><li class="breadcrumb-item"><a href="./06.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Crypto for Data Science</h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Mayank Varia </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 2, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -258,525 +228,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="course-description" class="level1 unnumbered">
-<h1 class="unnumbered">Course description</h1>
-<style>
-.badge {
-  display: inline-block;
-  padding: 0.15em 0.6em;
-  border-radius: 999px;
-  font-size: 0.78em;
-  font-weight: 600;
-  color: white;
-  margin-left: 0.4em;
-}
-.badge-green { background-color: #2e8b57; }
-.badge-blue  { background-color: #2b6cb0; }
-.badge-red   { background-color: #c0392b; }
-
-.cal table { vertical-align: top; }
-.cal td, .cal th { vertical-align: top; }
-
-/* Same-day rows (blank date cell): suppress the divider on both sides */
-.cal tr:has(> td:first-child:empty) > td { border-top: none !important; }
-.cal tr:has(+ tr > td:first-child:empty) > td { border-bottom: none !important; }
-
-/* Fully blank rows were used only as week spacers; hide them now that
-   weeks are distinguished by shading instead */
-.cal tr.week-break { display: none; }
-
-.cal tr.week-odd > td { background-color: #f3f4f6; }
-.cal tr.week-even > td { background-color: transparent; }
-</style>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  var week = 0; // shared across tables, so a week split across a unit
-                // break keeps the same shading on both sides
-  document.querySelectorAll(".cal table").forEach(function (table) {
-    var rows = Array.from(table.querySelectorAll("tbody tr"));
-    rows.forEach(function (row) {
-      var cells = Array.from(row.children);
-      var isBlank = cells.every(function (c) { return c.textContent.trim() === ""; });
-      if (isBlank) {
-        row.classList.add("week-break");
-        week++;
-      } else {
-        row.classList.add(week % 2 === 0 ? "week-even" : "week-odd");
-      }
-    });
-  });
-});
-</script>
-<p>Crypto for Data Science (BU CDS 453/653) investigates techniques for performing trustworthy data analyses without a trusted party, and for conducting data science without data sharing. The course contains four units that explore protecting data integrity, availability, and confidentiality in turn, and a capstone unit on protecting data science.</p>
-<p>This course follows Boston University’s <a href="https://www.bu.edu/academics/policies/academic-conduct-code/">academic conduct code</a> and policies on <a href="https://www.bu.edu/academics/policies/absence-for-religious-reasons/">absence for religious reasons</a>, <a href="https://www.bu.edu/disability/accommodations/">accommodations</a>, <a href="https://www.bu.edu/cs/undergraduate/undergraduate-life/academic-integrity/">plagiarism</a>, and <a href="https://www.bu.edu/cds-faculty/culture-community/gaia-policy/">generative AI use</a>. See the <a href="https://piazza.com/class/mtivuhy5wxa2nh/post/6">syllabus</a> for more details. <strong>Students are responsible for adhering to course policies at all times!</strong></p>
-<p>This class also uses the <a href="https://piazza.com/bu/fall2026/ds453653/info">Piazza</a> and <a href="https://www.gradescope.com/courses/1381249">Gradescope</a> websites.</p>
-<section id="course-info" class="level2">
-<h2 class="anchored" data-anchor-id="course-info">Course info</h2>
-<p>Lectures are on Mon/Wed at 10:10-11:55am in EPC 205. Labs are on Fridays at 10:10-11:00am and 11:15am-12:05pm in PSY B53. Office hours are posted on <a href="https://piazza.com/bu/fall2026/ds453653/staff">Piazza</a>.</p>
-<ul>
-<li>Professor: <a href="https://www.mvaria.com/">Mayank Varia</a></li>
-<li>Teaching Fellows: <a href="https://julia-guskind.github.io/">Julia Guskind</a>, <a href="https://www.hajulie.com/">Julie Ha</a></li>
-<li>Course Assistant: Sean Chan</li>
-</ul>
-<p>Prerequisites for this course are: mathematical maturity with linear algebra and probability, solid understanding of programming in Python, and familiarity with basic concepts in algorithms such as asymptotic complexity.</p>
-</section>
-<section id="textbooks" class="level2">
-<h2 class="anchored" data-anchor-id="textbooks">Textbooks</h2>
-<ul>
-<li>Narayanan, Bonneau, Felten, Miller, and Goldfeder: <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf"><em>Bitcoin and Cryptocurrency Technologies</em></a></li>
-<li>Paar, Pelzl, and Güneysu: <a href="https://ezproxy.bu.edu/login?url=https://link.springer.com/content/pdf/10.1007/978-3-662-69007-9.pdf"><em>Understanding Cryptography</em></a></li>
-<li>Elaine Shi: <a href="https://elaineshi.com/docs/blockchain-book.pdf"><em>Foundations of Distributed Consensus and Blockchains</em></a></li>
-<li>Mike Rosulek: <a href="https://joyofcryptography.com/pdf/book.pdf"><em>Joy of Cryptography</em></a></li>
-<li><a href="https://decentralizedthoughts.github.io/start-here/"><em>Decentralized Thoughts</em> blog</a></li>
-<li>Evans, Kolesnikov, and Rosulek: <a href="https://securecomputation.org"><em>A Pragmatic Introduction to Secure Multi-Party Computation</em></a></li>
-<li>Boneh and Shoup: <a href="https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf"><em>A Graduate Course in Applied Cryptography</em></a></li>
-</ul>
-</section>
-<section id="calendar" class="level2">
-<h2 class="anchored" data-anchor-id="calendar">Calendar</h2>
-<p>This schedule includes the learning objectives that students are expected to learn by the end of each unit of the course, along with the weekly lesson plan and links to lecture videos, textbook reading, lab worksheets, and homework assignments. The schedule will be updated throughout the semester. The password to watch the recorded videos is available <a href="https://piazza.com/class/mtivuhy5wxa2nh/post/6">here</a>.</p>
-<section id="unit-1-protecting-data-integrity-authenticity-without-trust" class="level3">
-<h3 class="anchored" data-anchor-id="unit-1-protecting-data-integrity-authenticity-without-trust">Unit 1 – Protecting Data Integrity (authenticity without trust)</h3>
-<p><strong>Learning Objectives:</strong> <em>Describe the properties of hash functions, and explain how to use them in protecting passwords and message commitments. Define the security requirements of MACs and digital signatures, and explain their role in authenticating people and data.</em></p>
-<div class="cal">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 56%">
-<col style="width: 26%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Date</th>
-<th>Class</th>
-<th>Links</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Wed 9/2</td>
-<td><strong>Lecture 1:</strong> Course overview</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Fri 9/4</td>
-<td><strong>Lab 1:</strong> Bytestrings in Python</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Wed 9/9</td>
-<td><strong>Lecture 2:</strong> Cryptographic hash functions</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td>Fri 9/11</td>
-<td><strong>Lab 2</strong> on <span class="badge badge-green">Reading</span> <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG section 1.1</a>, pages 23–31</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Mon 9/14</td>
-<td><strong>Lecture 3:</strong> Password hashing</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Wed 9/16</td>
-<td><strong>Lecture 4:</strong> (Pseudo)randomness</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td><span class="badge badge-blue">HW 1 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-<tr class="even">
-<td>Fri 9/18</td>
-<td><strong>Lab 3</strong> on <span class="badge badge-green">Reading</span> <a href="https://ezproxy.bu.edu/login?url=https://link.springer.com/content/pdf/10.1007/978-3-662-69007-9_13">PPG sections 13.1–13.2</a>, pages 466–472</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Mon 9/21</td>
-<td><strong>Lecture 5:</strong> Message authentication codes</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td>Wed 9/23</td>
-<td><strong>Lecture 6:</strong> Digital signatures</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td></td>
-<td><span class="badge badge-blue">HW 2 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-<tr class="odd">
-<td>Fri 9/25</td>
-<td><strong>Lab 4</strong> on <span class="badge badge-green">Reading</span> <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 1.3–1.4</a>, pages 37–42</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Mon 9/28</td>
-<td><strong>Lecture 7:</strong> Key exchange</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Wed 9/30</td>
-<td><span class="badge badge-blue">HW 3 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="unit-2-protecting-data-availability-communication-without-censorship" class="level3">
-<h3 class="anchored" data-anchor-id="unit-2-protecting-data-availability-communication-without-censorship">Unit 2 – Protecting Data Availability (communication without censorship)</h3>
-<p><strong>Learning Objectives:</strong> <em>Explain the components of a cryptocurrency including transactions, mining algorithms, and the blockchain data structure. Describe the goal of decentralization and distributed consensus abstractly, in any scenario needing data liveness and safety.</em></p>
-<div class="cal">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 56%">
-<col style="width: 26%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Date</th>
-<th>Class</th>
-<th>Links</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Wed 9/30</td>
-<td><strong>Lecture 8:</strong> Bitcoin overview</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Fri 10/2</td>
-<td><strong>Lab 5</strong> on <span class="badge badge-green">Reading</span> <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 2.1–2.3</a>, pages 51–61</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Mon 10/5</td>
-<td><span class="badge badge-red">Exam 1</span> on Unit 1</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Wed 10/7</td>
-<td><strong>Lecture 9:</strong> Proof of work mining</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Fri 10/9</td>
-<td><strong>Lab 6</strong> on <span class="badge badge-green">Reading</span> <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 2.4–3.1 and 3.4–3.5</a>, pages 56–78 and 88–95</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Mon 10/12</td>
-<td><em>No lecture</em></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Tue 10/13</td>
-<td><strong>Lecture 10:</strong> Bitcoin security</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Wed 10/14</td>
-<td><strong>Lecture 11:</strong> Byzantine broadcast</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td><span class="badge badge-blue">HW 4 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-<tr class="even">
-<td>Fri 10/16</td>
-<td><strong>Lab 7</strong> on <span class="badge badge-green">Reading</span> <a href="https://elaineshi.com/docs/blockchain-book.pdf">Shi sections 5–6</a>, pages 27–38</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Mon 10/19</td>
-<td><strong>Lecture 12:</strong> Synchronous blockchains</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td>Wed 10/21</td>
-<td><span class="badge badge-blue">HW 5 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="unit-3-protecting-data-confidentiality-messaging-without-meeting" class="level3">
-<h3 class="anchored" data-anchor-id="unit-3-protecting-data-confidentiality-messaging-without-meeting">Unit 3 – Protecting Data Confidentiality (messaging without meeting)</h3>
-<p><strong>Learning Objectives:</strong> <em>Explain how encryption protects data on the Internet, and the role of one-time pads and (pseudo)randomness within authenticated encryption. Describe how secure messaging applications provide end-to-end encryption, as well as pre- and post-compromise security.</em></p>
-<div class="cal">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 56%">
-<col style="width: 26%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Date</th>
-<th>Class</th>
-<th>Links</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Wed 10/21</td>
-<td><strong>Lecture 13:</strong> Secret splitting and one-time pads</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Fri 10/23</td>
-<td><strong>Lab 8</strong> on <span class="badge badge-green">Reading</span> <a href="https://joyofcryptography.com/pdf/book.pdf">Rosulek section 1</a>, pages 10–17</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Mon 10/26</td>
-<td><span class="badge badge-red">Exam 2</span> on Unit 2</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Wed 10/28</td>
-<td><strong>Lecture 14:</strong> Authenticated encryption</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td></td>
-<td><span class="badge badge-blue">HW 6 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-<tr class="odd">
-<td>Fri 10/30</td>
-<td><strong>Lab 9</strong> on <span class="badge badge-green">Reading</span> <a href="https://nostarch.com/download/SeriousCryptography_Chapter4_sample.pdf">Aumasson, pages 7–12</a></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Mon 11/2</td>
-<td><strong>Lecture 15:</strong> Disk encryption</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Wed 11/4</td>
-<td><strong>Lecture 16:</strong> Signal’s double ratchet</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td><span class="badge badge-blue">HW 7 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-<tr class="even">
-<td>Fri 11/6</td>
-<td><strong>Lab 10</strong> on <span class="badge badge-green">Reading</span> <a href="https://signal.org/docs/specifications/doubleratchet/">Signal’s double ratchet algorithm</a></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Mon 11/9</td>
-<td><strong>Lecture 17:</strong> Transport Layer Security</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td>Wed 11/11</td>
-<td><span class="badge badge-blue">HW 8 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="unit-4-protecting-data-science-analyzing-without-sharing" class="level3">
-<h3 class="anchored" data-anchor-id="unit-4-protecting-data-science-analyzing-without-sharing">Unit 4 – Protecting Data Science (analyzing without sharing)</h3>
-<p><strong>Learning Objectives:</strong> <em>Describe how multi-party computation enables people to perform data science together, without data sharing. Explain how zero knowledge proofs allow people to participate in the digital economy while preserving their privacy. Engage with ethical, regulatory, and policy questions about the role of crypto toward addressing social challenges.</em></p>
-<div class="cal">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 56%">
-<col style="width: 26%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Date</th>
-<th>Class</th>
-<th>Links</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Wed 11/11</td>
-<td><strong>Lecture 18:</strong> Secure multi-party computation</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Fri 11/13</td>
-<td><strong>Lab 11</strong> on <span class="badge badge-green">Reading</span> <a href="https://securecomputation.org/docs/pragmaticmpc.pdf">EKR sections 1.2–1.3</a>, pages 7–14</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Mon 11/16</td>
-<td><span class="badge badge-red">Exam 3</span> on Unit 3</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Wed 11/18</td>
-<td><strong>Lecture 19:</strong> Verifiable MPC</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Fri 11/20</td>
-<td><strong>Lab 12</strong> on <span class="badge badge-green">Reading</span> <a href="https://eprint.iacr.org/2008/197.pdf">Lindell-Pinkas section 2.1</a>, pages 4–9</td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Mon 11/23</td>
-<td><strong>Lecture 20:</strong> Zero knowledge proofs</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td><span class="badge badge-blue">HW 9 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-<tr class="even">
-<td>Wed 11/25</td>
-<td><em>No lecture</em></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Fri 11/27</td>
-<td><em>No lab</em></td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Mon 11/30</td>
-<td><strong>Lecture 21:</strong> Faster &amp; smaller ZK proofs</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Wed 12/2</td>
-<td><strong>Lecture 22:</strong> Private cryptocurrencies</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="odd">
-<td>Fri 12/4</td>
-<td><strong>Lab 13</strong> on <span class="badge badge-green">Reading</span> Blogs on <a href="https://blog.cryptographyengineering.com/2014/11/27/zero-knowledge-proofs-illustrated-primer/">ZK</a> and <a href="https://decentralizedthoughts.github.io/2020-12-08-a-simple-and-succinct-zero-knowledge-proof/">succinct ZK</a></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Worksheet</a></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Mon 12/7</td>
-<td><strong>Lecture 23:</strong> Crypto and elections</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td></td>
-<td><span class="badge badge-blue">HW 10 due</span></td>
-<td><a href="https://piazza.com/bu/fall2026/ds453653/resources">Download</a> • Submit</td>
-</tr>
-<tr class="odd">
-<td>Wed 12/9</td>
-<td><strong>Lecture 24:</strong> Crypto and the law</td>
-<td>Notes • Video</td>
-</tr>
-<tr class="even">
-<td>Fri 12/11</td>
-<td><em>No lab</em>, optional <span class="badge badge-green">Reading</span> <a href="https://www.media.mit.edu/posts/crypto-voting-us-elections-reality/">MIT Media Lab blog post</a></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Wed 12/16</td>
-<td><span class="badge badge-red">Final Exam</span> at 9–11am (per the <a href="https://www.bu.edu/reg/calendars/final-exams/">BU Final Exam Schedule</a>)</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
 
 
-</section>
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1181,10 +634,13 @@ document.addEventListener("DOMContentLoaded", function () {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./05.html" class="pagination-link" aria-label="Message authentication codes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Message authentication codes</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01.html" class="pagination-link" aria-label="Course overview">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./07.html" class="pagination-link" aria-label="Key exchange">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Key exchange</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

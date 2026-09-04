@@ -1,0 +1,132 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Crypto for Data Science",
+    "section": "",
+    "text": "Course description\nCrypto for Data Science (BU CDS 453/653) investigates techniques for performing trustworthy data analyses without a trusted party, and for conducting data science without data sharing. The course contains four units that explore protecting data integrity, availability, and confidentiality in turn, and a capstone unit on protecting data science.\nThis course follows Boston University’s academic conduct code and policies on absence for religious reasons, accommodations, plagiarism, and generative AI use. See the syllabus for more details. Students are responsible for adhering to course policies at all times!\nThis class also uses the Piazza and Gradescope websites.",
+    "crumbs": [
+      "Course description"
+    ]
+  },
+  {
+    "objectID": "index.html#course-info",
+    "href": "index.html#course-info",
+    "title": "Crypto for Data Science",
+    "section": "Course info",
+    "text": "Course info\nLectures are on Mon/Wed at 10:10-11:55am in EPC 205. Labs are on Fridays at 10:10-11:00am and 11:15am-12:05pm in PSY B53. Office hours are posted on Piazza.\n\nProfessor: Mayank Varia\nTeaching Fellows: Julia Guskind, Julie Ha\nCourse Assistant: Sean Chan\n\nPrerequisites for this course are: mathematical maturity with linear algebra and probability, solid understanding of programming in Python, and familiarity with basic concepts in algorithms such as asymptotic complexity.",
+    "crumbs": [
+      "Course description"
+    ]
+  },
+  {
+    "objectID": "index.html#textbooks",
+    "href": "index.html#textbooks",
+    "title": "Crypto for Data Science",
+    "section": "Textbooks",
+    "text": "Textbooks\n\nNarayanan, Bonneau, Felten, Miller, and Goldfeder: Bitcoin and Cryptocurrency Technologies\nPaar, Pelzl, and Güneysu: Understanding Cryptography\nElaine Shi: Foundations of Distributed Consensus and Blockchains\nMike Rosulek: Joy of Cryptography\nDecentralized Thoughts blog\nEvans, Kolesnikov, and Rosulek: A Pragmatic Introduction to Secure Multi-Party Computation\nBoneh and Shoup: A Graduate Course in Applied Cryptography",
+    "crumbs": [
+      "Course description"
+    ]
+  },
+  {
+    "objectID": "index.html#calendar",
+    "href": "index.html#calendar",
+    "title": "Crypto for Data Science",
+    "section": "Calendar",
+    "text": "Calendar\nThis schedule includes the learning objectives that students are expected to learn by the end of each unit of the course, along with the weekly lesson plan and links to lecture videos, textbook reading, lab worksheets, and homework assignments. The schedule will be updated throughout the semester. The password to watch the recorded videos is available here.\n\nUnit 1 – Protecting Data Integrity (authenticity without trust)\nLearning Objectives: Describe the properties of hash functions, and explain how to use them in protecting passwords and message commitments. Define the security requirements of MACs and digital signatures, and explain their role in authenticating people and data.\n\n\n\n\n\n\n\n\n\nDate\nClass\nLinks\n\n\n\n\nWed 9/2\nLecture 1: Course overview\nNotes • Video\n\n\nFri 9/4\nLab 1: Bytestrings in Python\n\n\n\n\n\n\n\n\nWed 9/9\nLecture 2: Cryptographic hash functions\nNotes • Video\n\n\nFri 9/11\nLab 2 on Reading NBFMG section 1.1, pages 23–31\nWorksheet\n\n\n\n\n\n\n\nMon 9/14\nLecture 3: Password hashing\nNotes • Video\n\n\nWed 9/16\nLecture 4: (Pseudo)randomness\nNotes • Video\n\n\n\nHW 1 due\nDownload • Submit\n\n\nFri 9/18\nLab 3 on Reading PPG sections 13.1–13.2, pages 466–472\nWorksheet\n\n\n\n\n\n\n\nMon 9/21\nLecture 5: Message authentication codes\nNotes • Video\n\n\nWed 9/23\nLecture 6: Digital signatures\nNotes • Video\n\n\n\nHW 2 due\nDownload • Submit\n\n\nFri 9/25\nLab 4 on Reading NBFMG sections 1.3–1.4, pages 37–42\nWorksheet\n\n\n\n\n\n\n\nMon 9/28\nLecture 7: Key exchange\nNotes • Video\n\n\nWed 9/30\nHW 3 due\nDownload • Submit\n\n\n\n\n\n\nUnit 2 – Protecting Data Availability (communication without censorship)\nLearning Objectives: Explain the components of a cryptocurrency including transactions, mining algorithms, and the blockchain data structure. Describe the goal of decentralization and distributed consensus abstractly, in any scenario needing data liveness and safety.\n\n\n\n\n\n\n\n\n\nDate\nClass\nLinks\n\n\n\n\nWed 9/30\nLecture 8: Bitcoin overview\nNotes • Video\n\n\nFri 10/2\nLab 5 on Reading NBFMG sections 2.1–2.3, pages 51–61\nWorksheet\n\n\n\n\n\n\n\nMon 10/5\nExam 1 on Unit 1\n\n\n\nWed 10/7\nLecture 9: Proof of work mining\nNotes • Video\n\n\nFri 10/9\nLab 6 on Reading NBFMG sections 2.4–3.1 and 3.4–3.5, pages 56–78 and 88–95\nWorksheet\n\n\n\n\n\n\n\nMon 10/12\nNo lecture\n\n\n\nTue 10/13\nLecture 10: Bitcoin security\nNotes • Video\n\n\nWed 10/14\nLecture 11: Byzantine broadcast\nNotes • Video\n\n\n\nHW 4 due\nDownload • Submit\n\n\nFri 10/16\nLab 7 on Reading Shi sections 5–6, pages 27–38\nWorksheet\n\n\n\n\n\n\n\nMon 10/19\nLecture 12: Synchronous blockchains\nNotes • Video\n\n\nWed 10/21\nHW 5 due\nDownload • Submit\n\n\n\n\n\n\nUnit 3 – Protecting Data Confidentiality (messaging without meeting)\nLearning Objectives: Explain how encryption protects data on the Internet, and the role of one-time pads and (pseudo)randomness within authenticated encryption. Describe how secure messaging applications provide end-to-end encryption, as well as pre- and post-compromise security.\n\n\n\n\n\n\n\n\n\nDate\nClass\nLinks\n\n\n\n\nWed 10/21\nLecture 13: Secret splitting and one-time pads\nNotes • Video\n\n\nFri 10/23\nLab 8 on Reading Rosulek section 1, pages 10–17\nWorksheet\n\n\n\n\n\n\n\nMon 10/26\nExam 2 on Unit 2\n\n\n\nWed 10/28\nLecture 14: Authenticated encryption\nNotes • Video\n\n\n\nHW 6 due\nDownload • Submit\n\n\nFri 10/30\nLab 9 on Reading Aumasson, pages 7–12\nWorksheet\n\n\n\n\n\n\n\nMon 11/2\nLecture 15: Disk encryption\nNotes • Video\n\n\nWed 11/4\nLecture 16: Signal’s double ratchet\nNotes • Video\n\n\n\nHW 7 due\nDownload • Submit\n\n\nFri 11/6\nLab 10 on Reading Signal’s double ratchet algorithm\nWorksheet\n\n\n\n\n\n\n\nMon 11/9\nLecture 17: Transport Layer Security\nNotes • Video\n\n\nWed 11/11\nHW 8 due\nDownload • Submit\n\n\n\n\n\n\nUnit 4 – Protecting Data Science (analyzing without sharing)\nLearning Objectives: Describe how multi-party computation enables people to perform data science together, without data sharing. Explain how zero knowledge proofs allow people to participate in the digital economy while preserving their privacy. Engage with ethical, regulatory, and policy questions about the role of crypto toward addressing social challenges.\n\n\n\n\n\n\n\n\n\nDate\nClass\nLinks\n\n\n\n\nWed 11/11\nLecture 18: Secure multi-party computation\nNotes • Video\n\n\nFri 11/13\nLab 11 on Reading EKR sections 1.2–1.3, pages 7–14\nWorksheet\n\n\n\n\n\n\n\nMon 11/16\nExam 3 on Unit 3\n\n\n\nWed 11/18\nLecture 19: Verifiable MPC\nNotes • Video\n\n\nFri 11/20\nLab 12 on Reading Lindell-Pinkas section 2.1, pages 4–9\nWorksheet\n\n\n\n\n\n\n\nMon 11/23\nLecture 20: Zero knowledge proofs\nNotes • Video\n\n\n\nHW 9 due\nDownload • Submit\n\n\nWed 11/25\nNo lecture\n\n\n\nFri 11/27\nNo lab\n\n\n\n\n\n\n\n\nMon 11/30\nLecture 21: Faster & smaller ZK proofs\nNotes • Video\n\n\nWed 12/2\nLecture 22: Private cryptocurrencies\nNotes • Video\n\n\nFri 12/4\nLab 13 on Reading Blogs on ZK and succinct ZK\nWorksheet\n\n\n\n\n\n\n\nMon 12/7\nLecture 23: Crypto and elections\nNotes • Video\n\n\n\nHW 10 due\nDownload • Submit\n\n\nWed 12/9\nLecture 24: Crypto and the law\nNotes • Video\n\n\nFri 12/11\nNo lab, optional Reading MIT Media Lab blog post\n\n\n\n\n\n\n\n\nWed 12/16\nFinal Exam at 9–11am (per the BU Final Exam Schedule)",
+    "crumbs": [
+      "Course description"
+    ]
+  },
+  {
+    "objectID": "01.html",
+    "href": "01.html",
+    "title": "1  Course overview",
+    "section": "",
+    "text": "1.1 Introduction to crypto\nThis is a course about crypto… which is an abbreviation with (at least) three different endings.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Course overview</span>"
+    ]
+  },
+  {
+    "objectID": "01.html#introduction-to-crypto",
+    "href": "01.html#introduction-to-crypto",
+    "title": "1  Course overview",
+    "section": "",
+    "text": "Cryptocurrencies\nCryptography\nCryptology\n\n\n\n\nHere is a question to start us off in this course: what is cryptology?\n\n\nCryptology comes from two Greek word parts:\n\nkryptos, meaning “secret” or “hidden”\nlogy, meaning “the study of”\n\nSo: the goal of cryptology is to study the art of keeping secrets.\n\n\nIn its modern form, crypto uses hard math problems as a way to encode data in order to restrict\n\nwho can use it,\nhow they can use it, and\nsometimes even when and where they can access it.\n\n\n\n\n“Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”\n– Ben Adida\n\n\n\n\nBranches of cryptology\nCryptology can be divided into two sub-fields:\n\nCryptography: the art of making codes\nCryptanalysis: the art of breaking codes\n\n\nThese sub-fields align with the two main learning objectives of this course.\n\nLearning how cryptography is used to build secure and trustworthy data science systems \nGetting practice thinking from an adversarial perspective \n\n\n\n\nCryptography and cryptanalysis reinforce each other, due to Schneier’s law.\n\n“Anyone, from the most clueless amateur to the best cryptographer, can create an algorithm that he himself can’t break.”\n– Bruce Schneier\n\n\n\n\nAll cryptographic primitives that I will show you in this course have been vetted through decades of cryptanalysts by thousands of people.  No single one of us can compete with that.\n\n“Don’t roll your own crypto.”\n– (Every cryptographer)\n\n\n\nCrypto is a scientific field at the intersection of many disciplines. To accomplish their goals, cryptographers use:\n\n\n\nEngineering techniques to produce vetted, secure software implementations of their protocols (often studied in industry)\nAlgorithms techniques in their protocol designs (often studied in European academia)\nComplexity theory to demonstrate security reductions from new protocols to more well-studied ones (often studied in U.S. academia)\nMathematics for cryptanalysis (often studied in government)\n\n\n\nThis class will primarily make use of the first two skills: software engineering and algorithms.\nWhile we won’t delve into the specific type of math used in cryptanalysis, nevertheless we will often use concepts from algebra and probability.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Course overview</span>"
+    ]
+  },
+  {
+    "objectID": "01.html#crypto-and-data-science",
+    "href": "01.html#crypto-and-data-science",
+    "title": "1  Course overview",
+    "section": "1.2 Crypto and data science",
+    "text": "1.2 Crypto and data science\nThis is also a course about how crypto can be used within data science.\nIt’s likely that you have already used crypto in all of your data science projects, perhaps without explicitly thinking about it.\n\n\n\nLock icon on kaggle.com\n\n\n\nIn this image, the lock icon in the web browser means that my computer has a protected connection to the kaggle.com servers. This means that nobody else on the internet can\n\ntamper with the dataset in transit; i.e., data integrity is maintained\nsee which dataset I am downloading from kaggle.com; i.e, the data remains confidential\n\nNote though that the kaggle.com servers can see what you are doing on their website. We will see at the end of the semester how even this can potentially be avoided.\n\n\n\nEvolution of the Internet\nUsing crypto is an essential part of providing security over the Internet, which has always been designed as an open network. There is no physical wire that directly connects your computer with the kaggle.com server. Instead, the data flows through several other computers along the way.\n\nHere is a picture of all of the computer servers connected to the Internet in 1968.\n\n\n\nThe Internet in 1968 (source: pwnallthethings on Twitter)\n\n\n\n\nOf course, the Internet is much larger now.\n\n\n\nGrowth of the Internet over time (source: Wikipedia)\n\n\n\n\nBut the design of the Internet has fundamentally remained the same.\n\n“The Internet is just the world passing notes in a classroom.”\n– Jon Stewart\n\n\n\n\n\nWhy crypto matters\nSince crypto is used behind-the-scenes when protecting data at rest (on a hard drive) and in transit (over the Internet), it is essential that the crypto is done right for a few reasons.\n\n\nWe use crypto all the time, so it must be automatic and fast. If the system is cumbersome or slow to use, then people will ignore it and move to other, less secure options.\n\n\n\n\n\n\n\nPercentage of web pages loaded by Firefox using HTTPS (source: Let’s Encrypt)\n\n\n\n\n\n\n\n\nHow “expensive” is crypto anyway? (source: Cloudflare)\n\n\n\n\n\n\nBad crypto (say that is vulnerable to decoding or tampering by unauthorized parties) can lead to universal, covert breaches of security. Moreover, everyone will have a false sense of security.\n\n\n\n\n\nComparing crypto primitives used in google.com and a prior version of bu.edu\n\n\n\n\nCryptography has social, legal, and political impacts… and conversely, crypto is influenced by society, the law, and public policy",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Course overview</span>"
+    ]
+  },
+  {
+    "objectID": "01.html#the-power-of-crypto",
+    "href": "01.html#the-power-of-crypto",
+    "title": "1  Course overview",
+    "section": "1.3 The power of crypto",
+    "text": "1.3 The power of crypto\nCrypto is probably best well-known for encryption, which hides messages. Encryption schemes have been designed and used by governments for centuries.\n\n\n\n\n\nWorld War I: Zimmerman telegram (source: BBC)\n\n\n\n\n\n\n\n\nWorld War II: Enigma machine (source: Wikipedia)\n\n\n\n\n\n\nToday, encryption allows for confidential data exchange over the Internet. Consider two people who (following the typical convention in crypto) we will call Alice and Bob. Alice can send a chat message, email, file, or database across the internet so that only Bob can read it.\nSince the Internet is just “the world passing notes in a classroom,” here is a simplified but realistic picture of how it looks today.\n\n\n\nInternet communication\n\n\n\nEven though the entities in the middle of the picture have significantly more computing power, encryption allows Alice and Bob to communicate securely because they have one thing that the others do not: a cryptographic key.\n\n\n\nInternet communication, with encryption\n\n\n\nAs a result, encryption is a powerful tool with immense social consequences.\n\n“Cryptography rearranges power: it configures who can do what, from what.”\n– Prof. Phillip Rogaway (UC Davis)\n\nIn particular, having the secret key gives someone the power to decrypt and read a message.\n\n\n\nGoals of cryptography\n\nCrypto can be used in many applications beyond network transmissions on the Internet. Still, this example highlights a general theme that we will see in this course:\n\nCrypto is a social science that masquerades as a mathematical science.\n– Me! (source)\n\nThe goal of this course is to use the tools from math, computer science, and data science in order to design systems that help people.\n\nEvery cryptographic system attempts to provide (some or all of) the following three objectives, which are collectively referred to as the “CIA triad.”\n\nConfidentiality: hiding data\nIntegrity: preventing or detecting tampering of data\nAvailability: preventing censorship of data\n\n\n\n\n\nAdmittedly, these three objectives are both underspecified (lacking mathematical rigor) and overloaded (the terms have many different sub-meanings).\nOne goal of this course is to make specific, precise claims of security.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Course overview</span>"
+    ]
+  },
+  {
+    "objectID": "01.html#protocols-and-primitives",
+    "href": "01.html#protocols-and-primitives",
+    "title": "1  Course overview",
+    "section": "1.4 Protocols and primitives",
+    "text": "1.4 Protocols and primitives\n\n\nThe cryptographic tools we will design over the course of the semester fall into two categories:\n\nElegant protocols that accomplish tasks that people want\nUtilitarian primitives that achieve concrete mathematical security objectives\n\n\nTo illustrate the difference between protocols and primitives, let me provide a brief overview of cryptocurrencies like Bitcoin, which we will study in detail in Unit 2.\n\n\n\n\n\n\n\nCity of Venice, Italy (source: Wikipedia)\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThis is not a finance course on cryptocurrencies. You should not expect to be taught how to invest in cryptocurrencies or how to become a billionaire overnight (or ever, for that matter).\nIn fact, the cryptocurrency market is still in its infancy and is incredibly volatile. Investing in cryptocurrencies is a good way to lose money. So this course doesn’t offer any investment advice, except in this sentence: I advise you not to invest in cryptocurrencies.\n\n\n\n\nIn this course, we will study cryptocurrency protocols to learn how they can protect data integrity and availability, and the limits of their data protection.\n\n\n\nTransferring digital money\nBlockchains are a data structure to keep track of transactions. Here is the motivating scenario for Unit 2: Alice would like to transfer $1 to Bob over the Internet.\n\n\n\n\n\nAlice\n\n\n\n\nBob\n\n\n\n\n\n\n\n\n\n\\(\\quad \\Longleftrightarrow \\quad\\)\n\n\n\n\n\n\n\n\n\nLet’s think about\n\nThe functionality of how this could work, if everyone is honest.\nThe security concerns, or ways this could go wrong if someone is malicious.\n\n\n\n\n\nLet’s start by exploring how money transfers work in the world of physical banking. Suppose Alice writes a check to Bob. What happens?\n\n\n\n\n\n\nAlice writes a physical check to Bob\n\n\n\n\n\n\n\n\nIf everyone is honest, the money is transferred because a bank performs the bookkeeping task of recording every account and its balance.\n\n\n\n\n19th century ledger (source: Wikipedia)\n\n\n\n\n\n\n\n\nWhat could go wrong?\nNow let’s think about what happens if each party is malicious.\n\n\n\n\n\n\n\nNote\n\n\n\nWe will do this often throughout the course. Remember that crypto is about getting things done in the presence of an adversary. So, we will develop the skill of “thinking like an adversary,” in order to design secure cryptosystems.\n\n\n\n\nFor this single transaction, Alice doesn’t really care whether Bob is malicious or not. That’s because she isn’t expecting to receive anything of value.\n\n\nIn the other direction: even if Bob trusts the bank (for now), he may be suspicious that Alice is trying to deceive him. He needs to be able to verify the following three properties.\n\nAlice properly signed the check \nAlice possesses $1 in her bank account \nAlice does not double spend the money by writing a check to someone else at the same time \n\n\n\nQuestion. How do we provide these properties in the digital world?\n\n\n\nAchieving properties #2 and #3 is difficult because the digital world is diverse and international, and there is no single legal system to identify and prosecute thieves and money launderers. This will be our focus for Unit 2.\nAchieving property #1 is relatively straightforward: we just need to build a digital equivalent to a signature. \n\n\n\n\n\nDigital signatures: a cryptographic primitive\nThe digital equivalent to “signing a check” is called, appropriately enough, a digital signature scheme. \n\nA digital signature allows Alice, when given any message, to append a sequence of bits called a signature that satisfies two properties (which we will state informally for now).\n\nCorrectness: Everyone in the world can verify whether Alice created the signature.\nUnforgeability: Only Alice can produce the signature, and it is bound to the message \\(M\\).\n\n\n\nTo satisfy the unforgeability goal, Alice must have something that the rest of the world does not. We call this special something a “secret key.”\n\n\nInformally, a digital signature allows Alice to “lock” her message using her secret key.\nTo satisfy the correctness goal, there is a corresponding public key that anyone can use to verify whether a message was previously “locked” by Alice.\n\n\n\nInformal description of public key encryption and digital signatures (source: idea-instructions.com)\n\n\n\n\n\n\nCryptographic keys\nIn more detail, a secret key is a long, random sequence of bytes. One common choice is to pick a key that is \\(32\\) bytes (or \\(32 \\times 8 = 256\\) bits) in length.\n\nFor example, here is a secret key (also known as a private key):\n\n# install PyCryptoDome with \"pip install pycryptodomex\"\nfrom Cryptodome.PublicKey import ECC\nsecretKey = ECC.generate(curve='P-256')\n\nprint(secretKey.export_key(format='PEM'))\n\n-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgBs1ea2ryv9lVtX+F\n3t5wJclpagwALQrJYOPOE1ljfOahRANCAATpNrm7jO6zEOKiB9NcnAOokKr5Khtt\nmVn3a1gbxxatLb2PYxPTLWyMjL9R2+zpQ6/KMos7pABO+u5kYtHRXTf1\n-----END PRIVATE KEY-----\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThis code example is just for illustrative purposes. Do not export a secret key that you are using for any legitimate purpose! It must remain secret, after all. And definitely do not use this specific key that I just posted on the Internet.\n\n\n\n\n\nTo give you a sense of the scale here, let’s imagine that I tried to forge Alice’s key in a brute-force manner, simply by guessing every single 32-byte long string and trying to use it to “lock” the message just as Alice did.\n\n\nConcretely, suppose I create a for loop that iterates from:\n\nfrom binascii import hexlify\nprint(hexlify(32 * b'\\x00')) # 32 copies of the byte value 0 (printed in hex)\n\nb'0000000000000000000000000000000000000000000000000000000000000000'\n\n\nto this:\n\nprint(hexlify(32 * b'\\xff')) # 32 copies of the byte value 255 (printed in hex)\n\nb'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'\n\n\n\n\nThe set of possible secret keys is finite – concretely, there are \\(2^{256}\\) possible options. So, it is theoretically possible to enumerate over all of them. But it isn’t practically feasible to do so.\n\nRunning this for loop on my laptop would require more time than the expected remaining length of the universe.\nAnd simply flipping all of these bits back and forth in RAM would consume approximately the energy of the sun.\n\n\n\n\nOur goal for Unit 1 of the course is to build up our toolbox of cryptographic primitives that are practically infeasible to break… via this brute force attack or any other method known to humanity (remember Schneier’s law).",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Course overview</span>"
+    ]
+  },
+  {
+    "objectID": "unit1.html",
+    "href": "unit1.html",
+    "title": "Protecting data integrity",
+    "section": "",
+    "text": "Unit 1 of the course is on protecting data integrity (authenticity without trust). Its learning objectives are:\n\nDescribe the properties of hash functions, and explain how to use them in protecting passwords and message commitments\nDefine the security requirements of MACs and digital signatures, and explain their role in authenticating people and data",
+    "crumbs": [
+      "Protecting data integrity"
+    ]
+  },
+  {
+    "objectID": "unit2.html",
+    "href": "unit2.html",
+    "title": "Protecting data availability",
+    "section": "",
+    "text": "Unit 2 of the course is on protecting data availability (communication without censorship). Its learning objectives are:\n\nExplain the components of a cryptocurrency including transactions, mining algorithms, and the blockchain data structure\nDescribe the goal of decentralization and distributed consensus abstractly, in any scenario needing data liveness and safety",
+    "crumbs": [
+      "Protecting data availability"
+    ]
+  },
+  {
+    "objectID": "unit3.html",
+    "href": "unit3.html",
+    "title": "Protecting data confidentiality",
+    "section": "",
+    "text": "Unit 3 is on protecting data confidentiality (messaging without meeting). Its learning objectives are:\n\nExplain how encryption protects data on the Internet, and the role of one-time pads and (pseudo)randomness within authenticated encryption\nDescribe how secure messaging applications provide end-to-end encryption, as well as pre- and post-compromise security",
+    "crumbs": [
+      "Protecting data confidentiality"
+    ]
+  },
+  {
+    "objectID": "unit4.html",
+    "href": "unit4.html",
+    "title": "Protecting data science",
+    "section": "",
+    "text": "Unit 4 is on protecting data science (analyzing without sharing). Its learning objectives are:\n\nDescribe how multi-party computation enables people to perform data science together, without data sharing\nExplain how zero knowledge proofs allow people to participate in the digital economy while preserving their privacy\nEngage with ethical, regulatory, and policy questions about the role of crypto toward addressing social challenges",
+    "crumbs": [
+      "Protecting data science"
+    ]
+  }
+]
