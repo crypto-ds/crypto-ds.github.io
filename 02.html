@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -203,8 +267,40 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#interactive-questions" id="toc-interactive-questions" class="nav-link" data-scroll-target="#interactive-questions">Interactive questions</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-week" id="toc-review-from-last-week" class="nav-link" data-scroll-target="#review-from-last-week">Review from last week</a></li>
+  <li><a href="#digital-fingerprinting" id="toc-digital-fingerprinting" class="nav-link" data-scroll-target="#digital-fingerprinting"><span class="header-section-number">2.1</span> Digital fingerprinting</a>
+  <ul class="collapse">
+  <li><a href="#collision-resistance" id="toc-collision-resistance" class="nav-link" data-scroll-target="#collision-resistance">Collision resistance</a></li>
+  <li><a href="#meet-mallory" id="toc-meet-mallory" class="nav-link" data-scroll-target="#meet-mallory">Meet Mallory</a></li>
+  </ul></li>
+  <li><a href="#cryptographic-hashing" id="toc-cryptographic-hashing" class="nav-link" data-scroll-target="#cryptographic-hashing"><span class="header-section-number">2.2</span> Cryptographic hashing</a>
+  <ul class="collapse">
+  <li><a href="#defining-hash-functions" id="toc-defining-hash-functions" class="nav-link" data-scroll-target="#defining-hash-functions">Defining hash functions</a></li>
+  <li><a href="#security-of-hash-functions" id="toc-security-of-hash-functions" class="nav-link" data-scroll-target="#security-of-hash-functions">Security of hash functions</a></li>
+  </ul></li>
+  <li><a href="#the-birthday-problem" id="toc-the-birthday-problem" class="nav-link" data-scroll-target="#the-birthday-problem"><span class="header-section-number">2.3</span> The birthday problem</a>
+  <ul class="collapse">
+  <li><a href="#the-paradox" id="toc-the-paradox" class="nav-link" data-scroll-target="#the-paradox">The paradox</a></li>
+  <li><a href="#thinking-about-pairs" id="toc-thinking-about-pairs" class="nav-link" data-scroll-target="#thinking-about-pairs">Thinking about pairs</a></li>
+  <li><a href="#the-math" id="toc-the-math" class="nav-link" data-scroll-target="#the-math">The math</a></li>
+  </ul></li>
+  <li><a href="#back-to-hash-functions" id="toc-back-to-hash-functions" class="nav-link" data-scroll-target="#back-to-hash-functions"><span class="header-section-number">2.4</span> Back to hash functions</a>
+  <ul class="collapse">
+  <li><a href="#choosing-larger-n" id="toc-choosing-larger-n" class="nav-link" data-scroll-target="#choosing-larger-n">Choosing larger <span class="math inline">\(n\)</span></a></li>
+  <li><a href="#how-large-is-2128" id="toc-how-large-is-2128" class="nav-link" data-scroll-target="#how-large-is-2128">How large is <span class="math inline">\(2^{128}\)</span>?</a></li>
+  </ul></li>
+  <li><a href="#back-to-digital-fingerprinting" id="toc-back-to-digital-fingerprinting" class="nav-link" data-scroll-target="#back-to-digital-fingerprinting"><span class="header-section-number">2.5</span> Back to digital fingerprinting</a></li>
+  <li><a href="#merkle-trees" id="toc-merkle-trees" class="nav-link" data-scroll-target="#merkle-trees"><span class="header-section-number">2.6</span> Merkle trees</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -228,9 +324,750 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>To appear</p>
+<!--
+This link shows the effect of birthday bound on nonce sizes / # of messages:
+https://www.rfc-editor.org/rfc/rfc8452#page-14
+-->
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li><em>Please pick up a card and write your name + BU ID on the back</em></li>
+<li>Office hours times and locations are now posted on <a href="https://piazza.com/bu/fall2026/ds453653/staff">Piazza</a></li>
+<li>Homework 1 will be posted on Piazza later today, due on Wed 9/16 at 8pm</li>
+<li>Make sure to follow the course policies about homework in the syllabus
+<ul>
+<li>You can collaborate with others, but cannot copy from others</li>
+<li>You can use genAI to ask about general cryptographic principles and see examples for how to use cryptographic libraries, but cannot feed some or all of the homework questions into a genAI prompt</li>
+<li>You must acknowledge all collaborators, outside sources, and code that you used or repurposed</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="interactive-questions" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-questions">Interactive questions</h3>
+<p>Lectures in this class contain interactive multiple-choice questions. You must display your card with the intended response side facing up, and without covering the QR code.</p>
+<p><em>Privacy note:</em> neither I nor the plickers.com website save any pictures of students. All camera processing takes place on my phone, and only your QR code results are sent to the website.</p>
+<div class="fragment">
+<p>Let’s try an example.</p>
+<p><strong>Interactive question.</strong> How would you rate this course so far?</p>
+<ol type="A">
+<li>Amazing!</li>
+<li>Excellent!</li>
+<li>Great!</li>
+<li>Superb!</li>
+</ol>
+</div>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>The security guarantees of hash functions: one-wayness, collision resistance, and acting as a random oracle</li>
+<li>How the one-wayness and collision resistance of a hash function depends on its output length, and why cryptographers are satisfied with output lengths like <span class="math inline">\(n = 256\)</span> bits</li>
+<li>How hash functions can be used to authenticate (sets of) files</li>
+</ul>
+<!--
+- The goals and security guarantees of message commitments.
+- How to use hash functions to design Merkle trees and message commitments.
+-->
+<hr>
+</section>
+<section id="review-from-last-week" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-week">Review from last week</h3>
+<blockquote class="blockquote">
+<p>“Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”</p>
+<p>– Ben Adida</p>
+</blockquote>
+<div class="fragment">
+<p>Cryptography uses math, computer science, and data science to design systems that help people to get things done safely in the digital world.</p>
+<ul>
+<li><strong>C</strong>onfidentiality: hiding data</li>
+<li><strong>I</strong>ntegrity: preventing or detecting tampering of data</li>
+<li><strong>A</strong>vailability: preventing censorship of data</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Computers represent data in <em>bits</em> and <em>bytes</em>. We can observe this data in many formats like binary, int, hex, and base64. As we will see today, cryptographic tools can be very precise when considering <em>how</em> data is represented.</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>The cryptographic tools we will design over the course of the semester fall into two categories:</p>
+<ul>
+<li>Elegant <strong>protocols</strong> that accomplish tasks that people want</li>
+<li>Utilitarian <strong>primitives</strong> that achieve concrete mathematical security objectives</li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-venice.jpeg" class="img-fluid figure-img" width="600"></p>
+<figcaption>City of Venice, Italy (source: <a href="https://commons.wikimedia.org/wiki/File:Venezia_acqua_alta_notte_2005_modificata.jpg">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="digital-fingerprinting" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="digital-fingerprinting"><span class="header-section-number">2.1</span> Digital fingerprinting</h2>
+<p>Today, we will study a special function – called a <strong>cryptographic hash function</strong> – that is used as a building block within many crypto primitives and protocols.</p>
+<div class="fragment">
+<p>To motivate today’s discussion, let’s consider the following problem:</p>
+<ul>
+<li>Alice wants to store a large file <span class="math inline">\(x\)</span> on a cloud service like Dropbox or Google Drive.</li>
+<li><!-- The file is very important to Alice.-->
+When she retrieves it later, Alice wants to be able to verify that the file hasn’t been altered or corrupted on the cloud.</li>
+</ul>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Cloud service
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \Longleftrightarrow \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/server.png" class="quarto-figure quarto-figure-center" height="150">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> What kind of security objective does Alice want?</p>
+<ol type="A">
+<li><strong>C</strong>onfidentiality: hiding data</li>
+<li><strong>I</strong>ntegrity: preventing or detecting tampering of data</li>
+<li><strong>A</strong>vailability: preventing censorship of data</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> Alice wants to be able to detect if the cloud service provider tampers with her file <span class="math inline">\(x\)</span>.</p>
+</div>
+<div class="fragment">
+<p>How can we design the cloud storage service in a way that guarantees <strong>integrity</strong> to Alice? What would be great is if there was a function <span class="math inline">\(H\)</span> that we could apply to the file <span class="math inline">\(x\)</span> that:</p>
+<ul>
+<li>Can act as a “fingerprint,” in the sense that it uniquely specifies the file.</li>
+<li>Produces a small output, so that it’s easy for Alice to save <span class="math inline">\(H(x)\)</span> on her computer, even if the entire file <span class="math inline">\(x\)</span> is too large to save.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Producing a small output—say, of <span class="math inline">\(n\)</span> bits—is easy to do. We could:</p>
+<ul>
+<li>Truncate the file and keep just the first <span class="math inline">\(n\)</span> bits,</li>
+<li>Add together all length-<span class="math inline">\(n\)</span> chunks of the file,</li>
+<li>Apply a linear transformation to the file</li>
+<li>…and much more.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> What could go wrong with these functions?</p>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> All of them allow the cloud provider to cheat by revealing a different file with the same <span class="math inline">\(n\)</span>-bit prefix, or sum, or image after the linear transformation.</p>
+</div>
+<div class="fragment">
+<p>Depending on the file type and format, it might be the case that we get lucky. For instance, maybe <span class="math inline">\(x\)</span> is the only file in the world that maps to the fingerprint <span class="math inline">\(H(x)\)</span>.</p>
+<p>But in cryptography, we are not in the business of relying on luck. Instead, let’s make our own luck.</p>
+</div>
+<hr>
+<section id="collision-resistance" class="level3">
+<h3 class="anchored" data-anchor-id="collision-resistance">Collision resistance</h3>
+<p>Recall that our goal is to “compress” a large image <span class="math inline">\(x\)</span> into a small (say, constant-sized) output <span class="math inline">\(y = H(x)\)</span> while making sure that Alice doesn’t change the image afterward.</p>
+<p>Because <span class="math inline">\(H\)</span> has infinitely many inputs and only finitely many outputs, it must be the case that there are <strong>collisions</strong> – that is, two inputs that map to the same output string.</p>
+<div class="fragment">
+<p>But: we are going to insist that <em>collisions are computationally infeasible to find</em>. This guarantee should hold even if we give the code of <span class="math inline">\(H\)</span> to our adversary. This property is called <strong>collision resistance</strong>.</p>
+<p><img src="images/02-collisions.png" class="img-fluid" width="400"></p>
+</div>
+<hr>
+</section>
+<section id="meet-mallory" class="level3">
+<h3 class="anchored" data-anchor-id="meet-mallory">Meet Mallory</h3>
+<p>Here is our adversary in this course. Her name is Mallory, because she is <em>malicious</em> and doesn’t follow the rules of any crypto protocol.</p>
+<p><img src="images/Mallory.png" class="img-fluid" width="125"></p>
+<p>Mallory is intended to be a stand-in for any kind of real-world adversary who you might be concerned about: your cloud provider, internet service provider, government, or anyone else who might want to ruin your day.</p>
+<div class="fragment">
+<ul>
+<li>Mallory has a substantial (though not infinite) amount of computing power at her disposal.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Mallory is also very smart. Specifically, we presume that she is a better cryptanalyst than we are. This is to account for <strong>Schneier’s law</strong>.</li>
+</ul>
+<blockquote class="blockquote">
+<p>“Anyone, from the most clueless amateur to the best cryptographer, can create an algorithm that he himself can’t break.”</p>
+<p>– Bruce Schneier</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Even though Mallory is mathematically savvy and computationally powerful, we insist that she must still not be able to “break” our function <span class="math inline">\(H\)</span>.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="cryptographic-hashing" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="cryptographic-hashing"><span class="header-section-number">2.2</span> Cryptographic hashing</h2>
+<blockquote class="blockquote">
+<p>Often called a <strong>cryptographer’s Swiss Army knife</strong>, a hash function can underlie many different cryptographic schemes: aside from producing a document’s digest to be digitally signed—one of the most common applications.</p>
+<p>Let us give example applications: code-signing systems, computer forensics, [and protecting] passwords.</p>
+<p>– Aumasson, Meier, Phan, and Henzen, <em>The Hash Function BLAKE</em>.</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-knife.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption>Swiss Army knife</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p>A cryptographic hash function, which we typically denote by <span class="math inline">\(H\)</span>, has two seemingly-contradictory requirements.</p>
+<ul>
+<li>It should be <strong>public</strong> and <strong>deterministic</strong>, so everyone can compute it quickly, and yet</li>
+<li>It should be <strong>unpredictable</strong> and <strong>random-looking</strong>, so that nobody can understand how its outputs are connected to its inputs.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>You can think of a hash function as a gigantic function that translates between two languages:</p>
+<ul>
+<li>The inputs that have some mathematical or English-language structure that makes sense to us.</li>
+<li>The outputs are a new kind of “foreign language” that is incomprehensible to all of us on Earth.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-dictionary.jpg" class="img-fluid figure-img" width="250"></p>
+<figcaption>Klingon-to-English dictionary (<a href="https://www.simonandschuster.com/books/The-Klingon-Dictionary/Marc-Okrand/Star-Trek/9780671745592">image source</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Moreover, the outputs have a fixed, known length, no matter how short or long the input messages are. As a toy example: the following truth table was produced by mapping the <a href="https://www.britannica.com/dictionary/eb/3000-words/alpha/a">top 3000 English words</a> to random 4-letter strings using <a href="https://www.random.org/strings/">random.org</a>.</p>
+<div class="columns">
+<div class="column" style="width:30%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Input</th>
+<th style="text-align: left;">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">abandon</td>
+<td style="text-align: left;"><code>nieh</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">ability</td>
+<td style="text-align: left;"><code>btol</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">able</td>
+<td style="text-align: left;"><code>ykwf</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">about</td>
+<td style="text-align: left;"><code>fkay</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(\vdots\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\vdots\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">zipper</td>
+<td style="text-align: left;"><code>jgxm</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">zone</td>
+<td style="text-align: left;"><code>pnjo</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">zoo</td>
+<td style="text-align: left;"><code>ansm</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>While this toy example used English-language words as the possible inputs, in reality we want a hash function to accept any data type.</p>
+<ul>
+<li>To be as generic as possible, we will consider the inputs and outputs to be <code>bytestring</code>s (as discussed in Lab 1)</li>
+<li>Then we can apply <span class="math inline">\(H\)</span> to Alice’s file, in any data format</li>
+</ul>
+</div>
+<hr>
+<section id="defining-hash-functions" class="level3">
+<h3 class="anchored" data-anchor-id="defining-hash-functions">Defining hash functions</h3>
+<p>Whenever we study a new crypto primitive in this course, I will define precisely its API. A cryptographic hash has a simple interface: a single mathematical function that can only be run in the forward direction.</p>
+<div class="fragment">
+<div id="def-hash" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.1 (Cryptographic hash function)</strong></span> A <em>hash function</em> <span class="math inline">\(H: \{0, 1\}^* \to \{0, 1\}^n\)</span> is an efficiently-computable function that</p>
+<ul>
+<li>Inputs a bytestring of arbitrary length, and</li>
+<li>Outputs a bytestring with a fixed number of bits <span class="math inline">\(n\)</span></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<p>Note that there is nothing hidden or secret here: the <em>code of <span class="math inline">\(H\)</span> is public knowledge</em> and anyone can compute it.</p>
+<p>The output <span class="math inline">\(H(x)\)</span> is often called the <strong>hash digest</strong> corresponding to the input <span class="math inline">\(x\)</span>.</p>
+</div>
+<div class="fragment">
+<p>For example, here is some Python code for a popular cryptographic hash function called <strong>SHA-256</strong>, which has an output length of 256 bits.</p>
+<div id="8558c230" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install PyNaCl with "pip install pynacl"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nacl.<span class="bu">hash</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sha256 <span class="op">=</span> <span class="kw">lambda</span> message: nacl.<span class="bu">hash</span>.sha256(message, encoder<span class="op">=</span>nacl.encoding.HexEncoder)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sha256(<span class="st">b'Hello world!'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'c0535e4be2b79ffd93291305436bf889314e4a3faec05ecffcbb7df31ad9e51a'</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>A hash function is deterministic: if you feed in the same input twice, you will get the same output twice.</p>
+<div id="1708b5df" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sha256(<span class="st">b'Hello world!'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'c0535e4be2b79ffd93291305436bf889314e4a3faec05ecffcbb7df31ad9e51a'</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Small changes to the input of the hash function cause substantial changes to the output.</p>
+<div id="908d49e6" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="st">b'Hello world?'</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sha256(message))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'43f497ee7ac09843d631362ef9aca26a0cab437acaea8a98e44afa7ad65a2d41'</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Taking the hash of a message vs.&nbsp;the hex-encoding of a message produces <em>very</em> different results!</p>
+</div>
+</div>
+</div>
+<div id="6d90c46e" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hexMessage <span class="op">=</span> hexlify(message)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hexDigest <span class="op">=</span> sha256(hexMessage)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexDigest)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'9c55c598e927c2ba0096d166f39c539cad2b0a3210dadf81a5bc9638681af1d5'</code></pre>
+</div>
+</div>
+<p>For this reason, I recommend using variable names that explicitly identify whether a variable contains raw bytes or a hex encoding.</p>
+</div>
+<div class="fragment">
+<p>As the name suggests, SHA-256 has an output length of 256 bits, or 32 bytes. The output is represented using 64 hex characters, since each hex character encodes 4 bits of data.</p>
+<div id="e73f8872" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(hexDigest))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>64</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The input to the hash function can be any size. No matter what: the output length is always 256 bits, i.e., 64 hex characters.</p>
+<div id="ddcff7e9" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(sha256(<span class="st">b'A'</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>64</code></pre>
+</div>
+</div>
+<div id="1ccbae46" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(sha256(<span class="st">b'It was the best of times, it was the worst of times, it was the age of wisdom, </span><span class="op">\</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">                   it was the age of foolishness, it was the epoch of belief, it was the epoch of </span><span class="op">\</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">                   incredulity, it was the season of light, it was the season of darkness, it was </span><span class="op">\</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">                   the spring of hope, it was the winter of despair.'</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>64</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="security-of-hash-functions" class="level3">
+<h3 class="anchored" data-anchor-id="security-of-hash-functions">Security of hash functions</h3>
+<p>Next, we need to specify precisely the problem that Mallory cannot break. In fact we will define multiple such problems. As we go down the list:</p>
+<ul>
+<li>The problems become easier and easier to break, so<span class="math inline">\(\ldots\)</span></li>
+<li>If Mallory still cannot break them, then the hash function <span class="math inline">\(H\)</span> must be really strong.</li>
+</ul>
+<div id="def-hash-properties" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.2 (Hash function requirements)</strong></span> A cryptographic hash function <span class="math inline">\(H\)</span> achieves the following security properties.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><strong>Preimage resistance</strong>, aka <strong>one-wayness</strong>: if we sample <span class="math inline">\(y \gets \{0, 1\}^n\)</span> uniformly at random from the set of all bytestrings of length <span class="math inline">\(n\)</span>, then it is practically infeasible for Mallory to find any preimage <span class="math inline">\(x\)</span> such that <span class="math inline">\(H(x) = y\)</span>. (Remember that there are <em>infinitely</em> many such preimages. Still though, we insist that Mallory cannot find even a single one!)</li>
+</ul>
+<!--
+- **Second preimage resistance**: given a "randomly" chosen $x$, it is practically infeasible for Mallory to find another $x'$ such that $H(x) = H(x')$ but $x \neq x'$.
+
+    (Note: this statement is not mathematically precise, since it isn't possible to sample uniformly at random from an infinite space like $\{0, 1\}^*$. But I will ignore this issue since we will not focus on second preimage resistance in this course.)
+-->
+<ul class="incremental">
+<li><p><strong>Collision resistance</strong>: it is practically infeasible for Mallory to find two different inputs <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> such that <span class="math inline">\(H(x_1) = H(x_2)\)</span>.</p>
+<p>(Note: if a function is collision resistant then it must be one-way, but the converse is not necessarily true. Think about why that is?)</p></li>
+<li><p><strong>Puzzle friendliness</strong>: (this property is complicated to describe; we will come back to it later)</p></li>
+<li><p><strong>Random oracle</strong>: <span class="math inline">\(H\)</span> acts like a randomly-generated truth table would.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>If an adversary [Mallory] has not explicitly queried the oracle on some point <span class="math inline">\(x\)</span>, then the value of <span class="math inline">\(H(x)\)</span> is completely random… at least as far as [Mallory] is concerned.</p>
+<p>– Jon Katz and Yehuda Lindell, <em>Introduction to Modern Cryptography</em></p>
+</blockquote>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Which security requirement of a cryptographic hash function ensures that no one can <em>invert</em> the output of a hash function to recover a corresponding input?</p>
+<ol type="A">
+<li>Pre-image resistance</li>
+<li>Collision resistance</li>
+<li>Puzzle friendliness</li>
+<li>Random oracle</li>
+</ol>
+</div>
+<hr>
+<p>Note that there is a limit to <em>how</em> infeasible it is to find a collision.</p>
+<ul>
+<li>As we already said, collisions must exist!</li>
+<li>And the output space is finite.</li>
+</ul>
+<div class="fragment">
+<p>So if Mallory has enough time and computing power, it must be possible to find a collision.</p>
+</div>
+<div class="fragment">
+<p>Exactly how difficult can we hope that the problem might be? That is, even with the <em>best possible</em> hash function, what is a blunt and <strong>brute force attack</strong> that will always succeed?</p>
+<!-- Let's use some probability and find out -->
+</div>
+<hr>
+</section>
+</section>
+<section id="the-birthday-problem" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="the-birthday-problem"><span class="header-section-number">2.3</span> The birthday problem</h2>
+<p>Let’s step away from hash functions for a moment, and look at a seemingly-unrelated question. Let <span class="math inline">\(K\)</span> be the number of people in this classroom.</p>
+<p><strong>Interactive question.</strong> Approximately what is the probability that two people in this room have the same birthday?</p>
+<ol type="A">
+<li>Rare (around 10% or less)</li>
+<li>Possible (around 30%)</li>
+<li>Chances about even (around 50%)</li>
+<li>Likely (around 70% or more)</li>
+</ol>
+<p>(For the purpose of this question, suppose that everyone’s birthday is sampled uniformly at random from the set of 366 possible choices. This is not a valid assumption for many reasons, e.g., leap years, but let’s go with it for now.)</p>
+<hr>
+<section id="the-paradox" class="level3">
+<h3 class="anchored" data-anchor-id="the-paradox">The paradox</h3>
+<p>It might intuitively seem like the answer should be <span class="math inline">\(\frac{K}{366}\)</span>.</p>
+<div class="fragment">
+<p>But that is incorrect! It would be the answer to a different problem:</p>
+<blockquote class="blockquote">
+<p>What is the probability that <em>at least one</em> of <span class="math inline">\(K\)</span> students in this classroom has the same birthday <em>as Prof.&nbsp;Varia</em> does?</p>
+</blockquote>
+<p>The distinction between these two questions (and their corresponding answers) is called the <strong>birthday paradox</strong>.</p>
+</div>
+<hr>
+</section>
+<section id="thinking-about-pairs" class="level3">
+<h3 class="anchored" data-anchor-id="thinking-about-pairs">Thinking about pairs</h3>
+<p>The answer to the original question depends on the number of <em>pairs</em> of people in the classroom.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>If birthdays are sampled uniformly at random, each pair has a <span class="math inline">\(\frac{1}{366}\)</span> chance of having the same birthday.</li>
+<li>There are <span class="math inline">\(K \choose 2\)</span> pairs of people in the room.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>So the answer to the question is closer to <span class="math inline">\({K \choose 2} / 366 \approx K^2 / (2 \cdot 366)\)</span> than it is to <span class="math inline">\(K / 366\)</span>.</p>
+</div>
+<div class="fragment">
+<p>But <span class="math inline">\({K \choose 2} / 366\)</span> is not exactly right either. The reason is the <em>principle of inclusion-exclusion</em>: we would be overcounting in scenarios where many people have the same birthday.</p>
+</div>
+<hr>
+</section>
+<section id="the-math" class="level3">
+<h3 class="anchored" data-anchor-id="the-math">The math</h3>
+<p>Instead, it is easier to think about the opposite problem. Suppose <span class="math inline">\(K = 23\)</span>, and let’s imagine that the <span class="math inline">\(K\)</span> people walk into the classroom, one at a time.</p>
+<p>What is the probability that all of them have <em>different</em> birthdays?</p>
+<div class="incremental">
+<ul class="incremental">
+<li>The first person certainly has a different birthday than everyone else in the room (since there is nobody else in the room yet).</li>
+<li>The second person has probability 365/366 of having a different birthday than the first person.</li>
+<li>Conditioned on the first two people having distinct birthdays, the third person has probability 364/366 of having a different birthday than both of them.</li>
+<li>…and so on, until the 23th person to enter the room has a 344/366 probability of having a birthday that is different than the other 22 people already in the room.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>As a result, the overall probability that everybody’s birthday is distinct is small:</p>
+<p><span class="math display">\[ 1 \times \frac{365}{366} \times \frac{364}{366} \times \cdots \times \frac{344}{366}\]</span></p>
+</div>
+<div class="fragment">
+<p>We can calculate this expression using Python.</p>
+<div id="99513383" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>math.prod(<span class="bu">range</span>(<span class="dv">344</span>,<span class="dv">367</span>)) <span class="op">/</span> (<span class="dv">366</span><span class="op">**</span><span class="dv">23</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>0.49367698818054007</code></pre>
+</div>
+</div>
+</div>
+<hr>
+<p>The punchline is: if there are 23 people in the classroom, then it is more likely than not that two of us have the same birthday!</p>
+<p>Here’s a graph that shows the probability of two people having the same birthday in a room of <span class="math inline">\(K\)</span> people.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-birthday.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Birthday paradox</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p>Generalizing from the specific case of birthdays (where there are <span class="math inline">\(N = 366\)</span> options): when drawing with replacement from a set of size <span class="math inline">\(N\)</span>, then:</p>
+<p><span class="math display">\[ E[\text{\# of attempts until the first collision}] \approx 1.25 \sqrt{N}.\]</span></p>
+<p>This approximation works well even for fairly small choices of <span class="math inline">\(N\)</span>, such as <span class="math inline">\(N = 366\)</span>. And it works really well for larger <span class="math inline">\(N\)</span>.</p>
+<div id="b62712ac" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fl">1.25</span> <span class="op">*</span> math.sqrt(<span class="dv">366</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>23.91390808713624</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Moreover, the distribution is tightly correlated around this expected value. There is less than a 15% chance that:</p>
+<ul>
+<li>The first collision has already occurred when drawing <span class="math inline">\(\frac{1}{2} \cdot 1.25 \sqrt{N}\)</span> samples.</li>
+<li>The first collision has not yet occurred when drawing <span class="math inline">\(2 \cdot 1.25 \sqrt{N}\)</span> samples.</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="back-to-hash-functions" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="back-to-hash-functions"><span class="header-section-number">2.4</span> Back to hash functions</h2>
+<p>The key insight from the birthday problem is that:</p>
+<blockquote class="blockquote">
+<p>The best-possible security that we can hope for a hash function <span class="math inline">\(H: \{0, 1\}^* \to \{0, 1\}^n\)</span> to achieve is related to the <strong>length of the output space <span class="math inline">\(n\)</span></strong>.</p>
+</blockquote>
+<div class="fragment">
+<p><strong>Example.</strong> Suppose that we build a hash function whose output length is <span class="math inline">\(n = 3\)</span> bits. Let’s try to break one-wayness and collision resistance using a simple guess-and-check approach.</p>
+<p>To break one-wayness for (say) <span class="math inline">\(y = 000\)</span>, suppose we just select inputs <span class="math inline">\(x\)</span> at random and compute the hash function until we find an input where <span class="math inline">\(H(x) = y\)</span>.</p>
+<ul>
+<li>Each sample of <span class="math inline">\(x\)</span> will satisfy the equation with probability 1/8.</li>
+<li>So in expectation, we will find an input <span class="math inline">\(x\)</span> such that <span class="math inline">\(H(x) = y\)</span> after 8 attempts.</li>
+<li>There is a chance that we get unlucky and it could take much longer. Probabilistically: the number of attempts until the first success follows the distribution of a <em>geometric random variable</em>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Now let’s try to break collision resistance. Once again, suppose that we aimlessly select inputs <span class="math inline">\(x\)</span> at random and build a table of all <span class="math inline">\((x, H(x))\)</span> pairs until we find two inputs with the same digest.</p>
+<ul>
+<li>In the worst case, we can select 9 inputs, and by the <em>pigeonhole principle</em> two of them must map to the same output.</li>
+<li>In expectation, the birthday bound says that the expected number of trials is around <span class="math inline">\(1.25 \cdot \sqrt{2^n} \approx 4\)</span>.</li>
+</ul>
+</div>
+<hr>
+<section id="choosing-larger-n" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-larger-n">Choosing larger <span class="math inline">\(n\)</span></h3>
+<p>So in order to have a secure hash function, it is necessary (though not sufficient) to choose a large number of possible outputs <span class="math inline">\(N\)</span>. A common choice in cryptography is to choose an output length of <span class="math inline">\(n = 256\)</span> bits, so that <span class="math inline">\(N = 2^{256}\)</span>.</p>
+<p>Extrapolating from the analysis above, our <strong>brute-force attack</strong> succeeds at breaking:</p>
+<ul>
+<li>One-wayness with good probability by an attacker who tries around <span class="math inline">\(2^{256}\)</span> inputs.</li>
+<li>Collision resistance with good probability by an attacker who tries around <span class="math inline">\(\sqrt{2^{256}} = 2^{128}\)</span> inputs.</li>
+</ul>
+<div class="fragment">
+<p>These are both <strong>big</strong> numbers.</p>
+<ul>
+<li><p>In fact, both of them are so big as to be practically impossible for anyone to execute, with the computing power available today or in the near future.</p></li>
+<li><p>But do note that they are different scales of big-ness. Remember that <span class="math inline">\(2^{256}\)</span> is not two times as big as <span class="math inline">\(2^{128}\)</span>. It is instead <span class="math inline">\(2^{128}\)</span> times as big!</p></li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="how-large-is-2128" class="level3">
+<h3 class="anchored" data-anchor-id="how-large-is-2128">How large is <span class="math inline">\(2^{128}\)</span>?</h3>
+<p>To give a sense of how big the number <span class="math inline">\(2^{128}\)</span> is:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Bitcoin gives people money to run the SHA-256 hash function</li>
+<li>The world collectively runs about <a href="https://www.blockchain.com/explorer/charts/hash-rate">1 billion trillion</a>, or <span class="math inline">\(10^{21} \approx 2^{70}\)</span>, SHA-256 hashes per second</li>
+<li>To compute the hash function <span class="math inline">\(2^{128}\)</span> times, it would take the entire world (with our current computing power) about <span class="math inline">\(2^{128} / 2^{70} = 2^{58}\)</span> seconds</li>
+<li>As a useful heuristic: there are about <span class="math inline">\(2^{25}\)</span> seconds in one year</li>
+<li>So this calculation would take <span class="math inline">\(2^{58 - 25} = 2^{23} \approx 8\)</span> million years</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This calculation discounts the effect of Moore’s law. Nevertheless, it shows the vast computing power required to break collision resistance. <!-- But hopefully it gives you a sense of the vast scale of computing power involved here. --></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The number <span class="math inline">\(2^{256}\)</span> is much, much larger than this. As we discussed last time: even running a <code>for</code> loop over <span class="math inline">\(2^{256}\)</span> possible preimages would require (a) more time than the expected remaining length of the universe and (b) approximately as much energy as the sun.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="back-to-digital-fingerprinting" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="back-to-digital-fingerprinting"><span class="header-section-number">2.5</span> Back to digital fingerprinting</h2>
+<p>So far, we have talked about the <em>best-possible</em> security that a hash function can hope to achieve.</p>
+<ul>
+<li>Good news: the crypto community has built hash functions that nobody knows how to attack faster than a birthday bound</li>
+<li>We’ll see some constructions in the next lecture <!-- and we will see *many* uses of hash functions throughout this course --></li>
+</ul>
+<div class="fragment">
+<p>For today, let’s return to the outsourced cloud example from the beginning of the lecture. Recall that:</p>
+<ul>
+<li>Alice wants to store a large file <span class="math inline">\(x\)</span> on a cloud service like Dropbox or Google Drive.</li>
+<li>When she retrieves it later, Alice wants to be able to verify that the file hasn’t been altered or corrupted on the cloud.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> How can Alice do this?</p>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> Here is one common approach:</p>
+<ul>
+<li>Before Alice uploads <span class="math inline">\(x\)</span> to the cloud, she computes the hash digest <span class="math inline">\(d = H(x)\)</span>.</li>
+<li>Alice stores <span class="math inline">\(d\)</span> on her computer even after uploading <span class="math inline">\(x\)</span> to the cloud. (Remember that <span class="math inline">\(d\)</span> is small, only 32 bytes in size.)</li>
+<li>When Alice later downloads a file <span class="math inline">\(x^*\)</span>, check that <span class="math inline">\(H(x^*) \overset{?}{=} d\)</span>. <!-- in order to verify that $x^*$ is indeed the same as the file $x$ that she previously uploaded --></li>
+</ul>
+</div>
+<div class="fragment">
+<p>This approach is both simple and secure.</p>
+<ul>
+<li>Modern hash functions are very quick to compute, even on large files that are gigabytes in size.</li>
+<li><em>Collision resistance</em> ensures that even if Mallory is running the cloud provider, she cannot find a new file <span class="math inline">\(x^*\)</span> that is different from Alice’s original file <span class="math inline">\(x\)</span> and yet still hashes to the same digest <span class="math inline">\(d\)</span>.</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="merkle-trees" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="merkle-trees"><span class="header-section-number">2.6</span> Merkle trees</h2>
+<p><strong>Question.</strong> What if Alice wants to upload many files <span class="math inline">\(f_1, f_2, \ldots, f_k\)</span> to the cloud?</p>
+<div class="incremental">
+<ul class="incremental">
+<li>She could store one hash digest for each file, but that is tedious and space-consuming</li>
+<li>She could take the hash of all files <span class="math inline">\(h = H(f_1, f_2, \ldots, f_k)\)</span>, but then she would only be able to verify a complete downloaded of all files.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:38%;">
+<p>There is a better approach: <!-- that still allows Alice to verify one file at a time --> before uploading the files, Alice can construct a <strong>Merkle tree</strong> (named after Ralph Merkle).</p>
+<ul>
+<li>Take the hash of each individual file.</li>
+<li>Then, take the hash of each pair of hashes.</li>
+<li>Only store the hash at the root of the tree.</li>
+</ul>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-merkle-gen.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Generating a Merkle proof (source: Alin Tomescu, <a href="https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/"><em>Decentralized Thoughts blog</em></a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The nice part about Merkle trees is that:</p>
+<ul>
+<li>Alice only has to store one 32-byte hash digest <span class="math inline">\(h_{1,8}\)</span> that corresponds to, and binds together, the entire set of files <span class="math inline">\(f_1, f_2, \ldots, f_k\)</span>.</li>
+<li>Later, the cloud provider Mallory can send one file and <strong>prove</strong> to Alice that this file is contained “within” the Merkle tree.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>To construct a proof that (for example) a claimed file <span class="math inline">\(f_3^*\)</span> is in the set, the cloud provider Mallory sends the following <span class="math inline">\(\log(k)\)</span> hash digests to Alice.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-merkle-verify.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Verifying a Merkle proof (source: Alin Tomescu, <a href="https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/"><em>Decentralized Thoughts blog</em></a>)</figcaption>
+</figure>
+</div>
+</div>
+<!--
+I put an asterisk on the received file $f_3^{*}$ and the received hash digests $h_4^{*}, h_{1,2}^{*}, h_{5,8}^{*}$ because Alice does not yet know that the cloud provider Mallory is telling the truth. That is, these might potentially be different than the variables that Alice used when she initially constructed the Merkle tree.
+-->
+<div class="fragment">
+<p>To test whether the received file <span class="math inline">\(f_3^*\)</span> is correct, Alice can “fill in the blanks” of the path of the Merkle tree from the leaf up to the root.</p>
+<p><span class="math display">\[\begin{align}
+h_{3}^* &amp;= H(f_3^*) \\
+h_{3,4}^* &amp;= H(h_3^*,h_4^*) \\
+h_{1,4}^* &amp;= H(h_{1,2}^*,h_{3, 4}^*) \\
+h_{1,8}^* &amp;= H(h_{1,4}^*,h_{5,8}^*) \\
+\end{align}\]</span></p>
+</div>
+<div class="fragment">
+<p>Remember that the real file <span class="math inline">\(f_3\)</span> contributed toward <span class="math inline">\(\log(k)\)</span> hash digests. For instance, if we “trace” the path of the file <span class="math inline">\(f_3\)</span>, here are all of the variables that it influenced.</p>
+<p><span class="math display">\[\begin{align*}
+h_{3} &amp;= H(f_3) \\
+h_{3,4} &amp;= H(h_3,h_4) \\
+h_{1,4} &amp;= H(h_{1,2},h_{3, 4}) \\
+h_{1,8} &amp;= H(h_{1,4},h_{5,8}) \\
+\end{align*}\]</span></p>
+</div>
+<div class="fragment">
+<p>Because Alice has stored <span class="math inline">\(h_{1,8}\)</span>, she can test whether <span class="math inline">\(h_{1,8}^* = h_{1,8}\)</span>. If this equality holds, then we can use the <em>collision resistance</em> property to deduce that:</p>
+<ul>
+<li><p>from the final equation, <span class="math inline">\(h_{1,4}^* = h_{1,4}\)</span> and <span class="math inline">\(h_{5,8}^* = h_{5,8}\)</span> <!-- Otherwise, $H(h_{1,4},h_{5,8}) = H(h_{1,4}^*,h_{5,8}^*)$ so Mallory has broken collision resistance. --></p></li>
+<li><p>then from the second-to-last equation, <span class="math inline">\(h_{1,2}^* = h_{1,2}\)</span> and <span class="math inline">\(h_{3,4}^* = h_{3,4}\)</span> <!-- Otherwise, $H(h_{1,2},h_{3,4}) = H(h_{1,2}^*,h_{3,4}^*)$ so Mallory has broken collision resistance. --></p></li>
+<li><p>…and so on, until eventually the first equation tells us that <span class="math inline">\(f_3 = f_3^*\)</span>, as desired!</p></li>
+</ul>
+<p>In this way: hash functions provide a succinct yet tamper-evident way to represent large volumes of data.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Exploring the collision resistance claim in more detail:</p>
+<ul>
+<li><p>Suppose that <span class="math inline">\(h_{1,4}^* \neq h_{1,4}\)</span> or <span class="math inline">\(h_{5,8}^* \neq h_{5,8}\)</span>, but <span class="math inline">\(h_{1,8}^* = h_{1,8}\)</span> so Alice erroneously accepts the file</p></li>
+<li><p>Then, the equation <span class="math inline">\(H(h_{1,4},h_{5,8}) = H(h_{1,4}^*,h_{5,8}^*)\)</span> has two distinct inputs, so Mallory has broken collision resistance</p></li>
+<li><p>The same idea holds if any other equality claim stated above does not hold… try writing it out for yourself!</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- I showed what happens with a Merkle tree of size 8. Let's discuss what happens when the tree grows -->
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
