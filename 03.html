@@ -26,10 +26,45 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -75,7 +110,39 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -163,7 +230,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">(Pseudo)randomness</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lecture 4: (Pseudo)randomness</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -203,8 +270,37 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#message-commitments" id="toc-message-commitments" class="nav-link" data-scroll-target="#message-commitments"><span class="header-section-number">3.1</span> Message commitments</a>
+  <ul class="collapse">
+  <li><a href="#defining-commitments" id="toc-defining-commitments" class="nav-link" data-scroll-target="#defining-commitments">Defining commitments</a></li>
+  <li><a href="#constructing-commitments" id="toc-constructing-commitments" class="nav-link" data-scroll-target="#constructing-commitments">Constructing commitments</a></li>
+  </ul></li>
+  <li><a href="#constructing-crypto-primitives" id="toc-constructing-crypto-primitives" class="nav-link" data-scroll-target="#constructing-crypto-primitives"><span class="header-section-number">3.2</span> Constructing crypto primitives</a>
+  <ul class="collapse">
+  <li><a href="#crypto-design-goals" id="toc-crypto-design-goals" class="nav-link" data-scroll-target="#crypto-design-goals">Crypto design goals</a></li>
+  </ul></li>
+  <li><a href="#hash-function-standards" id="toc-hash-function-standards" class="nav-link" data-scroll-target="#hash-function-standards"><span class="header-section-number">3.3</span> Hash function standards</a>
+  <ul class="collapse">
+  <li><a href="#sha-1" id="toc-sha-1" class="nav-link" data-scroll-target="#sha-1">SHA-1</a></li>
+  <li><a href="#sha-2-and-sha-3" id="toc-sha-2-and-sha-3" class="nav-link" data-scroll-target="#sha-2-and-sha-3">SHA-2 and SHA-3</a></li>
+  </ul></li>
+  <li><a href="#sha-2s-merkle-damgård-design" id="toc-sha-2s-merkle-damgård-design" class="nav-link" data-scroll-target="#sha-2s-merkle-damgård-design"><span class="header-section-number">3.4</span> SHA-2’s Merkle-Damgård design</a></li>
+  <li><a href="#sha-3s-sponge-function-design" id="toc-sha-3s-sponge-function-design" class="nav-link" data-scroll-target="#sha-3s-sponge-function-design"><span class="header-section-number">3.5</span> SHA-3’s sponge function design</a>
+  <ul class="collapse">
+  <li><a href="#hashing" id="toc-hashing" class="nav-link" data-scroll-target="#hashing">Hashing</a></li>
+  <li><a href="#salted-hashing" id="toc-salted-hashing" class="nav-link" data-scroll-target="#salted-hashing">Salted hashing</a></li>
+  <li><a href="#password-hashing" id="toc-password-hashing" class="nav-link" data-scroll-target="#password-hashing">Password hashing</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -228,9 +324,763 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>To appear</p>
+<hr>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Homework 1 due Wednesday 9/16 at 8pm on Gradescope</li>
+<li>Lab 3 on this week’s reading: <a href="https://ezproxy.bu.edu/login?url=https://link.springer.com/content/pdf/10.1007/978-3-662-69007-9_13">PPG sections 13.1-13.2</a> (access is through BU Library)</li>
+</ul>
+<!-- TODO: say something about late deadlines in this course -->
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How to use hash functions to design message commitments</li>
+<li>Design goals when constructing foundational crypto primitives</li>
+<li>Specific hash functions that are designed to protect passwords</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>A <em>cryptographic hash function</em> <span class="math inline">\(H: \{0, 1\}^* \to \{0, 1\}^n\)</span></p>
+<ul>
+<li>is efficiently-computable</li>
+<li>inputs a bytestring of arbitrary length</li>
+<li>outputs a bytestring with a fixed number of bits <span class="math inline">\(n\)</span></li>
+</ul>
+<div class="fragment">
+<p>It satisfies the following security requirements (and more):</p>
+<ul>
+<li><p><strong>Preimage resistance</strong>, aka <strong>one-wayness</strong>: if we sample <span class="math inline">\(y \gets \{0, 1\}^n\)</span> uniformly at random from the set of all bytestrings of length <span class="math inline">\(n\)</span>, then it is practically infeasible for Mallory to find any preimage <span class="math inline">\(x\)</span> such that <span class="math inline">\(H(x) = y\)</span>.</p></li>
+<li><p><strong>Collision resistance</strong>: it is practically infeasible for Mallory to find two different inputs <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> such that <span class="math inline">\(H(x) = H(x')\)</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Due to the <strong>birthday problem</strong>, there is an upper bound on how strong a hash function can be. For a hash function <span class="math inline">\(H: \{0, 1\}^* \to \{0, 1\}^n\)</span> whose output is <span class="math inline">\(n\)</span> bits long, the <em>best</em> we can hope for is that:</p>
+<ul>
+<li>Breaking one-wayness takes around <span class="math inline">\(2^n\)</span> time.</li>
+<li>Breaking collision resistance takes around <span class="math inline">\(\sqrt{2^n} = 2^{n/2}\)</span> time.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>One application of hash functions is to improve integrity of file outsourcing. Suppose Alice wants to store a large, important file <span class="math inline">\(f\)</span> on a cloud service like Dropbox or Google Drive. Then she can:</p>
+<ul>
+<li>Compute the hash <span class="math inline">\(h = \texttt{SHA256}(f)\)</span> of the file before uploading it to the cloud.</li>
+<li>Re-compute the hash every time she downloads the file, and compare it to <span class="math inline">\(h\)</span> to ensure the file contents have not been tampered.</li>
+</ul>
+<p>Due to collision resistance, even if the malicious adversary Mallory is running the cloud provider, she cannot find a new file <span class="math inline">\(f^{*}\)</span> that is different from Alice’s original file <span class="math inline">\(f\)</span> and yet still hashes to the same string <span class="math inline">\(h\)</span>.</p>
+</div>
+<div class="fragment">
+<p>A <strong>Merkle tree</strong> allows Alice to upload a set of files and save only one hash digest.</p>
+<ul>
+<li>An honest cloud provider can prove that any retrieved file is contained within the set</li>
+<li>Thanks to collision resistance, Alice can detect if a malicious cloud provider tampered with her data</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:49%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-merkle-gen.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Generating a Merkle proof (source: Alin Tomescu, <a href="https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/"><em>Decentralized Thoughts blog</em></a>)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-merkle-verify.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Verifying a Merkle proof (source: Alin Tomescu, <a href="https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/"><em>Decentralized Thoughts blog</em></a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<p><strong>Interactive question.</strong> Suppose that Alice creates a Merkle tree of a set <span class="math inline">\(S\)</span> of <span class="math inline">\(n\)</span> elements, and then only saves the Merkle root.</p>
+<p>How many nodes of the Merkle tree does the cloud provider need to send in order to convince Alice that a particular element is contained in the set <span class="math inline">\(S\)</span>?</p>
+<ol type="A">
+<li><span class="math inline">\(O(1)\)</span>, i.e., a constant that is independent of <span class="math inline">\(n\)</span></li>
+<li><span class="math inline">\(O(\log n)\)</span>, i.e., logarithmic in <span class="math inline">\(n\)</span></li>
+<li><span class="math inline">\(O(n)\)</span>, i.e., linear in <span class="math inline">\(n\)</span></li>
+<li><span class="math inline">\(O(n^2)\)</span>, i.e., quadratic in <span class="math inline">\(n\)</span></li>
+</ol>
+<div class="fragment">
+<p><strong>Answer.</strong> The proof contains the digests of all siblings along the path from the leaf to the root of the binary tree. This path is of length <span class="math inline">\(O(\log n)\)</span>.</p>
+</div>
+<hr>
+</section>
+<section id="message-commitments" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="message-commitments"><span class="header-section-number">3.1</span> Message commitments</h2>
+<p>Let’s use hash functions to design our first cryptographic protocol: a <strong>message commitment</strong>. I’ll motivate this new protocol with an example from the paper <a href="https://www.win.tue.nl/hashclash/Nostradamus/"><em>Predicting the winner of the 2008 US Presidential Elections using a Sony PlayStation 3</em></a>.</p>
+<div class="fragment">
+<ul>
+<li>Let’s rewind time and imagine that the date is currently November 30, 2007</li>
+<li>At that time, here were some of the leading candidates for the 2008 U.S. presidential election</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">John Edwards</th>
+<th style="text-align: center;">Al Gore</th>
+<th style="text-align: center;">John McCain</th>
+<th style="text-align: center;">Barack Obama</th>
+<th style="text-align: center;">Mitt Romney</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/03-candidate-Edwards.jpg" alt="John Edwards" width="100"></td>
+<td style="text-align: center;"><img src="images/03-candidate-Gore.jpg" alt="Al Gore" width="100"></td>
+<td style="text-align: center;"><img src="images/03-candidate-McCain.jpg" alt="John McCain" width="100"></td>
+<td style="text-align: center;"><img src="images/03-candidate-Obama.jpg" alt="Barack Obama" width="100"></td>
+<td style="text-align: center;"><img src="images/03-candidate-Romney.jpg" alt="Mitt Romney" width="100"></td>
+</tr>
+</tbody>
+</table>
+<p>[Images from <a href="https://www.wikipedia.org">Wikipedia</a>]</p>
+</div>
+<div class="fragment">
+<p>Here’s the scenario:</p>
+<ul>
+<li>Alice claims to Bob that she can predict the outcome of the upcoming election</li>
+<li>Specifically, she has an image file <span class="math inline">\(x\)</span> on her computer containing a picture of her claimed winner</li>
+<li>Alice and Bob would like to make a $1 bet that she knows the correct answer <!-- (which, as we now know, should be the picture of President Obama) --></li>
+<li>However, Alice does not want to reveal <span class="math inline">\(x\)</span> to Bob right now <!-- -- if she did so, then Bob would know the result and could place a bet with other people --></li>
+<li>Instead, Alice would like to make the bet now, and then reveal her answer after the 2008 election</li>
+</ul>
+</div>
+<!--
+There is a clear problem here: if Alice won't reveal the image $x$ until after November 2008, then how does Bob know that she knew the answer _beforehand_?
+-->
+<div class="fragment">
+<p>Let’s design a way to make this bet that:</p>
+<ul>
+<li>Convinces Alice that Bob will not learn <span class="math inline">\(x\)</span> yet</li>
+<li>Convinces Bob in November 2008 that Alice knew <span class="math inline">\(x\)</span> all along and never changed it</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In the physical world, we can solve this question with <em>envelopes</em> or <em>playing cards</em>:</p>
+<ul>
+<li>Alice can place her written prediction in an envelope, and place it between Alice and Bob</li>
+<li>After the election, they can open the envelope together</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In the digital world, here is an idea to solve this problem using cryptographic hash functions.</p>
+<ul>
+<li>In 2007, Alice can take a hash <span class="math inline">\(d = H(x)\)</span> of the predicted winner’s image file <span class="math inline">\(x\)</span> and send it to Bob</li>
+<li>After the 2008 election, Bob can take the hash of the actual winner’s image file <span class="math inline">\(x'\)</span> and see if it equals <span class="math inline">\(d\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Does this algorithm work?</p>
+<ol type="A">
+<li>Yes</li>
+<li>No</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> No</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Intuitively, the construction is appealing because <span class="math inline">\(H\)</span> is deterministic (so hashing the same file twice will produce the same answer) and preimage resistant (so it should not be possible for Bob in 2007 to compute a pre-image of <span class="math inline">\(d\)</span>)</p></li>
+<li><p>But preimage resistance only holds for a uniformly random digest <span class="math inline">\(d\)</span>, not when <span class="math inline">\(d\)</span> corresponds to one of a small number of images! <!-- This is the password problem all over again. The space is small enough to perform a dictionary attack. --></p></li>
+</ul>
+</div>
+<hr>
+<section id="defining-commitments" class="level3">
+<h3 class="anchored" data-anchor-id="defining-commitments">Defining commitments</h3>
+<p>Instead, a <strong>message commitment</strong> protocol is the appropriate cryptographic tool to solve this problem.</p>
+<!-- 
+::: {.callout-warning}
+Commitments are related to, but _not_ the same thing as, encryption of a message. We will discuss encryption in a future lecture.
+:::
+-->
+<div class="fragment">
+<p>Commitments are a digital analog to putting a written message inside of an envelope and placing it on the table. Everyone knows that the message is inside of the envelope, but nobody can read the message until the envelope is opened.</p>
+</div>
+<!-- Remember that whenever I introduce a new crypto primitive in this course, I will provide its operations. -->
+<div class="fragment">
+<div id="def-com" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 3.1 (Message commitment)</strong></span> A commitment protocol contains two operations.</p>
+<ul>
+<li><code>Commit</code><span class="math inline">\((m, r)\)</span>: given a message <span class="math inline">\(m\)</span> and some randomness <span class="math inline">\(r\)</span>, construct a commitment <span class="math inline">\(c\)</span>.</li>
+<li><code>Open</code><span class="math inline">\((c, m, r)\)</span>: given the commitment <span class="math inline">\(c\)</span> and the inputs used to create it, this algorithm should convince the receiver that <span class="math inline">\(m\)</span> is the correct message contained inside of the commitment.</li>
+</ul>
+<p>These algorithms satisfy two security requirements: <strong>binding</strong> and <strong>hiding</strong>.</p>
+</div>
+</div>
+<!--
+Note that a commitment protocol does not use a long-term key, and as a result there is no KeyGen method. Any randomness $r$ used in the commitment is _ephemeral_, i.e., used only to commit a single message.
+
+| Committer | | Receiver |
+| :-: | :-: | :-: |
+|  <img src="images/mallory.png" alt="Mallory" width="125"> message $m$ | $\underset{\longrightarrow}{c}$ | <img src="images/bob.png" alt="Bob" width="150"> |
+-->
+<hr>
+<p>Let’s precisely specify the two security properties of message commitment protocols — and also, of envelopes. To do so, we introduce our malicious adversary Mallory in place of either Alice or Bob.</p>
+<div class="fragment">
+<ul>
+<li><strong>Binding</strong>: after the <code>Commit</code> step, it is infeasible for a malicious committer to be able to <code>Open</code> the commitment to two different messages <span class="math inline">\(m_1\)</span> and <span class="math inline">\(m_2\)</span> and have the receiver be convinced by both of them.</li>
+</ul>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="150">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \overset{c}{\longrightarrow} \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Hiding</strong>: after the Commit step, it is infeasible for a malicious receiver to learn <em>anything</em> about the message <span class="math inline">\(m\)</span> before the Open step. (That is: the receiver cannot learn the entire message <span class="math inline">\(m\)</span>, or not even the first half of <span class="math inline">\(m\)</span>, or not even the first bit with more than a 50/50 guess.)</li>
+</ul>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\overset{c}{\longrightarrow}\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="150">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<p>Hash functions provide the binding property thanks to collision resistance. But on their own, they do not provide hiding.</p>
+</div>
+<hr>
+</section>
+<section id="constructing-commitments" class="level3">
+<h3 class="anchored" data-anchor-id="constructing-commitments">Constructing commitments</h3>
+<p>There is a simple way to use cryptographic hash functions in order to build a commitment protocol that is both hiding and binding.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><code>Commit</code><span class="math inline">\((m, r)\)</span>: produce the commitment <span class="math inline">\(c = H(m, r)\)</span>. In words, hash the message along with a random string that has nothing to do with the message.</li>
+<li><code>Open</code><span class="math inline">\((c, m, r)\)</span>: reveal everything, and let the receiver check for themselves whether <span class="math inline">\(c \overset{?}{=} H(m, r)\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> For this commitment scheme to be <em>binding</em>, what is the minimum security requirement that the hash function <span class="math inline">\(H\)</span> must satisfy?</p>
+<ol type="A">
+<li>Preimage resistance</li>
+<li>Collision resistance</li>
+<li>Puzzle friendliness</li>
+<li>Random oracle</li>
+</ol>
+</div>
+<div class="fragment">
+<div id="thm-hash" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 3.1</strong></span> If <span class="math inline">\(H\)</span> acts like a random oracle, then this construction is a secure message commitment protocol.</p>
+</div>
+</div>
+<div class="fragment">
+<p>By “secure,” I mean that this construction satisfies both of our security requirements:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Binding holds directly from the collision resistance of <span class="math inline">\(H\)</span>.</p></li>
+<li><p>Hiding holds due to Bob’s unawareness of the randomness <span class="math inline">\(r\)</span>. Since he does not know <span class="math inline">\(r\)</span>, he cannot do a brute-force attack of all images to see which one hashes to the value <span class="math inline">\(c\)</span>. Since <span class="math inline">\(H\)</span> acts as a random oracle, the value <span class="math inline">\(H(m, r)\)</span> is independent from the other values that Bob did query.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Later in the semester, we will see other constructions and applications of message commitments.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="constructing-crypto-primitives" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="constructing-crypto-primitives"><span class="header-section-number">3.2</span> Constructing crypto primitives</h2>
+<p>Hash functions sound great. Let’s create one!</p>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“Don’t roll your own crypto.”</p>
+<p>– (Every cryptographer)</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Okay, let’s study a standard cryptographic hash function and formally prove that it is secure.</p>
+<div id="prp-sha" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposition 3.1 (???)</strong></span> The <code>sha256</code> hash function satisfies preimage resistance and collision resistance.</p>
+</div>
+</div>
+<div class="fragment">
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Sadly, cryptographers do not know how to formally prove this statement. It is related to unsolved challenges in computer science such as the <a href="https://www.claymath.org/millennium/p-vs-np/">P vs.&nbsp;NP problem</a>.</p>
+</div>
+</div>
+<!-- In fact, we cannot prove mathematically any 'unconditional' claim that a cryptosystem is secure. Contrast this with Thm 3.1 about how a crypto protocol (commitment) is secure conditioned on the underlying primitive (hash function) satisfying its security objective. -->
+<div class="fragment">
+<p>Let’s take a step back and talk about how cryptographers design strong hash functions.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li><p>The good news: I will show you specific, public functions that the crypto community believes satisfy one-wayness and collision resistance</p></li>
+<li><p>The bad news: I cannot mathematically and analytically <em>prove</em> to you that any cryptographic hash function actually meets the definition of one-wayness or collision resistance <!-- Would require fundamental CS breakthroughs like proving $\textit{P} \neq \textit{NP}$ --></p></li>
+</ul>
+<p>So instead: we evaluate hash functions <em>empirically</em>, based on how well they hold up against the worldwide cryptanalysis community.</p>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-venice.jpeg" class="img-fluid figure-img" width="600"></p>
+<figcaption>City of Venice, Italy (source: <a href="https://commons.wikimedia.org/wiki/File:Venezia_acqua_alta_notte_2005_modificata.jpg">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<section id="crypto-design-goals" class="level3">
+<h3 class="anchored" data-anchor-id="crypto-design-goals">Crypto design goals</h3>
+<p>Informally, any possible instantiation of any low-level cryptographic primitive like hash functions must satisfy three properties:</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><strong>Simple</strong>: It must be implementable in a small number of lines of code, and run quickly on modern computers (e.g., billions of times per second).</p></li>
+<li><p><strong>Makes no sense</strong>: It survives the gauntlet of cryptanalysis attempts by the crypto community over many years.</p></li>
+<li><p><strong>Simple to see why it makes no sense</strong>: There is some mathematical reason to believe that nobody will come up with a clever cryptanalysis algorithm tomorrow, in order to adhere to <em>Schneier’s law</em>.</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>In particular, we do <strong>not</strong> rely on <em>security by obscurity</em> – that is, simply making the code of a hash function so complicated that nobody can understand it.</p>
+<p>Instead, we want the hash function to be hard to break even by people who understand exactly what it is doing.</p>
+</div>
+<hr>
+<p>In more detail, all cryptographic primitives must satisfy <strong>Kerckhoffs’s principle</strong>.</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li>The system must be practically, if not mathematically, indecipherable;</li>
+<li>It should not require secrecy, and it should not be a problem if it falls into enemy hands;</li>
+<li>It must be possible to communicate and remember the key without using written notes, and correspondents must be able to change or modify it at will;</li>
+<li><span style="color:gray;">It must be applicable to telegraph communications;</span></li>
+<li><span style="color:gray;">It must be portable, and should not require several persons to handle or operate;</span></li>
+<li>Lastly, given the circumstances in which it is to be used, the system must be easy to use and should not be stressful to use or require its users to know and comply with a long list of rules.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>[Source: Auguste Kerckhoffs, La Cryptographie Militaire, 1883 (more details available on <a href="https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle">Wikipedia</a>)]</p>
+</div>
+<hr>
+<p><strong>Interactive question.</strong> Which one of Kerckhoffs’ principles is <strong>not</strong> relevant to the design of cryptographic hash functions?</p>
+<ol type="A">
+<li>It should be practically infeasible for Mallory to break</li>
+<li>The algorithm’s code should be public to everyone, including Mallory</li>
+<li>If Alice loses her key, then she should be able to change it</li>
+<li>It must be simple and fast for Alice to use</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="hash-function-standards" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="hash-function-standards"><span class="header-section-number">3.3</span> Hash function standards</h2>
+<p>The U.S. National Institute of Standards and Technology (NIST) develops standards for all cryptographic building blocks: hash functions, digital signatures, encryption schemes, and more.</p>
+<ul>
+<li>Officially, these standards are only required for use within the U.S. federal government</li>
+<li>Unofficially, their standards are often used in commercial applications around the world</li>
+</ul>
+<p>To date, NIST has developed three standards for hash functions (and also subsequently revoked one of them). These algorithms are called the <strong>Secure Hash Algorithms</strong>, or SHA for short. There have been three iterations of hash functions: SHA-1, SHA-2, and SHA-3.</p>
+<hr>
+<section id="sha-1" class="level3">
+<h3 class="anchored" data-anchor-id="sha-1">SHA-1</h3>
+<p>SHA-1 was initially developed in 1995 by the U.S. National Security Agency. It had an output length of <span class="math inline">\(n = 160\)</span> bits, so by the birthday bound at best we can hope that it takes <span class="math inline">\(2^{80}\)</span> time to find a collision.</p>
+<blockquote class="blockquote">
+<p>“<span class="math inline">\(2^{80}\)</span> security is interesting. <span class="math inline">\(2^{128}\)</span> security is boring.”</p>
+<p>– Prof.&nbsp;Dan Bernstein (UIC)</p>
+</blockquote>
+<div class="fragment">
+<p>But through a combination of incredibly clever math to design a more clever collision-finding algorithm that runs in only <span class="math inline">\(2^{63}\)</span> time, and a lot of computing power to execute it, cryptanalysts have <strong>broken SHA-1 and you should never use it</strong>!</p>
+</div>
+<!-- code to generate shattered files in PDF form
+
+::: {#c0327f77 .cell execution_count=2}
+``` {.python .cell-code}
+#
+class PDF(object):
+  def __init__(self, pdf, size=(200,200)):
+    self.pdf = pdf
+    self.size = size
+
+  def _repr_html_(self):
+    return '<iframe src={0} width={1[0]} height={1[1]}></iframe>'.format(self.pdf, self.size)
+
+  def _repr_latex_(self):
+    return r'\includegraphics[width=1.0\textwidth]{{{0}}}'.format(self.pdf)
+
+PDF('images/good.pdf',size=(40,40))
+PDF('images/bad.pdf',size=(40,40))
+```
+
+::: {.cell-output .cell-output-display execution_count=1}
+```{=html}
+<iframe src=images/bad.pdf width=40 height=40></iframe>
+```
+:::
+:::
 
 
+-->
+<div class="fragment">
+<p><strong>Example.</strong> Here are two PDF files (source: <a href="https://shattered.io">shattered.io</a>).</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">good.pdf</th>
+<th style="text-align: right;">bad.pdf</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><img src="images/03-good.png" alt="Good" width="40"></td>
+<td style="text-align: right;"><img src="images/03-bad.png" alt="Bad" width="40"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>It turns out that they have the same hash digest using SHA-1. This is proof that SHA-1 does <strong>not</strong> satisfy collision resistance.</p>
+<div id="44be866f" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha1</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># read the contents of two files: good.pdf (a check mark) and bad.pdf (an X)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'images/good.pdf'</span>, <span class="st">'rb'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    good <span class="op">=</span> <span class="bu">file</span>.read()</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'images/bad.pdf'</span>, <span class="st">'rb'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    bad <span class="op">=</span> <span class="bu">file</span>.read()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># verify that the strings are different</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span>(good <span class="op">!=</span> bad)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># outputs are 40 hex characters, or 160 bits in length</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>hashGood <span class="op">=</span> sha1(good).hexdigest()</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>hashBad  <span class="op">=</span> sha1(bad).hexdigest()</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># observe that the hash function outputs are the same</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hashGood)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hashBad)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span>(hashGood <span class="op">==</span> hashBad)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a
+d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="sha-2-and-sha-3" class="level3">
+<h3 class="anchored" data-anchor-id="sha-2-and-sha-3">SHA-2 and SHA-3</h3>
+<p>It is safe to use NIST’s other two hash function standards, called SHA-2 and SHA-3.</p>
+<div class="fragment">
+<p>SHA-2 was initially developed in 2001, also by the U.S. National Security Agency.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>It offers a choice of four possible output lengths: 224, 256, 384, or 512 bits</li>
+<li>It is the most popular hash function algorithm today, with SHA-256 being the most common choice</li>
+</ul>
+</div>
+<div class="fragment">
+<p>SHA-3 was standardized in 2015 after a multi-year open competition.</p>
+<ul>
+<li>It is intentionally designed in a fundamentally different way than SHA-2</li>
+<li>NIST’s objective was to have a “fallback” plan in case someone finds a collision in SHA-2</li>
+</ul>
+</div>
+<div class="fragment">
+<p>To the best of our collective knowledge as a crypto community, both of these hash functions <strong>are secure</strong>, meaning that no known attacks work substantially faster than brute-force attacks.</p>
+<ul>
+<li>The best known algorithms to break preimage resistance require about <span class="math inline">\(2^n\)</span> work</li>
+<li>The best known algorithms to break collision resistance require about <span class="math inline">\(2^{n/2}\)</span> work</li>
+<li>The choices of <span class="math inline">\(n\)</span> are large enough that this work is computationally infeasible</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-bad-crypto.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Comparing crypto primitives used in google.com and bu.edu in 2017</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sha-2s-merkle-damgård-design" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="sha-2s-merkle-damgård-design"><span class="header-section-number">3.4</span> SHA-2’s Merkle-Damgård design</h2>
+<p>Let me provide some general advice for this course and beyond.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If someone asks you to solve a difficult problem, try to decompose it into a collection of easier problems.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The design of SHA-2 follows this advice. It decomposes the task of building a hash function into two sub-problems.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li>Build a <strong>compression function</strong> <span class="math inline">\(C\)</span> whose input is of fixed size (say double the output length) and that satisfies collision resistance</li>
+<li>Build a <strong>mode of operation</strong> that iterates this function multiple times in a smart manner</li>
+</ol>
+</div>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/03-merkle-damgard.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Merkle-Damgård transform (image source: <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG Figure 1.3</a>)</figcaption>
+</figure>
+</div>
+<p>The mode of operation used in SHA-2 is called the <strong>Merkle-Damgård transform</strong>.</p>
+<ul>
+<li><p>The hash function internally runs <span class="math inline">\(C\)</span> many times, each time ingesting a new block of input together with the “running hash so far” computed from the prior inputs</p></li>
+<li><p>Since the first block has no “running hash,” it uses a fixed constant defined in the SHA-2 spec called an <strong>initialization vector</strong> or IV</p></li>
+</ul>
+</div>
+<p>The Merkle-Damgård transform is secure, but has some subtle issues involving <a href="https://cseweb.ucsd.edu/~mihir/papers/gb.pdf">padding</a> and <a href="https://ezproxy.bu.edu/login?url=https://link.springer.com/content/pdf/10.1007/978-3-662-69007-9_13">length extension</a> that must be carefully handled to ensure that they do not cause collisions.</p>
+<!-- See Definition 8.7 for MD-compliant padding -->
+<hr>
+</section>
+<section id="sha-3s-sponge-function-design" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="sha-3s-sponge-function-design"><span class="header-section-number">3.5</span> SHA-3’s sponge function design</h2>
+<p>Now let’s look at the design of the newest NIST standard: SHA-3. It was the result of an open competition from 2007 to 2012.</p>
+<blockquote class="blockquote">
+<p>NIST expects the SHA–3 algorithm of message digest size <span class="math inline">\(n\)</span> to meet the following security requirements at a minimum. These requirements are believed to be satisfiable by fairly standard hash algorithm constructions; any result that shows that the candidate algorithm does not meet these requirements will be considered to be a serious attack.</p>
+<ul>
+<li>Collision resistance of approximately <span class="math inline">\(n/2\)</span> bits</li>
+<li>Preimage resistance of approximately <span class="math inline">\(n\)</span> bits</li>
+</ul>
+<p>– NIST publication in the <a href="https://csrc.nist.rip/groups/ST/hash/documents/FR_Notice_Nov07.pdf">Federal Register</a> on November 2, 2007</p>
+</blockquote>
+<!--
+::: {.incremental}
+- NIST ran a competition from 2007 to 2012 to select a  new hash function standard
+- They received 64 submissions, and through annual workshops and lots of cryptanalysis, they slowly cut down the number of competitors: 64 $\to$ 51 $\to$ 14 $\to$ 5 $\to$ 1
+- In October 2012, they announced the Keccak algorithm as the winner
+:::
+-->
+<div class="fragment">
+<p>The winning algorithm, called Keccak, was created by Guido Bertoni, Joan Daemen, Michaël Peeters, and Gilles Van Assche. Here is why NIST chose Keccak to be the SHA-3 standard, <a href="https://nvlpubs.nist.gov/nistpubs/ir/2012/nist.ir.7896.pdf">in their words</a>:</p>
+<ol type="1">
+<li>“Offers acceptable performance in software, and <strong>excellent performance</strong> in hardware”</li>
+<li>“Has a <strong>large security margin</strong>, suggesting a good chance of surviving without a practical attack during its working lifetime”</li>
+<li>“A fundamentally new and different algorithm that is entirely <strong>unrelated to the SHA-2</strong> algorithms”</li>
+</ol>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The notion of security margins is also related to Schneier’s law.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The design of SHA-3 contains two main components.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p>Fixed-length permutation: a deterministic permutation <span class="math inline">\(f\)</span>, which is carefully designed to act like a truly random function with a fixed input/output length of <span class="math inline">\(b = 1600\)</span> bits</p></li>
+<li><p>An interative way to make many calls to the <span class="math inline">\(f\)</span> function in order to process each chunk of a variable-length input</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>The algorithm used by SHA-3 is called a <strong>sponge function</strong> design. It first <strong>absorbs</strong> an arbitrary-length input and then <strong>squeezes</strong> an output. <!-- When used as a hash function specifically, we will fix the output length. --></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/03-keccak-0.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Sponge function design (image source: <a href="https://en.wikipedia.org/wiki/Sponge_function">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>At any given time, the state of the sponge function is split into two parts.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The first <span class="math inline">\(r\)</span> bits are called the <strong>rate</strong>. This part gets XORed with a new block of the message. (The XOR function works as follows: if two bits are equal then their XOR is 0, otherwise it is 1.)</p></li>
+<li><p>The remaining <span class="math inline">\(c\)</span> bits are called the <strong>capacity</strong>. This part determines the security of the sponge function, up to a birthday bound attack (i.e., about <span class="math inline">\(2^{c/2}\)</span> work) is required to break it.</p></li>
+</ul>
+<p>The entire state is used as the input to the <span class="math inline">\(f\)</span> function.</p>
+</div>
+<!--
+::: {.fragment}
+> "When for instance $c = 512$, a random sponge offers the same resistance as a random oracle but with a maximum
+of $2^{256}$ in complexity."
+>
+> – Bertoni, Daemen, Peeters, and Van Assche. [*On the Indifferentiability of the Sponge Construction*](https://keccak.team/files/SpongeIndifferentiability.pdf)
+:::
+-->
+<hr>
+<section id="hashing" class="level3">
+<h3 class="anchored" data-anchor-id="hashing">Hashing</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/03-keccak-1.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Sponge function design (image source: <a href="https://csrc.nist.gov/csrc/media/projects/hash-functions/documents/keccak-slides-at-nist.pdf">Keccak presentation to NIST</a>)</figcaption>
+</figure>
+</div>
+<p>When used as a cryptographic hash function, SHA-3 is instantiated with a fixed output length of 224, 256, 384, or 512 bits. (The input length is unbounded.)</p>
+<div class="fragment">
+<ul>
+<li>Note that the message only touches the rate bits of the state</li>
+<li>Meanwhile, the capacity bits are only influenced by the <span class="math inline">\(f\)</span> function itself, and therefore always remain “random-looking”</li>
+<li>By a birthday bound argument, the SHA-3 two states with random-looking capacity bits are unlikely to collide</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="salted-hashing" class="level3">
+<h3 class="anchored" data-anchor-id="salted-hashing">Salted hashing</h3>
+<p>In many applications that use hash functions, it is common to add a <em>nonce</em> to the input. This random, public value is used to:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Ensure that hashes in your application are different than hashes in other applications</li>
+<li>Ensure that hashes of data provided by two different people are distinct</li>
+<li>Prevent pre-computation of the hashes of popular messages</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In hash function lingo, this nonce is typically called a <strong>salt</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/03-keccak-2.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Salted hash function (image source: <a href="https://csrc.nist.gov/csrc/media/projects/hash-functions/documents/keccak-slides-at-nist.pdf">Keccak presentation to NIST</a>)</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+<section id="password-hashing" class="level3">
+<h3 class="anchored" data-anchor-id="password-hashing">Password hashing</h3>
+<p>Have you ever wondered how your computer stores the password to log into itself? It seems like circular logic if:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>The computer grants access to anyone sitting in front of it who knows the correct password <span class="math inline">\(p\)</span>.</li>
+<li>The computer stores the login password <span class="math inline">\(p\)</span> so it can check whether you have typed it in correctly.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>For this reason:</p>
+<ul>
+<li>Computers (and web servers) store a <em>hash of the true password</em> <span class="math inline">\(h(p)\)</span> rather than the cleartext password.</li>
+<li>After you type a password <span class="math inline">\(p'\)</span>, the computer hashes it and compares against the stored hash.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Remember the preimage resistance guarantee provided by cryptographic hash functions: given a <em>random</em> <span class="math inline">\(y\)</span>, it is difficult to find any preimage <span class="math inline">\(x\)</span> such that <span class="math inline">\(H(x) = y\)</span>.</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>However, passwords are generated by people. As a result, they are not chosen uniformly at random, and in practice they tend to follow <a href="https://en.wikipedia.org/wiki/Zipf's_law">Zipf’s law</a>.</p>
+<ul>
+<li><p>Some passwords are <a href="https://en.wikipedia.org/wiki/List_of_the_most_common_passwords">extremely common</a> and guessable, like <code>123456</code> or <code>password</code>.</p></li>
+<li><p>Many passwords are short and brute-forceable.</p></li>
+<li><p>Some people choose long, strong passwords.</p></li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="images/03-passwords.png" class="img-fluid" width="400"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>As a result, password hash functions are specifically designed to be <strong>slow</strong> and resource-consuming.</p>
+<ul>
+<li>When executed once by the honest account-holder, a delay even in the 0.1-1 second range is perhaps tolerable.</li>
+<li>But for an attacker Mallory who tries to brute-force guess millions or billions of passowrds, the delays add up.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> How do you make a function deliberately slow, in a way that is impossible to speed up?</p>
+</div>
+<div class="fragment">
+<p>SHA-3’s sponge function design provides an elegant way to design a computationally-slow hash function: simply absorb more data – say, millions or billions of bytes of all 0s after the password itself.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/03-keccak-3.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Password hashing from a sponge function (image source: <a href="https://csrc.nist.gov/csrc/media/projects/hash-functions/documents/keccak-slides-at-nist.pdf">Keccak presentation to NIST</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Newer password hash functions like <code>scrypt</code>, <code>bcrypt</code>, and <code>argon2</code> are also designed to require a lot of memory, in an attempt to reduce parallelization using a GPU or dedicated hardware device.</p>
+</div>
+<div class="fragment">
+<p>Cryptographic hash functions are safe to use with secrets like passwords because they are designed not to leak any of the input data – not the first bit, or any bit, or any other simple function of the data. This objective is called <strong>pseudorandomness</strong>, and we will study it next time.</p>
+</div>
+
+
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -640,8 +1490,8 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./04.html" class="pagination-link" aria-label="(Pseudo)randomness">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">(Pseudo)randomness</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./04.html" class="pagination-link" aria-label="Lecture 4: (Pseudo)randomness">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lecture 4: (Pseudo)randomness</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
