@@ -357,7 +357,7 @@ window.Quarto = {
 <p>It satisfies the following security requirements (and more):</p>
 <ul>
 <li><p><strong>Preimage resistance</strong>, aka <strong>one-wayness</strong>: if we sample <span class="math inline">\(y \gets \{0, 1\}^n\)</span> uniformly at random from the set of all bytestrings of length <span class="math inline">\(n\)</span>, then it is practically infeasible for Mallory to find any preimage <span class="math inline">\(x\)</span> such that <span class="math inline">\(H(x) = y\)</span>.</p></li>
-<li><p><strong>Collision resistance</strong>: it is practically infeasible for Mallory to find two different inputs <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> such that <span class="math inline">\(H(x) = H(x')\)</span>.</p></li>
+<li><p><strong>Collision resistance</strong>: it is practically infeasible for Mallory to find two different inputs <span class="math inline">\(x\)</span> and <span class="math inline">\(x'\)</span> such that <span class="math inline">\(H(x) = H(x')\)</span>.</p></li>
 </ul>
 </div>
 <div class="fragment">
@@ -456,9 +456,9 @@ window.Quarto = {
 <p>Here’s the scenario:</p>
 <ul>
 <li>Alice claims to Bob that she can predict the outcome of the upcoming election</li>
-<li>Specifically, she has an image file <span class="math inline">\(x\)</span> on her computer containing a picture of her claimed winner</li>
+<li>Specifically, she has an image file <span class="math inline">\(m\)</span> on her computer containing a picture of her claimed winner</li>
 <li>Alice and Bob would like to make a $1 bet that she knows the correct answer <!-- (which, as we now know, should be the picture of President Obama) --></li>
-<li>However, Alice does not want to reveal <span class="math inline">\(x\)</span> to Bob right now <!-- -- if she did so, then Bob would know the result and could place a bet with other people --></li>
+<li>However, Alice does not want to reveal <span class="math inline">\(m\)</span> to Bob right now <!-- -- if she did so, then Bob would know the result and could place a bet with other people --></li>
 <li>Instead, Alice would like to make the bet now, and then reveal her answer after the 2008 election</li>
 </ul>
 </div>
@@ -468,8 +468,8 @@ There is a clear problem here: if Alice won't reveal the image $x$ until after N
 <div class="fragment">
 <p>Let’s design a way to make this bet that:</p>
 <ul>
-<li>Convinces Alice that Bob will not learn <span class="math inline">\(x\)</span> yet</li>
-<li>Convinces Bob in November 2008 that Alice knew <span class="math inline">\(x\)</span> all along and never changed it</li>
+<li>Convinces Alice that Bob will not learn <span class="math inline">\(m\)</span> yet</li>
+<li>Convinces Bob in November 2008 that Alice knew <span class="math inline">\(m\)</span> all along and never changed it</li>
 </ul>
 </div>
 <div class="fragment">
@@ -482,8 +482,8 @@ There is a clear problem here: if Alice won't reveal the image $x$ until after N
 <div class="fragment">
 <p>In the digital world, here is an idea to solve this problem using cryptographic hash functions.</p>
 <ul>
-<li>In 2007, Alice can take a hash <span class="math inline">\(d = H(x)\)</span> of the predicted winner’s image file <span class="math inline">\(x\)</span> and send it to Bob</li>
-<li>After the 2008 election, Bob can take the hash of the actual winner’s image file <span class="math inline">\(x'\)</span> and see if it equals <span class="math inline">\(d\)</span>.</li>
+<li>In 2007, Alice can take a hash <span class="math inline">\(d = H(m)\)</span> of the predicted winner’s image file <span class="math inline">\(m\)</span> and send it to Bob</li>
+<li>After the 2008 election, Bob can take the hash of the actual winner’s image file <span class="math inline">\(m'\)</span> and see if it equals <span class="math inline">\(d\)</span>.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -494,12 +494,12 @@ There is a clear problem here: if Alice won't reveal the image $x$ until after N
 </ol>
 </div>
 <div class="fragment">
-<p><strong>Answer.</strong> No</p>
+<p><strong>Answer.</strong> No.&nbsp;This algorithm satisfies Bob’s integrity requirement, but not Alice’s confidentiality requirement.</p>
 </div>
 <div class="incremental">
 <ul class="incremental">
 <li><p>Intuitively, the construction is appealing because <span class="math inline">\(H\)</span> is deterministic (so hashing the same file twice will produce the same answer) and preimage resistant (so it should not be possible for Bob in 2007 to compute a pre-image of <span class="math inline">\(d\)</span>)</p></li>
-<li><p>But preimage resistance only holds for a uniformly random digest <span class="math inline">\(d\)</span>, not when <span class="math inline">\(d\)</span> corresponds to one of a small number of images! <!-- This is the password problem all over again. The space is small enough to perform a dictionary attack. --></p></li>
+<li><p>But preimage resistance only holds for a uniformly random digest <span class="math inline">\(d\)</span>, not when <span class="math inline">\(d\)</span> corresponds to one of a small number of images!</p></li>
 </ul>
 </div>
 <hr>
@@ -947,7 +947,7 @@ d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a</code></pre>
 <div class="incremental">
 <ol class="incremental" type="1">
 <li><p>Fixed-length permutation: a deterministic permutation <span class="math inline">\(f\)</span>, which is carefully designed to act like a truly random function with a fixed input/output length of <span class="math inline">\(b = 1600\)</span> bits</p></li>
-<li><p>An interative way to make many calls to the <span class="math inline">\(f\)</span> function in order to process each chunk of a variable-length input</p></li>
+<li><p>An iterative way to make many calls to the <span class="math inline">\(f\)</span> function in order to process each chunk of a variable-length input</p></li>
 </ol>
 </div>
 <div class="fragment">
@@ -991,7 +991,7 @@ of $2^{256}$ in complexity."
 <ul>
 <li>Note that the message only touches the rate bits of the state</li>
 <li>Meanwhile, the capacity bits are only influenced by the <span class="math inline">\(f\)</span> function itself, and therefore always remain “random-looking”</li>
-<li>By a birthday bound argument, the SHA-3 two states with random-looking capacity bits are unlikely to collide</li>
+<li>By a birthday bound argument, two states with random-looking capacity bits are unlikely to collide</li>
 </ul>
 </div>
 <hr>
@@ -1056,7 +1056,7 @@ of $2^{256}$ in complexity."
 <p>As a result, password hash functions are specifically designed to be <strong>slow</strong> and resource-consuming.</p>
 <ul>
 <li>When executed once by the honest account-holder, a delay even in the 0.1-1 second range is perhaps tolerable.</li>
-<li>But for an attacker Mallory who tries to brute-force guess millions or billions of passowrds, the delays add up.</li>
+<li>But for an attacker Mallory who tries to brute-force guess millions or billions of passwords, the delays add up.</li>
 </ul>
 </div>
 <div class="fragment">
