@@ -328,6 +328,7 @@ window.Quarto = {
 This link shows the effect of birthday bound on nonce sizes / # of messages:
 https://www.rfc-editor.org/rfc/rfc8452#page-14
 -->
+<hr>
 <section id="announcements" class="level3">
 <h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
 <ul>
@@ -1056,15 +1057,29 @@ h_{1,8} &amp;= H(h_{1,4},h_{5,8}) \\
 <div class="callout-body-container">
 <p>Exploring the collision resistance claim in more detail:</p>
 <ul>
-<li><p>Suppose that <span class="math inline">\(h_{1,4}^* \neq h_{1,4}\)</span> or <span class="math inline">\(h_{5,8}^* \neq h_{5,8}\)</span>, but <span class="math inline">\(h_{1,8}^* = h_{1,8}\)</span> so Alice erroneously accepts the file</p></li>
-<li><p>Then, the equation <span class="math inline">\(H(h_{1,4},h_{5,8}) = H(h_{1,4}^*,h_{5,8}^*)\)</span> has two distinct inputs, so Mallory has broken collision resistance</p></li>
-<li><p>The same idea holds if any other equality claim stated above does not hold… try writing it out for yourself!</p></li>
+<li><p>Suppose that Mallory provides a file <span class="math inline">\(f_3^*\)</span> that Alice accepts, meaning that <span class="math inline">\(h_{1,8}^* = h_{1,8}\)</span></p></li>
+<li><p>If <span class="math inline">\(h_{1,4}^* \neq h_{1,4}\)</span> or <span class="math inline">\(h_{5,8}^* \neq h_{5,8}\)</span>, then the equation <span class="math inline">\(h_{1,8} = H(h_{1,4}^*,h_{5,8}^*) = H(h_{1,4},h_{5,8})\)</span> would reveal a hash collision: two distinct inputs that result in the same hash digest</p></li>
+<li><p>Since Mallory cannot break collision resistance, it must be the case that <span class="math inline">\(h_{1,4}^* = h_{1,4}\)</span> and <span class="math inline">\(h_{5,8}^* = h_{5,8}\)</span></p></li>
+<li><p>Now use the same argument on the equation <span class="math inline">\(h_{1,4}^* = h_{1,4}\)</span> to find that <span class="math inline">\(h_{1,2}^* = h_{1,2}\)</span>, that <span class="math inline">\(h_{3,4}^* = h_{3,4}\)</span>, and finally that <span class="math inline">\(f_3^* = f_3\)</span>… try writing out the full argument to convince yourself of these claims!</p></li>
+<li><p>Hence, Alice received the correct file from Mallory</p></li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 <!-- I showed what happens with a Merkle tree of size 8. Let's discuss what happens when the tree grows -->
+<!--
+
+**Interactive question.** Suppose that Alice creates a Merkle tree of a set $S$ of $n$ elements, and then only saves the Merkle root.
+
+How many nodes of the Merkle tree does the cloud provider Mallory need to send in order to convince Alice that a particular element is contained in the set $S$?
+
+A) $O(1)$, i.e., a constant that is independent of $n$
+B) $O(\log n)$, i.e., logarithmic in $n$
+C) $O(n)$, i.e., linear in $n$
+D) $O(n^2)$, i.e., quadratic in $n$
+
+-->
 
 
 </section>

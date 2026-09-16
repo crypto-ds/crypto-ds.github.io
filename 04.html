@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -203,8 +267,32 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#homework-grace-period" id="toc-homework-grace-period" class="nav-link" data-scroll-target="#homework-grace-period">Homework grace period</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#randomness" id="toc-randomness" class="nav-link" data-scroll-target="#randomness"><span class="header-section-number">4.1</span> Randomness</a>
+  <ul class="collapse">
+  <li><a href="#harms-from-bad-randomness" id="toc-harms-from-bad-randomness" class="nav-link" data-scroll-target="#harms-from-bad-randomness">Harms from bad randomness</a></li>
+  <li><a href="#generating-good-randomness" id="toc-generating-good-randomness" class="nav-link" data-scroll-target="#generating-good-randomness">Generating good randomness</a></li>
+  </ul></li>
+  <li><a href="#pseudorandomness" id="toc-pseudorandomness" class="nav-link" data-scroll-target="#pseudorandomness"><span class="header-section-number">4.2</span> Pseudorandomness</a>
+  <ul class="collapse">
+  <li><a href="#generating-many-secrets-from-one" id="toc-generating-many-secrets-from-one" class="nav-link" data-scroll-target="#generating-many-secrets-from-one">Generating many secrets from one</a></li>
+  <li><a href="#applications-of-pseudorandomness" id="toc-applications-of-pseudorandomness" class="nav-link" data-scroll-target="#applications-of-pseudorandomness">Applications of pseudorandomness</a></li>
+  </ul></li>
+  <li><a href="#common-coin" id="toc-common-coin" class="nav-link" data-scroll-target="#common-coin"><span class="header-section-number">4.3</span> Common coin</a>
+  <ul class="collapse">
+  <li><a href="#option-1-trusted-centralized-randomness" id="toc-option-1-trusted-centralized-randomness" class="nav-link" data-scroll-target="#option-1-trusted-centralized-randomness">Option 1: trusted centralized randomness</a></li>
+  <li><a href="#option-2-an-interactive-protocol" id="toc-option-2-an-interactive-protocol" class="nav-link" data-scroll-target="#option-2-an-interactive-protocol">Option 2: an interactive protocol</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -228,9 +316,627 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>To appear</p>
+<!-- TODO: in future years, consider adding something about passkeys, 2fa, and u2f tokens? That might fit better here than a Bitcoin example -->
+<hr>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Lab 3 on this week’s reading: <a href="https://ezproxy.bu.edu/login?url=https://link.springer.com/content/pdf/10.1007/978-3-662-69007-9_13">PPG sections 13.1-13.2</a> (access is through BU Library)</li>
+<li>Homeworks due on <a href="https://www.gradescope.com/courses/1381249">Gradescope</a>
+<ul>
+<li>HW1 due today at 8pm (grace period is until Thursday at 10pm)</li>
+<li>HW2 due Wed 9/23 at 8pm</li>
+</ul></li>
+</ul>
+<p><strong>Question.</strong> Write down a random number between 1 and 4.</p>
+<hr>
+</section>
+<section id="homework-grace-period" class="level3">
+<h3 class="anchored" data-anchor-id="homework-grace-period">Homework grace period</h3>
+<p>Homeworks in this course have a short grace period of between 2 hours and 2 days.</p>
+<ul>
+<li>There is no penalty for homework responses received during the grace period</li>
+<li>Homework responses cannot be submitted after the grace period ends</li>
+</ul>
+<div class="fragment">
+<p>For each week, the grace period is determined by a random number.</p>
+<blockquote class="blockquote">
+<p>The Interoperable Randomness Beacons project at NIST intends to promote the availability of trusted public randomness as a public utility. (<a href="https://csrc.nist.gov/projects/interoperable-randomness-beacons">source</a>)</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>The NIST interoperable randomness beacon produces a new random number every minute. To determine the grace period, look at the most recent <code>outputValue</code> at 10am on the morning of the due date.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">First hex character in <code>outputValue</code></th>
+<th style="text-align: left;">Grace period</th>
+<th style="text-align: left;">Typical late deadline (in US eastern time)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>0</code>, <code>1</code>, <code>2</code>, <code>3</code></td>
+<td style="text-align: left;">2 hours</td>
+<td style="text-align: left;">Wednesday 10pm</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>4</code>, <code>5</code>, <code>6</code>, <code>7</code>, <code>8</code>, <code>9</code>, <code>A</code>, <code>B</code></td>
+<td style="text-align: left;">26 hours</td>
+<td style="text-align: left;">Thursday 10pm</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>C</code>, <code>D</code>, <code>E</code>, <code>F</code></td>
+<td style="text-align: left;">50 hours</td>
+<td style="text-align: left;">Friday 10pm</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The “typical late deadline” assumes that homework is due on Wednesday at 8pm. If any homework has a different due date/time, then calculate the grace period from that.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>To determine the Homework 1 grace period: here is the link for <a href="https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1789567200001">the random number on Sept 16 at 10am</a>.</p>
+</div>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>The importance of randomness in crypto, and how your computer generates random numbers</li>
+<li>How pseudorandom generation allows us to generate many secrets from one</li>
+<li>How a collection of people can generate common randomness, without a trusted third party.</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>A <em>cryptographic hash function</em> <span class="math inline">\(H: \{0, 1\}^* \to \{0, 1\}^n\)</span> can be used to take a fingerprint or <em>digest</em> of one or more files</li>
+<li>Any low-level crypto primitive must be simple, make no sense, and be simple to see why it makes no sense</li>
+<li>The SHA-2 and SHA-3 hash function standards have empirically withstood attacks by the cryptanalysis community</li>
+<li>The SHA-3 hash function builds a fixed-length <em>pseudorandom</em> permutation, and then uses a <em>sponge function</em> design to support longer inputs</li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-venice.jpeg" class="img-fluid figure-img" width="600"></p>
+<figcaption>City of Venice, Italy (source: <a href="https://commons.wikimedia.org/wiki/File:Venezia_acqua_alta_notte_2005_modificata.jpg">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>A <strong>message commitment</strong> protocol is the digital version of placing a written message <span class="math inline">\(m\)</span> inside of an envelope. It has two methods:</p>
+<ul>
+<li><code>Commit</code><span class="math inline">\((m, r)\)</span> is the digital version of placing the message <span class="math inline">\(m\)</span> in an envelope</li>
+<li><code>Open</code><span class="math inline">\((c, m, r)\)</span> is the digital version of opening the envelope to reveal <span class="math inline">\(m\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>These algorithms satisfy two security requirements:</p>
+<ul>
+<li><em>Binding</em> says that after the <code>Commit</code> step, everyone knows that the message cannot be changed</li>
+<li><em>Hiding</em> says that <span class="math inline">\(m\)</span> is kept confidential until the <code>Open</code> step</li>
+</ul>
+</div>
+<div class="fragment">
+<p>We can construct message commitment using a hash function <span class="math inline">\(H\)</span>.</p>
+<ul>
+<li><code>Commit</code><span class="math inline">\((m, r)\)</span>: committer sends <span class="math inline">\(c = H(m, r)\)</span></li>
+<li><code>Open</code><span class="math inline">\((c, m, r)\)</span>: committer sends <span class="math inline">\(m\)</span> and <span class="math inline">\(r\)</span>, and receiver checks whether <span class="math inline">\(c \overset{?}{=} H(m, r)\)</span></li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="randomness" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="randomness"><span class="header-section-number">4.1</span> Randomness</h2>
+<p>Let’s examine the importance of <span class="math inline">\(r\)</span> to the commitment scheme:</p>
+<p><span class="math display">\[\text{Randomness of } r \Rightarrow \text{Unpredictability of } c \Rightarrow \text{Secrecy of } m\]</span></p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-internet-2.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Internet communication, with encryption</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<p>This will be a common theme in this course: using randomness for secrets and key material leads to outcomes that Mallory cannot predict or use to recover secret information.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>This is how we design many cryptographic protocols <!-- including encryption and signing --> to satisfy <strong>Kerckhoffs’s principle</strong> #2.</p>
+<blockquote class="blockquote">
+<p>It should <strong>not require secrecy</strong>, and it should not be a problem if it falls into enemy hands</p>
+</blockquote>
+<p>Rather than hiding the code of the algorithm, we instead hide a short, random string.</p>
+</div>
+<hr>
+<p><strong>Question.</strong> Which of the following strings is the most random and unpredictable?</p>
+<ol type="A">
+<li><code>11111111</code></li>
+<li><code>01010101</code></li>
+<li><code>10100011</code></li>
+</ol>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>We do not deem any single string (e.g., 0110100110) to be pseudorandom or not. Instead, we study the process by which a distribution over strings is produced.</p>
+</div>
+</div>
+</div>
+</div>
+<!--
+::: {.incremental}
+- Each string is equally likely to occur
+- You cannot look at a single output string and determine its (un)predictability
+- Instead, we must evaluate the algorithmic **process** used to sample bytestrings
+:::
+-->
+<hr>
+<p><strong>Interactive question.</strong> Which number did you write down at the start of class?</p>
+<ol type="A">
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+</ol>
+<hr>
+<section id="harms-from-bad-randomness" class="level3">
+<h3 class="anchored" data-anchor-id="harms-from-bad-randomness">Harms from bad randomness</h3>
+<p>Let’s see what can happen when a computer’s source of randomness isn’t actually random.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/04-xkcd-random.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Image source: <a href="https://xkcd.com/221/">xkcd</a></figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p>First, bad randomness can lead to financial loss, for instance in <a href="https://www.wired.com/2017/02/russians-engineer-brilliant-slot-machine-cheat-casinos-no-fix/">casinos</a> and <a href="https://arstechnica.com/information-technology/2016/04/neutered-random-number-generator-let-man-rig-million-dollar-lotteries/">lotteries</a>.</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:65%;">
+<!-- > "The man would parlay a \\$20 to \\$60 investment into as much as \\$1,300 before cashing out and moving on to another machine, where he’d start the cycle anew. Over the course of two days, his winnings tallied just over \\$21,000. -->
+<blockquote class="blockquote">
+<p>“The only <strong>odd thing about his behavior during his streaks was the way he’d hover his finger above the Spin button for long stretches before finally jabbing it in haste</strong>; typical slots players don’t pause between spins like that. … the operatives use their phones to record about two dozen spins on a game they aim to cheat. They upload that footage to a technical staff in St.&nbsp;Petersburg, who <strong>analyze the video and calculate the machine’s pattern</strong> based on what they know about the model’s pseudorandom number generator. Finally, the St.&nbsp;Petersburg team transmits a list of timing markers to a custom app on the operative’s phone; those markers cause the handset to vibrate roughly 0.25 seconds before the operative should press the spin button.” – <a href="https://www.wired.com/2017/02/russians-engineer-brilliant-slot-machine-cheat-casinos-no-fix/">Wired</a></p>
+</blockquote>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:33%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/04-slot-machine.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Image source: <a href="https://www.wired.com/2017/02/russians-engineer-brilliant-slot-machine-cheat-casinos-no-fix/">Wired</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“Prosecutors say they have unearthed forensic evidence that shows how a former computer security official for a US state <strong>lottery association let him rig drawings worth millions of dollars across five states</strong> using unauthorized code that tampered with a random number generator used to pick winning tickets. … A forensic examination found that the generator had code … that <strong>directed the generator not to produce random numbers on three particular days of the year</strong> if two other conditions were met. Numbers on those days would be drawn by <strong>an algorithm that [the computer security official] could predict</strong>.” – <a href="https://arstechnica.com/information-technology/2016/04/neutered-random-number-generator-let-man-rig-million-dollar-lotteries/">ArsTechnica</a></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Second, bad randomness can lead to easily-guessable cryptographic keys, which are supposed to be random <code>bytestrings</code> sampled from a large space (e.g., 256 bits). <!--  because (as we saw with RSA and DSA signatures) the key generation algorithm relies on randomness to create a key from a large space (e.g., 256 bits). --></p>
+<p>The software engineers of <a href="https://wiki.debian.org/SSLkeys">Debian Linux</a> made this mistake from 2006 to 2008, and many <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final228.pdf">Internet-of-Things embedded devices</a> don’t properly generate random numbers.</p>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“Luciano Bello discovered that the random number generator in Debian’s openssl package is predictable. This is caused by an incorrect Debian-specific change to the openssl package. As a result, <strong>cryptographic key material may be guessable</strong>.” – <a href="https://lists.debian.org/debian-security-announce/2008/msg00152.html">Debian Linux</a></p>
+</blockquote>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“We perform the largest ever network survey of TLS and SSH servers and present evidence that vulnerable keys are surprisingly widespread. We find that <strong>0.75% of TLS certificates share keys</strong> due to insufficient entropy during key generation, and we suspect that another 1.70% come from the same faulty implementations and may be susceptible to compromise. Even more alarmingly, we are able to <strong>obtain RSA private keys for 0.50% of TLS hosts and 0.03% of SSH hosts</strong>, because their public keys shared nontrivial common factors due to entropy problems, and <strong>DSA private keys for 1.03% of SSH hosts</strong>, because of insufficient signature randomness.” – <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final228.pdf">Heninger, Durumeric, Wustrow, Halderman 2012</a></p>
+</blockquote>
+</div>
+<!--
+There are many other kinds of harm that can arise from bad randomness, such as bias and skewing of probabilistic methods.
+-->
+<hr>
+</section>
+<section id="generating-good-randomness" class="level3">
+<h3 class="anchored" data-anchor-id="generating-good-randomness">Generating good randomness</h3>
+<!--
+Let's discuss the proper way for computers to generate randomness.
+-->
+<p>Have you ever wondered how your computer generates random numbers?</p>
+<ul>
+<li>A computer is just a fancy calculator</li>
+<li>It has been carefully designed to be deterministic and reproducible: if I run a computer program today and tomorrow, I expect to get the same results</li>
+</ul>
+<!-- So, how does a computer create unpredictable random numbers? -->
+<div class="fragment">
+<p>This is not a trick question; computers <em>do</em> have the ability to generate truly random numbers. For instance, on a Unix-like operating system (e.g., Linux, MacOS, BSD) you can request random data by fetching from a special file called <code>/dev/urandom</code>.</p>
+<p>It is not really a file, but rather an operating system service that will create random data as often as you need, whenever you request it. You can treat <code>/dev/urandom</code> as if it is a file, and read from it whenever you want.</p>
+</div>
+<div class="fragment">
+<p>Here is an example: the terminal command below reads 16 bytes of data from <code>/dev/urandom</code> and prints the result in hexadecimal format.</p>
+<div id="02fac2a4" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>xxd <span class="op">-</span>u <span class="op">-</span>l <span class="dv">16</span> <span class="op">-</span>p <span class="op">/</span>dev<span class="op">/</span>urandom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>16510E6636336BAD7D3B597960A4911F</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>If I run this exact line of code again in the terminal, I will get a different – and hopefully unpredictable – response.</p>
+<div id="15d14644" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>xxd <span class="op">-</span>u <span class="op">-</span>l <span class="dv">16</span> <span class="op">-</span>p <span class="op">/</span>dev<span class="op">/</span>urandom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>80FA0753768976DD7F5F28D361E713C5</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> If you were designing the computer hardware and operating system, how would you generate random numbers?</p>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“Fortunately, it’s not hard to harvest truly unpredictable randomness by tapping the chaotic universe that surrounds a computer’s orderly, deterministic world of 1s and 0s.” – <a href="https://spectrum.ieee.org/behind-intels-new-randomnumber-generator">Taylor and Cox, IEEE Spectrum magazine</a></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Modern computers follow a three-step process to generate randomness:</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><strong>Harvest</strong> megabytes of data that “looks random”</li>
+<li><strong>Extract</strong> ~128 bits of uniform randomness from the harvested data <!-- Extractors have to work even if the adversary Mallory controls part of the input, and goes last. Hash functions do not have this concern. --></li>
+<li><strong>Expand</strong> from a short uniformly-random seed to create lots of <em>pseudorandom</em> data</li>
+</ol>
+</div>
+<div class="fragment">
+<p>To <em>harvest</em>: your laptop and phone have many sensors that can capture random-looking noise.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><strong>Physics</strong>: EM radiation, temperature</li>
+<li><strong>Logical gates</strong>: clock drift, thermal noise</li>
+<li><strong>Quantumness</strong>: beam splitters &amp; polarization, tunneling, entanglement</li>
+<li><strong>Measurement sensors</strong>: microphone, camera, gyroscope</li>
+<li><strong>You</strong>, the person using the computer: keystroke timings, mouse movements</li>
+</ul>
+</div>
+<div class="fragment">
+<p>The <em>extract</em> step essentially involves computing a cryptographic hash of all harvested data. (Extraction is actually more complicated than this, in order to be safe even if the adversary Mallory controls some of your sensors, but this is the main idea.)</p>
+</div>
+<div class="fragment">
+<p>We will spend the rest of today’s class on the <em>expand</em> step.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="pseudorandomness" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="pseudorandomness"><span class="header-section-number">4.2</span> Pseudorandomness</h2>
+<p>There are many situations in this course where we will want a <strong>deterministic</strong> procedure to generate <strong>random-looking</strong> data.</p>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Which is the only scenario that does <strong>not</strong> benefit from a deterministic procedure to generate random-looking data?</p>
+<ol type="A">
+<li>Alice wants to recreate the same randomness used in the past <!-- used when committing + decommitting --></li>
+<li>Alice wants to create many secrets from a single one <!-- used in Bitcoin --></li>
+<li>Alice and Bob want to agree on many secrets from a short interaction <!-- used in Signal / WhatsApp --></li>
+<li>Alice runs a lottery and wants to choose the winning numbers</li>
+</ol>
+</div>
+<hr>
+<section id="generating-many-secrets-from-one" class="level3">
+<h3 class="anchored" data-anchor-id="generating-many-secrets-from-one">Generating many secrets from one</h3>
+<p>We want a process that Alice can use to reliably and deterministically produce many secret strings, but also one that “looks random” to an outsider (who does not know the underlying seed).</p>
+<p><strong>Question.</strong> Is there anything in our cryptographic toolbox that allows us to do this?</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>A cryptographic hash function <span class="math inline">\(H\)</span> provides this kind of property.</p></li>
+<li><p>Suppose we have one single <em>main seed</em> <span class="math inline">\(m\)</span> that we ask Alice to memorize. She can use it to generate many secrets <strong>pseudorandomly</strong> <span class="math display">\[H(m, 0), H(m, 1), H(m, 2), \ldots\]</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>This idea is effective thanks to the properties of the underlying hash function.</p>
+<ul>
+<li><p>Because <span class="math inline">\(H\)</span> is preimage resistant, even if one secret (say, <span class="math inline">\(H(m, 2)\)</span>) happens to be revealed to the world, nobody can use it to reverse-engineer the main seed <span class="math inline">\(m\)</span></p></li>
+<li><p>Because <span class="math inline">\(H\)</span> acts like a random oracle, the rows of the truth table of <span class="math inline">\(H\)</span> appear to be independent, so no two secrets have any discernible connection to each other</p></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<!--
+Some important caveats before we continue!
+-->
+<p>The actual function you need to run here is not quite <span class="math inline">\(H\)</span>, but rather a slightly more complicated construction called <code>HMAC</code> applied to the hash function. We will discuss <code>HMAC</code> in the <a href="05.html#sec-hmac">next lecture</a>.</p>
+<!-- @sec-hmac -->
+<!--
+- And there's more work required to go from the hash digest to something that has the structure of a digital signing key.
+- And there are even more subtle details that are very important in practice, but out of scope for this lecture.
+
+Remember: always make sure to use well-written crypto software that is developed by people who have studied these subtle details. **Don't roll your own crypto software in practice!**
+-->
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="applications-of-pseudorandomness" class="level3">
+<h3 class="anchored" data-anchor-id="applications-of-pseudorandomness">Applications of pseudorandomness</h3>
+<p>We will use the idea of pseudorandomness extensively throughout this course. Here are a few examples.</p>
+<div class="fragment">
+<p>Cryptocurrencies use this idea in a protocol called <strong>hierarchical deterministic wallets</strong>, which allow for creating many keys for different cryptocurrencies like Bitcoin, Ethereum, ZCash, and more.</p>
+<p>With HD wallets, you only have to remember the main seed <span class="math inline">\(m\)</span>, from which you can (re)generate as many secret keys for as many cryptocurrencies as you want.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-hd-wallet.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>BIP-32 standard for hierarchical deterministic wallets (image source: <a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP-32 specification</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Pseudorandomness is also crucial in smartphone applications for two-factor authentication like Authy, Duo, and Google Authenticator.</p>
+</div>
+<div class="fragment">
+<ul>
+<li>During account registration, Alice’s phone and the service provider agree on a short seed <span class="math inline">\(m\)</span></li>
+<li>Every minute, both of them can reliably calculate the same 6-digit code, which Alice (the person) types into the website during account login</li>
+</ul>
+<!-- Hardware tokens like RSA's SecurID work similarly. -->
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/04-totp.png" class="img-fluid figure-img" width="250"></p>
+<figcaption>Time-based one-time password (image source: <a href="https://proton.me/authenticator">Proton Authenticator</a>)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:48%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/04-token.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>RSA SecurID hardware token (image source: <a href="https://community.rsa.com/s/article/SecurID-Tokens-e9b663a7">RSA</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>One note: while hash functions have a fixed output length <a href="02.html#def-hash">by definition</a>, SHA-3’s sponge function design is actually more flexible than this. It can:</p>
+<ul>
+<li><em>absorb</em> an arbitrary amount of input data</li>
+<li><em>squeeze</em> an arbitrary amount of output data</li>
+</ul>
+<p>In applications involving pseudorandomness, it can be beneficial for the output length to be larger than the input length.</p>
+<!-- (hence the analogy of a small seed blossoming into a larger object) -->
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/03-keccak-0.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Sponge function design (image source: <a href="https://en.wikipedia.org/wiki/Sponge_function">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="common-coin" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="common-coin"><span class="header-section-number">4.3</span> Common coin</h2>
+<p>Suppose that Alice and Bob want to eat dinner together, but they each prefer a different restaurant.</p>
+<div class="fragment">
+<p>In the physical world, any set of <span class="math inline">\(n\)</span> people can resolve this dilemma by tossing a <strong>coin</strong>. From a security perspective, a coin toss observed by <span class="math inline">\(n\)</span> people has some nice features.</p>
+<ul>
+<li><strong>Common view</strong>: once the coin is flipped, everyone can agree on the result</li>
+<li><strong>Unpredictability</strong>: no coalition of <span class="math inline">\(t &lt; n\)</span> parties know what the result of the coin will be in advance.</li>
+<li><strong>Unbiasedness</strong>: no coalition of <span class="math inline">\(t &lt; n\)</span> parties can influence or bias the outcome of the coin away from a 50-50 chance of heads vs tails</li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If all <span class="math inline">\(n\)</span> parties are colluding together, then they can break these properties since they could just set the coin to be the value that they all like. But in this case, there is no honest party remaining to protect.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Now suppose Alice and Bob are in their own dorm rooms. Can they resolve this dilemma in the digital world using either a random number generator or pseudorandom generator?</p>
+<ol type="A">
+<li>Yes, use a random number generator</li>
+<li>Yes, use pseudorandomness</li>
+<li>No, neither approach works</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Either Alice or Bob could run a random number generator on their own computer, but then they can lie when sharing the result with the other person.</p>
+<p>Doing a video Zoom call over the Internet also does not work, since the person who flips the coin could:</p>
+<ul>
+<li>Pre-record the video</li>
+<li>Magically ‘drop’ their connection if the outcome is undesirable</li>
+</ul>
+</div>
+<div class="fragment">
+<p>So the question remains: how can we build a protocol that people can use to “toss a coin” over the Internet?</p>
+</div>
+<hr>
+<section id="option-1-trusted-centralized-randomness" class="level3">
+<h3 class="anchored" data-anchor-id="option-1-trusted-centralized-randomness">Option 1: trusted centralized randomness</h3>
+<p>One way we can agree about common randomness is to ask a trusted source. As long as the source is trustworthy and won’t collude with the attacker, then we should be okay.</p>
+<div class="fragment">
+<p>This is exactly what NIST Interoperable Randomness Beacon does. Since September 5, 2013, the US National Institute of Standards and Technology (NIST) has been publishing a 512-bit, full-entropy random number every minute of every day.</p>
+</div>
+<div class="fragment">
+<p>Each new post is called a <a href="https://beacon.nist.gov/beacon/2.0/pulse/last">pulse</a>. Three independent different sources of randomness (and the previous pulse) feed entropy into each new pulse.</p>
+</div>
+<div class="fragment">
+<p>The pulse contains several fields:</p>
+<ul>
+<li><code>outputValue</code>: the random value that should be used</li>
+<li><code>timestamp</code>: the time that this randomness has been generated</li>
+<li><code>signatureValue</code>: a digital signature of the random output value, using the secret key of NIST with RSA-2048 (we will discuss what this means <a href="06.html">next week</a>)</li>
+<li><code>listValues</code>: pointers to the pulses from one minute, hour, day, month, and year ago (i.e., a skiplist)</li>
+</ul>
+<p><a href="https://nvlpubs.nist.gov/nistpubs/ir/2019/NIST.IR.8213-draft.pdf">Here is a link</a> to the full NIST specifications.</p>
+<!-- Here is a screenshot of a NIST random beacon pulse: -->
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/04-nist-random-beacon.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>NIST random beacon pulse</figcaption>
+</figure>
+</div>
+<!--
+```{=html}
+<iframe width="800" height="450" src="https://beacon.nist.gov/beacon/2.0/pulse/last" title="NIST random beacon pulse"></iframe>
+```
+-->
+</div>
+<hr>
+</section>
+<section id="option-2-an-interactive-protocol" class="level3">
+<h3 class="anchored" data-anchor-id="option-2-an-interactive-protocol">Option 2: an interactive protocol</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/04-common-coin.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption>Image source: <a href="https://hackaday.com/wp-content/uploads/2014/12/randomness.jpg">Hackaday</a></figcaption>
+</figure>
+</div>
+<p>Next, let’s try to build a common coin between two parties Alice and Bob, but this time without relying on a trusted third party.</p>
+<div class="fragment">
+<p>Remember that limiting trust is a common theme of this course!</p>
+<blockquote class="blockquote">
+<p>“Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”</p>
+<p>– Ben Adida</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>In all the topics we explore in this class: we want to lessen our dependency on trusted outsiders, and to the extent that we do require the assistance of others, we want to be able to understand exactly who we are relying upon, and for what.</p>
+</div>
+<!--
+::: {.fragment}
+In fact, it turns out that a perfectly fair coin toss between two parties is actually *impossible*! No matter how you design the protocol, there will always be some potential for bias by one of the two parties.
+
+So let's try to do the next best thing: find a way to provide a fair coin toss if the parties are honest, and to detect if they ever act maliciously.
+:::
+-->
+<hr>
+<section id="commit-and-reveal-protocol" class="level4">
+<h4 class="anchored" data-anchor-id="commit-and-reveal-protocol">Commit-and-reveal protocol</h4>
+<p>Here is a protocol based on the idea that both Alice and Bob should flip a coin locally, reveal their results, and see if the coins are equal or different. Both parties must <em>commit</em> to their local coin toss before either one is revealed.</p>
+<div class="fragment">
+<p>Here is the protocol:</p>
+<ol type="1">
+<li><strong>Alice commits:</strong> Alice picks a bit <span class="math inline">\(b\)</span> and a secret random string <span class="math inline">\(r\)</span>. Alice sends <span class="math inline">\(c = \text{SHA-256}(b, r)\)</span> to Bob; note that this is a commitment to <span class="math inline">\(b\)</span>.</li>
+<li><strong>Bob commits:</strong> Bob picks a bit <span class="math inline">\(b'\)</span> and secret string <span class="math inline">\(r'\)</span> at random, and sends the commitment <span class="math inline">\(c' = \text{SHA-256}(b', r')\)</span> to Alice.</li>
+<li><strong>Alice opens:</strong> Alice sends <span class="math inline">\(b\)</span> and <span class="math inline">\(r\)</span>, and Bob checks that <span class="math inline">\(c \overset{?}{=} \text{SHA-256}(b, r)\)</span>. If this check fails, then Bob stops participating in the protocol.</li>
+<li><strong>Bob opens:</strong> Bob sends <span class="math inline">\(b'\)</span> and <span class="math inline">\(r'\)</span>, and Alice checks Bob’s commitment.</li>
+</ol>
+<p>Both parties output <span class="math inline">\(b\)</span> <code>xor</code> <span class="math inline">\(b'\)</span>.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The <code>xor</code> operation has the nice property that its result is uniformly random if either one of Alice or Bob honestly chooses their input at random, even if the other party is dishonest and does not follow the rules. Do you see why?</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Example.</strong> Let’s try to run this protocol together right now. I will play the role of Alice, and you play the role of Bob.</p>
+<p>For step 1 of the protocol: here is the hash of a value I personally committed to previously: <code>59047922b560c7bdcb6178974ae43cc8feb874662195f304c2365a5b60e48991</code></p>
+</div>
+<div class="fragment">
+<p>Next, Bob (you) selects a bit 0 or 1 and sends a commitment.</p>
+</div>
+<div class="fragment">
+<p>Then, I as Alice need to reveal my bit and salt.</p>
+<div id="0def3ec6" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hashlib</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">b"1"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="st">b"this is supposed to be a random bytestring"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hashlib.sha256(b <span class="op">+</span> r).hexdigest())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>59047922b560c7bdcb6178974ae43cc8feb874662195f304c2365a5b60e48991</code></pre>
+</div>
+</div>
+<p>Finally, you as Bob should open your own commitment.</p>
+</div>
+<div class="fragment">
+<p><strong>Question</strong>. Is this a good two-party coin tossing protocol?</p>
+</div>
+<div class="fragment">
+<p>Let’s investigate this from the perspective of each party. First, can Alice bias the result of the two-party coin toss?</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>If she completes the protocol in a way that Bob’s verification check is successful, then no! The first step is a binding <strong>commitment</strong> to Alice’s bit <span class="math inline">\(b\)</span>. Due to collision resistance, there is only one opening that Alice knows.</p></li>
+<li><p>Alice could refuse to complete the protocol, in which case we have no output. The only good news here is that Alice has not learned anything: she committed to her random value and cannot change it before seeing Bob’s value.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Second, can Bob bias the result of the two-party coin toss?</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Bob is bound by his own commitment <span class="math inline">\(c'\)</span>. There is only one opening <span class="math inline">\(b'\)</span> that Bob can provide in step 4 that will pass Alice’s check.</p></li>
+<li><p>However, note that Bob knows the result of the coin toss after step 3, whereas Alice will not learn it until step 4.</p></li>
+<li><p>So Bob can run a sneaky attack called <strong>selective failure</strong>: if Bob realizes the result of the coin toss is bad for him, then he can refuse to complete the protocol!</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>In this way, a malicious Bob can bias the coin toss. So if Alice and Bob use this protocol for secure coin tossing over the telephone or internet, it is crucial for Alice not to play again if Bob refuses to reveal <span class="math inline">\(b'\)</span>.</p>
+<!-- Otherwise, Bob can bias the coin by refusing to complete the protocol when the output is not in his favor. -->
+</div>
+<hr>
+</section>
+<section id="punchline" class="level4">
+<h4 class="anchored" data-anchor-id="punchline">Punchline</h4>
+<div class="fragment">
+<p>It turns out that if two people communicate over the Internet, it is <em>impossible</em> to build a coin tossing protocol that is fair (i.e., has no bias). The good news is:</p>
+<ul>
+<li>We can make the bias arbitrarily small, at the cost of requiring more rounds of interaction between Alice and Bob</li>
+<li>In Unit 2 of this course, we will impose an <em>economic penalty</em> for cheating in order to make the selective failure attack costly</li>
+<li>In Unit 4 of this course, we will discover a <em>cryptographic solution</em> to build a fair coin toss over the Internet if there are more than two people, most of whom are honest</li>
+</ul>
+</div>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
