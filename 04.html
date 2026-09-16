@@ -461,7 +461,9 @@ window.Quarto = {
 <figcaption>Internet communication, with encryption</figcaption>
 </figure>
 </div>
-</div><div class="column" style="width:40%;">
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:36%;">
 <p>This will be a common theme in this course: using randomness for secrets and key material leads to outcomes that Mallory cannot predict or use to recover secret information.</p>
 </div>
 </div>
@@ -579,20 +581,22 @@ Let's discuss the proper way for computers to generate randomness.
 <p>It is not really a file, but rather an operating system service that will create random data as often as you need, whenever you request it. You can treat <code>/dev/urandom</code> as if it is a file, and read from it whenever you want.</p>
 </div>
 <div class="fragment">
-<p>Here is an example: the terminal command below reads 16 bytes of data from <code>/dev/urandom</code> and prints the result in hexadecimal format.</p>
-<div id="02fac2a4" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>xxd <span class="op">-</span>u <span class="op">-</span>l <span class="dv">16</span> <span class="op">-</span>p <span class="op">/</span>dev<span class="op">/</span>urandom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example: the terminal command below reads 32 bytes of data from <code>/dev/urandom</code> and prints the result in hexadecimal format.</p>
+<div id="156407e4" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>xxd <span class="op">-</span>u <span class="op">-</span>l <span class="dv">32</span> <span class="op">-</span>p <span class="op">/</span>dev<span class="op">/</span>urandom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>16510E6636336BAD7D3B597960A4911F</code></pre>
+<pre><code>390BA3910B0F66CDC4F67F17DC7CAB64BA503B98E842BF8037CE2659A0E0
+3F94</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
 <p>If I run this exact line of code again in the terminal, I will get a different – and hopefully unpredictable – response.</p>
-<div id="15d14644" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>xxd <span class="op">-</span>u <span class="op">-</span>l <span class="dv">16</span> <span class="op">-</span>p <span class="op">/</span>dev<span class="op">/</span>urandom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="a2bcbacf" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>xxd <span class="op">-</span>u <span class="op">-</span>l <span class="dv">32</span> <span class="op">-</span>p <span class="op">/</span>dev<span class="op">/</span>urandom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>80FA0753768976DD7F5F28D361E713C5</code></pre>
+<pre><code>C7C4E4F05C729108303755AB9EDD7C548E859111F926F1E1B151BFD1ED78
+1E06</code></pre>
 </div>
 </div>
 </div>
@@ -610,7 +614,7 @@ Let's discuss the proper way for computers to generate randomness.
 <div class="incremental">
 <ol class="incremental" type="1">
 <li><strong>Harvest</strong> megabytes of data that “looks random”</li>
-<li><strong>Extract</strong> ~128 bits of uniform randomness from the harvested data <!-- Extractors have to work even if the adversary Mallory controls part of the input, and goes last. Hash functions do not have this concern. --></li>
+<li><strong>Extract</strong> ~256 bits of uniform randomness from the harvested data <!-- Extractors have to work even if the adversary Mallory controls part of the input, and goes last. Hash functions do not have this concern. --></li>
 <li><strong>Expand</strong> from a short uniformly-random seed to create lots of <em>pseudorandom</em> data</li>
 </ol>
 </div>
@@ -882,7 +886,7 @@ So let's try to do the next best thing: find a way to provide a fair coin toss i
 </div>
 <div class="fragment">
 <p>Then, I as Alice need to reveal my bit and salt.</p>
-<div id="0def3ec6" class="cell" data-execution_count="4">
+<div id="b67facaa" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hashlib</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">b"1"</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="st">b"this is supposed to be a random bytestring"</span></span>
