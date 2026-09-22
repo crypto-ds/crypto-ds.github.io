@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -203,8 +267,31 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#network-integrity" id="toc-network-integrity" class="nav-link" data-scroll-target="#network-integrity"><span class="header-section-number">5.1</span> Network integrity</a>
+  <ul class="collapse">
+  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
+  </ul></li>
+  <li><a href="#defining-macs" id="toc-defining-macs" class="nav-link" data-scroll-target="#defining-macs"><span class="header-section-number">5.2</span> Defining MACs</a>
+  <ul class="collapse">
+  <li><a href="#informal-definitions" id="toc-informal-definitions" class="nav-link" data-scroll-target="#informal-definitions">Informal definitions</a></li>
+  <li><a href="#formal-definitions" id="toc-formal-definitions" class="nav-link" data-scroll-target="#formal-definitions">Formal definitions</a></li>
+  </ul></li>
+  <li><a href="#constructing-a-hash-based-mac" id="toc-constructing-a-hash-based-mac" class="nav-link" data-scroll-target="#constructing-a-hash-based-mac"><span class="header-section-number">5.3</span> Constructing a hash-based MAC</a>
+  <ul class="collapse">
+  <li><a href="#length-extension-attacks" id="toc-length-extension-attacks" class="nav-link" data-scroll-target="#length-extension-attacks">Length extension attacks</a></li>
+  <li><a href="#sec-hmac" id="toc-sec-hmac" class="nav-link" data-scroll-target="#sec-hmac">Finalization</a></li>
+  <li><a href="#putting-everything-together" id="toc-putting-everything-together" class="nav-link" data-scroll-target="#putting-everything-together">Putting everything together</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -228,9 +315,467 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>To appear</p>
+<hr>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Homework 2 due Wed 9/23 at 8pm on <a href="https://www.gradescope.com/courses/1381249">Gradescope</a></li>
+<li>Lab 4 on this week’s reading: <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 1.2–1.4</a> (pages 32-42)</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How Bob can detect whether a message received over the Internet was sent by Alice</li>
+<li>How we write formal definitions for crypto primitives, such as MACs</li>
+<li>How HMAC works, and why it addresses a limitation of SHA-2</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>Every cryptosystem attempts to provide some or all of the “CIA triad.”</p>
+<ul>
+<li><strong>C</strong>onfidentiality: hiding data</li>
+<li><strong>I</strong>ntegrity: preventing or detecting tampering of data</li>
+<li><strong>A</strong>vailability: preventing censorship of data</li>
+</ul>
+<div class="fragment">
+<p>A <strong>pseudorandom</strong> generator is:</p>
+<ul>
+<li>A <em>deterministic</em> procedure that <!-- reliably and repeatably --> produces a lot of data from a short seed</li>
+<li>But it looks <em>random</em> to an outsider who does not know the seed</li>
+</ul>
+<p>Using a cryptographic hash function and a seed <span class="math inline">\(k\)</span>, we can <em>pseudorandomly</em> generate many secrets <span class="math display">\[H(k, 0), H(k, 1), H(k, 2), \ldots\]</span></p>
+</div>
+<div class="fragment">
+<p>This idea is effective thanks to the properties of the underlying hash function.</p>
+<ul>
+<li><p>Because <span class="math inline">\(H\)</span> is preimage resistant, even if one secret (say, <span class="math inline">\(H(k, 2)\)</span>) happens to be revealed to the world, nobody can use it to reverse-engineer the main seed <span class="math inline">\(k\)</span></p></li>
+<li><p>Because <span class="math inline">\(H\)</span> acts like a random oracle, the rows of the truth table of <span class="math inline">\(H\)</span> act <strong>as if</strong> they are independent, so no two secrets have any discernible connection to each other</p></li>
+</ul>
+<blockquote class="blockquote">
+<p>If an adversary [Mallory] has not explicitly queried the oracle on some point <span class="math inline">\(x\)</span>, then the value of <span class="math inline">\(H(x)\)</span> is completely random… at least as far as [Mallory] is concerned.</p>
+<p>– Jon Katz and Yehuda Lindell, <em>Introduction to Modern Cryptography</em></p>
+</blockquote>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The actual function you need to run here is not quite <span class="math inline">\(H\)</span>, but rather a slightly more complicated construction called <code>HMAC</code> applied to the hash function.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="network-integrity" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="network-integrity"><span class="header-section-number">5.1</span> Network integrity</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-internet-1968.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>The early Internet (source: <a href="https://twitter.com/pwnallthethings/status/935395453482520576">pwnallthethings on Twitter</a>)</figcaption>
+</figure>
+</div>
+<p>Here is our motivating question for today:</p>
+<blockquote class="blockquote">
+<p>On the Internet, how do Alice and Bob know that they are talking to each other?</p>
+</blockquote>
+<div class="incremental">
+<ul class="incremental">
+<li>They could send their names to each other, but a malicious Mallory could <strong>forge</strong> that</li>
+<li>They could ask a common friend, but what if that friend turns out to be a malicious Mallory?</li>
+</ul>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”</p>
+<p>– Ben Adida</p>
+</blockquote>
+</div>
+<!-- This is not to say that we should never trust anyone. But in cryptography: we want to minimize trust, and we want to understand exactly who we trust for what purpose. -->
+<div class="fragment">
+<p>To simplify things for today:</p>
+<ul>
+<li>Suppose that Alice and Bob physically meet one time (they can perform any action that you want)</li>
+<li>Afterward, Alice will send many distinct messages to Bob over the Internet</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> How would you solve this problem?</p>
+</div>
+<hr>
+<p><strong>Construction.</strong> Here is one solution attempt that relies on <em>pseudorandomness</em>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>When Alice and Bob physically meet, they jointly create a random seed <span class="math inline">\(k\)</span></li>
+<li>They agree to keep <span class="math inline">\(k\)</span> secret from the rest of the world</li>
+<li>The first time Alice wants to send a message <span class="math inline">\(m_1\)</span> to Bob, she appends the string <span class="math inline">\(H(k, 1)\)</span></li>
+<li>The second time Alice wants to send a message <span class="math inline">\(m_2\)</span> to Bob, she appends the string <span class="math inline">\(H(k, 2)\)</span></li>
+<li>…</li>
+</ul>
+<p>Note that the message itself is sent in the clear. We are not considering message confidentiality today.</p>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Does this construction guarantee to Bob that the message came from Alice?</p>
+<ol type="A">
+<li>Yes</li>
+<li>No</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> No, but we have made some progress.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Good news: Mallory cannot predict <span class="math inline">\(H(k, 1)\)</span> before Alice sends it</li>
+<li>Also even given <span class="math inline">\(H(k, 1)\)</span>, Mallory cannot predict <span class="math inline">\(H(k, 2)\)</span></li>
+<li>Bad news: once Alice sends <span class="math inline">\(m_1\)</span> and <span class="math inline">\(H(k, 1)\)</span> over the Internet, Mallory can intercept it and substitute her own message <span class="math inline">\(m_1^*\)</span></li>
+</ul>
+</div>
+<hr>
+<p><strong>New construction.</strong> Let’s make a small change to the prior attempt.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>When Alice and Bob physically meet, they jointly create a random seed <span class="math inline">\(k\)</span></li>
+<li>Whenever Alice wants to send a message <span class="math inline">\(m\)</span> to Bob, she appends the string <span class="math inline">\(H(k, m)\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Does the new construction guarantee to Bob that the message came from Alice?</p>
+<ol type="A">
+<li>Yes</li>
+<li>No</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> Yes, this should work! (Well, subject to some caveats about replay attacks and the design of <span class="math inline">\(H\)</span> that we will discuss later today.)</p>
+</div>
+<hr>
+<section id="terminology" class="level3">
+<h3 class="anchored" data-anchor-id="terminology">Terminology</h3>
+<p>Let’s take a moment to appreciate what we have built.</p>
+<!-- Using pseudorandomness -->
+<ul>
+<li>Alice and Bob created a secret <em>code</em> that only they can understand</li>
+<li>Using this code, they can <em>authenticate</em> the sender of <em>messages</em> that they receive</li>
+</ul>
+<div class="fragment">
+<p>Accordingly, this primitive is referred to by cryptographers as a <strong>message authentication code</strong>, or MAC.</p>
+<ul>
+<li>The long-lived seed <span class="math inline">\(k\)</span> that Alice and Bob remember is called their <strong>symmetric secret key</strong></li>
+<li>The appended data <span class="math inline">\(H(k, m)\)</span> is called the <strong>tag</strong> of the message <span class="math inline">\(m\)</span></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-internet-2.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Internet communication</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>As the name suggests: Alice and Bob remember the same key <span class="math inline">\(sk\)</span>.</p>
+<ul>
+<li>They must never share <span class="math inline">\(sk\)</span> with anyone else!</li>
+<li>If Alice wants to talk to Carol, they must choose a different key</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Our MAC satisfies all of <em>Kerckhoffs’ principles</em>.</p>
+<ol type="1">
+<li>The system must be practically, if not mathematically, indecipherable;</li>
+<li>[The algorithm] should not require secrecy, and it should not be a problem if it falls into enemy hands;</li>
+<li>Correspondents must be able to change or modify [the key] at will;</li>
+<li><span style="color:gray;">[no longer relevant]</span></li>
+<li><span style="color:gray;">[no longer relevant]</span></li>
+<li>The system must be easy [for people] to use.</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Example.</strong> Let me show you how easy MACs are to use. You have been using them your entire life, with most websites you have ever visited, without even knowing it!</p>
+<div id="eea54a24" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>openssl s_client <span class="op">-</span><span class="ex">connect</span> example.com:<span class="dv">443</span> <span class="op">-</span>servername example.com <span class="op">-</span>tls1_3 <span class="op">-</span>cipher <span class="st">'ECDHE-ECDSA-AES256-SHA384'</span> <span class="op">&lt;</span> <span class="op">/</span>dev<span class="op">/</span>null <span class="dv">2</span><span class="op">&gt;/</span>dev<span class="op">/</span>null <span class="op">|</span> grep <span class="op">-</span>E <span class="st">'Cipher'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384</code></pre>
+</div>
+</div>
+<p>This web connection uses a hash-based MAC, using the hash function from the SHA-2 family that has an output length of 384 bits.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="defining-macs" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="defining-macs"><span class="header-section-number">5.2</span> Defining MACs</h2>
+<p>Let’s define the <em>operations</em> and security <em>requirements</em> for a MAC. <!-- We will do this throughout this course whenever we study a new problem --></p>
+<div class="fragment">
+<p><strong>Interactive question.</strong> How many operations do Alice and Bob need? That is, if you were to write a Python class <code>MAC</code> to run everything in our New Construction, then how many methods (or functions) would you write?</p>
+<ol type="A">
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+</ol>
+</div>
+<hr>
+<section id="informal-definitions" class="level3">
+<h3 class="anchored" data-anchor-id="informal-definitions">Informal definitions</h3>
+<p>Informally, a MAC has three operations.</p>
+<ul>
+<li>Alice and Bob choose a secret key (this must be randomized)</li>
+<li>Alice adds a (short) tag to the message before sending it</li>
+<li>Bob verifies the tag after receiving it (this must be deterministic)</li>
+</ul>
+<div class="fragment">
+<p>Informally, a MAC has two security requirements.</p>
+<ul>
+<li><p><strong>Correctness</strong>: honest receiver Bob can verify that Alice was the sender of the message and that the message was not tampered in transit</p></li>
+<li><p><strong>Unforgeability</strong>: the tag is bound to the message, and Mallory cannot use it to <em>forge</em> a tag for any other message <!-- to make it appear as though the message came from Alice --></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>There are also three limitations of MACs. These are issues that we will not fix, but rather will require that some other protocol must deal with.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p><strong>Replay attacks</strong>: if Alice sends a message + tag to Bob and he verifies it, then Mallory can later re-send the same message + tag and it will pass Bob’s verification check again</p></li>
+<li><p><strong>Staleness</strong>: if Alice sends a message + tag but Mallory intercepts it in transit, then Mallory can deliver it days/months/years later and it will pass Bob’s verification check</p></li>
+<li><p><strong>Lack of confidentiality</strong>: MACs do not attempt to hide the message <span class="math inline">\(m\)</span> (we will need encryption for that)</p></li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="formal-definitions" class="level3">
+<h3 class="anchored" data-anchor-id="formal-definitions">Formal definitions</h3>
+<p>Now, let’s use math to specify the operations and requirements more precisely.</p>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>In this course, I will often use Greek letters (like <span class="math inline">\(\kappa\)</span> and <span class="math inline">\(\tau\)</span>) to denote the length of a bytestring. Each construction must specify the specific lengths of all bytestrings used.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div id="def-mac" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 5.1 (MAC)</strong></span> A <em>message authentication code</em> contains three operations.</p>
+<ul>
+<li><code>KeyGen</code><span class="math inline">\(()\)</span>: takes no input, samples a symmetric secret key <span class="math inline">\(k\)</span> — often, uniformly at random from <span class="math inline">\(\{0,1\}^\kappa\)</span></li>
+<li><code>Tag</code><span class="math inline">\({}_k(m)\)</span>: produces a tag <span class="math inline">\(t \in \{0, 1\}^\tau\)</span></li>
+<li><code>Verify</code><span class="math inline">\({}_k(m, t)\)</span>: returns a boolean <code>true</code> or <code>false</code></li>
+</ul>
+<p>All three operations should be efficiently computable. Moreover, the MAC must satisfy two security requirements: correctness and EU-CMA.</p>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><p><strong>Correctness</strong> means that for every symmetric secret key produced by <code>KeyGen</code>, any output of <code>Tag</code> is subsequently accepted by <code>Verify</code>.</p>
+<p>In math: <span class="math inline">\(\texttt{Verify}_k( m, \text{Tag}_k(m))=\)</span> <code>true</code> for all keys <span class="math inline">\(k\)</span>, messages <span class="math inline">\(m\)</span>, and randomness used in <code>Tag</code> (if any).</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p><strong>Existential unforgeability under a chosen message attack</strong> (EU-CMA) is defined using a thought experiment in which Alice plays a game with Mallory. Even after Alice tags many messages of Mallory’s choice, Mallory still cannot forge a tag for a new message.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-eucma.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>EU-CMA security game</figcaption>
+</figure>
+</div></li>
+</ul>
+</div>
+<div class="fragment">
+<p>EU-CMA is a very strong claim: we give Mallory the power to choose</p>
+<ul>
+<li>many, many messages <span class="math inline">\(m_1, m_2, \ldots, m_\ell\)</span> that we will voluntarily tag for her</li>
+<li>which new message <span class="math inline">\(m^*\)</span> and tag <span class="math inline">\(t^*\)</span> she is quizzed on</li>
+</ul>
+<p>and she still cannot forge <strong>any</strong> new message and tag with <code>Verify</code><span class="math inline">\({}_k(m^*, t^*) =\)</span><code>true</code>. In other words, Mallory will never be able to fool Bob into accepting a message (even if the message contents are meaningless).</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="constructing-a-hash-based-mac" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="constructing-a-hash-based-mac"><span class="header-section-number">5.3</span> Constructing a hash-based MAC</h2>
+<p>Now that we have formally specified the objectives of a MAC, let’s write our new construction more precisely. It relies on a hash function <span class="math inline">\(H\)</span>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p><code>KeyGen</code>: Alice and Bob toss coins to choose a uniformly random bytestring <span class="math inline">\(k\)</span></p></li>
+<li><p><code>Tag</code><span class="math inline">\({}_k(m)\)</span>: Alice computes <span class="math inline">\(t = H(k, m)\)</span>, and she sends <span class="math inline">\((m, t)\)</span> to Bob</p></li>
+<li><p><code>Verify</code><span class="math inline">\({}_k(m, t')\)</span>: Bob checks whether <span class="math inline">\(t' \overset{?}{=} H(k, m)\)</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Note that the lengths <span class="math inline">\(\kappa\)</span> and <span class="math inline">\(\tau\)</span> are both fixed constants, but they do not have to be the same.</p>
+<ul>
+<li><span class="math inline">\(\kappa = |k|\)</span> must be large enough (say, 256 bits) that it is practically infeasible for Mallory to guess <span class="math inline">\(k\)</span></li>
+<li><span class="math inline">\(\tau = |t|\)</span> must be the output length of the hash function <span class="math inline">\(H\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<div id="thm-hash-mac" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 5.1</strong></span> If <span class="math inline">\(H\)</span> acts like a random oracle, then this MAC construction satisfies Correctness and EU-CMA. <!-- indifferentiable --></p>
+</div>
+</div>
+<div class="fragment">
+<p>Note that this is a <strong>conditional</strong> theorem: the MAC is secure if the hash function is. We saw this idea also when studying message commitments.</p>
+<blockquote class="blockquote">
+<p>If <span class="math inline">\(H\)</span> acts like a random oracle, then this construction is a secure message commitment protocol.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>This is a powerful idea that cryptographers use to build many elegant protocols from a few basic primitives that withstand the test of cryptanalysis.</p>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-venice.jpeg" class="img-fluid figure-img" width="600"></p>
+<figcaption>City of Venice, Italy (source: <a href="https://commons.wikimedia.org/wiki/File:Venezia_acqua_alta_notte_2005_modificata.jpg">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<section id="length-extension-attacks" class="level3">
+<h3 class="anchored" data-anchor-id="length-extension-attacks">Length extension attacks</h3>
+<p>To explain the full details of the hash-based MAC construction used in practice, I need to tell you some more information about the SHA-2 family of hash functions.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Good news: we believe that it is preimage resistant, collision resistant, and puzzle friendly</li>
+<li>Bad news: it does not act like a random oracle because it suffers from <em>length extension</em> attacks</li>
+</ul>
+</div>
+<div class="fragment">
+<p>As we discussed in <a href="./03.html#sec-merkle-damgard">Lecture 3</a>, SHA-256 uses a <em>Merkle–Damgård construction</em> with two parts:</p>
+<ul>
+<li>a random-looking compression function <span class="math inline">\(C\)</span> of fixed length (64 <span class="math inline">\(\to\)</span> 32 bytes) <!-- 64 bytes of input and 32 bytes of output --></li>
+<li>an iterative design that repeats <span class="math inline">\(C\)</span> as many times as needed (along with a fixed bytestring called an <em>initialization vector</em> used at the very beginning)</li>
+</ul>
+<p><img src="images/05-MerkleDamgard1.png" class="img-fluid" width="800"></p>
+</div>
+<div class="fragment">
+<p>While this design has many benefits, it is vulnerable to a <strong>length extension</strong> attack.</p>
+<p><img src="images/05-MerkleDamgard2.png" class="img-fluid" width="800"></p>
+</div>
+<!-- 
+> “The vulnerability of [a hash function] construction is due to its finite state, [a limitation that does] not apply to a random oracle.”
+>
+> – Keccak team, Cryptographic sponge functions
+-->
+<div class="fragment">
+<p>Intuitively, the issue is that Mallory could extend</p>
+<p><span class="math display">\[ H(k, \texttt{ b"Hello"}) \longrightarrow H(k, \texttt{ b"Hello world"})\]</span></p>
+<p>without ever knowing <span class="math inline">\(k\)</span>. This would break the MAC’s unforgeability.</p>
+</div>
+<hr>
+</section>
+<section id="sec-hmac" class="level3">
+<h3 class="anchored" data-anchor-id="sec-hmac">Finalization</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-MerkleDamgard3.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>Finalization</figcaption>
+</figure>
+</div>
+<p>Now that we understand the problem, the fix is simple—just do something different at the end to stop length extensions. This is called <em>finalization</em>.</p>
+<div class="fragment">
+<ul>
+<li>Bitcoin runs the entire SHA-256 function a second time</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>When designing a MAC (which has a key), it suffices to run one more iteration of the compression function <span class="math inline">\(C\)</span> with a different key <!-- this is called NMAC --></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-MerkleDamgard4.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>NMAC construction</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>This construction comes from a <a href="https://cseweb.ucsd.edu/~mihir/papers/kmd5.pdf">1996 paper</a> by Mihir Bellare, Ran Canetti, and Hugo Krawczyk.</p>
+<p>Using some clever tricks, they also designed a variant called <strong>HMAC</strong> that only needs one key.</p>
+</div>
+<div class="fragment">
+<div id="thm-hmac" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 5.2</strong></span> If the compression function <span class="math inline">\(C\)</span> is pseudorandom, then HMAC satisfies Correctness and EU-CMA. (The proof is in <a href="https://eprint.iacr.org/2006/043.pdf">this paper</a> by Mihir Bellare.)</p>
+</div>
+</div>
+<!-- 
+## BCK 96
+
+HMAC satisfies Correctness and EU-CMA as long as:
+
+1. The compression function $C$ is pseudorandom
+2. The Merkle-Damgard iteration mechanism is collision-resistant
+:::
+
+(A [2005 paper](https://eprint.iacr.org/2006/043.pdf) by Bellare was able to show that only condition #1 is needed.)
+-->
+<hr>
+</section>
+<section id="putting-everything-together" class="level3">
+<h3 class="anchored" data-anchor-id="putting-everything-together">Putting everything together</h3>
+<p>Here is our final construction for a hash-based MAC.</p>
+<ul>
+<li><p><code>KeyGen</code>: sample a uniformly random bytestring <span class="math inline">\(k\)</span> that is 256 bits (32 bytes) long</p></li>
+<li><p><code>Tag</code><span class="math inline">\({}_k(m)\)</span>: compute <span class="math inline">\(t = \texttt{HMAC}(k, m)\)</span></p></li>
+<li><p><code>Verify</code><span class="math inline">\({}_k(m, t')\)</span>: return <code>true</code> if <span class="math inline">\(t' =\texttt{HMAC}(k, m)\)</span>, otherwise return <code>false</code></p></li>
+</ul>
+<div class="fragment">
+<p>HMAC is a popular MAC used today in web browsers and in secure messaging applications like WhatsApp.</p>
+<blockquote class="blockquote">
+<p>“Clients exchange messages that are protected with a Message Key using <code>AES256</code> in <code>CBC</code> mode for encryption and <code>HMAC-SHA256</code> for authentication.”</p>
+<p>– <a href="https://www.whatsapp.com/security/WhatsApp-Security-Whitepaper.pdf">WhatsApp Security Whitepaper, version 9 (Feb 2026)</a></p>
+</blockquote>
+<!-- This is repeated for each receiver and each receiver device. -->
+</div>
+<div class="fragment">
+<p>That said, HMAC is not the only way to build a MAC. It is the only one we will study in this course, but that there are other constructions that satisfy <a href="#def-mac" class="quarto-xref">Definition&nbsp;<span>5.1</span></a>. They also have</p>
+<ul>
+<li>Three operations: <code>KeyGen</code>, <code>MAC</code><span class="math inline">\({}_{k}\)</span>, and <code>Verify</code><span class="math inline">\({}_{k}\)</span></li>
+<li>Two security requirements: Correctness and EU-CMA</li>
+</ul>
+</div>
+<div class="fragment">
+<p>MACs are used <em>everywhere</em> to protect data at rest in file systems and in transit over the Internet. Modern cryptography follows the <strong>Cryptographic Doom Principle</strong>:</p>
+<blockquote class="blockquote">
+<p>“If you have to perform any cryptographic operation before verifying the MAC on a message you’ve received, it will somehow inevitably lead to doom!” – Moxie Marlinspike</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>We will use the Cryptographic Doom Principle extensively in this course, especially when discussing web security and secure messengers in Unit 3.</p>
+</div>
+<!--
+::: {.fragment}
+But going back to the start of today's lecture, we made one simplifying assumption.
+
+> Suppose that Alice and Bob physically meet one time
+
+This raises the question: how do Alice and Bob communicate over the Internet if they have never met before to exchange the symmetric secret key $k$? We will study this topic next week.
+:::
+
+-->
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
