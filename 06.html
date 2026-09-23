@@ -76,6 +76,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -203,8 +232,35 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#crypto-for-data-integrity" id="toc-crypto-for-data-integrity" class="nav-link" data-scroll-target="#crypto-for-data-integrity"><span class="header-section-number">6.1</span> Crypto for data integrity</a>
+  <ul class="collapse">
+  <li><a href="#signatures-vs.-macs" id="toc-signatures-vs.-macs" class="nav-link" data-scroll-target="#signatures-vs.-macs">Signatures vs.&nbsp;MACs</a></li>
+  </ul></li>
+  <li><a href="#public-key-cryptography" id="toc-public-key-cryptography" class="nav-link" data-scroll-target="#public-key-cryptography"><span class="header-section-number">6.2</span> Public key cryptography</a>
+  <ul class="collapse">
+  <li><a href="#constructing-digital-signatures" id="toc-constructing-digital-signatures" class="nav-link" data-scroll-target="#constructing-digital-signatures">Constructing digital signatures</a></li>
+  </ul></li>
+  <li><a href="#discrete-logarithms" id="toc-discrete-logarithms" class="nav-link" data-scroll-target="#discrete-logarithms"><span class="header-section-number">6.3</span> Discrete logarithms</a>
+  <ul class="collapse">
+  <li><a href="#elliptic-curves" id="toc-elliptic-curves" class="nav-link" data-scroll-target="#elliptic-curves">Elliptic curves</a></li>
+  </ul></li>
+  <li><a href="#schnorr-signatures" id="toc-schnorr-signatures" class="nav-link" data-scroll-target="#schnorr-signatures"><span class="header-section-number">6.4</span> Schnorr signatures</a>
+  <ul class="collapse">
+  <li><a href="#construction" id="toc-construction" class="nav-link" data-scroll-target="#construction">Construction</a></li>
+  <li><a href="#security" id="toc-security" class="nav-link" data-scroll-target="#security">Security</a></li>
+  <li><a href="#size-of-schnorr-signatures" id="toc-size-of-schnorr-signatures" class="nav-link" data-scroll-target="#size-of-schnorr-signatures">Size of Schnorr signatures</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul></li>
+  <li><a href="#appendix-rsa-signatures" id="toc-appendix-rsa-signatures" class="nav-link" data-scroll-target="#appendix-rsa-signatures"><span class="header-section-number">6.5</span> Appendix: RSA signatures</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -228,9 +284,786 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>To appear</p>
+<hr>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Lab 4 on this week’s reading: <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 1.2–1.4</a> (pages 32-42)</li>
+<li>Homeworks due on <a href="https://www.gradescope.com/courses/1381249">Gradescope</a>
+<ul>
+<li>HW 2 due today at 8pm (late deadline is today at 10pm, based on the <a href="https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1790172000001">NIST beacon</a>)</li>
+<li>HW 3 due Wed 9/30 at 8pm</li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><code>outputValue</code> first character</th>
+<th style="text-align: left;">Late deadline</th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>0</code>, <code>1</code>, <code>2</code>, <code>3</code></td>
+<td style="text-align: left;">Wednesday 10pm</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>4</code>, <code>5</code>, <code>6</code>, <code>7</code>, <code>8</code>, <code>9</code>, <code>A</code>, <code>B</code></td>
+<td style="text-align: left;">Thursday 10pm</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>C</code>, <code>D</code>, <code>E</code>, <code>F</code></td>
+<td style="text-align: left;">Friday 10pm</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>The similarities and differences between digital signatures and MACs</li>
+<li>Which hard math problems we use as the basis of digital signatures</li>
+<li>How to construct Schnorr digital signatures</li>
+</ul>
+<hr>
+</section>
+<section id="crypto-for-data-integrity" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="crypto-for-data-integrity"><span class="header-section-number">6.1</span> Crypto for data integrity</h2>
+<p>Unit 1 of this course is about protecting data integrity. More specifically, this week we are focused on the questions of authenticating people and data.</p>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>A major concern in the subject [of cryptography] is that of <strong>authentication</strong>. How do you know some data is correct (<em>data authentication</em>), and how do you know an entity is who they claim to be (<em>entity authentication</em>).</p>
+<p>– Nigel Smart, <em><a href="https://link.springer.com/book/10.1007/978-3-319-21936-3">Cryptography Made Simple</a></em></p>
+</blockquote>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:57%;">
+<p>So far in this course, we have discussed two crypto primitives for data integrity.</p>
+<ul>
+<li>In <a href="01.html">Lecture 1</a>, we briefly discussed the digital equivalent to signing a check. This crypto primitive is called a <strong>digital signature</strong>.</li>
+<li>In <a href="05.html">Lecture 5</a>, we studied <strong>message authentication codes</strong>.</li>
+</ul>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:41%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-check.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption>Alice writes a physical check to Bob</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Both crypto primitives require <strong>unforgeability</strong> when Alice and Bob communicate.</p>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \Longleftrightarrow \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<div class="fragment">
+<p>The purpose of this security requirement is to stop Mallory from being a <strong>meddler-in-the-middle</strong> (abbreviated MitM). She cannot add or change messages in transit between Alice and Bob.</p>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="160">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<div class="fragment">
+<p>For now:</p>
+<ul>
+<li>Mallory can drop messages; we will address data availability in Unit 2</li>
+<li>Mallory can read messages; we will address data confidentiality in Unit 3</li>
+</ul>
+</div>
+<div class="fragment">
+<p>But any attempt by Mallory to add/change messages in transit must be detected by Bob!</p>
+<ul>
+<li>No matter <strong>how many</strong> messages Alice sends: she could send a thousand messages <span class="math inline">\(m_1, m_2, \ldots, m_{1000}\)</span> or more</li>
+<li>No matter <strong>which</strong> messages Alice sends or Mallory forges: Mallory could even choose all 1000 messages, and still Mallory cannot sign any other message <span class="math inline">\(m^*_{1001}\)</span> that Alice never sent</li>
+</ul>
+</div>
+<hr>
+<section id="signatures-vs.-macs" class="level3">
+<h3 class="anchored" data-anchor-id="signatures-vs.-macs">Signatures vs.&nbsp;MACs</h3>
+<p>Let’s compare these primitives.</p>
+<div class="columns">
+<div class="column" style="width:49%;">
+<div class="fragment">
+<p><u>Digital signature</u></p>
+<p>A digital signature allows Alice, when given any message <span class="math inline">\(m\)</span>, to append a sequence of bits called a <strong>signature</strong> that satisfies two properties (stated informally here).</p>
+<ol type="1">
+<li>Correctness: Everyone can <em>verify</em> whether Alice created the signature</li>
+<li>Unforgeability: Only Alice can produce the signature, and it is <em>bound</em> to <span class="math inline">\(m\)</span></li>
+</ol>
+<p>To satisfy the unforgeability goal, Alice must have something that the rest of the world does not. We call this special something a “<strong>secret key</strong>.”</p>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="fragment">
+<p><u>Message authentication code</u></p>
+<p>A MAC allows Alice, when given any message <span class="math inline">\(m\)</span>, to append a sequence of bits called a <strong>tag</strong> that satisfies two properties (stated informally here).</p>
+<ol type="1">
+<li>Correctness: Bob can <em>verify</em> whether Alice created the tag (and vice-versa)</li>
+<li>Unforgeability: Only Alice and Bob can produce the tag, and it is <em>bound</em> to <span class="math inline">\(m\)</span></li>
+</ol>
+<p>To satisfy the unforgeability goal, Alice and Bob must have something that the rest of the world does not. We call this special something a “<strong>symmetric secret key</strong>.”</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> What are the differences between digital signatures and MACs?</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p><strong>Creation</strong>: Only Alice can create a digital signature. Both Alice and Bob can create a MAC.</p></li>
+<li><p><strong>Verification</strong>: A digital signature can be verified by anyone in the world. A MAC can only be verified by the receiver Bob.</p></li>
+<li><p><strong>Receiver authentication</strong>: Because a signature can be verified by anyone, it will not convince Bob that he was the intended target of the message. <!-- If Alice wants to convey that Bob is the intended target, she should do so in the message contents $m$. --> A MAC does convince Bob that he is the intended target because only Alice and Bob know the symmetric key.</p></li>
+<li><p><strong>Deniability</strong> vs <strong>non-repudiation</strong>: Alice’s MAC tags only make sense to Bob; she can deny to anyone else that she even sent the message. By contrast, Alice cannot deny (or repudiate) having created a digital signature.</p></li>
+<li><p><strong>Keys</strong>: A MAC assumes that Alice and Bob have one <em>symmetric key</em> that they have agreed upon. A digital signature does not.</p></li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="public-key-cryptography" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="public-key-cryptography"><span class="header-section-number">6.2</span> Public key cryptography</h2>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p>In contrast to MACs that use one symmetric key, digital signatures use two <strong>asymmetric</strong> keys:</p>
+<ul>
+<li>A <strong>secret key</strong> <span class="math inline">\(\color{red}{sk}\)</span> known only by Alice and used for signing</li>
+<li>A <strong>public key</strong> <span class="math inline">\(\color{green}{pk}\)</span> known to the whole world and used for verification</li>
+</ul>
+<div class="fragment">
+<p>This one change leads to all five differences we between digital signatures and MACs, even though their formal definitions are otherwise similar.</p>
+</div>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:48%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-public-key.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Informal description of public key encryption and digital signatures (source: <a href="https://idea-instructions.com/public-key/">idea-instructions.com</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div id="def-sign" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 6.1 (Digital signatures)</strong></span> A <em>digital signature</em> contains three operations.</p>
+<ul>
+<li><code>KeyGen</code>: returns a randomly-chosen secret key <span class="math inline">\(\color{red}{sk}\)</span> and public key <span class="math inline">\(\color{green}{pk}\)</span></li>
+<li><code>Sign</code><span class="math inline">\({}_{\color{red}{sk}}(m)\)</span>: returns a digital signature <span class="math inline">\(\sigma\)</span></li>
+<li><code>Verify</code><span class="math inline">\({}_{\color{green}{pk}}(m, \sigma)\)</span>: returns a boolean <code>true</code> or <code>false</code></li>
+</ul>
+<p>All three operations should be efficiently computable. Moreover, the digital signature must satisfy two requirements: correctness and EU-CMA.</p>
+</div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:48%;">
+<ul>
+<li><p><strong>Correctness</strong> means that <span class="math inline">\(\texttt{Verify}_{\color{green}{pk}}( m, \text{Sign}_{\color{red}{sk}}(m))=\)</span> <code>true</code> for all keys and messages</p></li>
+<li><p><strong>Existential unforgeability under a chosen message attack</strong> (EU-CMA) uses the same thought experiment game that we created for MACs, and we additionally give Mallory the public key <span class="math inline">\(\color{green}{pk}\)</span></p></li>
+</ul>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:48%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-eucma-sign.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>EU-CMA security game</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<!--
+We formalize the __unforgeability__ guarantee by considering a hypothetical game involving
+
+- Alice, who has run KeyGen to produce a secret/public keypair, and
+- Mallory, who only knows Alice's public key $pk$
+
+This game proceeds in two phases.
+
+1. Mallory sends a message $M$, and Alice responds with $\sigma =$ `Sign`$(sk, M)$. Mallory can repeat this step as often as she wants.
+2. Mallory sends a message $M^*$ of her choice along with a claimed signature $\sigma^*$.
+
+Mallory wins the game if:
+
+1. Her signature verifies, in the sense that `Verify`$(pk, M^*) =$ *true*.
+2. The message is new, meaning that $M^*$ is not a message that she previously sent in the first phase for Alice to sign.
+
+If it is practically infeasible for Mallory to win this game, then we say that the digital signature scheme is "**existentially unforgeable under a chosen message attack**," often abbreviated EU-CMA.
+
+In words, this means that no matter how many signed messages that Mallory has seen Alice make in the past, and no matter what the message contents were, it is practically impossible for Mallory to forge a new message that Alice never signed herself.
+-->
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The notation <code>$</code> in the EU-CMA figure is my shorthand for saying that the game should choose the secret key <span class="math inline">\(\color{red}{sk}\)</span> at random (for instance, by flipping coins) and that the <code>Sign</code> box should be hard-coded with this key. Mallory does not see this key; she only receives <span class="math inline">\(\color{green}{pk}\)</span>.</p>
+<!-- Note that Mallory receives the public key $\color{green}{pk}$ but not the secret key $\color{red}{sk}$. The EU-CMA requirement ensures, among other things, that Mallory's use of the `Sign` box will never allow her to learn any information about the secret key. -->
+</div>
+</div>
+</div>
+</div>
+<hr>
+<section id="constructing-digital-signatures" class="level3">
+<h3 class="anchored" data-anchor-id="constructing-digital-signatures">Constructing digital signatures</h3>
+<!--
+It is helpful to have a definition in hand _before_ we try to construct a digital signature, so that we have a way to test whether a candidate construction is good.
+-->
+<p>Let’s try to make a digital signature. It turns out that this is a challenging problem, and the tools we have built so far in this course will not suffice.</p>
+<p>A digital signature must satisfy the following requirements:</p>
+<ul>
+<li>Given the public key, it is difficult to <em>solve</em> for a valid message-signature pair <span class="math inline">\((m, \sigma)\)</span></li>
+<li>Given the public key, it is easy to <em>verify</em> whether a message-signature pair is valid, <em>if</em> Alice has already created <span class="math inline">\((m, \sigma)\)</span></li>
+</ul>
+<div class="fragment">
+<p>So: we need to find a math problem that is difficult to solve but easy to verify.</p>
+<ul>
+<li>Unfortunately, we do not know for certain whether any such math problems exist! <!-- If you can find one, the Clay Math Institute will give you a prize of [\$1 million](https://www.claymath.org/millennium/p-vs-np/). (This is called the $\textit{P}$ vs. $\textit{NP}$ question.) --></li>
+<li>So we do the next best thing: build digital signatures from math problems that we believe to have this property of “difficult to solve but easy to verify.”</li>
+</ul>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>Crypto is a <em>social science</em> that masquerades as a <em>mathematical science</em>.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> Can you think of a math problem with this property?</p>
+</div>
+<div class="fragment">
+<p>One such problem is <strong>factoring</strong>.</p>
+<ul>
+<li>Given a composite integer <span class="math inline">\(N\)</span> that is the product of two primes, it is difficult to find the primes <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> such that <span class="math inline">\(N = pq\)</span>.</li>
+<li>If I told you the prime factors, you could easily multiply them together to verify whether <span class="math inline">\(p q = N\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In the late 1970s, Rivest, Shamir, and Adleman discovered how to use factoring as the basis of a digital signature scheme. It is named <strong>RSA</strong> in their honor. I’ll write the details of that signature scheme in the lecture notes.</p>
+</div>
+<div class="fragment">
+<p>However, RSA is not used as often today because</p>
+<ul>
+<li>It is big: keys and ciphertexts are hundreds of bytes in size</li>
+<li>It is slow: signing takes around 1 millisecond</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="discrete-logarithms" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="discrete-logarithms"><span class="header-section-number">6.3</span> Discrete logarithms</h2>
+<p>The most common standard for digital signatures is called the <strong>digital signature algorithm</strong>, or DSA. <!-- Often this algorithm is instantiated using a mathematical object called an "elliptic curve," in which case we give it the name __elliptic curve digital signature algorithm__, or ECDSA. --></p>
+<div class="incremental">
+<ul class="incremental">
+<li>It is based on a different math problem that is difficult to solve but easy to verify: taking logarithms <!-- something called the **discrete logarithm problem**.--></li>
+<li>Wait, hang on, this doesn’t sound right… let’s check whether this is actually a hard math problem</li>
+</ul>
+</div>
+<hr>
+<p><strong>Interactive question.</strong> Can you find an integer <span class="math inline">\(x\)</span> such that <span class="math inline">\(5^x = 125\)</span>? <!-- If I tell you that I have taken the number $5$ to some power $x$ and the result is $125$, what is the power $x$ such that $5^x = 125$? --></p>
+<ol type="A">
+<li>2</li>
+<li>3</li>
+<li>4</li>
+<li>5</li>
+</ol>
+<div class="fragment">
+<p><strong>Answer.</strong> Taking logarithms to find <span class="math inline">\(x = \log_5(125)\)</span> is easy over the real numbers <span class="math inline">\(\mathbb{R}\)</span>.</p>
+</div>
+<hr>
+<p>Instead, we will use modular (or clock) arithmetic. When given two integers <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>, the notation <span class="math inline">\(n \bmod{p}\)</span> means to calculate the remainder that occurs when you divide <span class="math inline">\(n\)</span> by <span class="math inline">\(p\)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-modular.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Modular arithmetic on a clock</figcaption>
+</figure>
+</div>
+<p>It turns out that if you use modular arithmetic, then it is practically infeasible to compute <strong>discrete logarithms</strong>.</p>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Can you find an integer <span class="math inline">\(x\)</span> such that <span class="math inline">\(5^x \pmod{7} = 2\)</span>?</p>
+<ol type="A">
+<li>2</li>
+<li>3</li>
+<li>4</li>
+<li>5</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> This is tedious to calculate. With some computational effort, we can calculate the truth table of <span class="math inline">\(f(x) = 5^x \bmod{7}\)</span> in the forward direction by multiplying.</p>
+<!-- : Truth table for $f(x) = 5^x \bmod{7}$ -->
+<div class="columns">
+<div class="column" style="width:30%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(x\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(f(x)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>With this table, can you now solve the question from above?</p>
+</div>
+<div class="fragment">
+<p>It turns out the act of <em>exponentiation modulo a prime number</em> is:</p>
+<ul>
+<li><p><strong>Invertible</strong>. In fact it is a <em>permutation</em> over the inputs from <span class="math inline">\(1\)</span> to <span class="math inline">\(6\)</span>, because each number between <span class="math inline">\(1\)</span> and <span class="math inline">\(6\)</span> occurs exactly once as a possible output. (And the function cycles after that, so we’ll ignore any larger inputs.)</p>
+<p>This idea generalizes to larger prime numbers besides <span class="math inline">\(p = 7\)</span>: the function <span class="math inline">\(f\)</span> is a permutation over the integers from <span class="math inline">\(1\)</span> to <span class="math inline">\(p-1\)</span>.</p></li>
+<li><p><strong>Computationally difficult to invert</strong>… at least if we choose a prime modulus <span class="math inline">\(p\)</span> that is large enough.</p>
+<p>(There is one caveat: for some math reasons that I will skip, we must take only half of the truth table for even values of <span class="math inline">\(x\)</span>.)</p></li>
+</ul>
+<!-- the subgroup of quadratic residues -->
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The punchline here is that for modular arithmetic: exponentiation is easy but logarithms are hard!</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<section id="elliptic-curves" class="level3">
+<h3 class="anchored" data-anchor-id="elliptic-curves">Elliptic curves</h3>
+<p>There is another way to make “exponentiation” easy but “logarithms” hard. It uses another kind of math object called an <strong>elliptic curve</strong>, which is just a cubic equation <span class="math inline">\(y^2 = x^3 + ax + b \bmod{p}\)</span>.</p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p>Rather than multiplying numbers, we’re going to make a new kind of arithmetic where we can “multiply” points in space. I’ll skip the math details since they are strange, but the punchline is the same: it is another math problem where exponentiating is easy but the inverse is practically impossible.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<p><img src="images/06-ec-mult.png" alt="Multiplication on an elliptic curve group" width="200"> [Image source: <a href="https://en.wikipedia.org/wiki/Elliptic_curve">Wikipedia</a>]</p>
+</div>
+</div>
+<!--
+<img src="images/06-ec-exp.png" alt="Exponentiation on an elliptic curve group" width="200">
+[Image source: [Wikipedia](https://en.wikipedia.org/wiki/Elliptic_curve)]
+-->
+<blockquote class="blockquote">
+<p><strong>Elliptic curve discrete logarithm assumption</strong>: If <span class="math inline">\(G^x = Y\)</span> and Mallory is given the two points <span class="math inline">\(G\)</span> and <span class="math inline">\(Y\)</span>, then it is computationally infeasible for her to find the discrete logarithm <span class="math inline">\(x\)</span>.</p>
+</blockquote>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>A few comments about this assumption:</p>
+<ul>
+<li>All of the exponentiations and logarithms in today’s lecture are done modulo a prime number, but for simplicity I’m going to stop writing that explicitly from now onward.</li>
+<li>The base <span class="math inline">\(G\)</span> of the logarithm is publicly known to all. It also must satisfy a few mathematical requirements for this assumption to be hard; I’ll skip the details since they are not relevant to the goals of today’s class.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>In fact, the elliptic curve version of the discrete logarithm problem is <em>really</em> hard to solve, even harder than factoring (as far as we know). As a result:</p>
+<ul>
+<li>The act of computing a digital signature is faster: closer to microseconds (<span class="math inline">\(10^{-6}\)</span> seconds) than milliseconds (<span class="math inline">\(10^{-3}\)</span> seconds).</li>
+<li>We can get away with smaller keys and signatures: they can be 256 bits (32 bytes) in size, just like SHA-256, rather than 2048 bits (256 bytes) in size.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:49%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-cert1.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>RSA key in bu.edu certificate, viewed in Safari in Jan 2024</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:49%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-cert2.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>ECDSA key in bu.edu certificate, with shorter signatures</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>You can see an image like this one by clicking on the lock icon 🔒 in your web browser.</p>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The important thing to remember here is that when doing modular arithmetic:</p>
+<ul>
+<li>Exponentiation <span class="math inline">\(Y \gets G^x\)</span> is easy to calculate</li>
+<li>A logarithm <span class="math inline">\(x = \log_G(Y)\)</span> is hard to calculate… and for large enough <span class="math inline">\(p\)</span>, it is one of those “energy of the sun” type problems</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="schnorr-signatures" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="schnorr-signatures"><span class="header-section-number">6.4</span> Schnorr signatures</h2>
+<p>How can we form a digital signature algorithm based on the fact that discrete logarithms are hard?</p>
+<!-- Remember that a digital signature needs a secret key and public key, such that it is easy to go from the secret to the public key, but hard to go in the other direction. -->
+<div class="fragment">
+<p>Here is an idea for <strong>KeyGen</strong>.</p>
+<ul>
+<li>Secret key: sample an exponent <span class="math inline">\({\color{red}{x}}\)</span> uniformly at random <!-- Alice never tells this to anyone --></li>
+<li>Public key: given a base <span class="math inline">\(G\)</span>, publish <span class="math inline">\({\color{green}{Y}} = G^{{\color{red}{x}}}\)</span> as the public key</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Why does this work?</p>
+<ul>
+<li>Given <span class="math inline">\({\color{red}{x}}\)</span>, calculating <span class="math inline">\({\color{green}{Y}}\)</span> is easy (Alice can exponentiate)</li>
+<li>Given <span class="math inline">\({\color{green}{Y}}\)</span>, calculating <span class="math inline">\({\color{red}{x}}\)</span> is hard (Mallory cannot solve a discrete logarithm)</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>For the rest of today’s lecture, I will use lowercase letters to denote exponents and uppercase letters to denote bases (which can be numbers or elliptic curve points).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>There are a few digital signature schemes that can be designed using keys of this form.</p>
+<p>One of them is a NIST standard called the <strong>digital signature algorithm</strong>, or DSA. If you use an elliptic curve group to build it, then we refer to the construction as ECDSA. (Note: you will explore ECDSA signatures in Homework 3.)</p>
+</div>
+<div class="fragment">
+<p>Another scheme, which is related to but slightly simpler than ECDSA, is called <strong>Schnorr signatures</strong>.</p>
+<p>I reproduce the construction of Schnorr signatures below; it is adapted from the presentation on <a href="https://en.wikipedia.org/wiki/Schnorr_signature">Wikipedia</a>. <!-- The main ideas are the same as the zero knowledge proof we constructed earlier. --></p>
+</div>
+<hr>
+<section id="construction" class="level3">
+<h3 class="anchored" data-anchor-id="construction">Construction</h3>
+<ul>
+<li><p><code>KeyGen</code> works as stated above: the signer creates a secret exponent <span class="math inline">\({\color{red}{x}}\)</span> and publishes the corresponding public key <span class="math inline">\({\color{green}{Y}} = G^{\color{red}{x}}\)</span>.</p></li>
+<li><p>The signer can <code>Sign</code> a message <span class="math inline">\(m\)</span> as follows:</p>
+<ul>
+<li>Choose a random one-time exponent <span class="math inline">\(k\)</span></li>
+<li>Compute <span class="math inline">\(R = G^{k}\)</span></li>
+<li>Compute <span class="math inline">\(e = H(R, m)\)</span>, where <span class="math inline">\(H\)</span> is a cryptographic hash function</li>
+<li>Compute <span class="math inline">\(s = k − {\color{red}{x}} e\)</span></li>
+</ul>
+<p>The signature is the pair <span class="math inline">\(\sigma = (s, e)\)</span>.</p></li>
+<li><p>The receiver can <code>Verify</code> the claimed signature <span class="math inline">\(\sigma = (s, e)\)</span> of a message <span class="math inline">\(m\)</span> as follows: <!-- The main idea is that the variable $e$ is involved in two calculations: it's connected to $s$ and $x$ using group operations, and to $R$ and $m$ using the hash function --></p>
+<ol type="1">
+<li>Compute <span class="math inline">\(R^* = G^{s}{\color{green}{Y}}^{e}\)</span></li>
+<li>Compute <span class="math inline">\(e^* = H(\bar{R}, m)\)</span></li>
+</ol>
+<p>If <span class="math inline">\(e^* = e\)</span>, then return <code>true</code> (the signature is valid). Otherwise, return <code>false</code> (the signature is a forgery).</p></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note that the <code>Sign</code> algorithm is <strong>randomized</strong>. If you request to sign the same message twice, you will likely get two different signatures back in response.</p>
+<p>Nevertheless, all possible signatures will correctly be accepted by the deterministic algorithm <code>Verify</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="security" class="level3">
+<h3 class="anchored" data-anchor-id="security">Security</h3>
+<p>Why does the Schnorr construction satisfy the requirements of a digital signature?</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p><strong>Correctness</strong>: If all parties are honest, it is straightforward math to check that the <code>Sign</code> algorithm produces a signature that passes the <code>Verify</code> algorithm. Try writing it out to convince yourself of this fact!</p></li>
+<li><p><strong>Unforgeability</strong>: The Schnorr signature algorithm has cleverly interwoven two hard problems here – the difficulty of solving discrete logarithms and the random oracle property of the cryptographic hash function <span class="math inline">\(H\)</span>. I will only give some intuition about the unforgeability argument here.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Put yourself in the shoes of Mallory. How would you forge a signature of a message <span class="math inline">\(M\)</span>? There is a circularity here.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>If Mallory picks <span class="math inline">\(s\)</span> and <span class="math inline">\(e\)</span> first, then that determines the value of <span class="math inline">\(\bar{R}\)</span> in step 1. But the cryptographic hash function in step 2 acts like a random oracle, and it is extremely unlikely that <span class="math inline">\(H(\bar{R}, m)\)</span> happens to equal Mallory’s chosen <span class="math inline">\(e\)</span>.</p></li>
+<li><p>If Mallory picks <span class="math inline">\(\bar{R}\)</span> first, that determines the value of <span class="math inline">\(e = H(\bar{R}, m)\)</span> in step 2. Returning to step 1, she needs to solve the equation <span class="math inline">\(G^{s} = \bar{R}/Y^e\)</span> for the only remaining unknown value: <span class="math inline">\(s\)</span>. But that requires solving a discrete logarithm problem!</p></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This is just an informal argument. Please note that there <em>is</em> a formal math proof that Schnorr signatures achieve EU-CMA, even though I am not showing it here.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="size-of-schnorr-signatures" class="level3">
+<h3 class="anchored" data-anchor-id="size-of-schnorr-signatures">Size of Schnorr signatures</h3>
+<p>Finally, let’s talk about the size of Schnorr digital signatures (since this was part of the motivation of moving away from RSA signatures).</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Using elliptic curve groups, the discrete logarithm problem is hard if the secret key <span class="math inline">\(x\)</span> is be 256 bits, or 32 bytes, in length</li>
+<li>The two numbers <span class="math inline">\(s\)</span> and <span class="math inline">\(e\)</span> in the signature are each 32 bytes in length, so the overall size of a Schnorr signature is <strong>64 bytes</strong></li>
+</ul>
+</div>
+<div class="fragment">
+<p>By comparison: ECDSA signatures are 72 bytes long, and RSA signatures are a few hundred bytes in size.</p>
+</div>
+<hr>
+</section>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<p>At this point, we have five cryptographic tools at our disposal:</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><strong>Hash functions</strong> like SHA-2 and SHA-3 (and password hash functions) that satisfy <em>preimage resistance</em>, <em>collision resistance</em>, <em>puzzle friendliness</em>, and act like a <em>random oracle</em></p></li>
+<li><p><strong>Message commitments</strong> that act as the digital equivalent of putting a message in an envelope; they are <em>binding</em> and <em>hiding</em></p></li>
+<li><p><strong>Randomness</strong> and <strong>pseudorandomness</strong> to generate secret keys and other random-looking data, either in an unpredictable or repeatable manner</p></li>
+<li><p><strong>Message authentication codes</strong> like HMAC that allow Alice and Bob to verify that they are communicating with each other and satisfy <em>existential unforgeability under a chosen message attack</em></p></li>
+<li><p><strong>Digital signatures</strong> like RSA, ECDSA, and Schnorr signatures that satisfy EU-CMA if it is difficult to factor large numbers or find discrete logarithms</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>Looking forward:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>In Unit 2 of this course, we will use hash functions and digital signatures to build a <em>cryptocurrency</em>, which is a system for digital money</p></li>
+<li><p>In Unit 3 of this course, we will use MACs — and add encryption to our crypto toolbox based on pseudorandomness — in order to protect data at rest and in transit</p></li>
+<li><p>In Unit 4 of this course, we will use message commitments in the design of modern cryptosystems that perform data science without data sharing</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>But we also left two problems unsolved this week.</p>
+<ul>
+<li><p>MACs require that Alice and Bob agree on their symmetric secret key <span class="math inline">\(k\)</span>. How can they do so over the Internet (without meeting in person)?</p></li>
+<li><p>Digital signatures require that Alice publish her public key <span class="math inline">\({\color{green}{pk}_{\text{Alice}}}\)</span>. How can everyone in the world reliably fetch this key <span class="math inline">\({\color{green}{pk}_{\text{Alice}}}\)</span> without it being tampered with by Mallory?</p></li>
+</ul>
+<p>We will solve both of these problems next Monday, in the final lecture of Unit 1.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="appendix-rsa-signatures" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="appendix-rsa-signatures"><span class="header-section-number">6.5</span> Appendix: RSA signatures</h2>
+<div class="fragment">
+<p>Like (EC)DSA, the RSA signature algorithm also uses modular (or clock) arithmetic.</p>
+<p>Here is a slightly oversimplified (and incorrect) version of the RSA operations.</p>
+</div>
+<div class="fragment">
+<ul>
+<li><p><code>KeyGen</code> has no inputs, and does the following:</p>
+<ul>
+<li>Samples two large prime numbers <span class="math inline">\(p, q\)</span> and sets <span class="math inline">\(N = pq\)</span>.</li>
+<li>Chooses two exponents <span class="math inline">\(d\)</span> and <span class="math inline">\(e\)</span> with a special feature we will discuss next.</li>
+<li>Outputs the secret key <span class="math inline">\({\color{red}{sk}} = (p, q, d)\)</span>, and the public key <span class="math inline">\({\color{green}{pk}} = (N, e)\)</span>.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p><code>Sign</code><span class="math inline">\({}_{\color{red}{sk}}(m) = m^{d} \bmod{N}\)</span></p></li>
+<li><p><code>Verify</code><span class="math inline">\({}_{\color{green}{pk}}(m, \sigma)\)</span> returns <code>true</code> if and only if <span class="math inline">\(\sigma^{e} = m \bmod{N}\)</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Why does this (almost) work? It turns out that:</p>
+<ul>
+<li>If you know the factorization of <span class="math inline">\(N\)</span>, then it is easy to find two exponents <span class="math inline">\(d\)</span> and <span class="math inline">\(e\)</span> that “cancel out” in the sense that <span class="math inline">\((x^{d})^{e} \bmod{N} = x \bmod{N}\)</span> for any value <span class="math inline">\(x\)</span>.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Math details
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>There is a theorem from number theory called <a href="https://en.wikipedia.org/wiki/Euler%27s_theorem">Euler’s theorem</a>, which states that for any integer <span class="math inline">\(m\)</span>: <span class="math display">\[m^{(p-1)(q-1)} \bmod{N} = 1.\]</span> As a result, the exponents <span class="math inline">\(d\)</span> and <span class="math inline">\(e\)</span> will “cancel out” as long as the product <span class="math inline">\(de\)</span> is 1 more than some multiple of <span class="math inline">\((p-1)(q-1)\)</span>, or in other words, if there is some integer <span class="math inline">\(k\)</span> such that <span class="math inline">\(de = k(p-1)(q-1) + 1\)</span>. This is because <span class="math display">\[
+\begin{align*}
+m^{de} \bmod{N} &amp;= m^{k(p-1)(q-1) + 1} \bmod{N} \\
+&amp;= \left(m^{(p-1)(q-1)} \right)^k \cdot m^1 \bmod{N} \\
+&amp;= 1^k \cdot m \bmod{N} \\
+&amp;= m \bmod{N}.
+\end{align*}\]</span> Hence, the special exponents <span class="math inline">\(d\)</span> and <span class="math inline">\(e\)</span> must be connected by the equation <span class="math inline">\(de \equiv 1 \bmod{(p-1)(q-1)}\)</span>. Since Alice knows <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, for any public exponent <span class="math inline">\(e\)</span> it is possible for her to calculate the secret exponent <span class="math inline">\(d\)</span> using modular arithmetic.</p>
+</div>
+</div>
+</div>
+<ul>
+<li>On the other hand, if you don’t know the factorization of <span class="math inline">\(N\)</span>, it is not possible to find the value <span class="math inline">\(d\)</span> that “cancels out” <span class="math inline">\(e\)</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>There’s a bug in the current construction though. Suppose Alice gives Mallory the signatures of two messages <span class="math inline">\(m_1\)</span> and <span class="math inline">\(m_2\)</span>:</p>
+<p><span class="math display">\[ \sigma_1 = m_1^{d} \bmod{N} \qquad \sigma_2 = m_2^{d} \bmod{N}\]</span></p>
+<p>From this, Mallory could produce the signature corresponding to the message <span class="math inline">\(m^* = m_1 \cdot m_2 \bmod{N}\)</span> because:</p>
+<p><span class="math display">\[ \begin{align*}
+\operatorname{Sign}(sk, m^*) &amp;= (m_1 \cdot m_2)^{d} \bmod{N} \\
+&amp; = m_1^{d} \cdot m_2^{d} \bmod{N} \\
+&amp; = \sigma_1 \cdot \sigma_2 \bmod{N}.
+\end{align*}\]</span></p>
+</div>
+<div class="fragment">
+<p>Importantly: the last equation is something Mallory can calculate even <strong>without knowing <span class="math inline">\(sk\)</span></strong>.</p>
+<p>This is a cryptanalysis attack! Even though a forgery would take a lot of time if you tried to factor <span class="math inline">\(N\)</span>, we found an alternative approach that sidestepped the hard math problem and that succeeds much faster.</p>
+</div>
+<div class="fragment">
+<p>To fix this problem, the real RSA signature scheme also uses a cryptographic hash function <span class="math inline">\(H\)</span>.</p>
+<ul>
+<li><code>KeyGen</code> generates two primes <span class="math inline">\(p\)</span>, <span class="math inline">\(q\)</span>. Then it calculates <span class="math inline">\(N = pq\)</span> and finds two exponents <span class="math inline">\(e\)</span> and <span class="math inline">\(d\)</span> that “cancel out” mod <span class="math inline">\(N\)</span>. The secret key is <span class="math inline">\({\color{red}{sk}} = (p, q, d)\)</span> and the public key is <span class="math inline">\({\color{green}{pk}} = (N, e)\)</span>.</li>
+<li><code>Sign</code><span class="math inline">\({}_{\color{red}{sk}}(m) = H(m)^{d} \bmod{N}\)</span>.</li>
+<li><code>Verify</code><span class="math inline">\({}_{\color{green}{pk}}(m, \sigma)\)</span> returns <code>true</code> if and only if <span class="math inline">\(\sigma^{e} = H(m) \bmod{N}\)</span>.</li>
+</ul>
+<p>In this new construction, the <code>Sign</code> algorithm starts by applying a hash function <span class="math inline">\(H\)</span> to the message <span class="math inline">\(m\)</span>. The hash function breaks the algebraic structure that caused the problem above.</p>
+</div>
+<div class="fragment">
+<p>In fact, the hash function provides two benefits:</p>
+<ol type="1">
+<li><p>The overall new construction <em>does</em> satisfy existential unforgeability under a chosen message attack, as far as we know. (Explaining why this is the case is out of scope for this course; if you’re interested to see the math, it is covered in CS 538.)</p></li>
+<li><p>The hash function allows us to sign a message <span class="math inline">\(m\)</span> of arbitrary length, since <span class="math inline">\(H\)</span> maps any input bitstring onto a fixed-length number that we can use as the base for the subsequent exponentiation.</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>RSA is less commonly used today than ECDSA. The reason for this is performance, not security.</p>
+<ul>
+<li><p>RSA keys and signatures are small, but not that small. As shown in the image above, the RSA keys and signatures used by <code>bu.edu</code> are 2048 bits (or 256 bytes) long. This is because factoring is a hard problem, but it’s not a <em>really</em> hard problem, so we have to pick very large numbers for it to be infeasible by modern computers.</p></li>
+<li><p>As a result: RSA is fast, but not that fast. Signing and verification take around 1 millisecond on a modern laptop or phone, give or take.</p></li>
+</ul>
+<p>These costs may not sound big, and indeed a single signature is small and quick to compute. But if you run a web server and compute an RSA signature for every client that visits your website, then the costs add up quickly.</p>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
