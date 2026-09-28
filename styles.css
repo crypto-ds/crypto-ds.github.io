@@ -1,4 +1,10 @@
+/* set the size of the icon in the top-left corner */
 .sidebar-logo {
   max-width: 140px;
   height: auto;
+}
+
+/* hide the collapse arrow after each Part name */
+.sidebar-item-toggle {
+  display: none;
 }
