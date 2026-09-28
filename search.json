@@ -433,7 +433,7 @@
     "href": "07.html#diffie-hellman-key-exchange",
     "title": "7  Key exchange",
     "section": "7.2 Diffie-Hellman key exchange",
-    "text": "7.2 Diffie-Hellman key exchange\n\nToday, we will resolve two open questions from prior lectures:\n\n\nMACs require that Alice and Bob agree on a symmetric key \\(k\\). How can they do so without ever meeting in person?\nDigital signatures require Alice to broadcast her public key \\(\\color{green}{pk}\\), so that the rest of the world reaches consensus on which key belongs to Alice. How can we do that?\n\n\n\n\n\n\n\n\n\nWe will start the discussion of agreement, broadcast, and consensus today. Looking ahead, these topics will be a recurring theme in Unit 2.\n\n\n\n\n\nRemember that message authentication codes (MACs) allow Alice, when given any message \\(m\\), to append a sequence of bits called a tag that allows Bob to verify that:\n\nAlice sent the message \\(m\\)\nMallory has not tampered \\(m\\) in transit\n\n\nMACs rely on a symmetric secret key \\(k\\) that Alice uses to Tag\\({}_k\\) and Bob uses to Verify\\({}_k\\).\nIf Alice and Bob do not have a shared key, they are vulnerable to a meddler-in-the-middle attack.\n\n\n\n\n\nAlice\n\n\n\n\nMallory\n\n\n\n\nBob\n\n\n\n\n\n\n\n\n\n\\(\\longrightarrow\\)\n\n\n\n\n\n\\(\\longrightarrow\\)\n\n\n\n\n\n\n\n\n\n\nPreviously, we made a simplification:\n\nSuppose that Alice and Bob physically meet one time\n\n\n\nToday, we will use discrete logarithms so that Alice and Bob can have authenticated communication over the Internet even if they have never physically met before.\n\n\nIn the digital world, they need a secure way to exchange secrets in plain view.\n\n“The Internet is just the world passing notes in a classroom.”\n– Jon Stewart\n\n\n\nAmazingly, this can be done!\n\nThis ingenious protocol was discovered in the late 1970s by Whitfield Diffie and Martin Hellman, and it is named Diffie-Hellman key exchange in their honor\nIt was based on concepts developed earlier by Ralph Merkle… the same person who invented Merkle trees\n\n\n\n\n\n\n\n\nAlice\n\n\n\n\nBob\n\n\n\n\n\n\n\n\n\n\\(\\quad \\Longleftrightarrow \\quad\\)\n\n\n\n\n\n\n\n\nBased on the hardness of the discrete logarithm problem, here is an approach that Alice and Bob can take to create a symmetric secret key.\n\n\nAlice can choose a secret \\(a\\) that she keeps to herself, and send \\(A = G^a\\) to Bob \nBob can choose a secret exponent \\(b\\) and send \\(B = G^b\\) to Alice\n\n\n\n\n\n\n\n\n\nAlice and Bob should also digitally sign their messages \\(A\\) and \\(B\\), respectively, so they can verify that they are communicating with each other. (We will resolve soon the question of how they get each others’ public keys.)\n\n\n\n\n\nNow, there is a symmetric secret key that both of them can compute: \\(k = G^{ab}\\).\n\n\n\nAlice can take the public value \\(B\\) and raise it to her secret exponent \\(a\\) to compute \\(B^a = (G^b)^a = k\\)\nBob can do the opposite: \\(A^b = (G^a)^b = k\\)\n\n\n\nMoreover, nobody else can compute the symmetric secret key!\n\nMallory knows \\(G\\) and sees the messages \\(A\\) and \\(B\\) on the public Internet\nBut she does not know – and cannot compute – either secret exponent \\(a\\) or \\(b\\)\nSo, she has no way to compute \\(k\\)\n\n\n\n\n\n\n\nThe last line does not actually follow from the one before it. That is, it might be possible to compute the symmetric secret key \\(k\\) without learning either secret exponent \\(a\\) or \\(b\\).\n\nNevertheless, cryptographers do believe that the final line is true. This stronger mathematical claim is, appropriately enough, called the Diffie-Hellman assumption.",
+    "text": "7.2 Diffie-Hellman key exchange\n\n\nRecall that message authentication codes (MACs) allow Alice, when given any message \\(m\\), to append a sequence of bits called a tag that allows Bob to verify that:\n\nAlice sent the message \\(m\\)\nMallory cannot perform a meddler-in-the-middle attack to tamper \\(m\\) in transit\n\n\n\n\n\n\nAlice\n\n\n\n\nMallory\n\n\n\n\nBob\n\n\n\n\n\n\n\n\n\n\\(\\longrightarrow\\)\n\n\n\n\n\n\\(\\longrightarrow\\)\n\n\n\n\n\n\n\n\n\nMACs rely on a symmetric secret key \\(k\\) that Alice uses to Tag\\({}_k\\) and Bob uses to Verify\\({}_k\\).\n\n\n\nPreviously, we assumed that Alice and Bob meet one time to create the symmetric secret key \\(k\\)\nToday, we will use discrete logarithms so that Alice and Bob can have authenticated communication over the Internet even if they have never physically met before\n\n\n\nIn the digital world, Alice and Bob need a secure way to exchange secrets in plain view.\n\n“The Internet is just the world passing notes in a classroom.”\n– Jon Stewart\n\n\n\nAmazingly, this can be done!\n\nThis ingenious protocol was discovered in the late 1970s by Whitfield Diffie and Martin Hellman, and it is named Diffie-Hellman key exchange in their honor\nIt was based on concepts developed earlier by Ralph Merkle… the same person who invented Merkle trees\n\n\n\n\n\n\n\n\nAlice\n\n\n\n\nBob\n\n\n\n\n\n\n\n\n\n\\(\\quad \\Longleftrightarrow \\quad\\)\n\n\n\n\n\n\n\n\nBased on the hardness of the discrete logarithm problem, here is an approach that Alice and Bob can take to create a symmetric secret key.\n\n\nAlice can choose a secret \\(a\\) that she keeps to herself, and send \\(A = G^a\\) to Bob \nBob can choose a secret exponent \\(b\\) and send \\(B = G^b\\) to Alice\n\n\n\n\n\n\n\n\n\nAlice and Bob should also digitally sign their messages \\(A\\) and \\(B\\), respectively, so they can verify that they are communicating with each other. (We will resolve soon the question of how they fetch each others’ public keys.)\n\n\n\n\n\nNow, there is a symmetric secret key that both of them can compute: \\(k = G^{ab}\\).\n\n\n\nAlice can take the public value \\(B\\) and raise it to her secret exponent \\(a\\) to compute \\(B^a = (G^b)^a = k\\)\nBob can do the opposite: \\(A^b = (G^a)^b = k\\)\n\n\n\nMoreover, nobody else can compute the symmetric secret key!\n\nMallory knows \\(G\\) and sees the messages \\(A\\) and \\(B\\) on the public Internet\nBut she does not know – and cannot compute – either secret exponent \\(a\\) or \\(b\\)\nSo, she has no way to compute \\(k\\)\n\n\n\n\n\n\n\nThe last line does not actually follow from the one before it. That is, it might be possible to compute the symmetric secret key \\(k\\) without learning either secret exponent \\(a\\) or \\(b\\).\n\nNevertheless, cryptographers do believe that the final line is true. This stronger mathematical claim is, appropriately enough, called the Diffie-Hellman assumption.",
     "crumbs": [
       "Protecting data integrity",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Key exchange</span>"
@@ -469,6 +469,61 @@
     "text": "Unit 2 of the course is on protecting data availability, or how to communicate without censorship. Its learning objectives are:\n\nExplain the components of a cryptocurrency including transactions, mining algorithms, and the blockchain data structure\nDescribe the goal of decentralization and distributed consensus abstractly, in any scenario needing data liveness and safety",
     "crumbs": [
       "Protecting data availability"
+    ]
+  },
+  {
+    "objectID": "08.html",
+    "href": "08.html",
+    "title": "8  Bitcoin overview",
+    "section": "",
+    "text": "To appear",
+    "crumbs": [
+      "Protecting data availability",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Bitcoin overview</span>"
+    ]
+  },
+  {
+    "objectID": "09.html",
+    "href": "09.html",
+    "title": "9  Proof of work mining",
+    "section": "",
+    "text": "To appear",
+    "crumbs": [
+      "Protecting data availability",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Proof of work mining</span>"
+    ]
+  },
+  {
+    "objectID": "10.html",
+    "href": "10.html",
+    "title": "10  Bitcoin security",
+    "section": "",
+    "text": "To appear",
+    "crumbs": [
+      "Protecting data availability",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Bitcoin security</span>"
+    ]
+  },
+  {
+    "objectID": "11.html",
+    "href": "11.html",
+    "title": "11  Byzantine broadcast",
+    "section": "",
+    "text": "To appear",
+    "crumbs": [
+      "Protecting data availability",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Byzantine broadcast</span>"
+    ]
+  },
+  {
+    "objectID": "12.html",
+    "href": "12.html",
+    "title": "12  Synchronous blockchains",
+    "section": "",
+    "text": "To appear",
+    "crumbs": [
+      "Protecting data availability",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Synchronous blockchains</span>"
     ]
   },
   {

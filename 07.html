@@ -251,8 +251,45 @@ window.Quarto = {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Protecting data availability</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="./unit2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data availability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bitcoin overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Proof of work mining</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin security</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Byzantine broadcast</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Synchronous blockchains</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -340,7 +377,7 @@ window.Quarto = {
 </section>
 <section id="review-from-last-lecture" class="level3">
 <h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
-<p>Last week, we studied <strong>message authentication codes</strong> (MACs) and digital signatures.</p>
+<p>Last week, we studied <strong>message authentication codes</strong> (MACs) and <strong>digital signatures</strong>.</p>
 <div class="incremental">
 <ul class="incremental">
 <li>Both can be used to ensure integrity of data at rest (e.g., on your hard drive) and in transit (e.g., sent over the Internet)</li>
@@ -501,34 +538,28 @@ window.Quarto = {
 <section id="diffie-hellman-key-exchange" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="diffie-hellman-key-exchange"><span class="header-section-number">7.2</span> Diffie-Hellman key exchange</h2>
 <!-- With this idea of 'limiting trust' in mind -->
-<p>Today, we will resolve two open questions from prior lectures:</p>
-<div class="incremental">
-<ol class="incremental" type="1">
-<li>MACs require that Alice and Bob <strong>agree</strong> on a symmetric key <span class="math inline">\(k\)</span>. How can they do so without ever meeting in person?</li>
-<li>Digital signatures require Alice to <strong>broadcast</strong> her public key <span class="math inline">\(\color{green}{pk}\)</span>, so that the rest of the world reaches <strong>consensus</strong> on which key belongs to Alice. How can we do that?</li>
-</ol>
-</div>
-<div class="fragment">
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>We will start the discussion of agreement, broadcast, and consensus today. Looking ahead, these topics will be a recurring theme in Unit 2.</p>
-</div>
-</div>
-</div>
-</div>
-<hr>
-<p>Remember that message authentication codes (MACs) allow Alice, when given any message <span class="math inline">\(m\)</span>, to append a sequence of bits called a <strong>tag</strong> that allows Bob to verify that:</p>
+<!--
+Today, we will resolve two open questions from prior lectures:
+
+::: {.incremental}
+1. MACs require that Alice and Bob **agree** on a symmetric key $k$. How can they do so without ever meeting in person?
+2. Digital signatures require Alice to **broadcast** her public key $\color{green}{pk}$, so that the rest of the world reaches **consensus** on which key belongs to Alice. How can we do that?
+:::
+
+::: {.fragment}
+::: {.callout-note}
+We will start the discussion of agreement, broadcast, and consensus today. Looking ahead, these topics will be a recurring theme in Unit 2.
+:::
+:::
+
+---
+
+-->
+<p>Recall that message authentication codes (MACs) allow Alice, when given any message <span class="math inline">\(m\)</span>, to append a sequence of bits called a <strong>tag</strong> that allows Bob to verify that:</p>
 <ul>
 <li>Alice sent the message <span class="math inline">\(m\)</span></li>
-<li>Mallory has not tampered <span class="math inline">\(m\)</span> in transit</li>
+<li>Mallory cannot perform a <em>meddler-in-the-middle</em> attack to tamper <span class="math inline">\(m\)</span> in transit</li>
 </ul>
-<div class="fragment">
-<p>MACs rely on a symmetric secret key <span class="math inline">\(k\)</span> that Alice uses to <code>Tag</code><span class="math inline">\({}_k\)</span> and Bob uses to <code>Verify</code><span class="math inline">\({}_k\)</span>.</p>
-<p>If Alice and Bob do not have a shared key, they are vulnerable to a <strong>meddler-in-the-middle</strong> attack.</p>
 <center>
 <table align="center">
 <thead>
@@ -569,18 +600,17 @@ Bob
 </tbody>
 </table>
 </center>
+<div class="fragment">
+<p>MACs rely on a symmetric secret key <span class="math inline">\(k\)</span> that Alice uses to <code>Tag</code><span class="math inline">\({}_k\)</span> and Bob uses to <code>Verify</code><span class="math inline">\({}_k\)</span>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Previously, we assumed that Alice and Bob meet one time to create the symmetric secret key <span class="math inline">\(k\)</span></li>
+<li>Today, we will use <em>discrete logarithms</em> so that Alice and Bob can have authenticated communication over the Internet even if they have never physically met before</li>
+</ul>
 </div>
 <div class="fragment">
-<p>Previously, we made a simplification:</p>
-<blockquote class="blockquote">
-<p>Suppose that Alice and Bob physically meet one time</p>
-</blockquote>
-</div>
-<div class="fragment">
-<p>Today, we will use <em>discrete logarithms</em> so that Alice and Bob can have authenticated communication over the Internet even if they have never physically met before.</p>
-</div>
-<div class="fragment">
-<p>In the digital world, they need a secure way to <em>exchange secrets in plain view</em>.</p>
+<p>In the digital world, Alice and Bob need a secure way to <strong>exchange secrets in plain view</strong>.</p>
 <blockquote class="blockquote">
 <p>“The Internet is just the world passing notes in a classroom.”</p>
 <p>– Jon Stewart</p>
@@ -626,7 +656,7 @@ Bob
 <p>Based on the hardness of the discrete logarithm problem, here is an approach that Alice and Bob can take to create a symmetric secret key.</p>
 <div class="incremental">
 <ul class="incremental">
-<li>Alice can choose a secret <span class="math inline">\(a\)</span> that she keeps to herself, and send <span class="math inline">\(A = G^a\)</span> to Bob <!-- (Remember, nobody can take $A$ and reconstruct $a$... not Bob, or anyone else!) --></li>
+<li>Alice can choose a secret <span class="math inline">\(a\)</span> that she keeps to herself, and send <span class="math inline">\(A = G^a\)</span> to Bob <!-- (Remember, nobody can take $A$ and reconstruct $a$... not Bob, nor anyone else!) --></li>
 <li>Bob can choose a secret exponent <span class="math inline">\(b\)</span> and send <span class="math inline">\(B = G^b\)</span> to Alice</li>
 </ul>
 </div>
@@ -637,7 +667,7 @@ Bob
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>Alice and Bob should also digitally sign their messages <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, respectively, so they can verify that they are communicating with each other. (We will resolve soon the question of how they get each others’ public keys.)</p>
+<p>Alice and Bob should also digitally sign their messages <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, respectively, so they can verify that they are communicating with each other. (We will resolve soon the question of how they fetch each others’ public keys.)</p>
 </div>
 </div>
 </div>
@@ -666,7 +696,7 @@ Bob
 <div class="callout-body-container">
 <p>The last line does not actually follow from the one before it. That is, it might be possible to compute the symmetric secret key <span class="math inline">\(k\)</span> without learning either secret exponent <span class="math inline">\(a\)</span> or <span class="math inline">\(b\)</span>.</p>
 <!-- Just like it is possible to find collisions in a hash function without being able to find preimages -->
-<p>Nevertheless, cryptographers do believe that the final line is true. This stronger mathematical claim is, appropriately enough, called the <em>Diffie-Hellman assumption</em>.</p>
+<p>Nevertheless, cryptographers do believe that the final line is true. This stronger mathematical claim is, appropriately enough, called the <strong>Diffie-Hellman assumption</strong>.</p>
 </div>
 </div>
 </div>
@@ -723,7 +753,7 @@ Bob
 </div><div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/04-phone-directory.jpg" class="img-fluid figure-img" width="450"></p>
+<p><img src="images/07-phone-directory.jpg" class="img-fluid figure-img" width="450"></p>
 <figcaption>Telephone directory (image source: <a href="https://en.wikipedia.org/wiki/Telephone_directory">Wikipedia</a>)</figcaption>
 </figure>
 </div>
