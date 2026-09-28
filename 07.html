@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -203,8 +267,32 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#assumptions-and-trust" id="toc-assumptions-and-trust" class="nav-link" data-scroll-target="#assumptions-and-trust"><span class="header-section-number">7.1</span> Assumptions and Trust</a>
+  <ul class="collapse">
+  <li><a href="#avoiding-intermediaries" id="toc-avoiding-intermediaries" class="nav-link" data-scroll-target="#avoiding-intermediaries">Avoiding intermediaries</a></li>
+  <li><a href="#thinking-like-mallory" id="toc-thinking-like-mallory" class="nav-link" data-scroll-target="#thinking-like-mallory">Thinking like Mallory</a></li>
+  </ul></li>
+  <li><a href="#diffie-hellman-key-exchange" id="toc-diffie-hellman-key-exchange" class="nav-link" data-scroll-target="#diffie-hellman-key-exchange"><span class="header-section-number">7.2</span> Diffie-Hellman key exchange</a></li>
+  <li><a href="#public-key-infrastructure" id="toc-public-key-infrastructure" class="nav-link" data-scroll-target="#public-key-infrastructure"><span class="header-section-number">7.3</span> Public key infrastructure</a>
+  <ul class="collapse">
+  <li><a href="#certificate-authorities" id="toc-certificate-authorities" class="nav-link" data-scroll-target="#certificate-authorities">Certificate authorities</a></li>
+  </ul></li>
+  <li><a href="#overview-of-consensus" id="toc-overview-of-consensus" class="nav-link" data-scroll-target="#overview-of-consensus"><span class="header-section-number">7.4</span> Overview of consensus</a>
+  <ul class="collapse">
+  <li><a href="#muddy-children-puzzle" id="toc-muddy-children-puzzle" class="nav-link" data-scroll-target="#muddy-children-puzzle">Muddy children puzzle</a></li>
+  <li><a href="#reasoning-about-the-puzzle" id="toc-reasoning-about-the-puzzle" class="nav-link" data-scroll-target="#reasoning-about-the-puzzle">Reasoning about the puzzle</a></li>
+  <li><a href="#back-to-crypto" id="toc-back-to-crypto" class="nav-link" data-scroll-target="#back-to-crypto">Back to crypto</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -228,9 +316,569 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>To appear</p>
+<!-- TODO: add some info about AI safety and its use of pseudorandomness, like Miranda's talk on watermarking and the 9/23 RESI talk on AI bot communications -->
+<!-- TODO: add example of bad signature code. Discuss the skill of problem formulation and technical specification (e.g., via a formal definition); like issue-spotting, this is becoming more critical in an age of AI -->
+<hr>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Homework
+<ul>
+<li>This week: HW 3 due Wed 9/30 at 8pm</li>
+<li>Next week: no homework</li>
+</ul></li>
+<li>Exam 1 during lecture on Monday 10/5, covering:
+<ul>
+<li>Lectures 1-7 (so: today’s material is in scope, but Wednesday will be part of Exam 2)</li>
+<li>Labs 1-4 and associated textbook reading</li>
+<li>Homework 1-3</li>
+</ul></li>
+<li>Lab 5 on this week’s reading (<a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 2.1-2.3</a>) and Exam 1 review</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>Last week, we studied <strong>message authentication codes</strong> (MACs) and digital signatures.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Both can be used to ensure integrity of data at rest (e.g., on your hard drive) and in transit (e.g., sent over the Internet)</li>
+<li>MACs have one <em>symmetric key</em> <span class="math inline">\(k\)</span> that Alice and Bob can use to send messages back and forth</li>
+<li>Digital signatures are <em>asymmetric</em> and allow Alice (with <span class="math inline">\({\color{red}{sk}}\)</span>) to send a message that the entire world can verify (with <span class="math inline">\({\color{green}{pk}}\)</span>)</li>
+</ul>
+<!-- There are also (more subtle) differences regarding receiver authentication, deniability vs non-repudiation, etc -->
+</div>
+<div class="fragment">
+<p>Here is where we ended Lecture 6:</p>
+<blockquote class="blockquote">
+<p>We left two problems unsolved this week.</p>
+<ul>
+<li>MACs require that Alice and Bob agree on their symmetric secret key <span class="math inline">\(k\)</span>. How can they do so over the Internet (without meeting in person)?</li>
+<li>Digital signatures require that Alice publish her public key <span class="math inline">\({\color{green}{pk}_{\text{Alice}}}\)</span>. How can everyone in the world reliably fetch this key <span class="math inline">\({\color{green}{pk}_{\text{Alice}}}\)</span> without it being tampered with by Mallory?</li>
+</ul>
+<p>We will solve both of these problems next Monday.</p>
+</blockquote>
+</div>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How Alice and Bob can <em>agree</em> on a symmetric key, without ever meeting in person</li>
+<li>How the world can reach <em>consensus</em> about Alice’s public key, without ever meeting her in person</li>
+</ul>
+<hr>
+</section>
+<section id="assumptions-and-trust" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="assumptions-and-trust"><span class="header-section-number">7.1</span> Assumptions and Trust</h2>
+<p>Looking back at Unit 1: we have rapidly built up our cryptographic toolbox! But we have made some <strong>assumptions</strong> along the way.</p>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Which of the following statements is <em>not</em> an assumption, but instead can be mathematically proved to be true based on another statement in this list?</p>
+<ol type="A">
+<li>Finding collisions in SHA-256 is practically infeasible</li>
+<li>Forging HMAC is practically infeasible</li>
+<li>Factoring very big integers is practically infeasible</li>
+<li>Computing discrete logarithms in elliptic curve groups is practically infeasible</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Here are some assumptions we have made so far in this course.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><em>Hash function assumptions</em>: SHA-256 is preimage-resistant, collision resistant, puzzle friendly, and acts like a random oracle
+<ul class="incremental">
+<li>From this assumption, we can prove that hash-based message commitments and HMAC are secure <!-- from this, we can prove the security of other symmetric key primitives like message commitments and HMAC --></li>
+</ul></li>
+<li><em>Discrete logarithm assumption</em>: If <span class="math inline">\(G^x = Y\)</span> and Mallory is given the two points <span class="math inline">\(G\)</span> and <span class="math inline">\(Y\)</span>, then it is computationally infeasible for her to find the discrete logarithm <span class="math inline">\(x\)</span>
+<ul class="incremental">
+<li>From this assumption, we can prove that Schnorr and ECDSA signatures are secure</li>
+</ul></li>
+<li>Bob is not Mallory: i.e., the person Alice wants to communicate with over the Internet is her friend and not her adversary</li>
+</ul>
+</div>
+<!--
+::: {.fragment}
+> “Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”
+>
+> – Ben Adida
+:::
+-->
+<div class="fragment">
+<p><strong>Question.</strong> <em>Are these assumptions true?</em></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Based on decades of cryptanalysis, we have strong evidence to believe that breaking SHA-256 and discrete logarithms are practically infeasible… but admittedly I cannot definitively prove these claims</p></li>
+<li><p>Whether Bob is Alice’s friend is a social question, which I cannot answer for her</p></li>
+</ul>
+</div>
+<hr>
+<section id="avoiding-intermediaries" class="level3">
+<h3 class="anchored" data-anchor-id="avoiding-intermediaries">Avoiding intermediaries</h3>
+<p>This course covers four fundamental topics.</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><em>Protecting data integrity</em>: authenticating data and its sender over the Internet, without needing to rely on intermediaries (like Internet service providers)</p></li>
+<li><p><em>Protecting data availability</em>: building consensus in financial transactions and other publicly-proclaimed statements, without needing to rely on intermediaries (like banks or social media)</p></li>
+<li><p><em>Protecting data confidentiality</em>: sharing data only with specific people on the Internet, without needing to give your data to intermediaries (like big tech companies)</p></li>
+<li><p><em>Protecting data science</em>: performing and verifying data analysis, without sharing your data with any intermediaries (like cloud providers or auditors)</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>Note the common theme across all topics:</p>
+<blockquote class="blockquote">
+<p>The tools in this course allow for data-driven decision making, without the need to place blind trust in another company or person.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>To be clear: it is perfectly fine to trust other people!</p>
+<ul>
+<li>At a personal level: forming relationships is a fundamental part of being human</li>
+<li>As a society: there is immense value to be gained by building civic, economic, legal, and political structures and then working to demonstrate their trustworthiness</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Instead, what I claim is that:</p>
+<ul>
+<li>It is bad if you are <em>forced</em> to trust a specific intermediary just to get things done <!-- (either in the physical or digital world) --></li>
+<li>It is worse if you <em>cannot verify</em> the intermediary’s behavior to know if they are worthy of your trust</li>
+<li>It is terrible if you <em>cannot change</em> who you trust because the intermediary is “too big to fail”</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="thinking-like-mallory" class="level3">
+<h3 class="anchored" data-anchor-id="thinking-like-mallory">Thinking like Mallory</h3>
+<p>This course teaches you to think from an adversarial perspective, and to learn how cryptography can be used to build <strong>secure and trustworthy</strong> data science systems that allow people to:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Reduce the level of trust required in other entities</li>
+<li>Understand exactly what they are trusting other entities to do (i.e., how things could go wrong, and what needs to happen for a bad outcome to occur)</li>
+<li>Verify that trusted entities are acting correctly</li>
+<li>Have free will to change which entities they trust, and for what purposes <!-- avoiding the "too big to fail" problem --></li>
+</ul>
+</div>
+<div class="fragment">
+<p>In other words, <em>Kerckhoffs’s principle #4</em> applies to people as well as data.</p>
+<blockquote class="blockquote">
+<p>It must be possible to communicate and remember the key without using written notes, and correspondents <strong>must be able to change or modify it at will</strong></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>It is my hope that, in this course, you develop the skill of asking (and answering) the question of “what could go wrong?” Learning to think like the adversary Mallory will help you be a better data scientist.</p>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> What could go wrong with the following code? In preparing for Exam 1, try to find as many flaws with this code block as you can.</p>
+<div id="68e32aa7" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Alice_sign(message):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   secret_key <span class="op">=</span> randint(<span class="dv">0</span>, <span class="dv">2</span><span class="op">**</span><span class="dv">64</span>)                   <span class="co"># sample uniformly at random</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   public_key <span class="op">=</span> PublicKey.from_sk(secret_key)       <span class="co"># compute Alice's public key</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   random_k   <span class="op">=</span> <span class="bu">int</span>(time.time())                    <span class="co"># sample one-time randomness</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   signature  <span class="op">=</span> sign(secret_key, message, random_k) <span class="co"># run ECDSA.sign</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> public_key, message, signature            <span class="co"># send to Bob over the Internet</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Bob_verify(public_key, message, signature):     <span class="co"># received from Alice over the Internet</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> verify(public_key, message, signature)    <span class="co"># run ECDSA.verify, return the result</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This is valid Python code (with the import statements omitted for brevity). It will execute and, if everyone is honest, Alice will send a message to Bob that successfully verifies.</p>
+<p>But the code has multiple flaws, each of which renders the code entirely insecure and worthless in the presence of an adversary.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="diffie-hellman-key-exchange" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="diffie-hellman-key-exchange"><span class="header-section-number">7.2</span> Diffie-Hellman key exchange</h2>
+<!-- With this idea of 'limiting trust' in mind -->
+<p>Today, we will resolve two open questions from prior lectures:</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li>MACs require that Alice and Bob <strong>agree</strong> on a symmetric key <span class="math inline">\(k\)</span>. How can they do so without ever meeting in person?</li>
+<li>Digital signatures require Alice to <strong>broadcast</strong> her public key <span class="math inline">\(\color{green}{pk}\)</span>, so that the rest of the world reaches <strong>consensus</strong> on which key belongs to Alice. How can we do that?</li>
+</ol>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>We will start the discussion of agreement, broadcast, and consensus today. Looking ahead, these topics will be a recurring theme in Unit 2.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<p>Remember that message authentication codes (MACs) allow Alice, when given any message <span class="math inline">\(m\)</span>, to append a sequence of bits called a <strong>tag</strong> that allows Bob to verify that:</p>
+<ul>
+<li>Alice sent the message <span class="math inline">\(m\)</span></li>
+<li>Mallory has not tampered <span class="math inline">\(m\)</span> in transit</li>
+</ul>
+<div class="fragment">
+<p>MACs rely on a symmetric secret key <span class="math inline">\(k\)</span> that Alice uses to <code>Tag</code><span class="math inline">\({}_k\)</span> and Bob uses to <code>Verify</code><span class="math inline">\({}_k\)</span>.</p>
+<p>If Alice and Bob do not have a shared key, they are vulnerable to a <strong>meddler-in-the-middle</strong> attack.</p>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="160">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<div class="fragment">
+<p>Previously, we made a simplification:</p>
+<blockquote class="blockquote">
+<p>Suppose that Alice and Bob physically meet one time</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Today, we will use <em>discrete logarithms</em> so that Alice and Bob can have authenticated communication over the Internet even if they have never physically met before.</p>
+</div>
+<div class="fragment">
+<p>In the digital world, they need a secure way to <em>exchange secrets in plain view</em>.</p>
+<blockquote class="blockquote">
+<p>“The Internet is just the world passing notes in a classroom.”</p>
+<p>– Jon Stewart</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Amazingly, this can be done!</p>
+<ul>
+<li>This ingenious protocol was discovered in the late 1970s by Whitfield Diffie and Martin Hellman, and it is named <strong>Diffie-Hellman key exchange</strong> in their honor</li>
+<li>It was based on concepts developed earlier by Ralph Merkle… the same person who invented Merkle trees</li>
+</ul>
+</div>
+<hr>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \Longleftrightarrow \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<p>Based on the hardness of the discrete logarithm problem, here is an approach that Alice and Bob can take to create a symmetric secret key.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Alice can choose a secret <span class="math inline">\(a\)</span> that she keeps to herself, and send <span class="math inline">\(A = G^a\)</span> to Bob <!-- (Remember, nobody can take $A$ and reconstruct $a$... not Bob, or anyone else!) --></li>
+<li>Bob can choose a secret exponent <span class="math inline">\(b\)</span> and send <span class="math inline">\(B = G^b\)</span> to Alice</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Alice and Bob should also digitally sign their messages <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, respectively, so they can verify that they are communicating with each other. (We will resolve soon the question of how they get each others’ public keys.)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Now, there is a <strong>symmetric secret key</strong> that both of them can compute: <span class="math inline">\(k = G^{ab}\)</span>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Alice can take the public value <span class="math inline">\(B\)</span> and raise it to her secret exponent <span class="math inline">\(a\)</span> to compute <span class="math inline">\(B^a = (G^b)^a = k\)</span></li>
+<li>Bob can do the opposite: <span class="math inline">\(A^b = (G^a)^b = k\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Moreover, nobody else can compute the symmetric secret key!</p>
+<ul>
+<li>Mallory knows <span class="math inline">\(G\)</span> and sees the messages <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> on the public Internet</li>
+<li>But she does not know – and cannot compute – either secret exponent <span class="math inline">\(a\)</span> or <span class="math inline">\(b\)</span></li>
+<li>So, she has no way to compute <span class="math inline">\(k\)</span></li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The last line does not actually follow from the one before it. That is, it might be possible to compute the symmetric secret key <span class="math inline">\(k\)</span> without learning either secret exponent <span class="math inline">\(a\)</span> or <span class="math inline">\(b\)</span>.</p>
+<!-- Just like it is possible to find collisions in a hash function without being able to find preimages -->
+<p>Nevertheless, cryptographers do believe that the final line is true. This stronger mathematical claim is, appropriately enough, called the <em>Diffie-Hellman assumption</em>.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="public-key-infrastructure" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="public-key-infrastructure"><span class="header-section-number">7.3</span> Public key infrastructure</h2>
+<p>Next, let’s turn to the problem that digital signatures require Alice to <strong>broadcast</strong> her public key <span class="math inline">\(\color{green}{pk}\)</span>, so that the rest of the world reaches <strong>consensus</strong> on which key belongs to Alice. How can we do that?</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>If Alice applies a <em>digital signature</em> to the message “I Alice hereby send $1 to Bob”, then:</p>
+<ul>
+<li>Bob himself should become convinced that Alice was the signer</li>
+<li>Bob can show it to a bank, who should also be convinced and will credit Bob’s account</li>
+</ul>
+</div><div class="column" style="width:30%;">
+<p><img src="images/01-check.jpg" class="img-fluid" width="400"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Remember that the <code>Verify</code><span class="math inline">\({}_{\color{green}{pk}}\)</span> algorithm requires a public key, but it never requires Alice’s name or identity.</p>
+<p>So technically, digital signatures convince the world that “whoever holds the secret key corresponding to <span class="math inline">\(\color{green}{pk}\)</span> must have signed the message.”</p>
+</div>
+<hr>
+<p><strong>Question.</strong> How can Alice securely <strong>bind</strong> her identity to the public key?</p>
+<ul>
+<li>How can Alice securely tell the world: “I am Alice and my public key is <span class="math inline">\(\color{green}{pk}\)</span>”</li>
+<li>How can Alice stop Mallory from <em>also</em> telling the world: “I am Alice and my public key is <span class="math inline">\(\color{brown}{pk^*}\)</span>” <!-- for a different key $pk^*$ chosen by Mallory? --></li>
+</ul>
+<div class="fragment">
+<p>There is a chicken-and-egg issue here:</p>
+<ul>
+<li>In general, Alice can use signatures to convince the world that she’s the creator of any message, <em>after</em> people have associated <span class="math inline">\(\color{green}{pk}\)</span> with Alice’s identity.</li>
+<li>But to start this process, someone needs to physically check Alice’s real-world identity. Bob could do this himself, but the goal of digital signatures is to avoid the need for Alice and Bob to meet in the real world.</li>
+</ul>
+</div>
+<hr>
+<section id="certificate-authorities" class="level3">
+<h3 class="anchored" data-anchor-id="certificate-authorities">Certificate authorities</h3>
+<p>On the Internet, we rely on companies called <strong>certificate authorities</strong>. These companies are paid to:</p>
+<ul>
+<li>Verify Alice’s identity (i.e., her name, email address, and/or web domain)</li>
+<li>Attest to the rest of the world that Alice is the entity corresponding to the public key <span class="math inline">\(\color{green}{pk}\)</span></li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:57%;">
+<p>The entire system consisting of CA companies and these attestations is often called the <strong>public key infrastructure</strong>, or PKI. You can think of the PKI as similar to a telephone directory, just for cryptographic public keys rather than telephone numbers.</p>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/04-phone-directory.jpg" class="img-fluid figure-img" width="450"></p>
+<figcaption>Telephone directory (image source: <a href="https://en.wikipedia.org/wiki/Telephone_directory">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Let me provide two examples of digital certificates.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p>The website <code>bu.edu</code>, like all websites, uses digital signatures so that all visitors know that the data is authentic and comes from BU.</p>
+<p>If you click on the 🔒 icon in your web browser, it shows that the certificate authority “Sectigo Limited” attests that the RSA public key <code>B3 52 C6 ...</code> (in hex) belongs to the organization “Trustees of Boston University” from Feb 2026 to Feb 2027.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-cert-bu.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Digital certificate for bu.edu, as viewed in Firefox</figcaption>
+</figure>
+</div></li>
+<li><p>Here is a digital certificate for the website <code>google.com</code>. Note that Google also acts as a certificate authority, so they are attesting to their own identity. Also, this certificate expires in just 3 months, and the Google server uses ECDSA signatures with a smaller key.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-cert-google.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Digital certificate for google.com, as viewed in Firefox</figcaption>
+</figure>
+</div></li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Questions</strong> for discussion:</p>
+<ul>
+<li><p>How can we check that the attestation is really coming from “Sectigo Limited” or “Google Trust Services”? <!-- and not a false claim by Mallory --></p></li>
+<li><p>Why do certificates have expiration dates?</p></li>
+<li><p>What happens if a certificate authority makes a bad attestation, like saying that <code>B3 52 C6 ...</code> is the public key for <code>google.com</code>?</p></li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="overview-of-consensus" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="overview-of-consensus"><span class="header-section-number">7.4</span> Overview of consensus</h2>
+<p>In the PKI, all participants reach <em>consensus</em> over the binding between identities and public keys.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>But what exactly does “<strong>consensus</strong>” mean?</p></li>
+<li><p>I want to spend some time explaining how this is a deceptively powerful property. It means that everyone reaches <strong>common knowledge</strong>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Common knowledge is a powerful concept in logic.</p>
+<p>Consider the following statements. All of them are true, but note that each statement is strictly stronger than the previous ones!</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>I (the instructor) have black hair.</li>
+<li>You know that I have black hair.</li>
+<li>I know that you know that I have black hair.</li>
+<li>You know that I know that you know that I have black hair.</li>
+<li>(… and so on)</li>
+</ul>
+</div>
+<hr>
+<section id="muddy-children-puzzle" class="level3">
+<h3 class="anchored" data-anchor-id="muddy-children-puzzle">Muddy children puzzle</h3>
+<p>To see the power of common knowledge, let’s step away from crypto for a moment and consider the following problem.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>There are <span class="math inline">\(n\)</span> children who play in a playground, during which some of them get mud on their forehead (let <span class="math inline">\(m\)</span> denote the number of muddy children, but the children <em>do not know</em> <span class="math inline">\(m\)</span>)</li>
+<li>Afterward, the teacher gathers the children in a circle and announces that “one or more of you have mud on your forehead”</li>
+<li>Each child can see if others have mud on their forehead, but cannot tell whether their own forehead is muddy</li>
+<li>The children are not allowed to talk with each other</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In the first minute, the teacher says: “at this moment, if you know you have mud on your forehead, please step forward.”</p>
+<p><strong>Question.</strong> How will the children decide whether to respond? (Note: if a child is not 100% confident that they have mud on their forehead, they do nothing.)</p>
+</div>
+<div class="fragment">
+<p>One minute passes. Then in the second minute, the teacher says again “at this moment, if you know you have mud on your forehead, please step forward.”</p>
+<p>Every minute, the teacher issues the same call once again.</p>
+<p><strong>Question.</strong> What happens now? Remember that the children cannot talk with each other. Their only form of communication is to step forward if they are convinced that yes, they do have mud on their forehead.</p>
+</div>
+<hr>
+<p><strong>Interactive question.</strong> When will the first child step forward?</p>
+<ol type="A">
+<li>In minute 2</li>
+<li>In minute <span class="math inline">\(m\)</span></li>
+<li>In minute <span class="math inline">\(n\)</span></li>
+<li>No child will ever step forward</li>
+</ol>
+<hr>
+</section>
+<section id="reasoning-about-the-puzzle" class="level3">
+<h3 class="anchored" data-anchor-id="reasoning-about-the-puzzle">Reasoning about the puzzle</h3>
+<p>In this puzzle, the children:</p>
+<ul>
+<li>Start with the <strong>mutual knowledge</strong> from the teacher that “one or more of you have mud on your forehead.”</li>
+<li>Develop the <strong>common knowledge</strong> over time that nobody else is confident in answering the question just yet!</li>
+</ul>
+<div class="fragment">
+<p>Specifically, the children act as follows:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>In the first minute: if a child looks around and sees nobody with mud on their forehead, then they must be the one and only muddy child, so they step forward (and nobody else will)</li>
+<li>The children’s actions in second minute depend on what happened in the first minute
+<ul class="incremental">
+<li>If a child stepped forward in the first round: now everyone has <strong>common knowledge</strong> that there is exactly one muddy child, and nobody else will ever step forward</li>
+<li>Otherwise, each child has learned new information: based on the fact that nobody was confident to step forward in the first round, there must be at least <strong>two</strong> children with a muddy forehead!</li>
+</ul></li>
+<li>Hence in the second minute: any child who only sees one muddy forehead can be convinced that they are the second muddy child, and they will step forward</li>
+<li>If nobody steps forward in the second minute, then each child has seen at least two muddy foreheads, so they conclude there must be at least <strong>three</strong> muddy children</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Continuing by induction, it turns out that if there are <span class="math inline">\(m\)</span> muddy children, then:</p>
+<ul>
+<li>Nobody will move for <span class="math inline">\(m-1\)</span> rounds, and then</li>
+<li>In round <span class="math inline">\(m\)</span>, all <span class="math inline">\(m\)</span> muddy children will simultaneously step forward.</li>
+<li>The non-muddy children will (correctly) never step forward.</li>
+</ul>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Amazingly, the children have learned so much information from each other without saying anything at all! Remember that the children did not know the value of <span class="math inline">\(m\)</span> at the start of the puzzle.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="back-to-crypto" class="level3">
+<h3 class="anchored" data-anchor-id="back-to-crypto">Back to crypto</h3>
+<p>The public key infrastructure gives us a way to go…</p>
+<ul>
+<li>From <strong>mutual knowledge</strong> of public keys: the certificate authority (CA) knows which public keys correspond to which identities</li>
+<li>To <strong>common knowledge</strong> of public keys: I know which key corresponds to which entity (like <code>bu.edu</code> or <code>google.com</code>), and I know that you know the identity, and I know that you know that I know the identity, and so on</li>
+</ul>
+<div class="fragment">
+<p>The PKI does require us to place some trust in the certificate authorities, but this trust is <strong>verifiable</strong> and <strong>revocable</strong>.</p>
+</div>
+<div class="fragment">
+<p>In Unit 2 of this course, we will see that:</p>
+<ul>
+<li><p>Once we have achieved common knowledge about the PKI, we can build common knowledge about any other message – that is, Alice can reliably <strong>broadcast</strong> any message so anyone can read it and be convinced that everyone else can read it too</p></li>
+<li><p>If there is a collection of people and most of them are honest, then we can reliably broadcast messages and achieve <strong>consensus</strong> about them <em>without</em> relying on a PKI</p></li>
+</ul>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -872,7 +872,7 @@ It is helpful to have a definition in hand _before_ we try to construct a digita
 <li><p>The receiver can <code>Verify</code> the claimed signature <span class="math inline">\(\sigma = (s, e)\)</span> of a message <span class="math inline">\(m\)</span> as follows: <!-- The main idea is that the variable $e$ is involved in two calculations: it's connected to $s$ and $x$ using group operations, and to $R$ and $m$ using the hash function --></p>
 <ol type="1">
 <li>Compute <span class="math inline">\(R^* = G^{s}{\color{green}{Y}}^{e}\)</span></li>
-<li>Compute <span class="math inline">\(e^* = H(\bar{R}, m)\)</span></li>
+<li>Compute <span class="math inline">\(e^* = H(R^*, m)\)</span></li>
 </ol>
 <p>If <span class="math inline">\(e^* = e\)</span>, then return <code>true</code> (the signature is valid). Otherwise, return <code>false</code> (the signature is a forgery).</p></li>
 </ul>
@@ -905,8 +905,8 @@ It is helpful to have a definition in hand _before_ we try to construct a digita
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li><p>If Mallory picks <span class="math inline">\(s\)</span> and <span class="math inline">\(e\)</span> first, then that determines the value of <span class="math inline">\(\bar{R}\)</span> in step 1. But the cryptographic hash function in step 2 acts like a random oracle, and it is extremely unlikely that <span class="math inline">\(H(\bar{R}, m)\)</span> happens to equal Mallory’s chosen <span class="math inline">\(e\)</span>.</p></li>
-<li><p>If Mallory picks <span class="math inline">\(\bar{R}\)</span> first, that determines the value of <span class="math inline">\(e = H(\bar{R}, m)\)</span> in step 2. Returning to step 1, she needs to solve the equation <span class="math inline">\(G^{s} = \bar{R}/Y^e\)</span> for the only remaining unknown value: <span class="math inline">\(s\)</span>. But that requires solving a discrete logarithm problem!</p></li>
+<li><p>If Mallory picks <span class="math inline">\(s\)</span> and <span class="math inline">\(e\)</span> first, then that determines the value of <span class="math inline">\(R^*\)</span> in step 1. But the cryptographic hash function in step 2 acts like a random oracle, and it is extremely unlikely that <span class="math inline">\(H(R^*, m)\)</span> happens to equal Mallory’s chosen <span class="math inline">\(e\)</span>.</p></li>
+<li><p>If Mallory picks <span class="math inline">\(R^*\)</span> first, that determines the value of <span class="math inline">\(e = H(R^*, m)\)</span> in step 2. Returning to step 1, she needs to solve the equation <span class="math inline">\(G^{s} = R^*/Y^e\)</span> for the only remaining unknown value: <span class="math inline">\(s\)</span>. But that requires solving a discrete logarithm problem!</p></li>
 </ul>
 </div>
 <div class="fragment">
