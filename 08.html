@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -201,7 +265,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin security</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -231,8 +295,37 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-previous-lectures" id="toc-review-from-previous-lectures" class="nav-link" data-scroll-target="#review-from-previous-lectures">Review from previous lectures</a></li>
+  <li><a href="#internet-based-money" id="toc-internet-based-money" class="nav-link" data-scroll-target="#internet-based-money"><span class="header-section-number">8.1</span> Internet-based money</a></li>
+  <li><a href="#bitcoins-public-ledger" id="toc-bitcoins-public-ledger" class="nav-link" data-scroll-target="#bitcoins-public-ledger"><span class="header-section-number">8.2</span> Bitcoin’s public ledger</a>
+  <ul class="collapse">
+  <li><a href="#history" id="toc-history" class="nav-link" data-scroll-target="#history">History</a></li>
+  </ul></li>
+  <li><a href="#bitcoin-transactions" id="toc-bitcoin-transactions" class="nav-link" data-scroll-target="#bitcoin-transactions"><span class="header-section-number">8.3</span> Bitcoin transactions</a>
+  <ul class="collapse">
+  <li><a href="#transaction-validity" id="toc-transaction-validity" class="nav-link" data-scroll-target="#transaction-validity">Transaction validity</a></li>
+  <li><a href="#pseudonymity" id="toc-pseudonymity" class="nav-link" data-scroll-target="#pseudonymity">Pseudonymity</a></li>
+  <li><a href="#broadcasting-transactions" id="toc-broadcasting-transactions" class="nav-link" data-scroll-target="#broadcasting-transactions">Broadcasting transactions</a></li>
+  </ul></li>
+  <li><a href="#bitcoin-blocks" id="toc-bitcoin-blocks" class="nav-link" data-scroll-target="#bitcoin-blocks"><span class="header-section-number">8.4</span> Bitcoin blocks</a>
+  <ul class="collapse">
+  <li><a href="#consensus-over-blocks" id="toc-consensus-over-blocks" class="nav-link" data-scroll-target="#consensus-over-blocks">Consensus over blocks</a></li>
+  </ul></li>
+  <li><a href="#participants-in-bitcoin" id="toc-participants-in-bitcoin" class="nav-link" data-scroll-target="#participants-in-bitcoin"><span class="header-section-number">8.5</span> Participants in Bitcoin</a>
+  <ul class="collapse">
+  <li><a href="#role-of-a-miner" id="toc-role-of-a-miner" class="nav-link" data-scroll-target="#role-of-a-miner">Role of a miner</a></li>
+  <li><a href="#leader-election" id="toc-leader-election" class="nav-link" data-scroll-target="#leader-election">Leader election</a></li>
+  </ul></li>
+  <li><a href="#bitcoin-ensures-consensus-not-speed" id="toc-bitcoin-ensures-consensus-not-speed" class="nav-link" data-scroll-target="#bitcoin-ensures-consensus-not-speed"><span class="header-section-number">8.6</span> Bitcoin ensures consensus, not speed</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -256,11 +349,628 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- TODO: find a place to integrate the old title: "From cryptography to cryptocurrencies" -->
 <hr>
-<p>To appear</p>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>HW 3 due today at 8pm, with grace period until Friday at 10pm (<a href="https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1790776800001">NIST beacon</a>)</li>
+<li>Lab 5 on this week’s reading (<a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 2.1-2.3</a>) and Exam 1 review</li>
+<li>Exam 1 next Monday (Oct 5)
+<ul>
+<li>Bring your BU ID and a pencil + eraser (or pen)</li>
+<li>Do not bring any written materials or electronic aids (no calculators, cheat sheets, headphones, laptops, notes, phones, or textbooks)</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<!-- - How Bitcoin achieves consensus on the state of its "public ledger," also known as the blockchain -->
+<ul>
+<li>How cryptocurrencies allow people to broadcast and record financial payments on a “public ledger,” also known as a blockchain</li>
+<li>The role that hash functions and digital signatures play in the design of Bitcoin <!-- and the extra technological and economic ideas that Bitcoin introduces on top of them --></li>
+</ul>
+<hr>
+</section>
+<section id="review-from-previous-lectures" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-previous-lectures">Review from previous lectures</h3>
+<p>A cryptographic <strong>hash function</strong> <span class="math inline">\(H: \{0, 1\}^* \to \{0, 1\}^n\)</span> is an efficiently-computable function that accepts <em>unbounded</em> input and that provides output strings of a <em>fixed</em> number of bits <span class="math inline">\(n\)</span>. It satisfies the following requirements:</p>
+<ul>
+<li><em>Preimage resistance</em>: given a uniformly random string <span class="math inline">\(y \in \{0, 1\}^n\)</span>, it is practically infeasible for Mallory to find any preimage <span class="math inline">\(x\)</span> such that <span class="math inline">\(H(x) = y\)</span>.</li>
+<li><em>Collision resistance</em>: it is practically infeasible for Mallory to find two different inputs <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> such that <span class="math inline">\(H(x_1) = H(x_2)\)</span></li>
+<li><em>Random oracle</em>: <span class="math inline">\(H\)</span> acts as if its truth table has random and independent rows</li>
+</ul>
+<div class="fragment">
+<p>A <strong>digital signature</strong> provides three efficiently computable operations (<code>KeyGen</code>, <code>Sign</code>, and <code>Verify</code>) that satisfy the following requirements:</p>
+<ul>
+<li><em>Correctness</em>: Alice’s honest signatures always pass the verification check</li>
+<li><em>Unforgeability</em>: even after Mallory receives signatures on messages of her choice, it is computationally infeasible for her to forge a signature on a new message</li>
+</ul>
+</div>
+<div class="fragment">
+<p>These two cryptographic tools are all we need to build a <strong>cryptocurrency</strong> – a system for digital money.</p>
+</div>
+<hr>
+</section>
+<section id="internet-based-money" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="internet-based-money"><span class="header-section-number">8.1</span> Internet-based money</h2>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Warning</strong>: The cryptocurrency market is incredibly volatile. Investing in cryptocurrencies is a bad way to make money, and a good way to lose money. <strong>Do not invest in cryptocurrencies!</strong></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>With that warning stated: we will explore the world of cryptocurrencies in Unit 2, for two reasons.</p>
+<ol type="1">
+<li>It will deepen our understanding of hash functions and digital signatures, which cryptocurrencies use in clever ways</li>
+<li>We will learn how cryptocurrencies solve the problems of <strong>broadcast</strong> and <strong>leader election</strong>, and we can apply these techniques to other scenarios that require reaching consensus over the Internet</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Cryptocurrencies are an alternative banking system that:</p>
+<ul>
+<li><p>Allows people to transfer money to each other electronically over the Internet <em>without the need for a single trusted banking authority</em></p></li>
+<li><p>Is “<em>secure</em>” against “<em>powerful adversaries</em>” (we will make this claim more precise today and in future lectures)</p></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>Recall that when Bob receives a check from Alice in the physical world, he may be suspicious that Alice is trying to deceive him. He needs to be able to verify the following three properties.</p>
+<ol type="1">
+<li>Alice properly signed the check</li>
+<li>Alice possesses $1 in her bank account</li>
+<li>Alice does not <strong>double spend</strong> the money by writing a check to someone else at the same time</li>
+</ol>
+</div><div class="column" style="width:30%;">
+<p><img src="images/01-check.jpg" class="img-fluid" width="300"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>For a digital monetary system:</p>
+<ul>
+<li>A digital signature scheme like Schnorr, ECDSA, or RSA can satisfy objective #1, because signatures are <em>unforgeable</em>.</li>
+<li>To satisfy the other two objectives, it would be great to have a digital version of a <em>ledger</em> that is available to everyone.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-ledger.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>19th century ledger (source: <a href="https://en.wikipedia.org/wiki/General_ledger#/media/File:Ledger.png">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:70%;">
+<blockquote class="blockquote">
+<p>A <strong>ledger</strong> is a book or collection of accounts in which account transactions are recorded. Each account has an opening or carry-forward balance [and] a list of transactions, each recorded as either a debit or credit.</p>
+<p>For every debit recorded in a ledger, there must be a corresponding credit, so that the debits equal the credits in the grand totals.</p>
+<p>Source: <a href="https://en.wikipedia.org/wiki/Ledger">Wikipedia</a></p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Imagine for the moment that there was a book that is:</p>
+<ul>
+<li><strong>Public</strong>, meaning that anyone can read it at any time</li>
+<li><strong>Append-only</strong>, meaning that:
+<ul>
+<li>Anyone can add new information at the end of the ledger, but</li>
+<li>Nothing that is already in the ledger can ever be erased or overwritten</li>
+</ul></li>
+</ul>
+<p>If you had such a ledger, then you can emulate the bank!</p>
+</div>
+<hr>
+</section>
+<section id="bitcoins-public-ledger" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="bitcoins-public-ledger"><span class="header-section-number">8.2</span> Bitcoin’s public ledger</h2>
+<p>Bitcoin is a <em>public</em> and <em>peer-to-peer</em> cryptocurrency. It is a digital coin, combined with a digital ledger called a <strong>blockchain</strong> that keeps track of how many Bitcoins each party holds at any moment in time.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Rather than relying on a bank, the ledger is maintained by <em>everyone</em> running the Bitcoin software</li>
+<li>Participants called <strong>nodes</strong> maintain <em>consensus</em> over this ledger</li>
+<li>The ledger is separated into <strong>blocks</strong>, and each block can contain many <strong>transactions</strong> <!-- and always references the hash of the previous block --></li>
+<li>These blocks are created by <strong>miners</strong>, and a new block is mined approximately every 10 minutes</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Here are some recent blocks on the Bitcoin blockchain.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-block.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Blocks in the Bitcoin blockchain (source: <a href="https://mempool.space">mempool.space</a>)</figcaption>
+</figure>
+</div>
+<!--
+```{=html}
+<iframe width="800" height="450" src="https://mempool.space/" title="List of Bitcoin blocks"></iframe>
+```
+-->
+</div>
+<hr>
+<section id="history" class="level3">
+<h3 class="anchored" data-anchor-id="history">History</h3>
+<p>The data structure for Bitcoin’s public ledger is called a <strong>blockchain</strong>.</p>
+<ul>
+<li>It is a sequence of blocks, which themselves contain several transactions</li>
+<li>If everyone acts honestly, the intention is that new blocks are only added to the end of the chain <!-- We will talk later about what happens if some participants are malicious --></li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Bitcoin was invented in 2008 by an anonymous party (or parties) holding the pseudonym Satoshi Nakamato.</p>
+<ul>
+<li><p>While we will focus today on financial transactions, in principle you can store any data on Bitcoin.</p></li>
+<li><p>The first transaction on the Bitcoin blockchain encodes the following message: “The Times 03/Jan/2009 Chancellor on brink of second bailout for banks.” It is a reference to an article posted in a British newspaper on January 3, 2009.</p></li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-newspaper.png" class="img-fluid figure-img" width="295"></p>
+<figcaption>The Times newspaper (source: <a href="https://en.bitcoin.it/w/images/en/1/1d/Jonny1000thetimes.png">en.bitcoin.it</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Because the Bitcoin blockchain is public, anyone can read any message that has ever been stored on it. The following code connects to a Bitcoin node (hosted on <a href="https://mempool.space">mempool.space</a>) and extracts the bytestring message written within the <em>genesis</em> (first) block in the miner’s <em>coinbase transaction</em>.</p>
+<div id="f56c7b62" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> unhexlify</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># getting the block id for the genesis block (block 0)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>genesis_block_id <span class="op">=</span> requests.get(<span class="st">'https://mempool.space/api/block-height/0'</span>).text</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># getting all the block transactions of block 0 and parsing it</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(<span class="st">'https://mempool.space/api/block/'</span><span class="op">+</span>genesis_block_id<span class="op">+</span><span class="st">'/txs'</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># print the message in the coinbase transaction of the genesis block</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(unhexlify(response.json()[<span class="dv">0</span>][<span class="st">'vin'</span>][<span class="dv">0</span>][<span class="st">'scriptsig_asm'</span>].split(<span class="st">" "</span>)[<span class="dv">5</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'The Times 03/Jan/2009 Chancellor on brink of second bailout for banks'</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>But you don’t have to trust the <a href="https://mempool.space">mempool.space</a> website. Anyone can run the Bitcoin software and join the peer-to-peer network to see these blocks and transactions as they appear.</p>
+</div>
+<!--
+print as bytes rather than string
+print(unhexlify(response.json()[0]['vin'][0]['scriptsig_asm'].split(" ")[5]).decode('ascii'))
+-->
+<div class="fragment">
+<p><strong>Interactive question.</strong> Which data structure corresponds to a single financial payment of Bitcoins?</p>
+<ol type="A">
+<li>Block</li>
+<li>Blockchain</li>
+<li>Transaction</li>
+</ol>
+</div>
+<hr>
+</section>
+</section>
+<section id="bitcoin-transactions" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="bitcoin-transactions"><span class="header-section-number">8.3</span> Bitcoin transactions</h2>
+<p>A Bitcoin <strong>transaction</strong> is a single money transfer, somewhat like a written check from a sender to a receiver. But unlike a check:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>There can be more than one sender or receiver</li>
+<li>We write the sender and receiver’s public keys, rather than their real-world identities <!-- (One benefit here is that referring to everyone by these _pseudonyms_ avoids the need for a PKI.) --></li>
+<li>Transactions are <strong>irrevocable</strong>: if you make a mistake and send your money to the wrong place, it is gone forever! <!-- This is a consequence of not trusting an intermediary: there is nobody to complain to if you make a mistake --></li>
+</ul>
+</div>
+<div class="fragment">
+<p>If you have a public ledger, then there are two ways to record financial transactions.</p>
+<ol type="1">
+<li>Record the current owner of each coin. This is called the <strong>account model</strong> and it is what the traditional banking system does. The bank maintains a list of every account and its account balance. When a transaction is submitted, the bank updates its account ledger by debiting the sender and crediting the receiver.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="2" type="1">
+<li>Record the movement of each coin. This is called the <strong>unspent transaction output</strong> model, or UTXO. Bitcoin follows this approach by recording every financial transaction ever made.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>In fact, you don’t even need to do both! Account balances can be inferred from the transaction list.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-block-tx.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Bitcoin transaction</figcaption>
+</figure>
+</div>
+<!--
+```{=html}
+<iframe width="800" height="450" src="https://bitcoinexplorer.org/tx/2f3711bc7dd95486cf7cc921cdb23022cc681740c5f08eda9ae1ac383b61d511" title="One transaction in a block"></iframe>
+```
+-->
+</div>
+<hr>
+<p><strong>Interactive question.</strong> Suppose that Alice and Bob each start with $2, and Carol and David each start with $0. Then, the following transactions occur:</p>
+<ul>
+<li>Alice pays $1 to Bob <!-- 1, 3, 0, 0 --></li>
+<li>Alice pays $1 to Carol <!-- 0, 3, 1, 0 --></li>
+<li>Bob pays $1 to Carol <!-- 0, 2, 2, 0 --></li>
+<li>Carol pays $1 to David <!-- 0, 2, 1, 1 --></li>
+<li>Bob pays $1 to Alice <!-- 1, 1, 1, 1 --></li>
+<li>David pays $1 to Bob <!-- 1, 2, 1, 0 --></li>
+<li>Alice pays $1 to David <!-- 0, 2, 1, 1 --></li>
+</ul>
+<p>Who has the most money now?</p>
+<ol type="A">
+<li>Alice</li>
+<li>Bob</li>
+<li>Carol</li>
+<li>David</li>
+</ol>
+<hr>
+<section id="transaction-validity" class="level3">
+<h3 class="anchored" data-anchor-id="transaction-validity">Transaction validity</h3>
+<div class="columns">
+<div class="column" style="width:47%;">
+<p>In the UTXO model, for a transaction to be valid, the sender(s) must:</p>
+<ul>
+<li>Digitally sign the transaction</li>
+<li>Point to the prior transactions where they received the coins that are now being sent</li>
+<li>Not send out more money than they have</li>
+</ul>
+<p>If <span class="math inline">\(\textit{in} &gt; \textit{out}\)</span>, then a miner can claim the “leftover” money <span class="math inline">\(\textit{in}-\textit{out}\)</span> as a <strong>transaction fee</strong>.</p>
+</div><div class="column" style="width:6%;">
+
+</div><div class="column" style="width:47%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-utxo.ppm" class="img-fluid figure-img" width="400"></p>
+<figcaption>Bitcoin transactions (source: <a href="https://www.researchgate.net/publication/350479019/figure/fig3/AS:1023126523621376@1620943780846/Concept-of-Unspent-Transaction-Outputs-UTXOs.ppm">researchgate.net</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="pseudonymity" class="level3">
+<h3 class="anchored" data-anchor-id="pseudonymity">Pseudonymity</h3>
+<p>Transactions in Bitcoin are slightly different than checks in the physical world.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Checks say “Alice hereby agrees to send 1 coin to Bob, signed Alice”</li>
+<li>Bitcoin transactions say “the person who holds the secret key corresponding to <span class="math inline">\(\textit{pk}_{\textit{Alice}}\)</span> hereby agrees to send 1 coin to the person who holds the secret key corresponding to public key <span class="math inline">\(\textit{pk}_\textit{Bob}\)</span>, digitally signed with <span class="math inline">\(\textit{sk}_{\textit{Alice}}\)</span>”</li>
+</ul>
+</div>
+<div class="fragment">
+<p>For this reason, we say that Bitcoin is <strong>pseudonymous</strong>.</p>
+<ul>
+<li>Real-world names are never directly posted on the public blockchain.</li>
+<li>However, as we will see in a future lecture, Bitcoin is <em>not anonymous</em> because both people and money can be tracked over time.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Anyone who receives money in Bitcoin can send it out in a later transaction.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-transactions.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Example of Bitcoin transactions (source: <a href="https://bitcoin.org/bitcoin.pdf">Nakamoto whitepaper</a>)</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note: transactions in Bitcoin can be more complicated than a simple transfer of money. They can involve more sophisticated computer scripts that allow for conditional transfers. <!-- We will return to this point in a future lecture. --></p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="broadcasting-transactions" class="level3">
+<h3 class="anchored" data-anchor-id="broadcasting-transactions">Broadcasting transactions</h3>
+<p>Recall that we previously studied the power of <strong>common knowledge</strong>.</p>
+<ul>
+<li><em>Mutual knowledge</em> is information that everyone knows (like what happens at the start of the muddy children puzzle) <!-- when all children know that at least one of them has a muddy forehead --></li>
+<li><em>Common knowledge</em> is information that everyone knows, and everyone knows that everyone else knows, and everyone knows that everyone knows that everyone knows, and so on (like what happens at the end of the muddy children puzzle)</li>
+</ul>
+<div class="fragment">
+<p>Suppose that Alice sends her signed transaction <!-- to pay one coin to Bob --> to every other computer over the Internet. <!-- We will discuss next time the specific mechanics of the peer-to-peer gossip network --> Then:</p>
+<ul>
+<li>Everyone has the <em>mutual knowledge</em> that Alice wants to pay 1 coin to Bob</li>
+<li>But they do not yet have the <em>common knowledge</em> that everyone else knows, and everyone knows that everyone else knows, and so on</li>
+</ul>
+</div>
+<div class="fragment">
+<p>What happens if Alice only owns 1 coin, and she also broadcasts a transaction to pay 1 coin to Carol?</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>We need a way to agree on the order of transactions and resolve conflicts</li>
+<li>But different people on the Internet can receive messages in different order</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="bitcoin-blocks" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="bitcoin-blocks"><span class="header-section-number">8.4</span> Bitcoin blocks</h2>
+<p>Bitcoin transactions are grouped into <strong>blocks</strong>.</p>
+<ul>
+<li>A block is limited in size to around 2 megabytes, which is enough space to store a few thousand transactions</li>
+<li>A new block is created approximately every 10 minutes</li>
+</ul>
+<div class="fragment">
+<p>For instance, here is a block that was mined yesterday.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-block-txs.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>Bitcoin block 969,166 (source: <a href="https://mempool.space/block/00000000000000000001b7864287be4cadbee3fd5cfe07acc8890318265d84a4">mempool.space</a>)</figcaption>
+</figure>
+</div>
+<!--
+```{=html}
+<iframe width="800" height="450" src="https://bitcoinexplorer.org/block-height/881900" title="Transactions in a Bitcoin block"></iframe>
+```
+-->
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:35%;">
+<p>The blocks are linked together into a <strong>blockchain</strong>. Every block references the hash of the previous block. This data structure contains the entire Bitcoin ledger.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-blockchain.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Blocks connected in a chain (source: <a href="https://bitcoin.org/bitcoin.pdf">Nakamoto whitepaper</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Some statistics about the size and scale of Bitcoin:</p>
+<ul>
+<li>To date, there are more than 900,000 blocks in the Bitcoin network</li>
+<li>Collectively, they hold <a href="https://www.blockchain.com/explorer/charts/n-transactions-total">more than 1.2 billion transactions</a></li>
+<li>The blockchain is <a href="https://ycharts.com/indicators/bitcoin_blockchain_size">around 772 GB</a> in size (so anyone <em>can</em> download the ledger, but it might take awhile)</li>
+</ul>
+</div>
+<hr>
+<section id="consensus-over-blocks" class="level3">
+<h3 class="anchored" data-anchor-id="consensus-over-blocks">Consensus over blocks</h3>
+<p>The most important property of the Bitcoin blockchain is that all participants eventually reach <strong>consensus</strong> so that everyone <strong>agrees</strong> on the contents of the ledger. If I believe that Alice owns 3 coins, then (eventually) so should you.</p>
+<div class="fragment">
+<p>Note that in this course, the term “<strong>agreement</strong>” means that everyone agrees on <em>what</em> was said. It does <strong>not</strong> mean that they like what was said.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-xkcd-agreement.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Image source: <a href="https://xkcd.com/386/">xkcd</a></figcaption>
+</figure>
+</div>
+<!-- For instance: if Alice tries to pay her 1 coin to both Bob and Carol and the world decides that the money belongs to Carol, then Bob should agree that this is what happened, even though he is sad that he is not the owner of the coin -->
+</div>
+<div class="fragment">
+<p>Consensus is ensured even if Mallory tries to:</p>
+<ul>
+<li>Tamper with the ledger – that is, Bitcoin protects data <strong>integrity</strong></li>
+<li>Break or censor the ledger – that is, Bitcoin protects data <strong>availability</strong></li>
+</ul>
+<p>But Bitcoin does <strong>not</strong> protect data confidentiality.</p>
+</div>
+<div class="fragment">
+<p>Specifically, we want a blockchain to achieve two types of consensus properties.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><strong>Liveness</strong>: Every valid transaction eventually makes it into some block <!-- (if the transaction fee is high enough) --></li>
+<li><strong>Safety</strong>: The contents of each block are eventually agreed upon by all honest participants in the Bitcoin network</li>
+</ol>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note the use of the word “eventually” in each claim. In future lectures, we will discuss how long “eventually” might take.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="participants-in-bitcoin" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="participants-in-bitcoin"><span class="header-section-number">8.5</span> Participants in Bitcoin</h2>
+<p>At a high level, there are three types of participants within Bitcoin.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>A <strong>light client</strong> only needs to <em>hold</em> one or more secret keys for a digital signature scheme. (And optionally also a small amount of additional data, which we will discuss next week.)</p>
+<p>We consider the corresponding public key also to be their bank account number. These accounts might have money, if (1) someone else has sent money to this account within some transaction in the past and (2) no subsequent transaction has spent the money.</p></li>
+<li><p>A <strong>node</strong> additionally <em>stores</em> the entire state of the blockchain. (Note: this can be large! The Bitcoin blockchain is currently about <a href="https://ycharts.com/indicators/bitcoin_blockchain_size">772 gigabytes in size</a>.)</p></li>
+<li><p>A <strong>miner</strong> additionally tries to <em>write</em> new blocks on the blockchain. As we will see, the miner’s task requires substantial computing power.</p></li>
+</ul>
+</div>
+<hr>
+<p>Anyone can create a Bitcoin account and become a light client. All that is needed is a secret key and public key for a digital signature scheme like ECDSA or Schnorr signatures.</p>
+<p>In the snippet of code below, we are creating an actual Bitcoin address right now! (But it has no money, since nobody has signed over their coins to us.)</p>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This code is just for demonstration purposes. Do <strong>NOT</strong> execute this code to create a real Bitcoin key! This code makes no attempt to protect the secret key from being lost or stolen.</p>
+</div>
+</div>
+</div>
+<div id="25c70d4a" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install "cryptos@git+https://github.com/nicolas3355/cryptos"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cryptos.keys <span class="im">import</span> gen_secret_key, PublicKey</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cryptos.bitcoin <span class="im">import</span> BITCOIN</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a secret/public key pair</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>secret_key <span class="op">=</span> gen_secret_key(BITCOIN.gen.n)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>public_key <span class="op">=</span> PublicKey.from_sk(secret_key)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'generated secret key, in hex format:'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">hex</span>(secret_key))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">corresponding public key, as an elliptic curve point:'</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(public_key)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># get the associated bitcoin address</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>addr <span class="op">=</span> public_key.address(net<span class="op">=</span><span class="st">'main'</span>, compressed<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">compressed bitcoin address, in base 58 check format:'</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(addr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>generated secret key, in hex format:
+0x6b392a7525b3133c3bc0addbc9d08a5abc37e8b593b8f75142d536116360e726
+
+corresponding public key, as an elliptic curve point:
+PublicKey(curve=Curve(p=115792089237316195423570985008687907853269984665640564039457584007908834671663, a=0, b=7), x=114186745843190113411049867280141193204928506436684711629337242783228056308246, y=62405399941711297503320572686681857061593205472215867594491362661289974550812)
+
+compressed bitcoin address, in base 58 check format:
+15ZajGmgGHpvpMViVbpQrgTRL5NVi8QprH</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Whereas creating an account is easy, keeping track of this account is more difficult. If you accidentally delete your secret key, then you will never be able to spend the money in the account – effectively, your money is gone forever.</p>
+<p>We will discuss in a future lecture how we can make it easier for people to keep track of their secret key(s) in a secure way.</p>
+</div>
+<hr>
+<section id="role-of-a-miner" class="level3">
+<h3 class="anchored" data-anchor-id="role-of-a-miner">Role of a miner</h3>
+<p>Bitcoin needs miners: without them, no money transactions can ever be recorded. So the Bitcoin system incentivizes people to become miners. If you create or <strong>mine</strong> a new block, then you get two kinds of rewards:</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p>You get to create new coins out of thin air. Specifically, you get 3.125 Bitcoins, which is worth about $260k at current exchange rates. (This is the only way that new Bitcoins get introduced into circulation.) In Bitcoin terminology, this is called a <em>coinbase transaction</em>.</p></li>
+<li><p>You receive the transaction fees that people set aside for you within their transactions. The <a href="https://ycharts.com/indicators/bitcoin_average_transaction_fee">average Bitcoin transaction fee</a> is currently around 39¢ per transaction.</p></li>
+</ol>
+</div>
+<!--
+::: {.fragment}
+For example, here is the coinbase transaction of block number 881,900.
+
+```{=html}
+<iframe width="800" height="450" src="https://bitcoinexplorer.org/tx/be8948cd5a731ac55c7df80b2b271b6a1654bd8701eb0633435c4095c5cc27a7" title="Coinbase transaction in a block"></iframe>
+```
+:::
+-->
+<div class="fragment">
+<p>If all miners act honestly, then the ecosystem works well: people can conduct money transfers over the Internet, and the miners receive a reward for their efforts.</p>
+</div>
+<div class="fragment">
+<p>Being a miner seems like a great job! In fact, it might be <em>too</em> good.</p>
+<p><strong>Question.</strong> Suppose that you have a job opening and there are millions of applicants. You can’t hire everyone, and in fact you cannot even interview everyone. What would you do?</p>
+</div>
+<hr>
+</section>
+<section id="leader-election" class="level3">
+<h3 class="anchored" data-anchor-id="leader-election">Leader election</h3>
+<p>Bitcoin uses a <strong>randomized election system</strong> (aka, a lottery) to choose the next miner. It doesn’t matter (much) who wins the election; the important part is that the nodes reach <strong>consensus</strong> on who has won.</p>
+<div class="fragment">
+<p>Also, Bitcoin uses computers (rather than people) to determine the lottery winner.</p>
+<ul>
+<li>Its <strong>proof of work</strong> system gives mining rights to the first person who finds a string <span class="math inline">\(x\)</span> such that the SHA-256 hash of <span class="math inline">\(x\)</span> (and some other information) is a very small number.</li>
+<li>The miner shows the winning lottery ticket <span class="math inline">\(x\)</span> to everyone else as a proof that they won the lottery.</li>
+</ul>
+<p>As a result: mining a block is hard! This is done on purpose so that it is unlikely that two miners win the lottery at the same time.</p>
+</div>
+<div class="fragment">
+<p>One way to think about the proof of work puzzle is that the miners need to compute <code>SHA-256</code> hashes on random inputs until the corresponding output starts with <span class="math inline">\(\ell\)</span> zero bits in a row. The time to success scales exponentially in <span class="math inline">\(\ell\)</span>.</p>
+<!-- # what is the probability that when I hash a random string, I get a hash that starts with 4 bits that are all zeroes? -->
+<div id="f75abbfe" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># average number of SHA-256 computations until the first 4 bits == 0</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha256</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>arr <span class="op">=</span> []</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>nb_of_trials <span class="op">=</span> <span class="dv">3000</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(nb_of_trials):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">hash</span> <span class="op">=</span> <span class="st">"1"</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span>(<span class="bu">hash</span>[<span class="dv">0</span>] <span class="op">!=</span> <span class="st">'0'</span>):     <span class="co"># check if SHA-256 hash begins with hex 0</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">hash</span> <span class="op">=</span> sha256(os.urandom(<span class="dv">32</span>)).hexdigest()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  arr.append(count)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(arr)<span class="op">/</span>nb_of_trials) <span class="co"># average number of hashes needed, actual answer: 16</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>16.168666666666667</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div id="a1d7136c" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let's increase to 16 zeroes and see what happens</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha256</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>arr <span class="op">=</span> []</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>nb_of_trials <span class="op">=</span> <span class="dv">3000</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(nb_of_trials):</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">hash</span> <span class="op">=</span> <span class="st">"1"</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span>(<span class="bu">hash</span>[<span class="dv">0</span>:<span class="dv">4</span>] <span class="op">!=</span> <span class="st">'0'</span><span class="op">*</span><span class="dv">4</span>): <span class="co"># now check if hash begins with hex 0000</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">hash</span> <span class="op">=</span> sha256(os.urandom(<span class="dv">32</span>)).hexdigest()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  arr.append(count)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(arr)<span class="op">/</span>nb_of_trials) <span class="co"># actual answer: 65,536</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>65710.1</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="bitcoin-ensures-consensus-not-speed" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="bitcoin-ensures-consensus-not-speed"><span class="header-section-number">8.6</span> Bitcoin ensures consensus, not speed</h2>
+<p>The main goal of Bitcoin is that everyone <strong>agrees</strong> on the contents of the blockchain ledger. This goal is so important that it comes at the expense of speed: transactions can take hours to settle on the blockchain.</p>
+<div class="fragment">
+<p>More precisely, cryptocurrencies like Bitcoin have been carefully designed so that 3 types of attacks are practically infeasible.</p>
+<ul>
+<li><strong>Censorship</strong>: Miner Mallory refuses to post certain transactions</li>
+<li><strong>Inconsistency</strong>: Miner Mallory sends blocks to different nodes containing conflicting transactions</li>
+<li><strong>Double spending</strong>: Miner Mallory goes back in time to overwrite an earlier block</li>
+</ul>
+<!--
+::: {.callout-note}
+Bitcoin's protections against these 3 attacks are actually related. For simplicity, in this lecture I will discuss each type of attack separately.
+:::
+-->
+</div>
+<div class="fragment">
+<p>Within Bitcoin, “practically infeasible” does not always mean “energy of the sun” levels of difficult. Instead, Bitcoin ensures that the attacks are onerous enough to perform that:</p>
+<ul>
+<li>It’s very computationally expensive to try – essentially, Mallory needs to control a <em>majority</em> of the world’s mining power (more than all honest miners combined)</li>
+<li>Any rational miner is incentivized to use that computing power instead to make money as a legitimate miner</li>
+</ul>
+</div>
+<div class="fragment">
+<p>We will discuss in future lectures:</p>
+<ul>
+<li>The details of Bitcoin’s proof of work mining process</li>
+<li>How Bitcoin avoids censorship, inconsistency, and double spending attacks</li>
+<li>Why Bitcoin provides liveness and safety</li>
+</ul>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
