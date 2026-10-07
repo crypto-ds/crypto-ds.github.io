@@ -893,8 +893,8 @@ For example, here is the coinbase transaction of block number 881,900.
 <div class="fragment">
 <p>Also, Bitcoin uses computers (rather than people) to determine the lottery winner.</p>
 <ul>
-<li>Its <strong>proof of work</strong> system gives mining rights to the first person who finds a string <span class="math inline">\(x\)</span> such that the SHA-256 hash of <span class="math inline">\(x\)</span> (and some other information) is a very small number.</li>
-<li>The miner shows the winning lottery ticket <span class="math inline">\(x\)</span> to everyone else as a proof that they won the lottery.</li>
+<li>Its <strong>proof of work</strong> system gives mining rights to the first person who finds a string <code>nonce</code> such that the hash digest <span class="math inline">\(\texttt{SHA-256}(\texttt{block}, \texttt{nonce})\)</span> is a very small number</li>
+<li>The miner puts the winning lottery ticket <code>nonce</code> in their new block as proof that they won the lottery</li>
 </ul>
 <p>As a result: mining a block is hard! This is done on purpose so that it is unlikely that two miners win the lottery at the same time.</p>
 </div>

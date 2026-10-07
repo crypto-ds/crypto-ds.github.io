@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -237,8 +301,27 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#mining-attacks" id="toc-mining-attacks" class="nav-link" data-scroll-target="#mining-attacks"><span class="header-section-number">9.1</span> Mining attacks</a>
+  <ul class="collapse">
+  <li><a href="#an-analogy" id="toc-an-analogy" class="nav-link" data-scroll-target="#an-analogy">An analogy</a></li>
+  </ul></li>
+  <li><a href="#censorship-resistance-via-leader-election" id="toc-censorship-resistance-via-leader-election" class="nav-link" data-scroll-target="#censorship-resistance-via-leader-election"><span class="header-section-number">9.2</span> Censorship Resistance via Leader Election</a></li>
+  <li><a href="#consistency-via-block-heights" id="toc-consistency-via-block-heights" class="nav-link" data-scroll-target="#consistency-via-block-heights"><span class="header-section-number">9.3</span> Consistency via Block Heights</a></li>
+  <li><a href="#preventing-double-spends-via-proof-of-work" id="toc-preventing-double-spends-via-proof-of-work" class="nav-link" data-scroll-target="#preventing-double-spends-via-proof-of-work"><span class="header-section-number">9.4</span> Preventing Double Spends via Proof of Work</a></li>
+  <li><a href="#puzzle-friendliness" id="toc-puzzle-friendliness" class="nav-link" data-scroll-target="#puzzle-friendliness"><span class="header-section-number">9.5</span> Puzzle Friendliness</a>
+  <ul class="collapse">
+  <li><a href="#difficulty-level-adjustments" id="toc-difficulty-level-adjustments" class="nav-link" data-scroll-target="#difficulty-level-adjustments">Difficulty level adjustments</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -263,9 +346,542 @@ ul.task-list li input[type="checkbox"] {
 
 
 <hr>
-<p>To appear</p>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Exam 1 grades have been posted on Gradescope
+<ul>
+<li>You can retry questions (for +0.5 points per question) until <strong>Tuesday 10/13 at 10pm</strong></li>
+<li>Feel free to stop by our <a href="https://piazza.com/bu/fall2026/ds453653/staff">office hours</a> to discuss the exam questions</li>
+</ul></li>
+<li>HW 4 will be released <em>tomorrow</em> and due on Thursday 10/15 at 8pm</li>
+<li>Class next week:
+<ul>
+<li>No lecture on Mon 10/12</li>
+<li>Lecture and office hours on Tues 10/13 follows the <em>Monday schedule</em></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>The critical role that miners play to ensure agreement on the blockchain <!-- meaning that everyone's view is essentially the same (except for very recent events) --></li>
+<li>Three types of attacks that a malicious miner could perform, and how Bitcoin is designed to prevent or disincentivize them</li>
+<li>The importance of an “honest majority” assumption: trusting most of the miners collectively without trusting any one of them</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>Bitcoin is a decentralized digital currency that <strong>does not require a trusted banking authority</strong> to manage everybody’s transactions and bank balances. Instead, everyone on the Internet that uses the Bitcoin software collectively keeps track of how many Bitcoins each party holds at any moment in time.</p>
+<p>There are three types of data structures to consider within Bitcoin.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>A <strong>transaction</strong> is a transfer of coins from one or more senders (who digitally sign the transaction) to one or more receivers <!-- Bitcoin transactions say "the person who holds the secret key corresponding to $\textit{pk}_{\textit{Alice}}$ hereby agrees to send 1 coin to the person who holds the secret key corresponding to public key $\textit{pk}_\textit{Bob}$, digitally signed with $\textit{sk}_{\textit{Alice}}$." --></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-utxo.ppm" class="img-fluid figure-img" width="400"></p>
+<figcaption>Bitcoin transactions (source: <a href="https://www.researchgate.net/publication/350479019/figure/fig3/AS:1023126523621376@1620943780846/Concept-of-Unspent-Transaction-Outputs-UTXOs.ppm">researchgate.net</a>)</figcaption>
+</figure>
+</div></li>
+<li><p>A <strong>block</strong> is a group of a few thousand transactions created within ~10 minutes</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-block-txs.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Bitcoin block 969,166 (source: <a href="https://mempool.space/block/00000000000000000001b7864287be4cadbee3fd5cfe07acc8890318265d84a4">mempool.space</a>)</figcaption>
+</figure>
+</div></li>
+<li><p>The <strong>blockchain</strong> is a linked list of blocks, where every block references the hash of the previous block in the chain (except for the first block, called the <em>genesis</em> block)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-block.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Blocks in the Bitcoin blockchain (source: <a href="https://mempool.space">mempool.space</a></figcaption>
+</figure>
+</div></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>A blockchain is a <em>public ledger</em> that records every financial transaction ever made. It is:</p>
+<ul>
+<li><strong>Public</strong>, meaning that anyone can read it at any time</li>
+<li><strong>Append-only</strong>, meaning that
+<ul>
+<li>Anyone can add new information at the end of the ledger, but</li>
+<li>Nothing that is already in the ledger can ever be erased or overwritten</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-ledger.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>19th century ledger (source: <a href="https://en.wikipedia.org/wiki/General_ledger#/media/File:Ledger.png">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>There are three types of participants within Bitcoin.</p>
+<ul>
+<li>A <strong>light client</strong> only needs to <em>hold</em> one or more secret keys for a digital signature scheme</li>
+<li>A <strong>node</strong> additionally <em>stores</em> the entire state of the blockchain</li>
+<li>A <strong>miner</strong> additionally tries to <em>write</em> new blocks on the blockchain <!-- (We will discuss miners in more detail today.) --></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Bitcoin needs miners: without them, no money transactions can ever be recorded.</p>
+<ul>
+<li>To incentivize honest miners, Bitcoin provides financial rewards for adding new blocks to the end of the chain</li>
+<li>But we also need to disincentivize malicious miners from changing older blocks</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="mining-attacks" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="mining-attacks"><span class="header-section-number">9.1</span> Mining attacks</h2>
+<p>If mining a block wins so much money, what’s to stop the next person from <strong>overwriting</strong> the block so they get the mining rewards instead?</p>
+<div class="fragment">
+<p>Just to state upfront:</p>
+<blockquote class="blockquote">
+<p>A bad miner Mallory <strong>cannot</strong> directly create a new transaction to spend (i.e., steal) your money. Only you can do that, because it requires your secret signing key.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>In more detail, thanks to existential unforgeability under a chosen message attack:</p>
+<ul>
+<li>If your money hasn’t been spent, the miner cannot forge a signature of a message that transfers the money to themselves</li>
+<li>Even if your money has been spent, the miner still cannot forge this signature</li>
+</ul>
+</div>
+<!--
+::: {.fragment}
+Generally, recall that we consider 3 general types of security properties in this course: confidentiality, integrity, and availability.
+:::
+
+::: {.incremental}
+- Bitcoin doesn't provide any confidentiality guarantees: the whole world knows how much money is in each account. Furthermore, even though people don't write their names on the ledger, it is often possible for an adversary Mallory to link an account to a real-world identity. (More on this later.)
+
+- Instead, Bitcoin provides **integrity** and **availability**.
+:::
+-->
+<div class="fragment">
+<p><strong>Question.</strong> Suppose you are a miner and have the power to write blocks on the Bitcoin blockchain. How could you potentially abuse this power to harm <em>data integrity</em> or <em>data availability</em>? (Remember that Bitcoin does not protect data confidentiality.)</p>
+</div>
+<div class="fragment">
+<p>Here are 3 types of attacks that a malicious miner could perform. (Note: this is not an exhaustive list.) <!-- there are other possible attacks too --></p>
+<ul>
+<li><strong>Censorship</strong>: The miner can refuse to post certain transactions. This would break our goal of allowing anyone to append new information to the blockchain.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Inconsistency</strong>: The miner can send different states of the blockchain to different nodes. This would break our goal of having a global ledger that anyone can read.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:65%;">
+<ul>
+<li><p><strong>Double spending</strong>: The miner could go back in time and rewrite an earlier block. This would break our goal that the ledger is append-only.</p>
+<p>Then, Mallory could post a new transaction that pays the money to another person, or even to a new account that is under her own control (this is called a <strong>sybil attack</strong>). In this way, she could reclaim her previously-spent money to spend again in the future.</p></li>
+</ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-double-spend.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption>Image source: <a href="https://en.bitcoinwiki.org/wiki/Double-spending">Bitcoin wiki</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<!--
+::: {.fragment}
+**Example.** Consider the sequence of transactions Mallory $\to$ Alice $\to$ Carol.
+
+- If a miner deletes the Mallory $\to$ Alice transaction, then the latter transaction becomes invalid as well because Alice no longer has any money to spend.
+:::
+
+::: {.fragment}
+- Even worse, if Mallory is the miner, then Mallory could post a new transaction that pays the money to another account under her own control... perhaps her friend Bob, or perhaps another account held by herself (this is called a **sybil attack**). In this way, Mallory could reclaim her previously-spent money to spend again in the future.
+:::
+-->
+<!--
+::: {.fragment}
+Cryptocurrencies like Bitcoin have been carefully designed to ensure that censorship, inconsistency, and double spending attacks are practically infeasible to perform and that miners are incentivized to use their computing power legitimately.
+-->
+<hr>
+<section id="an-analogy" class="level3">
+<h3 class="anchored" data-anchor-id="an-analogy">An analogy</h3>
+<p>How should we design a financial payment system to protect against censorship, inconsistency, and double-spending?</p>
+<div class="fragment">
+<ul>
+<li><p>One possible option is to find a single person who the whole world trusts, and ask that person to be the sole miner in the scheme.</p></li>
+<li><p>Sadly, we do not have such fully-trusted people. If we somehow found such a person, we might ask them to run everything for us, not just the banks. In political terms, this corresponds to a (benevolent?) <em>dictatorship</em>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>To extend the political analogy further, over the centuries humankind has designed <em>democratic</em> social structures in which we:</p>
+<ul>
+<li>Impose limits on the power of any single actor, even the ones who seek power, and</li>
+<li>Use elections to decide who gets to have <em>temporary</em> and <em>limited</em> power.</li>
+</ul>
+<p>These political systems are often less efficient and nimble than a dictatorship might be, but they are more stable as a result.</p>
+</div>
+<div class="fragment">
+<p>Cryptocurrencies abide by these principles too! They are designed to be deliberately slow in order to achieve <strong>consensus</strong>.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="censorship-resistance-via-leader-election" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="censorship-resistance-via-leader-election"><span class="header-section-number">9.2</span> Censorship Resistance via Leader Election</h2>
+<p>Let’s see how Bitcoin thwarts these attacks, one at a time. For now, let’s assume that the miners all promise never to conduct a double-spend attack. (We will remove this assumption later today.)</p>
+<div class="fragment">
+<p>Bitcoin includes two components to thwart censorship:</p>
+<ul>
+<li>There is a connected <strong>peer-to-peer</strong> network of Bitcoin nodes that <em>gossip</em> or <em>broadcast</em> any transaction they hear. This way, any sender can get their transactions heard by any node and miner who happen to be connected to the network right now. <!-- (We will say more about broadcast protocols in future lectures. For now let's assume that this part works perfectly.) --> To see how it works, look at the animation at time 1:48 to 2:03 in this <a href="https://www.youtube.com/watch?v=b-qGTj2Vvns&amp;t=108s">YouTube video</a>.</li>
+</ul>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/b-qGTj2Vvns?start=108" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+</div>
+<div class="fragment">
+<ul>
+<li>There is a <strong>randomized election system</strong> (or in other words, a lottery) to choose the next miner. It doesn’t matter (much) who wins the election; the important part is that the nodes reach <em>consensus</em> on who has won.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> What happens if Alice posts a transaction to the Bitcoin blockchain, but a malicious miner Mallory refuses to include Alice’s transaction in her block?</p>
+<ol type="A">
+<li>Mallory cannot win the lottery</li>
+<li>Mallory can win the lottery, but her block is declared invalid by the rest of the world and she loses out on Bitcoin’s mining rewards</li>
+<li>Mallory’s block is valid, and Alice waits until someone else is elected as a miner</li>
+</ol>
+</div>
+<hr>
+<p>Some facts about Bitcoin’s randomized leader election:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Anyone can become a miner simply by purchasing computers; in other words, Bitcoin is a <strong>permissionless</strong> network</li>
+<li>Each miner wins the lottery in proportion to its computational power</li>
+<li>A newly-created block contains the miner’s winning lottery ticket – which is formally called a <code>nonce</code>, because it can only be used once</li>
+<li>Other miners and nodes will only consider a block to be valid if it includes a winning <code>nonce</code></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-blockchain.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Block header and transactions (image source: <a href="https://bitcoin.org/bitcoin.pdf">Nakamoto whitepaper</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>The randomized nature of leader election provides censorship resistance… eventually.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Each individual miner can still censor your transaction if they want</li>
+<li>As long as at least one miner is honest, then that miner will <em>eventually</em> win an election and will put your transaction into a block</li>
+<li>This is an example of an <strong>anytrust</strong> assumption; we will see more examples later in this course</li>
+</ul>
+</div>
+<hr>
+<p><strong>Interactive question.</strong> Suppose that Alice wants to post a transaction and malicious miner Mallory wants to censor Alice. Suppose also that a block is created <em>exactly</em> every 10 minutes.</p>
+<p>If Mallory has a 49% chance of winning each lottery, <!-- and all other miners are honest --> then what is the probability that Mallory can censor Alice for three hours?</p>
+<ol type="A">
+<li>About 1 in 10</li>
+<li>About 1 in a thousand, or <span class="math inline">\(10^{-3}\)</span></li>
+<li>About 1 in a million, or <span class="math inline">\(10^{-6}\)</span></li>
+<li>About 1 in a billion, or <span class="math inline">\(10^{-9}\)</span></li>
+</ol>
+<div class="fragment">
+<p>Let’s calculate the answer to this question using Python. If Mallory wants to censor Alice, then she must win <strong>all</strong> <span class="math inline">\(6 \times 3 = 18\)</span> randomized leader elections that occur in this 3-hour period.</p>
+<div id="4acc6c24" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="fl">.49</span> <span class="op">**</span> (<span class="dv">6</span> <span class="op">*</span> <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.6517308458596524e-06</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Overall, the <strong>throughput</strong> of this monetary system is small.</p>
+<ul>
+<li>A new miner is elected approximately once every 10 minutes</li>
+<li>Each miner can create a block that can hold a few thousand transactions</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="consistency-via-block-heights" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="consistency-via-block-heights"><span class="header-section-number">9.3</span> Consistency via Block Heights</h2>
+<p>Randomized miner election also solves the problem of inconsistency, which was the fear that nodes might see different blockchains.</p>
+<!-- Not only is the winning miner chosen at random, but the _time_ in which the miner wins is also somewhat randomized. -->
+<div class="fragment">
+<p>We are assuming for now that miners will never go back and try to rewrite history. Even so, one concern is that two miners might win the lottery at (almost) the same time. If this happens:</p>
+<ul>
+<li>They will produce different blocks, called <code>B</code> and <code>B2</code> in the picture below <!-- These blocks might have the same transactions or they may have different transactions. Either way, they contain different `nonce`s, and each block creator has awarded all mining rewards and fees to themselves. --></li>
+<li>But: both blocks will point to the same previous block, called <code>A</code> in the picture below</li>
+</ul>
+<p>In Bitcoin terminology, this is called a <strong>fork</strong> of the blockchain.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-fork.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Fork in the chain (image source: <a href="https://www.mangoresearch.co/blockchain-forks-explained/">Mango Research</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>We can overcome this forking issue by using the peer-to-peer network to broadcast these blocks as well. Then we can impose a rule that all honest nodes should follow:</p>
+<blockquote class="blockquote">
+<p><em>Always choose the <strong>longest</strong> blockchain</em>. As a tiebreaker, choose the chain that you heard <em>first</em>.</p>
+<p>(Note: we will make one small tweak to this rule at the end of today’s class.)</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>In Bitcoin terminology, each block contains a counter called its <strong>block height</strong>. In the picture below, <code>D</code> has a block height of 3 whereas <code>B2</code> has a block height of 1.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-consistency.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Bitcoin’s consistency rule (image source: <a href="https://www.mangoresearch.co/blockchain-forks-explained/">Mango Research</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Once again, we have resolved an attack at the expense of speed. Let’s look at the above picture in the following scenario: block <code>A</code> already exists, and then two miners win the lottery at nearly the same time and post blocks <code>B</code> and <code>B2</code>.</p>
+<p>Suppose also your transaction occurred in block <code>B</code> but not in block <code>B2</code>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Since a temporary fork has occurred, you cannot yet be sure that the whole network will coalesce around the block containing your transaction</li>
+<li>You will need to wait a few minutes to see which block “wins” by being extended first through another randomized election</li>
+<li>That could potentially have its own fork, but the 10 minute expected delay in new block creation means that it is unlikely that too many forks will occur in a row</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In computing &amp; data science terms: the <strong>latency</strong> of any individual transaction is high.</p>
+</div>
+<hr>
+</section>
+<section id="preventing-double-spends-via-proof-of-work" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="preventing-double-spends-via-proof-of-work"><span class="header-section-number">9.4</span> Preventing Double Spends via Proof of Work</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p>The final – and most insidious – attack that we have to prevent is the double spend. The threat here is that a malicious buyer Mallory does the following.</p>
+<ol type="1">
+<li>Create a block in which she gives her coins to seller Alice</li>
+<li>Then create a new chain that is <strong>two blocks long</strong> in which she gives her coins to seller Bob</li>
+</ol>
+<p>According to our new consensus rule, the whole world will switch to this new chain, so Alice no longer gets paid.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-double-spend.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption>Image source: <a href="https://en.bitcoinwiki.org/wiki/Double-spending">Bitcoin wiki</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The computationally difficult <strong>proof of work</strong> puzzles also solve this problem. Let’s discuss in detail <em>how</em> miners win the election and get the right to create a new block.</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<!-- Assume that there are more honest miners than dishonest miners. Our goal is to choose an election method that is fairly likely to elect an honest miner. -->
+<p>Here is how it works. Every miner collects all of the transactions from the peer-to-peer network, and forms a block. Then:</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-blockchain.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Block header and transactions (image source: <a href="https://bitcoin.org/bitcoin.pdf">Nakamoto whitepaper</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li>The miner chooses the <code>nonce</code> value however it wants. (It can choose this at random, or make a counter, or anything it wants.)</li>
+<li>It runs the SHA-256 cryptographic hash over the block contents and the <code>nonce</code>.</li>
+<li>If the resulting hash digest starts with sufficiently many <code>0</code> bits, then the miner has won the election and quickly posts the result to the peer-to-peer network. Otherwise, it goes back to step #1 to try again.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Note that in each calculation of the hash function, the transactions in the <code>block</code> can remain the same, or they can change if new transactions arrive and the miner wishes to add them to the <code>block</code>.</p>
+<p>What’s important is that the <code>nonce</code> changes for each execution of the hash function. The Bitcoin miners keep calculating</p>
+<p><span class="math display">\[y = \texttt{SHA-256}(\texttt{block}, \texttt{nonce})\]</span></p>
+<p>for many, <em>many</em> different <code>nonce</code>s. The miner wins the election if this hash digest <span class="math inline">\(y\)</span> is a small enough number, i.e., it begins with enough <code>0</code> bits.</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Currently, the Bitcoin miners collectively perform about <span class="math inline">\(10^{21}\)</span> hashes per second</p>
+<ul>
+<li>This corresponds to <span class="math inline">\(600 \cdot 10^{21}\)</span> hashes every 10 minutes</li>
+<li>The <strong>difficulty level</strong> of Bitcoin is currently set to require this many hash computations in expectation, in order to produce a winning <code>nonce</code></li>
+<li>This effort by the miners is called a <strong>proof of work</strong>, and it is required before a miner posts a block</li>
+</ul>
+<p>This is a <strong>lot</strong> of computational work!</p>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://api.blockchain.info/charts/preview/hash-rate.png?timespan=3year&amp;h=810&amp;w=1440&amp;daysAverageString=7D" class="img-fluid figure-img" width="720"></p>
+<figcaption>Bitcoin’s SHA-256 hash rate (image source: <a href="https://www.blockchain.com/explorer/charts">blockchain.com</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<!--
+By means of comparison, your laptop's computer processor can probably perform about 100 million hashes per second.
+If you have a nice video graphics card, it might be able to perform a few billion hashes per second. -->
+<hr>
+<p><strong>Interactive question.</strong> Suppose that your laptop’s computer processor can perform exactly 1 billion hashes per second. How many computers would you have to buy in order to calculate <span class="math inline">\(10^{21}\)</span> hashes (one ‘zettahash’) per second?</p>
+<ol type="A">
+<li>1 billion, or <span class="math inline">\(10^{9}\)</span></li>
+<li>1 trillion, or <span class="math inline">\(10^{12}\)</span></li>
+<li>1 quadrillion, or <span class="math inline">\(10^{15}\)</span></li>
+<li>1 quintillion, or <span class="math inline">\(10^{18}\)</span></li>
+</ol>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note: actual Bitcoin miners do not use general-purpose computer processors or graphics cards. Instead, they use special hardware that is designed solely to perform <code>SHA-256</code> as quickly and cheaply as possible.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="puzzle-friendliness" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="puzzle-friendliness"><span class="header-section-number">9.5</span> Puzzle Friendliness</h2>
+<p>To see the proof of work property in action, let’s look at a recent block created on the Bitcoin blockchain.</p>
+<div id="2720e239" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching block 969,166 that we explored in Lecture 8</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># getting the block hash of block 969,166</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">id</span> <span class="op">=</span> requests.get(<span class="st">'https://mempool.space/api/block-height/969166'</span>).text</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># print block metadata</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(<span class="st">'https://mempool.space/api/block/'</span> <span class="op">+</span> <span class="bu">id</span>).json()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>pprint(response, sort_dicts<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'id': '00000000000000000001b7864287be4cadbee3fd5cfe07acc8890318265d84a4',
+ 'height': 969166,
+ 'version': 846553088,
+ 'timestamp': 1790692158,
+ 'tx_count': 4501,
+ 'size': 1609024,
+ 'weight': 3993067,
+ 'merkle_root': '13cb7c46534c94c5b5151e2a7c3f2e3ff3cefc5cdbf57ca59ea4699473314dbd',
+ 'previousblockhash': '000000000000000000010460f00f0d7bbf083b8d4f54fc5d210884bd7974b3c5',
+ 'mediantime': 1790688724,
+ 'nonce': 4217575998,
+ 'bits': 386014917,
+ 'difficulty': 132757073449487.52}</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>The block hash starts with a lot of <code>0</code> hex characters! Nineteen of them, to be precise.</p>
+<ul>
+<li>This is very unlikely to occur by chance</li>
+<li>In binary format, the hash digest begins with 79 zeroes</li>
+</ul>
+<div id="1520f7f0" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">format</span>(<span class="bu">int</span>(<span class="bu">id</span>, <span class="dv">16</span>), <span class="st">'#0258b'</span>)[<span class="dv">2</span>:])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0000000000000000000000000000000000000000000000000000000000000000000000000000000110110111100001100100001010000111101111100100110010101101101111101110001111111101010111001111111000000111101011001100100010001001000000110001100000100110010111011000010010100100</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<!-- This 256 bit string begins with 79 zeroes! -->
+<p><strong>Question.</strong> If you choose a bitstring <span class="math inline">\(x\)</span> at random and feed it into <code>SHA-256</code>, what is the probability that the resulting output begins with 79 zeroes?</p>
+</div>
+<!--
+::: {.fragment}
+We can reason about this question using the **random oracle** property of a hash function, which states that the output "looks random."
+
+> If an adversary [Mallory] has not explicitly queried ... on some point $x$, then the value of $H(x)$ is completely random... at least as far as [Mallory] is concerned.
+>
+> – Jon Katz and Yehuda Lindell, _Introduction to Modern Cryptography_
+:::
+-->
+<div class="fragment">
+<p>If the hash function acts like a random oracle, then every bit of the hash digest “looks” uniformly random.</p>
+<ul>
+<li>So, this question is essentially asking about the chance of flipping a coin and it landing heads 79 times in a row</li>
+<li>The probability of this happening is <span class="math inline">\(\frac{1}{2^{79}}\)</span></li>
+<li>You will need to attempt this experiment <span class="math inline">\(2^{79}\)</span> times, in expectation, in order to find a hash digest like this one</li>
+</ul>
+<!-- That is the proof of work game in action! -->
+</div>
+<div class="fragment">
+<p>Additionally, each missed attempt doesn’t help the miner at all to solve the puzzle. That is: the miner learns that this particular <code>nonce</code> doesn’t work, but cannot use this information to solve a system of equations that will lead to a <code>nonce</code> that does win the lottery.</p>
+<p>In probability terminology: the game is <strong>memoryless</strong>. As a result:</p>
+<ul>
+<li>The distribution of the time to solve one proof-of-work puzzle is an <em>exponential random variable</em>.</li>
+<li>The distribution of the number of solved puzzles in a particular amount of time is a <em>Poisson random variable</em>.</li>
+</ul>
+<p>To be more precise: Bitcoin relies on the following property of a hash function called <strong>puzzle friendliness</strong>.</p>
+</div>
+<div class="fragment">
+<div id="def-puzzle" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 9.1 (Puzzle friendliness)</strong></span> If we ask the miners to find an input <span class="math inline">\(x\)</span> whose SHA-256 hash digest <span class="math inline">\(H(x)\)</span> begins with <span class="math inline">\(d\)</span> zero bits in a row, then we believe there is no strategy that the miners can perform that is more effective than a guess-and-check approach. As a result, this computation is expected to take <span class="math inline">\(2^d\)</span> time.</p>
+</div>
+</div>
+<!--
+::: {.fragment}
+Puzzle friendliness is a stronger guarantee than collision resistance, but a weaker guarantee than the random oracle assumption.
+
+We have four different assumptions that we can make about a hash function:
+
+> Preimage resistance &nbsp; < &nbsp; Collision resistance &nbsp; < &nbsp; Puzzle friendliness &nbsp; < &nbsp; Random oracle
+
+Cryptographers assume that the `SHA-2` and `SHA-3` family of hash functions satisfy all of these assumptions.
+:::
+-->
+<hr>
+<section id="difficulty-level-adjustments" class="level3">
+<h3 class="anchored" data-anchor-id="difficulty-level-adjustments">Difficulty level adjustments</h3>
+<p>Because the computational power in the world generally goes up over time due to Moore’s Law, the <strong>difficulty</strong> of the puzzle must adjust over time.</p>
+<div class="fragment">
+<p>In Bitcoin, the difficulty changes once every 2 weeks or so.</p>
+<ul>
+<li>If miners are finding blocks faster than every 10 minutes (on average), then the difficulty of finding a block increases. For example: the miners might be tasked to find hash digests that start with even more 0s.</li>
+<li>If miners are finding blocks too slowly (on average), then the difficulty of finding a block decreases.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>As a result, we need to make a small change to the rule that honest nodes follow:</p>
+<blockquote class="blockquote">
+<p><em>Always choose the blockchain with the most cumulative difficulty</em>.</p>
+</blockquote>
+<p>In general, this typically corresponds to the blockchain with the tallest height.</p>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

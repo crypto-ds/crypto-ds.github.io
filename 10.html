@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -237,8 +301,38 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#reminder-course-grading" id="toc-reminder-course-grading" class="nav-link" data-scroll-target="#reminder-course-grading">Reminder: course grading</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#blockchain-validity" id="toc-blockchain-validity" class="nav-link" data-scroll-target="#blockchain-validity"><span class="header-section-number">10.1</span> 10.1 Blockchain validity</a>
+  <ul class="collapse">
+  <li><a href="#transaction-validity" id="toc-transaction-validity" class="nav-link" data-scroll-target="#transaction-validity">Transaction validity</a></li>
+  <li><a href="#block-validity" id="toc-block-validity" class="nav-link" data-scroll-target="#block-validity">Block validity</a></li>
+  </ul></li>
+  <li><a href="#consensus-via-an-honest-majority-assumption" id="toc-consensus-via-an-honest-majority-assumption" class="nav-link" data-scroll-target="#consensus-via-an-honest-majority-assumption"><span class="header-section-number">10.2</span> 10.2 Consensus via an honest majority assumption</a>
+  <ul class="collapse">
+  <li><a href="#another-view-of-forking" id="toc-another-view-of-forking" class="nav-link" data-scroll-target="#another-view-of-forking">Another view of forking</a></li>
+  <li><a href="#an-example" id="toc-an-example" class="nav-link" data-scroll-target="#an-example">An example</a></li>
+  </ul></li>
+  <li><a href="#finalization" id="toc-finalization" class="nav-link" data-scroll-target="#finalization"><span class="header-section-number">10.3</span> 10.3 Finalization</a></li>
+  <li><a href="#simplified-payment-verification" id="toc-simplified-payment-verification" class="nav-link" data-scroll-target="#simplified-payment-verification"><span class="header-section-number">10.4</span> 10.4 Simplified payment verification</a>
+  <ul class="collapse">
+  <li><a href="#merkle-trees" id="toc-merkle-trees" class="nav-link" data-scroll-target="#merkle-trees">Merkle trees</a></li>
+  </ul></li>
+  <li><a href="#the-path-forward" id="toc-the-path-forward" class="nav-link" data-scroll-target="#the-path-forward"><span class="header-section-number">10.5</span> 10.5 The path forward</a></li>
+  <li><a href="#appendix-scripts-on-the-blockchain" id="toc-appendix-scripts-on-the-blockchain" class="nav-link" data-scroll-target="#appendix-scripts-on-the-blockchain"><span class="header-section-number">10.6</span> Appendix: Scripts on the blockchain</a>
+  <ul class="collapse">
+  <li><a href="#ethereum" id="toc-ethereum" class="nav-link" data-scroll-target="#ethereum">Ethereum</a></li>
+  <li><a href="#smart-contracts" id="toc-smart-contracts" class="nav-link" data-scroll-target="#smart-contracts">Smart Contracts</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -263,9 +357,781 @@ ul.task-list li input[type="checkbox"] {
 
 
 <hr>
-<p>To appear</p>
+<!-- TODO: for next year
+
+- Revert the tx + block validity parts to be factual lists rather than questions. Then ask a question about *when* you should believe that the money received in a tx is yours.
+- This can lead into finalization, which we can say first, and *then* talk about the double-spending attack + honest majority assumption to figure out what k is.
+- Say something about Bitcoin anonymity and transaction linkage?
+- Shorten the final section about the path forward. No need to say so much about Byzantine broadcast/agreement/fault tolerance here.
+
+Also some notes about deleted material:
+
+- I'm removing the discussion about mnemonics this year. It will go into the discussion lab instead.
+- Didn't have time to get to Ethereum this year, so I'm moving it to the appendix.
+
+-->
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Due <strong>Friday 10/10 at 6pm</strong> on Gradescope
+<ul>
+<li>Reading Assessment 5, covering <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 2.4-3.1 and 3.4-3.5</a></li>
+<li>Homework 4, on working with a toy blockchain</li>
+</ul></li>
+<li>If you use generative AI on the homework, then
+<ul>
+<li>Your process statement <strong>must</strong> contain the full prompts and responses</li>
+<li>You cannot simply feed the question into the AI tool to ask for the answer</li>
+</ul></li>
+<li>Test 1 retry/regrade requests are due on <strong>Tuesday 10/14 at 6pm</strong> using Gradescope’s regrade request system</li>
+</ul>
+<hr>
+</section>
+<section id="reminder-course-grading" class="level3">
+<h3 class="anchored" data-anchor-id="reminder-course-grading">Reminder: course grading</h3>
+<p>The syllabus describes how your overall course grade is computed.</p>
+<ul>
+<li>There are 54 test points available in this course (across 3 tests)</li>
+<li>There are 108 practice credits in this course (in lecture, lab, reading, and homework)</li>
+<li>The final exam is worth 18 points</li>
+</ul>
+<div class="fragment">
+<p>Your <em>course score</em> is calculated as follows:</p>
+<ul>
+<li>Take the sum of your 3 test scores (the final exam can replace the lowest test)</li>
+<li>Add a small bonus if you complete <span class="math inline">\(\geq 95\)</span> practice credits</li>
+<li>Subtract a penalty if you complete <span class="math inline">\(&lt; 90\)</span> practice credits (don’t let this happen!)</li>
+<li>Add your final exam score <span class="math inline">\(- \, 12\)</span>. For example:
+<ul>
+<li>If you earn a final exam score of 15, you get +3 points</li>
+<li>If you earn a final exam score of 9, you get -3 points</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Look up the course score in this table to find the course grade.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Course grade:</th>
+<th>A</th>
+<th>A-</th>
+<th>B+</th>
+<th>B</th>
+<th>B-</th>
+<th>C+</th>
+<th>C</th>
+<th>D</th>
+<th>F</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Course score:</td>
+<td><span class="math inline">\(\geq 51.0\)</span></td>
+<td><span class="math inline">\(\geq 45.0\)</span></td>
+<td><span class="math inline">\(\geq 42.0\)</span></td>
+<td><span class="math inline">\(\geq 39.0\)</span></td>
+<td><span class="math inline">\(\geq 36.0\)</span></td>
+<td><span class="math inline">\(\geq 33.0\)</span></td>
+<td><span class="math inline">\(\geq 30.0\)</span></td>
+<td><span class="math inline">\(\geq 24.0\)</span></td>
+<td><span class="math inline">\(&lt;    24.0\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How nodes and miners can check the validity of the blockchain (and how light clients can partially check validity with some assistance from the nodes) <!-- The value of reaching consensus and having common knowledge. --></li>
+<li>How we can formally specify the consensus of blockchains using two concrete guarantees: <em>liveness</em> and <em>safety</em></li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>Bitcoin is a digital currency that <em>does not require a single, trusted banking authority</em> to manage everybody’s transactions and bank balances.</p>
+<ul>
+<li>3 types of data structures: transactions, blocks, and the entire blockchain <!-- (which acts as an append-only public ledger) --></li>
+<li>3 types of participants: light clients, nodes, and miners</li>
+<li>3 types of attacks that Bitcoin stops: censorship, inconsistency, and double-spending</li>
+</ul>
+<!--
+::: {.fragment}
+Last time, we showed how to thwart 3 types of potential attacks on Bitcoin.
+:::
+
+::: {.incremental}
+- Censorship resistance is achieved through the randomness of the leader election lottery
+<!-- All miners have a chance to create a block (proportional to their computing power), so eventually an honest miner will post a transaction
+- Consistency is achieved through the rule that everyone should *always choose the longest blockchain* (or more precisely, the chain with the largest cumulative difficulty)
+<!-- In case there is a transient fork, this rule ensures that everyone eventually reaches consensus over the chain to use
+- Double spending is thwarted through the proof of work puzzle
+<!-- Because the miner's work is computationally intensive, it is difficult for a miner to overwrite blocks from the distant past
+:::
+-->
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>Bitcoin’s <strong>proof of work</strong> mining requires that <span class="math inline">\(\texttt{SHA-256}(\texttt{block}, \texttt{nonce})\)</span> begins with many 0 bits. The <strong>difficulty level</strong> is set so that the world produces a new block every 10 minutes, in expectation.</p>
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-blockchain.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Block header and transactions (image source: <a href="https://bitcoin.org/bitcoin.pdf">Nakamoto whitepaper</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>To achieve consensus on a single blockchain, Bitcoin nodes and miners follow a simple rule:</p>
+<ul>
+<li>Always choose the <strong>longest</strong> valid blockchain (or more precisely, the blockchain with the most cumulative difficulty)</li>
+<li>As a tiebreaker, choose the chain that you heard <strong>first</strong></li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="blockchain-validity" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="blockchain-validity"><span class="header-section-number">10.1</span> 10.1 Blockchain validity</h2>
+<p>Nodes and miners in Bitcoin maintain a local copy of the blockchain. We require that they check the validity of each new block that is created and gossiped around the peer-to-peer network.</p>
+<!-- TODO: replace this list with the description from page 3 of Nakamoto's whitepaper https://bitcoin.org/bitcoin.pdf -->
+<div class="fragment">
+<p>Overall, here is the high-level idea of Bitcoin’s consensus algorithm (this list is adapted from <a href="https://www.cs.jhu.edu/~abhishek/classes/CS601-641-441-Spring2018/Lecture3.pdf">Prof.&nbsp;Abhishek Jain’s slides</a>):</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li>New transactions are broadcast to all nodes that happen to be online right now</li>
+<li>Each miner collects new transactions into a block</li>
+<li>After solving a proof of work puzzle, some miner broadcasts its block</li>
+<li>All nodes check that the block is <strong>valid</strong> (as we will discuss momentarily)</li>
+<li>Miners express their acceptance of the block through their willingness to build the next block on top of it</li>
+</ol>
+</div>
+<hr>
+<section id="transaction-validity" class="level3">
+<h3 class="anchored" data-anchor-id="transaction-validity">Transaction validity</h3>
+<p><strong>Interactive question.</strong> Suppose that you run a Bitcoin node. Which of these statements is <em>not</em> required for you to accept a Bitcoin transaction as valid? <!-- For an individual transaction to be valid, it must: --></p>
+<ol type="A">
+<li>The receiver(s) get no more money than the sender(s) are spending</li>
+<li>Point to a previous transaction where: (a) the sender(s) actually received the money that they are now trying to spend, and (b) this transaction has not yet been spent <!-- This is why Bitcoin is said to follow an _unspent transaction_ (UTXO) model --></li>
+<li>Contain a valid digital signature from everyone who is sending money</li>
+<li>Contain a valid digital signature from everyone who is receiving money</li>
+</ol>
+<div class="fragment">
+<p><em>Answer</em>. D is incorrect. Bitcoin nodes and miners should check statements A through C.</p>
+</div>
+<div class="fragment">
+<p>If I show a single transaction to a light client, then</p>
+<ul>
+<li>They can check statement C on their own</li>
+<li>But they cannot check statements A and B because it knowledge of the <strong>previous</strong> transactions in the blockchain, so only <em>nodes</em> and <em>miners</em> can verify them</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="block-validity" class="level3">
+<h3 class="anchored" data-anchor-id="block-validity">Block validity</h3>
+<p><strong>Interactive question.</strong> Suppose that you run a Bitcoin node. Which of these statements is <em>not</em> required for you to accept a Bitcoin block as valid? <!-- For a block to be valid, it must: --></p>
+<ol type="A">
+<li>Only contain transactions that are valid</li>
+<li>Be produced within 10 minutes of the previous block</li>
+<li>Link to blocks that are themselves valid, all the way back to the first (or “genesis”) block in the blockchain</li>
+<li>Contain a winning <code>nonce</code> that satisfies the difficulty rule <!-- (i.e., where the hash of the block begins with some large number of `0`s) --></li>
+</ol>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><em>Answer</em>. B is incorrect. Nodes and miners must check the other statements when they hear a new block on the gossip network.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>There are some other constraints in the Bitcoin software beyond the ones we discussed in this course.</p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-blockchain.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Block header and transactions (image source: <a href="https://bitcoin.org/bitcoin.pdf">Nakamoto whitepaper</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>If I hand an individual block to a <em>light client</em>, then they can check statement D on their own but not the rest. Only full <em>nodes</em> and <em>miners</em> can check the validity of all transactions and blocks, since they have stored a local copy of the entire blockchain. <!--
+We'll come back to the light clients later today. First though, let's summarize what we have learned about the security guarantees of a blockchain.
+--></p>
+</div>
+<hr>
+</section>
+</section>
+<section id="consensus-via-an-honest-majority-assumption" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="consensus-via-an-honest-majority-assumption"><span class="header-section-number">10.2</span> 10.2 Consensus via an honest majority assumption</h2>
+<p>If Alice sends 1 coin to Bob on the Bitcoin blockchain, then eventually:</p>
+<ul>
+<li>Bob he received 1 coin</li>
+<li>Bob knows that everyone else also knows that he received 1 coin</li>
+<li>Bob knows that they know that he knows that he received 1 coin</li>
+<li>and so on…</li>
+</ul>
+<p>This <strong>common knowledge</strong> is what makes Bob confident that the rest of the world will allow him to spend the coin later. And this is true even though Bob doesn’t communicate directly with the entire world.</p>
+<div class="fragment">
+<p>Bitcoin achieves this strong idea of consensus based on the following <em>assumption</em> about the world:</p>
+<blockquote class="blockquote">
+<p>The majority of the <strong>computational power</strong> used for mining (at any given time) is controlled by honest miners.</p>
+</blockquote>
+<p>Here, the term “honest” means someone who runs the unmodified Bitcoin software, plays by the rules, and doesn’t try to double-spend or otherwise cheat the system. (Being greedy and selfish does not disqualify someone from being “honest,” at least in the sense that we will use the term in this course.)</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>If this assumption holds, then a leader election based on proof of work (eventually) stops double-spending attacks,because a dishonest miner cannot keep up with the raw computing power of the honest majority</p></li>
+<li><p>On the other hand: if an attacker actually has the majority of the hash power, then they can solve proof of work puzzles faster than the honest miners and can therefore rewrite history!</p></li>
+<li><p>Note that this honest majority assumption is stronger than the “anytrust” assumption that one of the miners is honest, which was all that we needed to ensure censorship resistance</p></li>
+</ul>
+</div>
+<hr>
+<section id="another-view-of-forking" class="level3">
+<h3 class="anchored" data-anchor-id="another-view-of-forking">Another view of forking</h3>
+<p>To see why Bitcoin needs an honest majority of computing power, let’s use the same forking picture as before, but change the scenario as follows:</p>
+<ul>
+<li>The time in the present is actually after block <code>D</code> has been posted</li>
+<li>A malicious miner Mallory wants to revoke a transaction that occurred in the past, in block <code>B</code></li>
+<li>To do so, Mallory plans to build a fork <code>A</code> <span class="math inline">\(\to\)</span> <code>B2</code> and create enough blocks that the honest nodes switch to her chain</li>
+<li>In the meantime, the honest miners continue creating blocks (blissfully unaware of Mallory’s plan)</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-consistency.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Bitcoin’s consistency rule (image source: <a href="https://www.mangoresearch.co/blockchain-forks-explained/">Mango Research</a>)</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p>In essence, Mallory is in a race with the honest miners: <!-- In order to win this game, Mallory will need to post many proofs of work in a row, very quickly --></p>
+<!-- and the honest miners control $1-q$ fraction of the world's hash mining power -->
+<ul>
+<li>Mallory needs to create <span class="math inline">\(4 + N\)</span> blocks faster than the real world produces <span class="math inline">\(N\)</span> blocks (for any <span class="math inline">\(N\)</span>) <!-- If Mallory ever succeeds, she can post her blocks and the honest nodes _will_ switch to her chain due to the consensus rule --></li>
+<li>Let’s say that Mallory has <span class="math inline">\(q\)</span> fraction of the world’s hash mining power, and the honest miners have the remaining <span class="math inline">\(1-q\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> Does this remind you of any type of math or statistics problem that you have seen previously? If you had to calculate the probability that Mallory ever takes the lead in this race, how would you do so?</p>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. This is a Markov chain problem!</p>
+</div>
+<div class="fragment">
+<p><a href="https://bitcoin.org/bitcoin.pdf">Nakamoto’s whitepaper</a> includes the following function (which I translated from C++ into Python). It calculates the probability that an attacker who controls a <code>q</code> fraction of the computing power of the network can execute a double-spend attack to overwrite the last <code>z</code> blocks in the blockchain.</p>
+<div id="5ad8383d" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code adapted from the Bitcoin whitepaper at https://bitcoin.org/bitcoin.pdf</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> exp, <span class="bu">pow</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> AttackerSuccessProbability(q: <span class="bu">float</span>, z: <span class="bu">int</span>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> <span class="fl">1.0</span> <span class="op">-</span> q</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    poisson_lambda <span class="op">=</span> z <span class="op">*</span> (q <span class="op">/</span> p)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">sum</span> <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(z<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        poisson <span class="op">=</span> exp(<span class="op">-</span>poisson_lambda)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, k<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            poisson <span class="op">=</span> poisson <span class="op">*</span> poisson_lambda <span class="op">/</span> i</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">sum</span> <span class="op">=</span> <span class="bu">sum</span> <span class="op">-</span> poisson <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> <span class="bu">pow</span>(q <span class="op">/</span> p, z <span class="op">-</span> k))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"q ="</span>, q)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"z ="</span>, z, <span class="st">"</span><span class="ch">\t</span><span class="st">  Prob ="</span>, <span class="bu">format</span>(AttackerSuccessProbability(q, z),<span class="st">"1.7f"</span>))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">""</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"q ="</span>, q)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">55</span>, <span class="dv">5</span>):</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"z ="</span>, z, <span class="st">"</span><span class="ch">\t</span><span class="st">  Prob ="</span>, <span class="bu">format</span>(AttackerSuccessProbability(q, z),<span class="st">"1.7f"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>q = 0.1
+z = 0     Prob = 1.0000000
+z = 1     Prob = 0.2045873
+z = 2     Prob = 0.0509779
+z = 3     Prob = 0.0131722
+z = 4     Prob = 0.0034552
+z = 5     Prob = 0.0009137
+z = 6     Prob = 0.0002428
+z = 7     Prob = 0.0000647
+z = 8     Prob = 0.0000173
+z = 9     Prob = 0.0000046
+
+q = 0.3
+z = 0     Prob = 1.0000000
+z = 5     Prob = 0.1773523
+z = 10    Prob = 0.0416605
+z = 15    Prob = 0.0101008
+z = 20    Prob = 0.0024804
+z = 25    Prob = 0.0006132
+z = 30    Prob = 0.0001522
+z = 35    Prob = 0.0000379
+z = 40    Prob = 0.0000095
+z = 45    Prob = 0.0000024
+z = 50    Prob = 0.0000006</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>This code shows that even if a dishonest miner controls 10% of all the hash computing power on the blockchain, it will only have about a 1.3% chance of succeeding at double-spending a transaction from <code>z = 3</code> blocks ago.</p>
+<ul>
+<li>The attacker can increase its chance of success by buying or renting more computational power.</li>
+<li>In response, defenders can resist this attack by waiting for more blocks to be confirmed in the public, honest chain.</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="an-example" class="level3">
+<h3 class="anchored" data-anchor-id="an-example">An example</h3>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Suppose Mallory creates a transaction that sends money to Alice. But Alice doesn’t trust the sender and wants to be 99.9% confident that her new money cannot be taken away through a double spend attack.</p>
+<p>The Nakamoto whitepaper includes the following table that shows how many blocks Alice needs to see mined after the block containing the Mallory <span class="math inline">\(\to\)</span> Alice transaction, as a function of the dishonest miner’s computational power, so that a double-spend succeeds with at most 0.1% probability.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Adversary’s computational power</th>
+<th style="text-align: left;"># blocks required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">10%</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">15%</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20%</td>
+<td style="text-align: left;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">25%</td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">30%</td>
+<td style="text-align: left;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">35%</td>
+<td style="text-align: left;">41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">40%</td>
+<td style="text-align: left;">89</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">45%</td>
+<td style="text-align: left;">340</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fragment">
+<p>There are two important takeaways from this table:</p>
+<ol type="1">
+<li>The hash power required to execute a double-spend attack quickly becomes onerous enough to be not worth it, for all but the most expensive transactions. Even if Mallory controls 10% of the Bitcoin network’s computing power, executing a double spend attack will likely take more than one hour. In that time, Mallory could have honestly earned (in expectation) hundreds of thousands of dollars in mining fees.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="2" type="1">
+<li>On the other hand, if the attacker controls the majority of the hash power, then your money is <em>never</em> safe; even transactions made years ago could eventually be double-spent. This is called a <strong>51% attack</strong>.</li>
+</ol>
+</div>
+<hr>
+</section>
+</section>
+<section id="finalization" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="finalization"><span class="header-section-number">10.3</span> 10.3 Finalization</h2>
+<p><strong>When</strong> does the existence of a transaction become common knowledge? Suppose that Bob sees a transaction on the Bitcoin peer-to-peer network in which Alice sends 1 coin to him.</p>
+<div class="fragment">
+<ul>
+<li>Bob shouldn’t immediately believe that the money is his, because the transaction isn’t in a block yet.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<ul>
+<li>Even after Bob sees the transaction in a block <code>B</code> he shouldn’t believe that the money is his, because a fork could naturally happen and this block might not wind up on the longest chain</li>
+</ul>
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-fork.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Image source: <a href="https://www.mangoresearch.co/blockchain-forks-explained/">Mango Research</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<ul>
+<li>Even after Bob sees a few more blocks built on top of the block <code>B</code> containing his transaction, he <em>still</em> might not believe that the money is his, because Alice might be maliciously forking the chain to run a double-spend attack</li>
+</ul>
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/06-consistency.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Image source: <a href="https://www.mangoresearch.co/blockchain-forks-explained/">Mango Research</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li>But surely at some point, Bob gets to believe that the money is his… right?</li>
+</ul>
+</div>
+<hr>
+<div class="fragment">
+<div id="def-finalization" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 10.1 (Finalized blocks)</strong></span> A node considers a block to be <em>finalized</em> if it is at least <span class="math inline">\(k\)</span> blocks deep inside of the longest chain. Also, the node considers a transaction to be finalized if it is part of a finalized block.</p>
+</div>
+<p>In other words: a block is finalized when it becomes <strong>common knowledge</strong> that it will remain in the blockchain forever.</p>
+</div>
+<div class="fragment">
+<p>Overall, Bitcoin’s proof-of-work blockchain achieves the following security goals as long as a majority of the computing power is honest (i.e., follows the rules).</p>
+<ol type="1">
+<li><strong>Liveness</strong>: Every transaction is eventually finalized by all honest nodes.</li>
+<li><strong>Safety</strong>: Honest nodes do not finalize different blocks at the same height.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Bitcoin achieves liveness and safety. <!-- and therefore blocks on the blockchain eventually do become finalized --> The exact choice of <span class="math inline">\(k\)</span> to use depends on one’s view of:</p>
+<ul>
+<li>How much computing power the adversary has</li>
+<li>How low of a probability for double-spend attacks that one is willing to tolerate</li>
+</ul>
+</div>
+<div class="fragment">
+<p>As a simple heuristic, many people consider Bitcoin transactions to be finalized once they are <span class="math inline">\(k = 6\)</span> blocks deep in the blockchain. At that point, an attacker with 10% of the mining power has only probability <span class="math inline">\(p = 0.0002428\)</span> of rewriting history.</p>
+<!--
+```{=html}
+<iframe width="800" height="450" src="https://bitcoinexplorer.org/tx/2f3711bc7dd95486cf7cc921cdb23022cc681740c5f08eda9ae1ac383b61d511" title="One transaction in a block"></iframe>
+```
+-->
+</div>
+<div class="fragment">
+<p>In order to achieve these goals, Bitcoin is purposely designed to be:</p>
+<ul>
+<li><em>Slow</em>, in that transactions take awhile to become finalized</li>
+<li><em>Bounded</em>, in that only a small number of transactions can be inserted in each block</li>
+<li><em>Computationally intensive</em>, in order to distinguish the honest majority from the dishonest minority</li>
+</ul>
+</div>
+<!--
+**Interactive question.** A typical Bitcoin block contains about 5000 transactions, and a new block is created about every 10 minutes. Approximately how many transactions per second can Bitcoin handle, rounded to the nearest power of 10?
+
+A) 1
+B) 10
+C) 100
+D) 1000
+
+::: {.fragment}
+For context, credit card providers like Visa and Mastercard handle around $10^4$ transactions per second. (But they also have higher transaction fees and require placing trust in specific intermediaries.)
+:::
+-->
+<hr>
+</section>
+<section id="simplified-payment-verification" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="simplified-payment-verification"><span class="header-section-number">10.4</span> 10.4 Simplified payment verification</h2>
+<p>Note that we have not yet provided any security guarantees to the light clients, since they cannot independently validate transactions and blocks. Let’s see if we can extend <em>liveness</em> and <em>safety</em> to them.</p>
+<ul>
+<li>Remember that a light client doesn’t have the hard drive space to store the 689 GB of data in the Bitcoin blockchain</li>
+<li>Still though, they can periodically connect to the Internet and download some data</li>
+</ul>
+<div class="fragment">
+<p>It would be great if we could compress all transactions into a small dataset. Unfortunately, that’s impossible. Instead, we can leverage the facts that:</p>
+<ol type="1">
+<li>The <em>nodes</em> know the full list of transactions, and</li>
+<li>The nodes have good Internet connectivity, so they are available to provide transaction data to the light clients.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>The light clients just need to verify the accuracy of the transactions – that is, to make sure that the nodes are telling them the truth. <!-- To do that, we can use a **Merkle tree**. --></p>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> What cryptographic primitive can we use to help the light clients?</p>
+<ol type="A">
+<li>Digital signatures</li>
+<li>Merkle trees</li>
+<li>Message commitments</li>
+<li>Pseudorandomness</li>
+</ol>
+</div>
+<hr>
+<section id="merkle-trees" class="level3">
+<h3 class="anchored" data-anchor-id="merkle-trees">Merkle trees</h3>
+<p>Recall that Merkle trees allow us to:</p>
+<ul>
+<li>Create a single hash digest that corresponds to a large collection of files <span class="math inline">\(S = (f_1, f_2, \ldots, f_k)\)</span></li>
+<li>Subsequently reveal any file in the set and <em>prove</em> set membership</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/03-merkle-verify.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Verifying a Merkle proof (source: Alin Tomescu, <a href="https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/"><em>Decentralized Thoughts blog</em></a>)</figcaption>
+</figure>
+</div>
+<!-- ### Application to SPV -->
+<div class="fragment">
+<p>How does this relate to Bitcoin? Well, if you think about the transactions as “files” and the block as a collection of files, we can do something similar here.</p>
+<p>To support light clients, we are going to make two changes to the way that Bitcoin works. The first change applies to everyone, and the second change applies only to light clients.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p>Each block will contain the Merkle root of all transactions within the block. The block itself will also contain all transactions, as before.</p>
+<p>We will call the <strong>block header</strong> as just the following items: the nonce of the current block, the root of a Merkle tree for all transactions within that block, and the pointer to the previous block’s hash. Because the Merkle root <em>binds</em> together all of the transactions, it now suffices to create a proof-of-work puzzle where the hash is only taken over the header, and not the transactions themselves.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-spv.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>Merkle tree in the block header (image source: <a href="https://bitcoin.org/bitcoin.pdf">Nakamoto whitepaper</a>)</figcaption>
+</figure>
+</div></li>
+<li><p>A light client will follow the same rule as nodes: find the blockchain of the largest height (or more accurately, the most cumulative difficulty). But the light client only downloads the block headers, not the full blocks (i.e., they won’t know the transactions).</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>To give a sense of scale:</p>
+<ul>
+<li>Each header is 80 bytes in size, so downloading all block headers for Bitcoin is about 70 MB of data right now.</li>
+<li>This is much smaller than 689 GB for the full blocks!</li>
+</ul>
+</div>
+<div class="fragment">
+<p>With this info, a light client can:</p>
+<ul>
+<li>Verify the proof of work puzzles themselves.</li>
+<li>Query a full node to ask whether they have received money. That is: if the client believes it has received money in block <span class="math inline">\(N\)</span>, it can ask a node to send (1) the transaction that pays its public key and (2) a Merkle proof that it is contained within the set represented by that block’s Merkle root.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Note that a light client <em>cannot</em> verify:</p>
+<ol type="1">
+<li>That the full block is valid (in particular, that the other transactions have valid signatures)</li>
+<li>That their money hasn’t yet been spent in a subsequent block</li>
+</ol>
+<p>They must rely on the nodes to perform verification check #1, and on their own memory for property #2.</p>
+</div>
+<div class="fragment">
+<p>This makes light clients more vulnerable to attackers than nodes. For instance, a malicious miner can just create a single “bad” block that contains invalid signatures; nodes will reject it but a light client will be fooled.</p>
+<p>For this reason, light clients should be even more careful when <strong>finalizing</strong> a transaction.</p>
+<p>Eventually though, light clients will inherit the liveness and safety guarantees from the nodes.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-path-forward" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="the-path-forward"><span class="header-section-number">10.5</span> 10.5 The path forward</h2>
+<p>This is all that I want to say about Bitcoin in this course. Even though Bitcoin is focused on financial transactions, think about how these ideas can be applied in general for sending messages and datasets on the Internet.</p>
+<ul>
+<li>Nobody can <em>censor</em> you from talking to your friends</li>
+<li>If you send a message to a large group, then everyone can <em>agree</em> about what you said (even if some people in the group are trying to cause confusion)</li>
+</ul>
+<p>Importantly: agreement is possible even though the Bitcoin participants do not have a common communication channel where one person posts a message and everyone can see it.</p>
+<div class="fragment">
+<p>The idea that a bunch of computers over the Internet can reach agreement in the face of an adversary is kind of amazing! It provides an elegant solution to <em>integrity</em> and <em>availability</em> problems in a variety of applications that go beyond money:</p>
+<ul>
+<li><p>Sending a message to your friends and making sure that all of them hear it, and that everyone has the <em>common knowledge</em> that everyone else has heard it too. This is called the <strong>broadcast</strong> problem.</p></li>
+<li><p>Conducting an election or any other decision-making process where it is important to make sure that everyone has consensus on which decision has been selected. This is called the <strong>Byzantine agreement</strong> problem.</p></li>
+<li><p>Designing a high-assurance computer server that continues to work even if some of the individual CPUs become corrupted or faulty. This is called <strong>Byzantine fault-tolerance</strong>.</p></li>
+</ul>
+<p>We will talk about these applications next week.</p>
+</div>
+<div class="fragment">
+<p>Also, the Bitcoin blockchain has (at least) two major issues that we will return to in Unit 4 of the course.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><strong>Privacy</strong>. In Bitcoin, all transactions are public knowledge. Even though your name is not published on the blockchain directly, it may be possible to trace the owner of each account. We discussed the limitations of <em>pseudonymity</em> in today’s coffee shop example, and we will discuss privacy in more detail in Unit 3 of the course.</p></li>
+<li><p><strong>Energy inefficiency</strong>. Bitcoin’s proof-of-work puzzle solves the agreement problem, but it is <em>incredibly</em> computationally intensive. The U.S. Department of Energy released a report last year that estimated that “electricity use from cryptocurrency mining probably represents from 0.6% to 2.3% of U.S. electricity consumption” (<a href="https://www.eia.gov/todayinenergy/detail.php?id=61364">source</a>).</p></li>
+</ol>
+</div>
+<!--
+::: {.fragment}
+The good news is that there are other ways to solve the agreement problem that do not require this kind of computing power.
+
+We will talk about both of these scientific issues, and how to resolve them, in more detail in Unit 4 of this course.
+
+Finally, we will have a broader discussion of the impact of crypto and cybersecurity technology on society, and laws and policy regulations, in the final unit of the course.
+:::
+-->
+<hr>
+</section>
+<section id="appendix-scripts-on-the-blockchain" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="appendix-scripts-on-the-blockchain"><span class="header-section-number">10.6</span> Appendix: Scripts on the blockchain</h2>
+<p>So far, we have said that a transaction has the form “Alice pays 1 coin to Bob.”</p>
+<p>Actually, this is not quite true. Bitcoin allows for more complicated transactions than this.</p>
+<div class="fragment">
+<p>A Bitcoin transaction is actually a computer script that looks like this.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-transaction_details2.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>Script in a Bitcoin transaction</figcaption>
+</figure>
+</div>
+<!--
+```{=html}
+<iframe width="800" height="450" src="https://mempool.space/tx/426bbc396d684b9b2986a67285b9c03a839a7bd76f1b4a7edf4ec0d470304826" title="Script in a Bitcoin transaction"></iframe>
+```
+-->
+</div>
+<div class="fragment">
+<p>In words, a Bitcoin transaction involves Alice posting her own public key and the <em>hash of</em> Bob’s public key. This hash is called Bob’s wallet “address.” The transaction can be thought of as a computer program that says:</p>
+<blockquote class="blockquote">
+<p>“For anyone who shows up later with a public key and claims to be the recipient of this transaction, take the hash of their public key and check if it equals <code>8ec...b1</code>. If so, give my coins to that person.”</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>In fact, there are several valid operations that can be performed in a Bitcoin transaction. However, the scripting language is not Turing-complete; that is, you can’t write any computer program.</p>
+</div>
+<div class="fragment">
+<p>Relatedly, this is why some Bitcoin transactions take up more space than others: they can be more complicated computer programs.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-blocks.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Transaction sizes in a Bitcoin block</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+<section id="ethereum" class="level3">
+<h3 class="anchored" data-anchor-id="ethereum">Ethereum</h3>
+<p>Ethereum is another cryptocurrency. It was created in 2013 – so, four years after Bitcoin, but still awhile ago. Ethereum takes the idea of scripting much further than Bitcoin does.</p>
+<div class="fragment">
+<p>The Ethereum blockchain is essentially a global computer where everyone agrees on the state of this computer. The global state is replicated on all nodes that are in the Ethereum network. The Ethereum state can only be changed by users issuing transactions.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-eth-computer.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Source: <a href="https://preethikasireddy.medium.com/how-does-ethereum-work-anyway-22d1df506369">Preethi Kasireddy’s blog post</a></figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Similarities.</strong> Ethereum shares several features in common with Bitcoin, such as:</p>
+<ul>
+<li>a peer-to-peer network that connects users,</li>
+<li>a consensus algorithm to agree on state updates, and</li>
+<li>using cryptographic primitives like digital signatures and hashes.</li>
+</ul>
+<p>Additionally, Ethereum also has its own digital currency, known as Ether.</p>
+</div>
+<div class="fragment">
+<p>Just like Bitcoin transactions:</p>
+<ul>
+<li>Ethereum transactions are grouped into blocks and broadcasted into the network.</li>
+<li>Any person can use the global computer by issuing transactions and paying the required fees in its Ether currency.</li>
+<li>Every few seconds a leader gets elected, and that leader chooses which transactions go in the next block.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-eth-blocks.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Source: <a href="https://preethikasireddy.medium.com/how-does-ethereum-work-anyway-22d1df506369">Preethi Kasireddy’s blog post</a></figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Differences.</strong> However, Ethereum’s primary objective is not to function as a digital currency payment network, and Ether is not intended to be a conventional currency. Instead,</p>
+<ul>
+<li>Ether is designed to be a utility currency that pays for the use of the Ethereum world computer.</li>
+<li>Transactions on the Ethereum blockchain explain how to move from one state of the machine to the next.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-eth-tx-block.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Source: <a href="https://ethereum.org/en/developers/docs/blocks/">Ethereum docs</a></figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Also, Ethereum’s scripting language is Turing-complete, unlike the one in Bitcoin. So, it can operate as a general-purpose computer and execute code with more complexity.</p>
+<p>You can think of Ethereum as a state machine. Ethereum’s state is a large data structure which holds not only all accounts and balances, but a machine state, which can change from block to block according to a pre-defined set of rules, and which can execute arbitrary machine code.</p>
+<p>The specific rules of changing state from block to block are defined by the Ethereum Virtual Machine (EVM). Every transaction causes the EVM to run which causes the global state to change. The order of the transaction is very important! The EVM is single threaded.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/08-evm.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Source <a href="https://ethereum.org/content/developers/docs/evm/evm.png">Ethereum docs</a></figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+<section id="smart-contracts" class="level3">
+<h3 class="anchored" data-anchor-id="smart-contracts">Smart Contracts</h3>
+<p>Why use a bunch of computers in order to create one global computer?</p>
+<p>One benefit is that you can write software that makes and enforces financial decisions. In other words, you can create a <strong>contract</strong> that can be enforced via computer code.</p>
+<div class="fragment">
+<p>For example, you could post a Sudoku puzzle to Ethereum and create a smart contract that says:</p>
+<blockquote class="blockquote">
+<p>“I will pay 1 coin to the first person who posts a solution to the Sudoku puzzle in the next hour. Otherwise, I will reclaim my money.”</p>
+</blockquote>
+<p>You must currently own 1 coin for this smart contract to be valid. If so, your coin is “locked” in the smart contract until it gets paid out (either to the puzzle-solver, or back to you).</p>
+</div>
+<div class="fragment">
+<p>The smart contract itself must be written as a computer program. Ethereum supports several programming languages; a popular one is a language called <code>Solidity</code> that was developed for Ethereum. Solidity is an object oriented imperative programming language with a syntax similar to Python and C++.</p>
+</div>
+<div class="fragment">
+<p>Going one step further: you can even create new coins on top of Ethereum!</p>
+<ul>
+<li><p>Ethereum contains a standard interface for fungible tokens on the Ethereum blockchain, called <strong>ERC20</strong>. It is a set of rules that define how a token contract should behave and interact with other contracts and wallets on the Ethereum network.</p></li>
+<li><p>For instance, you could create a new kind of coin called <code>Sudokoin</code> and say that anyone who solves a Sudoku puzzle earns 1 <code>Sudokoin</code>. <a href="https://github.com/sudokoin/sudokoin/blob/master/sudokoin.sol">Here</a> is open-source Solidity code to do exactly this! (Whether or not this coin has any value is a different matter…)</p></li>
+</ul>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>If you think that the idea of blending “computer code” with “irreversible financial transactions” can lead to disaster, then <em>you would be right</em>!</p>
+<p>Bugs in Ethereum smart contracts can lead to your money being sent to the wrong place, or being locked forever. For this reason, smart contracts should always be (and sometimes are) carefully checked by human code reviewers and formally verified by computers.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
