@@ -190,6 +190,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
   </div>
@@ -265,7 +271,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin security</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -343,6 +349,7 @@ window.Quarto = {
 </header>
 
 
+<!-- TODO: if possible, use this lecture to provide a concrete explanation of a security reduction. For example, can show here that "a PRF is a MAC for fixed-length inputs," with the appropriate definitions for PRF and MAC. -->
 <hr>
 <section id="announcements" class="level3">
 <h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
@@ -528,13 +535,13 @@ window.Quarto = {
 </div>
 <div class="fragment">
 <p><strong>Example.</strong> Let me show you how easy MACs are to use. You have been using them your entire life, with most websites you have ever visited, without even knowing it!</p>
-<div id="eea54a24" class="cell" data-execution_count="2">
+<div id="26ad73ad" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>openssl s_client <span class="op">-</span><span class="ex">connect</span> example.com:<span class="dv">443</span> <span class="op">-</span>servername example.com <span class="op">-</span>tls1_3 <span class="op">-</span>cipher <span class="st">'ECDHE-ECDSA-AES256-SHA384'</span> <span class="op">&lt;</span> <span class="op">/</span>dev<span class="op">/</span>null <span class="dv">2</span><span class="op">&gt;/</span>dev<span class="op">/</span>null <span class="op">|</span> grep <span class="op">-</span>E <span class="st">'Cipher'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384</code></pre>
 </div>
 </div>
-<p>This web connection uses a hash-based MAC, using the hash function from the SHA-2 family that has an output length of 384 bits.</p>
+<p>This web connection generates keys pseudorandomly using HMAC with the hash function SHA-384: the function in the SHA-2 family with an output length of 384 bits.</p>
 </div>
 <hr>
 </section>

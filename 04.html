@@ -190,6 +190,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
   </div>
@@ -610,21 +616,21 @@ Let's discuss the proper way for computers to generate randomness.
 </div>
 <div class="fragment">
 <p>Here is an example: the terminal command below reads 32 bytes of data from <code>/dev/urandom</code> and prints the result in hexadecimal format.</p>
-<div id="156407e4" class="cell" data-execution_count="2">
+<div id="0b8a9f6d" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>xxd <span class="op">-</span>u <span class="op">-</span>l <span class="dv">32</span> <span class="op">-</span>p <span class="op">/</span>dev<span class="op">/</span>urandom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>390BA3910B0F66CDC4F67F17DC7CAB64BA503B98E842BF8037CE2659A0E0
-3F94</code></pre>
+<pre><code>A33F7FC79D0E8D27FB328A8C3BD0FC350B9489C5DBADF5CEA04AE7385A37
+1D94</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
 <p>If I run this exact line of code again in the terminal, I will get a different – and hopefully unpredictable – response.</p>
-<div id="a2bcbacf" class="cell" data-execution_count="3">
+<div id="4ea395b4" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>xxd <span class="op">-</span>u <span class="op">-</span>l <span class="dv">32</span> <span class="op">-</span>p <span class="op">/</span>dev<span class="op">/</span>urandom</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>C7C4E4F05C729108303755AB9EDD7C548E859111F926F1E1B151BFD1ED78
-1E06</code></pre>
+<pre><code>0CACEC06B647CDFC49CD99545D802C3697645EDAEB88D60869E1EB79D18D
+EB9F</code></pre>
 </div>
 </div>
 </div>
@@ -730,25 +736,25 @@ Remember: always make sure to use well-written crypto software that is developed
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/04-hd-wallet.png" class="img-fluid figure-img" width="700"></p>
-<figcaption>BIP-32 standard for hierarchical deterministic wallets (image source: <a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP-32 specification</a>)</figcaption>
+<figcaption><a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki">BIP-32 standard</a> for hierarchical deterministic wallets</figcaption>
 </figure>
 </div>
 </div>
 <div class="fragment">
-<p>Pseudorandomness is also crucial in smartphone applications for two-factor authentication like Authy, Duo, and Google Authenticator.</p>
+<p>Pseudorandomness is also used within a <a href="https://en.wikipedia.org/wiki/Time-based_one-time_password">time-based one-time password</a> (TOTP), which is a popular way to provide two-factor authentication.</p>
 </div>
 <div class="fragment">
 <ul>
 <li>During account registration, Alice’s phone and the service provider agree on a short seed <span class="math inline">\(m\)</span></li>
 <li>Every minute, both of them can reliably calculate the same 6-digit code, which Alice (the person) types into the website during account login</li>
 </ul>
-<!-- Hardware tokens like RSA's SecurID work similarly. -->
+<!-- Smartphone applications like Authy, Duo, and Google Authenticator. Also hardware tokens like RSA's SecurID. -->
 <div class="columns">
 <div class="column" style="width:48%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/04-totp.png" class="img-fluid figure-img" width="250"></p>
-<figcaption>Time-based one-time password (image source: <a href="https://proton.me/authenticator">Proton Authenticator</a>)</figcaption>
+<p><img src="images/04-totp-app.png" class="img-fluid figure-img" width="250"></p>
+<figcaption><a href="https://proton.me/authenticator">Proton Authenticator</a> smartphone app</figcaption>
 </figure>
 </div>
 </div><div class="column" style="width:4%;">
@@ -756,8 +762,8 @@ Remember: always make sure to use well-written crypto software that is developed
 </div><div class="column" style="width:48%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/04-token.png" class="img-fluid figure-img" width="400"></p>
-<figcaption>RSA SecurID hardware token (image source: <a href="https://community.rsa.com/s/article/SecurID-Tokens-e9b663a7">RSA</a>)</figcaption>
+<p><img src="images/04-totp-token.png" class="img-fluid figure-img" width="400"></p>
+<figcaption><a href="https://community.rsa.com/s/article/SecurID-Tokens-e9b663a7">RSA SecurID</a> hardware token</figcaption>
 </figure>
 </div>
 </div>
@@ -914,7 +920,7 @@ So let's try to do the next best thing: find a way to provide a fair coin toss i
 </div>
 <div class="fragment">
 <p>Then, I as Alice need to reveal my bit and salt.</p>
-<div id="b67facaa" class="cell" data-execution_count="4">
+<div id="165b7b54" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hashlib</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">b"1"</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="st">b"this is supposed to be a random bytestring"</span></span>

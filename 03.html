@@ -61,7 +61,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -193,6 +212,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
   </div>
@@ -268,7 +293,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin security</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -326,6 +351,7 @@ window.Quarto = {
   <li><a href="#hashing" id="toc-hashing" class="nav-link" data-scroll-target="#hashing">Hashing</a></li>
   <li><a href="#salted-hashing" id="toc-salted-hashing" class="nav-link" data-scroll-target="#salted-hashing">Salted hashing</a></li>
   <li><a href="#password-hashing" id="toc-password-hashing" class="nav-link" data-scroll-target="#password-hashing">Password hashing</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -361,6 +387,7 @@ window.Quarto = {
 <li>Lab 3 on this week’s reading: <a href="https://ezproxy.bu.edu/login?url=https://link.springer.com/content/pdf/10.1007/978-3-662-69007-9_13">PPG sections 13.1-13.2</a> (access is through BU Library)</li>
 </ul>
 <!-- TODO: say something about late deadlines in this course -->
+<!-- TODO: in future years, the title of this lecture should be "Commitments." That is the crypto primitive we will come back to throughout the semester, and the theme can be strengthened by adding Merkle trees (as vector commitments) in the same class. -->
 <hr>
 </section>
 <section id="learning-outcomes" class="level3">
@@ -729,7 +756,7 @@ Mallory
 <p>Instead, we want the hash function to be hard to break even by people who understand exactly what it is doing.</p>
 </div>
 <hr>
-<p>In more detail, all cryptographic primitives must satisfy <strong>Kerckhoffs’s principle</strong>.</p>
+<p>In more detail, all cryptographic primitives must satisfy <strong>Kerckhoffs’s principles</strong> <span class="citation" data-cites="Kerckhoffs1883">(<a href="references.html#ref-Kerckhoffs1883" role="doc-biblioref">Kerckhoffs 1883</a>)</span>.</p>
 <div class="incremental">
 <ol class="incremental" type="1">
 <li>The system must be practically, if not mathematically, indecipherable;</li>
@@ -775,7 +802,7 @@ Mallory
 </div>
 <!-- code to generate shattered files in PDF form
 
-::: {#c0327f77 .cell execution_count=2}
+::: {#d839d8c0 .cell execution_count=2}
 ``` {.python .cell-code}
 #
 class PDF(object):
@@ -829,7 +856,7 @@ PDF('images/bad.pdf',size=(40,40))
 </div>
 <div class="fragment">
 <p>It turns out that they have the same hash digest using SHA-1. This is proof that SHA-1 does <strong>not</strong> satisfy collision resistance.</p>
-<div id="44be866f" class="cell" data-execution_count="3">
+<div id="a49eacf9" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha1</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># read the contents of two files: good.pdf (a check mark) and bad.pdf (an X)</span></span>
@@ -923,7 +950,7 @@ d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a</code></pre>
 <figcaption>Merkle-Damgård transform (image source: <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG Figure 1.3</a>)</figcaption>
 </figure>
 </div>
-<p>The mode of operation used in SHA-2 is called the <strong>Merkle-Damgård transform</strong>.</p>
+<p>The mode of operation used in SHA-2 (and also SHA-1) is called the <strong>Merkle-Damgård transform</strong>.</p>
 <ul>
 <li><p>The hash function internally runs <span class="math inline">\(C\)</span> many times, each time ingesting a new block of input together with the “running hash so far” computed from the prior inputs</p></li>
 <li><p>Since the first block has no “running hash,” it uses a fixed constant defined in the SHA-2 spec called an <strong>initialization vector</strong> or IV</p></li>
@@ -955,21 +982,13 @@ d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a</code></pre>
 -->
 <div class="fragment">
 <p>The winning algorithm, called Keccak, was created by Guido Bertoni, Joan Daemen, Michaël Peeters, and Gilles Van Assche. Here is why NIST chose Keccak to be the SHA-3 standard, <a href="https://nvlpubs.nist.gov/nistpubs/ir/2012/nist.ir.7896.pdf">in their words</a>:</p>
-<ol type="1">
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
 <li>“Offers acceptable performance in software, and <strong>excellent performance</strong> in hardware”</li>
-<li>“Has a <strong>large security margin</strong>, suggesting a good chance of surviving without a practical attack during its working lifetime”</li>
-<li>“A fundamentally new and different algorithm that is entirely <strong>unrelated to the SHA-2</strong> algorithms”</li>
+<li>“Has a <strong>large security margin</strong>, suggesting a good chance of surviving without a practical attack during its working lifetime” (security margins are related to <a href="01.html#schneier-law">Schneier’s law</a>)</li>
+<li>“A fundamentally new and different algorithm that is entirely <strong>unrelated to the SHA-2</strong> algorithms” (in other words, it avoids the Merkle-Damgård transform)</li>
 </ol>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The notion of security margins is also related to Schneier’s law.</p>
-</div>
-</div>
-</div>
 </div>
 <div class="fragment">
 <p>The design of SHA-3 contains two main components.</p>
@@ -1106,6 +1125,14 @@ of $2^{256}$ in complexity."
 </div>
 <div class="fragment">
 <p>Cryptographic hash functions are safe to use with secrets like passwords because they are designed not to leak any of the input data – not the first bit, or any bit, or any other simple function of the data. This objective is called <strong>pseudorandomness</strong>, and we will study it next time.</p>
+</div>
+</section>
+<section id="references" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="references">References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-Kerckhoffs1883" class="csl-entry" role="listitem">
+Kerckhoffs, Auguste. 1883. <em>La Cryptographie Militaire</em>. Details available on Wikipedia: <a href="https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle" class="uri">https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle</a>.
+</div>
 </div>
 
 

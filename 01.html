@@ -91,7 +91,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./unit1.html" rel="next">
-<link href="./index.html" rel="prev">
+<link href="./references.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -209,6 +209,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
   </div>
@@ -284,7 +290,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin security</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -343,7 +349,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#representations-of-numbers" id="toc-representations-of-numbers" class="nav-link" data-scroll-target="#representations-of-numbers">Representations of numbers</a></li>
   <li><a href="#discussion-practice" id="toc-discussion-practice" class="nav-link" data-scroll-target="#discussion-practice">Discussion Practice</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -403,7 +408,7 @@ window.Quarto = {
 <div class="fragment">
 <blockquote class="blockquote">
 <p>“Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”</p>
-<p>– Ben Adida <span class="citation" data-cites="Adida2018">(<a href="01.html#ref-Adida2018" role="doc-biblioref">Adida 2018</a>)</span></p>
+<p>– Ben Adida <span class="citation" data-cites="Adida2018">(<a href="references.html#ref-Adida2018" role="doc-biblioref">Adida 2018</a>)</span></p>
 </blockquote>
 </div>
 <hr>
@@ -427,7 +432,7 @@ window.Quarto = {
 <p>Cryptography and cryptanalysis reinforce each other, due to <em>Schneier’s law</em>.</p>
 <blockquote class="blockquote">
 <p>“Anyone, from the most clueless amateur to the best cryptographer, can create an algorithm that he himself can’t break.”</p>
-<p>– Bruce Schneier <span class="citation" data-cites="Schneier1998">(<a href="01.html#ref-Schneier1998" role="doc-biblioref">Schneier 1998</a>)</span></p>
+<p>– Bruce Schneier <span class="citation" data-cites="Schneier1998">(<a href="references.html#ref-Schneier1998" role="doc-biblioref">Schneier 1998</a>)</span></p>
 </blockquote>
 </div>
 </div>
@@ -601,7 +606,7 @@ Even though I won't say too much about cryptanalysis in this course, it is impor
 <p>As a result, encryption is a powerful tool with immense social consequences.</p>
 <blockquote class="blockquote">
 <p>“Cryptography rearranges power: it configures who can do what, from what.”</p>
-<p>– Prof.&nbsp;Phillip Rogaway, UC Davis <span class="citation" data-cites="Rogaway2015">(<a href="01.html#ref-Rogaway2015" role="doc-biblioref">Rogaway 2015</a>)</span></p>
+<p>– Prof.&nbsp;Phillip Rogaway, UC Davis <span class="citation" data-cites="Rogaway2015">(<a href="references.html#ref-Rogaway2015" role="doc-biblioref">Rogaway 2015</a>)</span></p>
 </blockquote>
 <p>In particular, having the secret key gives someone the power to decrypt and read a message.</p>
 </div>
@@ -612,7 +617,7 @@ Even though I won't say too much about cryptanalysis in this course, it is impor
 <p>Crypto can be used in many applications beyond network transmissions on the Internet. Still, this example highlights a general theme that we will see in this course:</p>
 <blockquote class="blockquote">
 <p>Crypto is a <em>social science</em> that masquerades as a <em>mathematical science</em>.</p>
-<p>– Me! (source: <span class="citation" data-cites="Kaptchuk2024">(<a href="01.html#ref-Kaptchuk2024" role="doc-biblioref">Kaptchuk 2024</a>)</span>)</p>
+<p>– Me! (source: <span class="citation" data-cites="Kaptchuk2024">(<a href="references.html#ref-Kaptchuk2024" role="doc-biblioref">Kaptchuk 2024</a>)</span>)</p>
 </blockquote>
 <p>The goal of this course is to use the tools from math, computer science, and data science in order to design systems that help people.</p>
 <div class="fragment">
@@ -829,7 +834,7 @@ Bob
 <p>In more detail, a secret key is a long, random sequence of bytes. One common choice is to pick a key that is <span class="math inline">\(32\)</span> bytes (or <span class="math inline">\(32 \times 8 = 256\)</span> bits) in length.</p>
 <div class="fragment">
 <p>For example, here is a secret key (also known as a private key):</p>
-<div id="2533b9ca" class="cell" data-execution_count="2">
+<div id="9d26b8bd" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install PyCryptodome with "pip install pycryptodomex"</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.PublicKey <span class="im">import</span> ECC</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>secretKey <span class="op">=</span> ECC.generate(curve<span class="op">=</span><span class="st">'P-256'</span>)</span>
@@ -837,9 +842,9 @@ Bob
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(secretKey.export_key(<span class="bu">format</span><span class="op">=</span><span class="st">'PEM'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-----BEGIN PRIVATE KEY-----
-MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgHAWV76v8NbRk6sfs
-1csRkReilQt11H/CdjXjE5sp8cOhRANCAATht+Ev4sS6Ao23jaba21nrNO5ZWnx+
-AoLXTxjKNEUipjiBOpSaRRHyzQR457U0tT/EfW27++9pTjyJmBODUdrg
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgcc5otqk8LrKrHWf0
+Lf/DU0gVI+ioJ2QcC4UQv+/v7y2hRANCAAQcm5zG3ePvNJyc5779NRWx7dfhh1nb
+lu1uO4mBFGFPAB1exlHIkQiKUKrSVC3VgQ2dwlPe/Fpt9bKgyflgzyOQ
 -----END PRIVATE KEY-----</code></pre>
 </div>
 </div>
@@ -866,7 +871,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 <div class="fragment">
 <p>Concretely, suppose I create a <code>for</code> loop that iterates from:</p>
-<div id="8ae2171d" class="cell" data-execution_count="3">
+<div id="54cb9a4d" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\x00</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 0</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># (printed as 64 hex characters)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -875,7 +880,7 @@ As a result, **knowing the key identifies Alice**, in the sense that if you meet
 </div>
 </div>
 <p>to this:</p>
-<div id="8ee493ae" class="cell" data-execution_count="4">
+<div id="11431a5a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(<span class="dv">32</span> <span class="op">*</span> <span class="st">b'</span><span class="ch">\xff</span><span class="st">'</span>)) <span class="co"># 32 copies of the byte value 255</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                             <span class="co"># (printed as 64 hex characters)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -919,7 +924,7 @@ Granted, there are surely more effective ways for an attacker to try to break ou
 <ul>
 <li>A <strong>byte</strong> is a sequence of eight bits. In other words, a byte is an element of the set <span class="math inline">\(\{0, 1\}^8\)</span>. (Note that there is a one-to-one mapping between bytes and integers in the range 0-255.)</li>
 </ul>
-<div id="17fd60dc" class="cell" data-execution_count="5">
+<div id="8e03e809" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table of all 256 values of a byte, in decimal and binary formats</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"byte  bits"</span>)</span>
@@ -959,7 +964,7 @@ Granted, there are surely more effective ways for an attacker to try to break ou
 </div>
 <div class="fragment">
 <p>Within <code>Python</code>, you can represent a value of type <code>byte</code> using a string with the letter <code>b</code> in front of it. For example, here is a byte that holds the ASCII value of the character <strong>A</strong>.</p>
-<div id="ddb4eb48" class="cell" data-execution_count="6">
+<div id="755a53ce" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">b'A'</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(s)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -973,7 +978,7 @@ Granted, there are surely more effective ways for an attacker to try to break ou
 </div>
 <div class="fragment">
 <p>Some (but not all!) bytes correspond to printable characters in the American character encoding standard, or <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>.</p>
-<div id="6a4c88b7" class="cell" data-execution_count="7">
+<div id="f4331732" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"byte  ASCII character"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>): <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#4d'</span>), <span class="bu">chr</span>(x))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" ..."</span>)</span>
@@ -1034,7 +1039,7 @@ Granted, there are surely more effective ways for an attacker to try to break ou
 <div class="fragment">
 <p>The <em>hexadecimal</em>, or base 16, representation of a number uses the symbols 0-9 and a-f to denote the values 0 through 15.</p>
 <p>By convention, Python places a <code>0x</code> prefix in front of a number to remind you that it is written in <code>hex</code> format.</p>
-<div id="738b2343" class="cell" data-execution_count="8">
+<div id="a0d461ba" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"int   hex"</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">16</span>):</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">format</span>(x, <span class="st">'#3d'</span>), <span class="st">" "</span>, <span class="bu">format</span>(x, <span class="st">'#04x'</span>))</span>
@@ -1087,7 +1092,7 @@ Granted, there are surely more effective ways for an attacker to try to break ou
 </div>
 <div class="fragment">
 <p><code>bytes_to_long</code> converts a byte string to a long integer (big endian, most significant bytes come first). <code>long_to_bytes</code> is converts a positive integer to a byte string using big endian coding.</p>
-<div id="925b14ec" class="cell" data-execution_count="9">
+<div id="c6e3c730" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># requires PyCryptodome</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.Util.number <span class="im">import</span> bytes_to_long, long_to_bytes</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify, unhexlify</span>
@@ -1110,7 +1115,7 @@ j: b'A'
 </div>
 <div class="fragment">
 <p><code>hexlify</code> returns a hexadecimal representation of the binary data. <code>unhexlify</code> returns binary data of hexademical representation.</p>
-<div id="2ea80fa4" class="cell" data-execution_count="10">
+<div id="a55747b7" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'s:'</span>, s)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> hexlify(s)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'u:'</span>, u)</span>
@@ -1129,7 +1134,7 @@ w: b'A'
 </div>
 <div class="fragment">
 <p><code>bin</code> returns the binary version of an integer.</p>
-<div id="ab902860" class="cell" data-execution_count="11">
+<div id="ff206af1" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'t:'</span>, t) </span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> <span class="bu">bin</span>(t)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'v:'</span>, v)</span>
@@ -1177,10 +1182,9 @@ z: 65
 <section id="discussion-practice" class="level3">
 <h3 class="anchored" data-anchor-id="discussion-practice">Discussion Practice</h3>
 <p><a href="https://tinyurl.com/ds653disc" class="uri">https://tinyurl.com/ds653disc</a></p>
-</section>
-<section id="references" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="references">References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-Adida2018" class="csl-entry" role="listitem">
 Adida, Ben. 2018. <em>Crypto as in Crypto</em>. <a href="https://benlog.com/2018/01/07/crypto-as-in-crypto/" class="uri">Https://benlog.com/2018/01/07/crypto-as-in-crypto/</a>.
 </div>
@@ -1188,15 +1192,12 @@ Adida, Ben. 2018. <em>Crypto as in Crypto</em>. <a href="https://benlog.com/2018
 Kaptchuk, Gabriel. 2024. <em>Interested in Working with Me?</em> <a href="https://www.cs.umd.edu/~kaptchuk/blog/post/work-with-me.html" class="uri">Https://www.cs.umd.edu/~kaptchuk/blog/post/work-with-me.html</a>.
 </div>
 <div id="ref-Rogaway2015" class="csl-entry" role="listitem">
-Rogaway, Phillip. 2015. <em>The Moral Character of Cryptographic
-Work</em>. Cryptology <span>ePrint</span> Archive, Paper 2015/1162. <a href="https://eprint.iacr.org/2015/1162">https://eprint.iacr.org/2015/1162</a>.
+Rogaway, Phillip. 2015. <em>The Moral Character of Cryptographic Work</em>. Cryptology <span>ePrint</span> Archive, Paper 2015/1162. <a href="https://eprint.iacr.org/2015/1162">https://eprint.iacr.org/2015/1162</a>.
 </div>
 <div id="ref-Schneier1998" class="csl-entry" role="listitem">
 Schneier, Bruce. 1998. <em>Memo to the Amateur Cipher Designer</em>. <a href="https://www.schneier.com/crypto-gram/archives/1998/1015.html#cipherdesign" class="uri">Https://www.schneier.com/crypto-gram/archives/1998/1015.html#cipherdesign</a>.
 </div>
 </div>
-
-
 </section>
 </section>
 
@@ -1603,8 +1604,8 @@ Schneier, Bruce. 1998. <em>Memo to the Amateur Cipher Designer</em>. <a href="ht
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Course description">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Course description</span>
+      <a href="./references.html" class="pagination-link" aria-label="References">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

@@ -190,6 +190,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
   </div>
@@ -265,7 +271,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin security</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -356,6 +362,7 @@ window.Quarto = {
 This link shows the effect of birthday bound on nonce sizes / # of messages:
 https://www.rfc-editor.org/rfc/rfc8452#page-14
 -->
+<!-- TODO: if Merkle trees need to move to lecture 3 in future years, consider describing them after commitments and calling them a vector commitment from the start. This could help to set up the arithmetic-friendly vector commitments in Unit 4. -->
 <hr>
 <section id="announcements" class="level3">
 <h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
@@ -662,7 +669,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>For example, here is some Python code for a popular cryptographic hash function called <strong>SHA-256</strong>, which has an output length of 256 bits.</p>
-<div id="8558c230" class="cell" data-execution_count="2">
+<div id="ca9b0fb5" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install PyNaCl with "pip install pynacl"</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nacl.<span class="bu">hash</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sha256 <span class="op">=</span> <span class="kw">lambda</span> message: nacl.<span class="bu">hash</span>.sha256(message, encoder<span class="op">=</span>nacl.encoding.HexEncoder)</span>
@@ -675,7 +682,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>A hash function is deterministic: if you feed in the same input twice, you will get the same output twice.</p>
-<div id="1708b5df" class="cell" data-execution_count="3">
+<div id="00847788" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sha256(<span class="st">b'Hello world!'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>b'c0535e4be2b79ffd93291305436bf889314e4a3faec05ecffcbb7df31ad9e51a'</code></pre>
@@ -684,7 +691,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>Small changes to the input of the hash function cause substantial changes to the output.</p>
-<div id="908d49e6" class="cell" data-execution_count="4">
+<div id="4480e532" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="st">b'Hello world?'</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sha256(message))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -703,7 +710,7 @@ Cloud service
 </div>
 </div>
 </div>
-<div id="6d90c46e" class="cell" data-execution_count="5">
+<div id="8cb16a44" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hexMessage <span class="op">=</span> hexlify(message)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hexDigest <span class="op">=</span> sha256(hexMessage)</span>
@@ -716,7 +723,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>As the name suggests, SHA-256 has an output length of 256 bits, or 32 bytes. The output is represented using 64 hex characters, since each hex character encodes 4 bits of data.</p>
-<div id="e73f8872" class="cell" data-execution_count="6">
+<div id="027bd62b" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(hexDigest))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>64</code></pre>
@@ -725,13 +732,13 @@ Cloud service
 </div>
 <div class="fragment">
 <p>The input to the hash function can be any size. No matter what: the output length is always 256 bits, i.e., 64 hex characters.</p>
-<div id="ddcff7e9" class="cell" data-execution_count="7">
+<div id="343a238e" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(sha256(<span class="st">b'A'</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>64</code></pre>
 </div>
 </div>
-<div id="1ccbae46" class="cell" data-execution_count="8">
+<div id="a0ea1f2c" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(sha256(<span class="st">b'It was the best of times, it was the worst of times, it was the age of wisdom, </span><span class="op">\</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">                   it was the age of foolishness, it was the epoch of belief, it was the epoch of </span><span class="op">\</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">                   incredulity, it was the season of light, it was the season of darkness, it was </span><span class="op">\</span></span>
@@ -859,7 +866,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>We can calculate this expression using Python.</p>
-<div id="99513383" class="cell" data-execution_count="9">
+<div id="d376fd44" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>math.prod(<span class="bu">range</span>(<span class="dv">344</span>,<span class="dv">367</span>)) <span class="op">/</span> (<span class="dv">366</span><span class="op">**</span><span class="dv">23</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
@@ -880,7 +887,7 @@ Cloud service
 <p>Generalizing from the specific case of birthdays (where there are <span class="math inline">\(N = 366\)</span> options): when drawing with replacement from a set of size <span class="math inline">\(N\)</span>, then:</p>
 <p><span class="math display">\[ E[\text{\# of attempts until the first collision}] \approx 1.25 \sqrt{N}.\]</span></p>
 <p>This approximation works well even for fairly small choices of <span class="math inline">\(N\)</span>, such as <span class="math inline">\(N = 366\)</span>. And it works really well for larger <span class="math inline">\(N\)</span>.</p>
-<div id="b62712ac" class="cell" data-execution_count="10">
+<div id="53848bda" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fl">1.25</span> <span class="op">*</span> math.sqrt(<span class="dv">366</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">

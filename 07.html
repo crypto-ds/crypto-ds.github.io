@@ -190,6 +190,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
   </div>
@@ -344,8 +350,7 @@ window.Quarto = {
 </header>
 
 
-<!-- TODO: add some info about AI safety and its use of pseudorandomness, like Miranda's talk on watermarking and the 9/23 RESI talk on AI bot communications -->
-<!-- TODO: add example of bad signature code. Discuss the skill of problem formulation and technical specification (e.g., via a formal definition); like issue-spotting, this is becoming more critical in an age of AI -->
+<!-- TODO: add some info about AI safety and its use of pseudorandomness, like Miranda's talk on watermarking, the 9/23 RESI talk on AI bot communications, and Matt Green's blog post about AI companies using digital signatures https://blog.cryptographyengineering.com/2026/09/30/is-sandboxing-sufficient-to-contain-rogue-agents/ -->
 <hr>
 <section id="announcements" class="level3">
 <h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
@@ -500,7 +505,7 @@ window.Quarto = {
 </div>
 <div class="fragment">
 <p><strong>Question.</strong> What could go wrong with the following code? In preparing for Exam 1, try to find as many flaws with this code block as you can.</p>
-<div id="68e32aa7" class="cell" data-execution_count="2">
+<div id="28ea8582" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Alice_sign(message):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   secret_key <span class="op">=</span> randint(<span class="dv">0</span>, <span class="dv">2</span><span class="op">**</span><span class="dv">64</span>)                   <span class="co"># sample uniformly at random</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   public_key <span class="op">=</span> PublicKey.from_sk(secret_key)       <span class="co"># compute Alice's public key</span></span>
@@ -523,6 +528,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<!-- Discuss the skill of problem formulation and technical specification (e.g., via a formal definition); like issue-spotting, this is becoming more critical in an age of AI -->
 <hr>
 </section>
 </section>

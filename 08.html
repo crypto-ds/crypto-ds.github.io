@@ -190,6 +190,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
   </div>
@@ -475,6 +481,7 @@ window.Quarto = {
 <section id="bitcoins-public-ledger" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="bitcoins-public-ledger"><span class="header-section-number">8.2</span> Bitcoin’s public ledger</h2>
 <p>Bitcoin is a <em>public</em> and <em>peer-to-peer</em> cryptocurrency. It is a digital coin, combined with a digital ledger called a <strong>blockchain</strong> that keeps track of how many Bitcoins each party holds at any moment in time.</p>
+<!-- Consider using Fig 1.5 from the textbook and associated quote: "A block chain is a linked list that is built with hash pointers instead of pointers." -->
 <div class="incremental">
 <ul class="incremental">
 <li>Rather than relying on a bank, the ledger is maintained by <em>everyone</em> running the Bitcoin software</li>
@@ -527,7 +534,7 @@ window.Quarto = {
 </div>
 <div class="fragment">
 <p>Because the Bitcoin blockchain is public, anyone can read any message that has ever been stored on it. The following code connects to a Bitcoin node (hosted on <a href="https://mempool.space">mempool.space</a>) and extracts the bytestring message written within the <em>genesis</em> (first) block in the miner’s <em>coinbase transaction</em>.</p>
-<div id="f56c7b62" class="cell" data-execution_count="2">
+<div id="c9547bd8" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> unhexlify</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -818,33 +825,34 @@ print(unhexlify(response.json()[0]['vin'][0]['scriptsig_asm'].split(" ")[5]).dec
 </div>
 </div>
 </div>
-<div id="25c70d4a" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install "cryptos@git+https://github.com/nicolas3355/cryptos"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cryptos.keys <span class="im">import</span> gen_secret_key, PublicKey</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cryptos.bitcoin <span class="im">import</span> BITCOIN</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a secret/public key pair</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>secret_key <span class="op">=</span> gen_secret_key(BITCOIN.gen.n)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>public_key <span class="op">=</span> PublicKey.from_sk(secret_key)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'generated secret key, in hex format:'</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">hex</span>(secret_key))</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">corresponding public key, as an elliptic curve point:'</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(public_key)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># get the associated bitcoin address</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>addr <span class="op">=</span> public_key.address(net<span class="op">=</span><span class="st">'main'</span>, compressed<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">compressed bitcoin address, in base 58 check format:'</span>)</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(addr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="dad190ba" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install "cryptos@git+https://github.com/nicolas3355/cryptos"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library by Andrej Karpathy, with edits by Nicolas Alhaddad</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cryptos.keys <span class="im">import</span> gen_secret_key, PublicKey</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cryptos.bitcoin <span class="im">import</span> BITCOIN</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a secret/public key pair</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>secret_key <span class="op">=</span> gen_secret_key(BITCOIN.gen.n)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>public_key <span class="op">=</span> PublicKey.from_sk(secret_key)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'generated secret key, in hex format:'</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">hex</span>(secret_key))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">corresponding public key, as an elliptic curve point:'</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(public_key)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># get the associated bitcoin address</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>addr <span class="op">=</span> public_key.address(net<span class="op">=</span><span class="st">'main'</span>, compressed<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">compressed bitcoin address, in base 58 check format:'</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(addr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>generated secret key, in hex format:
-0x6b392a7525b3133c3bc0addbc9d08a5abc37e8b593b8f75142d536116360e726
+0x11146ce408f3bcf833e17ac213ebe578c0b2f58b15fd43721f02707a94cc6a36
 
 corresponding public key, as an elliptic curve point:
-PublicKey(curve=Curve(p=115792089237316195423570985008687907853269984665640564039457584007908834671663, a=0, b=7), x=114186745843190113411049867280141193204928506436684711629337242783228056308246, y=62405399941711297503320572686681857061593205472215867594491362661289974550812)
+PublicKey(curve=Curve(p=115792089237316195423570985008687907853269984665640564039457584007908834671663, a=0, b=7), x=97372424065323306128977267639433794485342648939529541765330977643219421633607, y=49465412336846526941627945542677025329540272931864111746217136332800617748617)
 
 compressed bitcoin address, in base 58 check format:
-15ZajGmgGHpvpMViVbpQrgTRL5NVi8QprH</code></pre>
+1DH3UXXNWhusUhgntk8LQNxefAUQ1Ky83n</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -893,13 +901,13 @@ For example, here is the coinbase transaction of block number 881,900.
 <div class="fragment">
 <p>One way to think about the proof of work puzzle is that the miners need to compute <code>SHA-256</code> hashes on random inputs until the corresponding output starts with <span class="math inline">\(\ell\)</span> zero bits in a row. The time to success scales exponentially in <span class="math inline">\(\ell\)</span>.</p>
 <!-- # what is the probability that when I hash a random string, I get a hash that starts with 4 bits that are all zeroes? -->
-<div id="f75abbfe" class="cell" data-execution_count="5">
+<div id="5133fd22" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># average number of SHA-256 computations until the first 4 bits == 0</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha256</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>arr <span class="op">=</span> []</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>nb_of_trials <span class="op">=</span> <span class="dv">3000</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>nb_of_trials <span class="op">=</span> <span class="dv">5000</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(nb_of_trials):</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  count <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">hash</span> <span class="op">=</span> <span class="st">"1"</span></span>
@@ -909,18 +917,18 @@ For example, here is the coinbase transaction of block number 881,900.
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  arr.append(count)</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(arr)<span class="op">/</span>nb_of_trials) <span class="co"># average number of hashes needed, actual answer: 16</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>16.168666666666667</code></pre>
+<pre><code>16.2266</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
-<div id="a1d7136c" class="cell" data-execution_count="6">
+<div id="41e92a97" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let's increase to 16 zeroes and see what happens</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha256</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>arr <span class="op">=</span> []</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>nb_of_trials <span class="op">=</span> <span class="dv">3000</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>nb_of_trials <span class="op">=</span> <span class="dv">5000</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(nb_of_trials):</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  count <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">hash</span> <span class="op">=</span> <span class="st">"1"</span></span>
@@ -930,7 +938,7 @@ For example, here is the coinbase transaction of block number 881,900.
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  arr.append(count)</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(arr)<span class="op">/</span>nb_of_trials) <span class="co"># actual answer: 65,536</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>65710.1</code></pre>
+<pre><code>65506.6602</code></pre>
 </div>
 </div>
 </div>
