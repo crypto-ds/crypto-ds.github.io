@@ -245,8 +245,6 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#course-description" id="toc-course-description" class="nav-link active" data-scroll-target="#course-description">Course description</a>
   <ul class="collapse">
-  <li><a href="#course-info" id="toc-course-info" class="nav-link" data-scroll-target="#course-info">Course info</a></li>
-  <li><a href="#textbooks" id="toc-textbooks" class="nav-link" data-scroll-target="#textbooks">Textbooks</a></li>
   <li><a href="#calendar" id="toc-calendar" class="nav-link" data-scroll-target="#calendar">Calendar</a>
   <ul class="collapse">
   <li><a href="#unit-1-protecting-data-integrity" id="toc-unit-1-protecting-data-integrity" class="nav-link" data-scroll-target="#unit-1-protecting-data-integrity">Unit 1: Protecting data integrity</a></li>
@@ -341,31 +339,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
-<p>Crypto for Data Science (BU CDS 453/653) investigates techniques for performing trustworthy data analyses without a trusted party, and for conducting data science without data sharing. The course contains four units that explore protecting data integrity, availability, and confidentiality in turn, and a capstone unit on protecting data science.</p>
-<p>This course follows Boston University’s <a href="https://www.bu.edu/academics/policies/academic-conduct-code/">academic conduct code</a> and policies on <a href="https://www.bu.edu/academics/policies/absence-for-religious-reasons/">absence for religious reasons</a>, <a href="https://www.bu.edu/disability/accommodations/">accommodations</a>, <a href="https://www.bu.edu/cs/undergraduate/undergraduate-life/academic-integrity/">plagiarism</a>, and <a href="https://www.bu.edu/cds-faculty/culture-community/gaia-policy/">generative AI use</a>. See the <a href="https://piazza.com/class/mtivuhy5wxa2nh/post/6">syllabus</a> for more details. <strong>Students are responsible for adhering to course policies at all times!</strong></p>
-<p>This class also uses the <a href="https://piazza.com/bu/fall2026/ds453653/info">Piazza</a> and <a href="https://www.gradescope.com/courses/1381249">Gradescope</a> websites.</p>
-<section id="course-info" class="level2">
-<h2 class="anchored" data-anchor-id="course-info">Course info</h2>
+<p>Crypto for Data Science (BU CDS 453/653) investigates techniques for performing trustworthy data analyses without a trusted party, and for conducting data science without data sharing. The course contains four units on protecting data integrity, availability, and confidentiality along with a capstone unit on protecting data science.</p>
 <p>Lectures are on Mon/Wed at 10:10-11:55am in EPC 205. Labs are on Fridays at 10:10-11:00am and 11:15am-12:05pm in PSY B53. Office hours are posted on <a href="https://piazza.com/bu/fall2026/ds453653/staff">Piazza</a>.</p>
 <ul>
 <li>Professor: <a href="https://www.mvaria.com/">Mayank Varia</a></li>
 <li>Teaching Fellows: <a href="https://julia-guskind.github.io/">Julia Guskind</a>, <a href="https://www.hajulie.com/">Julie Ha</a></li>
 <li>Course Assistant: Sean Chan</li>
 </ul>
-<p>Prerequisites for this course are: mathematical maturity with linear algebra and probability, solid understanding of programming in Python, and familiarity with basic concepts in algorithms such as asymptotic complexity.</p>
-</section>
-<section id="textbooks" class="level2">
-<h2 class="anchored" data-anchor-id="textbooks">Textbooks</h2>
-<ul>
-<li>Narayanan, Bonneau, Felten, Miller, and Goldfeder: <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf"><em>Bitcoin and Cryptocurrency Technologies</em></a></li>
-<li>Paar, Pelzl, and Güneysu: <a href="https://ezproxy.bu.edu/login?url=https://link.springer.com/content/pdf/10.1007/978-3-662-69007-9.pdf"><em>Understanding Cryptography</em></a></li>
-<li>Elaine Shi: <a href="https://elaineshi.com/docs/blockchain-book.pdf"><em>Foundations of Distributed Consensus and Blockchains</em></a></li>
-<li>Mike Rosulek: <a href="https://joyofcryptography.com/pdf/book.pdf"><em>Joy of Cryptography</em></a></li>
-<li><a href="https://decentralizedthoughts.github.io/start-here/"><em>Decentralized Thoughts</em> blog</a></li>
-<li>Evans, Kolesnikov, and Rosulek: <a href="https://securecomputation.org"><em>A Pragmatic Introduction to Secure Multi-Party Computation</em></a></li>
-<li>Boneh and Shoup: <a href="https://crypto.stanford.edu/~dabo/cryptobook/BonehShoup_0_6.pdf"><em>A Graduate Course in Applied Cryptography</em></a></li>
-</ul>
-</section>
+<p>This class also uses the <a href="https://piazza.com/bu/fall2026/ds453653/info">Piazza</a> and <a href="https://www.gradescope.com/courses/1381249">Gradescope</a> websites.</p>
+<p>This course follows Boston University’s <a href="https://www.bu.edu/academics/policies/academic-conduct-code/">academic conduct code</a> and policies on <a href="https://www.bu.edu/academics/policies/absence-for-religious-reasons/">absence for religious reasons</a>, <a href="https://www.bu.edu/disability/accommodations/">accommodations</a>, <a href="https://www.bu.edu/cs/undergraduate/undergraduate-life/academic-integrity/">plagiarism</a>, and <a href="https://www.bu.edu/cds-faculty/culture-community/gaia-policy/">generative AI use</a>. See the <a href="https://piazza.com/class/mtivuhy5wxa2nh/post/6">syllabus</a> for more details. <strong>Students are responsible for adhering to course policies at all times!</strong></p>
 <section id="calendar" class="level2">
 <h2 class="anchored" data-anchor-id="calendar">Calendar</h2>
 <p>This schedule includes the learning objectives that students are expected to learn by the end of each unit of the course, along with the weekly lesson plan and links to lecture videos, textbook reading, lab worksheets, and homework assignments. The schedule will be updated throughout the semester. The password to watch the recorded videos is available <a href="https://piazza.com/class/mtivuhy5wxa2nh/post/6">here</a>.</p>
@@ -542,7 +524,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <tr class="odd">
 <td>Tue 10/13</td>
 <td><strong>Lecture 10:</strong> Bitcoin security</td>
-<td><a href="10.html">Notes</a> • Video</td>
+<td><a href="10.html">Notes</a> • <a href="https://bostonu.zoom.us/rec/share/hJNY8NqjO9QXbtOU_BPCOLrF-e0e16s-pmPhy5Lpq9VTkPFwEg9uGa8Uw4s5O81W.vZ9-Wy3f_jLSb-QX">Video</a></td>
 </tr>
 <tr class="even">
 <td>Wed 10/14</td>
