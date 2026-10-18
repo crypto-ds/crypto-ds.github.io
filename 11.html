@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>11&nbsp; Byzantine broadcast – Crypto for Data Science</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./12.html" rel="next">
+<link href="./10.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit2.html">Protecting data availability</a></li><li class="breadcrumb-item"><a href="./11.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Byzantine broadcast</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="index.html" class="sidebar-logo-link">
+      <img src="./images/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Crypto for Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course description</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data integrity</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Cryptographic hash functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Password hashing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">(Pseudo)randomness</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Message authentication codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Key exchange</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data availability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bitcoin overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Proof of work mining</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Byzantine broadcast</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Synchronous blockchains</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Protecting data confidentiality</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Protecting data science</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#components-of-bitcoin" id="toc-components-of-bitcoin" class="nav-link" data-scroll-target="#components-of-bitcoin"><span class="header-section-number">11.1</span> Components of Bitcoin</a></li>
+  <li><a href="#the-byzantine-generals-problem" id="toc-the-byzantine-generals-problem" class="nav-link" data-scroll-target="#the-byzantine-generals-problem"><span class="header-section-number">11.2</span> The Byzantine generals problem</a>
+  <ul class="collapse">
+  <li><a href="#consensus-in-the-physical-world" id="toc-consensus-in-the-physical-world" class="nav-link" data-scroll-target="#consensus-in-the-physical-world">Consensus in the physical world</a></li>
+  </ul></li>
+  <li><a href="#byzantine-broadcast" id="toc-byzantine-broadcast" class="nav-link" data-scroll-target="#byzantine-broadcast"><span class="header-section-number">11.3</span> Byzantine Broadcast</a>
+  <ul class="collapse">
+  <li><a href="#bounds-on-consensus" id="toc-bounds-on-consensus" class="nav-link" data-scroll-target="#bounds-on-consensus">Bounds on consensus</a></li>
+  </ul></li>
+  <li><a href="#defining-byzantine-broadcast" id="toc-defining-byzantine-broadcast" class="nav-link" data-scroll-target="#defining-byzantine-broadcast"><span class="header-section-number">11.4</span> Defining Byzantine Broadcast</a></li>
+  <li><a href="#constructing-byzantine-broadcast" id="toc-constructing-byzantine-broadcast" class="nav-link" data-scroll-target="#constructing-byzantine-broadcast"><span class="header-section-number">11.5</span> Constructing Byzantine Broadcast</a></li>
+  <li><a href="#the-gradecast-protocol" id="toc-the-gradecast-protocol" class="nav-link" data-scroll-target="#the-gradecast-protocol"><span class="header-section-number">11.6</span> The Gradecast protocol</a>
+  <ul class="collapse">
+  <li><a href="#the-protocol" id="toc-the-protocol" class="nav-link" data-scroll-target="#the-protocol">The protocol</a></li>
+  <li><a href="#analysis-of-the-gradecast-protocol" id="toc-analysis-of-the-gradecast-protocol" class="nav-link" data-scroll-target="#analysis-of-the-gradecast-protocol">Analysis of the Gradecast protocol</a></li>
+  </ul></li>
+  <li><a href="#the-phase-king-protocol" id="toc-the-phase-king-protocol" class="nav-link" data-scroll-target="#the-phase-king-protocol"><span class="header-section-number">11.7</span> The phase-king protocol</a>
+  <ul class="collapse">
+  <li><a href="#efficiency-of-phase-king" id="toc-efficiency-of-phase-king" class="nav-link" data-scroll-target="#efficiency-of-phase-king">Efficiency of phase-king</a></li>
+  </ul></li>
+  <li><a href="#appendix-dolev-strong-protocol" id="toc-appendix-dolev-strong-protocol" class="nav-link" data-scroll-target="#appendix-dolev-strong-protocol"><span class="header-section-number">11.8</span> Appendix: Dolev-Strong protocol</a>
+  <ul class="collapse">
+  <li><a href="#first-attempt" id="toc-first-attempt" class="nav-link" data-scroll-target="#first-attempt">First attempt</a></li>
+  <li><a href="#signature-chains" id="toc-signature-chains" class="nav-link" data-scroll-target="#signature-chains">Signature chains</a></li>
+  <li><a href="#the-actual-protocol" id="toc-the-actual-protocol" class="nav-link" data-scroll-target="#the-actual-protocol">The actual protocol</a></li>
+  <li><a href="#necessity-of-t1-rounds" id="toc-necessity-of-t1-rounds" class="nav-link" data-scroll-target="#necessity-of-t1-rounds">Necessity of <span class="math inline">\(t+1\)</span> rounds</a></li>
+  <li><a href="#analyzing-dolev-strong" id="toc-analyzing-dolev-strong" class="nav-link" data-scroll-target="#analyzing-dolev-strong">Analyzing Dolev-Strong</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit2.html">Protecting data availability</a></li><li class="breadcrumb-item"><a href="./11.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Byzantine broadcast</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Byzantine broadcast</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<hr>
+<!-- For next year:
+
+Explain better the relationship between Gradecast and broadcast.
+
+"Gradecast is a relaxed version of broadcast... where parties output a value along with a grade." https://eprint.iacr.org/2023/1172.pdf
+
+Perhaps change the 0, 1, 2 scale to No, Maybe, Yes where the parties are all voting (e.g., holding up signs in a judged competition) about whether they believe broadcast has been achieved.
+
+By contrast: in real broadcast it must be the case that everyone believes the answer is Yes.
+-->
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>HW 4 due Thursday at 8pm, with a grace period until Friday at 10pm (<a href="https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1791986400001">NIST beacon</a>)</li>
+<li>HW 5 will be posted later today and due Wednesday 10/21 at 8pm</li>
+<li>Lab 7 on this week’s reading (<a href="https://elaineshi.com/docs/blockchain-book.pdf">Shi chapters 5-6</a>)</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How to broadcast a message <span class="math inline">\(m\)</span> from one party to many others, such that everyone receives <span class="math inline">\(m\)</span> <em>and</em> knows that everyone else received <span class="math inline">\(m\)</span> too</li>
+<li>A formal specification of the broadcast problem, and the various kinds of assumptions we might make about the parties and the network connecting them</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>Unit 2 of this course is about <strong>protecting data availability</strong>, so that people can speak on the Internet and everyone reaches <em>agreement</em> (or <em>consensus</em>) on what they said.</p>
+<div class="fragment">
+<p>Bitcoin and its underlying blockchain ensure that:</p>
+<ul>
+<li>Nobody can <em>censor</em> you from talking to your friends</li>
+<li>If you send a message to a large group, then everyone can <em>agree</em> about what you said (even if some people in the group are trying to cause confusion)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Bitcoin is <em>decentralized</em> and <em>permissionless</em> system that achieves agreement without relying on any trusted intermediary. In fact:</p>
+<ul>
+<li>Miners can enter or leave the network at any time (as long as the majority of hash-mining power is honest)</li>
+<li>Ordinary clients and nodes can be <em>pseudonymous</em> (they do not have a long-term identity)</li>
+<li>Relatedly, communications between parties are not authenticated (there were no MACs in Bitcoin)</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="components-of-bitcoin" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="components-of-bitcoin"><span class="header-section-number">11.1</span> Components of Bitcoin</h2>
+<p>At its core, Bitcoin carefully constructs and combines two components:</p>
+<ul>
+<li><strong>Leader election</strong>: a <em>randomized lottery</em> system to decide which miner gets to create the next block</li>
+<li><strong>Broadcast</strong>: a connected peer-to-peer network of Bitcoin nodes and miners that <em>gossip</em> any transaction or block they hear, in a way that is <em>censorship-resistant</em></li>
+</ul>
+<div class="fragment">
+<p>Bitcoin’s proof of work ensures that everyone eventually agrees on the state of the blockchain, as long as the majority of computational power is controlled by honest miners.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>But relying on the honest majority of <em>computing power</em> is admittedly somewhat strange</li>
+<li>It would be nice instead to rely on the honest majority of <em>people</em>: that is, that there are more good people than malicious people in the world</li>
+</ul>
+</div>
+<div class="fragment">
+<p>The reason that Bitcoin requires an honest majority of computing power is to protect against <strong>Sybil attacks</strong>, in which one malicious person Mallory claims to be many different people in an attempt to increase its chance of winning the randomized leader election.</p>
+</div>
+<div class="fragment">
+<p>But what if we already knew the set of participants ahead of time? For instance, what if we want to create a blockchain among all the students in this class?</p>
+<ul>
+<li>Then we wouldn’t need to protect against Sybil attacks</li>
+<li>It’s not possible for you to pretend to be 100 different students in order to inflate your power in a randomized leader election</li>
+</ul>
+</div>
+<div class="fragment">
+<p>This week, we ask the question:</p>
+<blockquote class="blockquote">
+<p>Can we build a blockchain to achieve consensus on messages sent over the Internet with no proof of work? No miners? Maybe not even a cryptocurrency?</p>
+</blockquote>
+</div>
+<!--
+::: {.fragment}
+Remember "blockchain = broadcast + leader election." So, we will address this question in pieces.
+
+Today, we will discuss how to build a censorship-resistant version of the Broadcast protocol. We will tackle leader election next time.
+:::
+-->
+<hr>
+</section>
+<section id="the-byzantine-generals-problem" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="the-byzantine-generals-problem"><span class="header-section-number">11.2</span> The Byzantine generals problem</h2>
+<p>In this course, we will think about how to achieve agreement in scenarios where everyone <em>cannot</em> meet together in the physical world. Our starting point is a famous problem in computer science called the <em>Byzantine generals problem</em>.</p>
+<div class="fragment">
+<p>It was initially posed in a <a href="https://lamport.azurewebsites.net/pubs/byz.pdf">1982 paper</a> by Leslie Lamport, Robert Shostak, and Marshall Pease as follows.</p>
+<blockquote class="blockquote">
+<p>“Imagine that several divisions of the Byzantine army are camped outside an enemy city, each division commanded by its own general. The generals can communicate with one another only by messenger. After observing the enemy, they must decide upon a common plan of action. However, some of the generals may be traitors, trying to prevent the loyal generals from reaching agreement.”</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11-Byzantine-generals.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Byzantine Broadcast (image source: <a href="https://upload.wikimedia.org/wikipedia/commons/f/fc/Byzantine_Generals.png">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Note that there are two important goals to satisfy in this problem:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The loyal (i.e., honest) generals must be <strong>consistent</strong>. They could all decide to <code>Attack</code>, or they could all decide to <code>Retreat</code>. But if the army is divided, then they will fail for sure.</p></li>
+<li><p>One general, called the “commander,” instructs the group whether to <code>Attack</code> or <code>Retreat</code>. If the commanding general is loyal, then all loyal generals should <strong>validly</strong> obey this order.</p></li>
+</ul>
+</div>
+<hr>
+<section id="consensus-in-the-physical-world" class="level3">
+<h3 class="anchored" data-anchor-id="consensus-in-the-physical-world">Consensus in the physical world</h3>
+<!-- TODO: Consider a question about agreement in the physical world. Pretend that the students are studying for Test 1 in a large group, but there are some people in the group who are secretly trying to convince students of the wrong answers to practice questions. Get the students to understand the importance of majority vote, and the need for > 1/2 students in the group to be honest. -->
+<p>If the generals were all physically gathered in a common room, <!-- like this classroom --> then we can solve this problem in two steps:</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><strong>Leader election</strong>: Elect one general to be the commander</li>
+<li><strong>Broadcast</strong>: The commanding general shouts in the classroom whether to <code>Attack</code> or <code>Retreat</code>, and all loyal generals obey this order</li>
+</ol>
+</div>
+<!-- These are the same two steps that cryptocurrencies use! And today we have added one important benefit: that the participants all know each other's identities (but not which people are honest or malicious). -->
+<div class="fragment">
+<p>It doesn’t matter who the commanding general is, as long as all loyal generals agree on the result of the election. The commander could even be a traitor (i.e., malicious). Still we would achieve our desired goal, which is that all loyal generals perform the same action.</p>
+</div>
+<div class="fragment">
+<p>We will solve the leader election problem in the <a href="12.html">next lecture</a>. For today, suppose that has already happened. Our goal for today is to solve the <strong>Byzantine Broadcast</strong> problem.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="byzantine-broadcast" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="byzantine-broadcast"><span class="header-section-number">11.3</span> Byzantine Broadcast</h2>
+<p>In the Byzantine Broadcast problem, the generals are <strong>not</strong> in a common room.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>There are <span class="math inline">\(n\)</span> generals, of which <span class="math inline">\(t\)</span> generals are secretly malicious</li>
+<li>Everyone knows each other’s identities: in particular, one general is already known to everyone to be the <strong>commander</strong>, and the other generals are called <strong>lieutenants</strong></li>
+<li>The generals can only talk via one-to-one authenticated communication (e.g., using MACs or trusted messengers)</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:57%;">
+<p>The commander would like to propose an <code>Attack</code> or <code>Retreat</code> order to all generals, such that:</p>
+<ol type="1">
+<li>All honest generals reach the same decision</li>
+<li>If the commander is honest, then all honest lieutenants will obey the commander’s order</li>
+</ol>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11-Byzantine-generals.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Byzantine Broadcast (image source: <a href="https://upload.wikimedia.org/wikipedia/commons/f/fc/Byzantine_Generals.png">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> What is a simple protocol that the honest generals can follow that is guaranteed to achieve objective 1 (but not objective 2)?</p>
+<ol type="A">
+<li>Always <code>Retreat</code>, no matter what the commanding general tells them</li>
+<li>Blindly follow whatever order the commanding general tells them</li>
+<li>Take a majority vote of all generals, and follow what they say</li>
+</ol>
+</div>
+<!--
+::: {.fragment}
+If we somehow knew for sure that the commanding general is honest, then this problem is easy! The commanding general can send its order to everyone, and the loyal generals just follow the orders of the commanding general.
+:::
+-->
+<div class="fragment">
+<p><strong>Interactive question.</strong> What is a simple protocol that the honest generals can follow that is guaranteed to achieve objective 2 (but not objective 1)?</p>
+<ol type="A">
+<li>Always <code>Retreat</code>, no matter what the commanding general tells them</li>
+<li>Blindly follow whatever order the commanding general tells them</li>
+<li>Take a majority vote of all generals, and follow what they say</li>
+</ol>
+</div>
+<hr>
+<section id="bounds-on-consensus" class="level3">
+<h3 class="anchored" data-anchor-id="bounds-on-consensus">Bounds on consensus</h3>
+<p>The challenge in the Byzantine generals problem is to design a single protocol that satisfies both objectives. Suppose that:</p>
+<ul>
+<li>There are 3 generals, 1 of whom is malicious</li>
+<li>You are one of the two lieutenants</li>
+<li>The commander sends their order, and then each lieutenant gossips what they heard</li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>You know that you are honest, but you have no idea which other person to believe.</p>
+<ul>
+<li><p>The other lieutenant might be malicious, so you cannot simply ask them to gossip what they heard from the commander because they might lie</p></li>
+<li><p>The commander might be malicious, so you cannot blindly trust their order because they might send different orders to the two lieutenants</p></li>
+</ul>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11-bad-generals.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Image source: <a href="https://lamport.azurewebsites.net/pubs/byz.pdf">Lamport, Shostak, Pease 1982</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>It turns out that there is no way for the 3 generals to solve this problem.</p>
+<div id="thm-impossible-numparties" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 11.1 (Fischer, Lynch, and Merritt 1985)</strong></span> Byzantine Broadcast is <strong>impossible</strong> using only authenticated pair-wise channels if at least <span class="math inline">\(1/3\)</span> of the generals are malicious. <!-- In a plain _pairwise authenticated channel model_ --></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Shown in <a href="https://elaineshi.com/docs/blockchain-book.pdf">Shi, section 4</a>.</p>
+</div>
+</div>
+<!--
+This theorem was first proven by Pease, Shostak, and Lamport in 1980, and the proof was later simplified by Fischer, Lynch, and Merritt in 1985. Today, we'll look at the FLM85 impossibility proof.
+-->
+<div class="fragment">
+<p>But all hope is not lost! There are two ways to overcome this problem.</p>
+<ul>
+<li>Add one more lieutenant, so that there are 4 total generals (1 of whom is malicious)</li>
+<li>Require a public key infrastructure (PKI) and use digital signatures</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="defining-byzantine-broadcast" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="defining-byzantine-broadcast"><span class="header-section-number">11.4</span> Defining Byzantine Broadcast</h2>
+<p>Let’s move away from the world of generals and to the world of computers.</p>
+<ul>
+<li>We refer to the <span class="math inline">\(n\)</span> computers as <strong>parties</strong>, and to the commander as the <strong>leader</strong></li>
+<li>Rather than talking about the orders <code>Attack</code> and <code>Retreat</code>, instead let’s consider a message <span class="math inline">\(m\)</span> that is a bitstring (e.g., a single bit <code>0</code> or <code>1</code>)</li>
+</ul>
+<div class="fragment">
+<p>As with everything in this course, we cannot build secure systems in a vacuum.</p>
+<ul>
+<li>It is necessary to make <em>some</em> assumption about the world in order to construct Byzantine Broadcast</li>
+<li>But we want to <em>limit</em> and <em>understand</em> the amount of trust that we must place in others <!-- as discussed in Lecture 7 --></li>
+</ul>
+</div>
+<div class="fragment">
+<p>There are several possible <strong>assumptions</strong> about the world that we could leverage to build Byzantine Broadcast.</p>
+</div>
+<div class="fragment">
+<ul>
+<li>Number of malicious parties: we could assume that there exists
+<ul>
+<li>an <strong>honest supermajority</strong> of <span class="math inline">\(t &lt; \frac{n}{3}\)</span>, so more than 2/3 of the parties are honest</li>
+<li>an <strong>honest majority</strong> of <span class="math inline">\(t &lt; \frac{n}{2}\)</span>, so more than 1/2 of the parties are honest</li>
+<li>a <strong>dishonest majority</strong> of <span class="math inline">\(t &lt; n\)</span> malicious parties, so you might be the only honest party</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Modeling the network:
+<ul>
+<li><strong>synchronous</strong> networks assume a known upper bound on the time it takes for a message to travel between two parties</li>
+<li><strong>asynchronous</strong> networks make no such assumption</li>
+<li>in both cases, if an honest party sends a message, then the message is eventually received</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Use of digital signatures:
+<ul>
+<li><strong>authenticated pair-wise channels</strong> only assume that every pair of parties has a shared MAC key</li>
+<li>with a <strong>PKI</strong>, everyone also knows the everyone else’s digital signing public key</li>
+</ul></li>
+</ul>
+</div>
+<!--
+### Modeling the network
+
+There are two kinds of networks that we could consider for the parties to communicate with each other. (In the Byzantine generals problem, this corresponds to assumptions about how long it takes the messengers to transmit messages between the generals.)
+
+- **Synchronous network**: We have an upper bound on the time it takes for a message to travel between two parties. The protocol is broken into rounds. If a message doesn't arrive in a specific round then the leader is assumed to be malicious (or traitorous, in the Byzantine generals problem).
+- **Asynchronous network**: We have no upper bound on the time it takes for a message to travel between parties. We cannot differentiate between honest slow leaders and malicious parties that choose not to send any messages.
+
+In both network types: if an honest party sends a message, then the message is eventually received.
+
+---
+
+### Number of honest vs. malicious parties
+
+We will only consider security for the honest participants. As a result, we assume that there must be some honest parties/generals in the world. (After all, if everyone is malicious, then who is left to protect?)
+
+Just like with Bitcoin: we can make an assumption that some number $h$ of the parties are honest, and the remaining $t = n - h$ parties are malicious (or _faulty_).
+
+Note that we are __not__ assuming that any one particular party is good, just that there is goodness out there in the world somewhere.
+
+::: {.fragment}
+We often categorize a protocol based on whether the majority of participants are honest or malicious.
+
+- **Honest majority** ($t < n/2$): More than half the parties are honest. Sometimes we might insist upon an __honest supermajority__ like $t < n/3$ or $t < n/4$.
+- **Dishonest majority** ($t \geq n/2$): Most parties are malicious (i.e., dishonest). In this scenario, we often consider the worst-case option of $t = n - 1$; that is, there might only be one honest person in the world to protect.
+:::
+
+---
+
+### Type of adversary
+
+We can also make two kinds of assumptions about how the adversary Mallory works.
+
+- **Static adversary**: The adversary Mallory chooses which  to corrupt at the start of the protocol. The attacker can no longer corrupt parties afterwards.
+- **Adaptive adversary**: The attacker can pick what parties to corrupt and when.
+
+---
+
+### Use of digital signatures
+
+We can also categorize protocols based on how much they take advantage of digital signatures.
+
+- **Authenticated pair-wise channels**: Every pair of parties is connected over the network and has established a shared MAC key. In other words: no party can impersonate another, so a party Bob can be confident that he is receiving messages from another party Alice.
+
+- **Public key infrastructure** (PKI): Every party knows the public key of every other party. In this case, not only can Bob know for sure that he is communicating with Alice, but if he receives digitally signed messages from Alice and then he can _transfer_ this message along to another party Carol so that she will also know what Alice said.
+
+    Remember that the PKI is like a telephone directory, just for cryptographic public keys rather than telephone numbers.
+
+![Telephone directory (image source: [Wikipedia](https://en.wikipedia.org/wiki/Telephone_directory))](images/07-phone-directory.jpg){width=500}
+
+---
+
+### Deterministic vs randomized protocols
+
+Finally, we can categorize protocols based on whether they are deterministic and randomized.
+- **Deterministic** protocol: The protocol runs in a deterministic way. The protocol will always have the same execution path given the same input.
+- **Randomized** protocol: The protocol has access to some randomness source that effects the state of the protocol. Every run would lead to a different execution path.
+-->
+<hr>
+<div class="fragment">
+<p>Whereas Bitcoin works over asynchronous networks, for the rest of Unit 2 we will study <strong>synchronous network</strong> connections that are fast and reliable.</p>
+<!-- As a result, we will add a natural requirement that a Byzantine Broadcast protocol must _terminate_ --- that is, the protocol doesn't go on forever. -->
+</div>
+<div class="fragment">
+<div id="def-bb" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 11.1 (Byzantine Broadcast)</strong></span> A <em>synchronous Byzantine Broadcast</em> protocol must satisfy three requirements.</p>
+<ul>
+<li><strong>Termination</strong>: all honest parties eventually complete the protocol and output a message</li>
+<li><strong>Validity</strong>: if the leader is honest and sends the message <span class="math inline">\(m\)</span>, then all honest parties should output <span class="math inline">\(m\)</span></li>
+<li><strong>Consistency</strong>: all honest parties should output the same message (whether or not the leader is honest)</li>
+</ul>
+</div>
+</div>
+<!--
+::: {.fragment}
+Remember than an _honest_ party is one who follows the protocol. The other parties are called _malicious_ and can behave however they want; that is, they can deviate from the rules of the protocol in any way that they see fit.
+:::
+-->
+</section>
+<section id="constructing-byzantine-broadcast" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="constructing-byzantine-broadcast"><span class="header-section-number">11.5</span> Constructing Byzantine Broadcast</h2>
+<p>In the remainder of today’s lecture, we will construct a Byzantine Broadcast protocol that provides termination, validity, and consistency in the following setting:</p>
+<ul>
+<li>Any number of parties <span class="math inline">\(n\)</span>, with an honest supermajority of <span class="math inline">\(n \geq 3t + 1\)</span></li>
+<li>Synchronous network</li>
+<li>Authenticated pairwise channels (i.e., you know who you’re talking to), but no PKI or other setup</li>
+<li>The message <span class="math inline">\(m \in \{0, 1\}\)</span> is a single bit (note: the idea can be extended to support longer bytestrings)</li>
+</ul>
+<div class="fragment">
+<p>Here is the high-level idea of today’s protocol, which is called the <strong>phase-king protocol</strong>. Before the protocol starts, the parties are open-minded about what the output message will be (either 0 or 1)</p>
+<ol type="1">
+<li>Starting with the leader, every party gets a turn to broadcast a message</li>
+<li>The parties check to see if they have reached consistency on the message: if so, they keep this message no matter what happens in later rounds, otherwise they remain open-minded</li>
+</ol>
+</div>
+<div class="fragment">
+<p>We start by building the consistency check protocol (to perform step 2). It is called Gradecast.</p>
+</div>
+<hr>
+</section>
+<section id="the-gradecast-protocol" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="the-gradecast-protocol"><span class="header-section-number">11.6</span> The Gradecast protocol</h2>
+<p>Let there be <span class="math inline">\(n\)</span> parties, which we label as <span class="math inline">\(P_1, P_2, \ldots, P_n\)</span>. The Gradecast protocol is <strong>not</strong> about broadcasting a message. Instead it is about checking whether the parties have already reached consensus about the message.</p>
+<ul>
+<li>Each party <span class="math inline">\(P_i\)</span> has an input message <span class="math inline">\(m_i \in \{0, 1\}\)</span></li>
+<li>Each party has two outputs: a (potentially changed) <strong>message</strong> <span class="math inline">\(m\)</span> and a <strong>grade</strong> <span class="math inline">\(g\)</span> that reflects their knowledge about the message</li>
+</ul>
+<div class="fragment">
+<p>The grades reflect party <span class="math inline">\(P_i\)</span>’s answer to the question “does everyone in the group have the same message?” In other words, the grade reflects party <span class="math inline">\(P_i\)</span>’s belief in the <strong>mutual knowledge</strong> of <span class="math inline">\(m\)</span>. <!-- (just like how the teacher provided mutual information to the muddy children) --></p>
+</div>
+<div class="fragment">
+<p>Here are the possible grades.</p>
+<ul>
+<li><code>Satisfactory</code>: Party <span class="math inline">\(P_i\)</span> is confident that all honest parties know same message <span class="math inline">\(m\)</span> (even if others are not yet equally confident)</li>
+<li><code>Close</code>: Party <span class="math inline">\(P_i\)</span> believes that there are many honest parties who know the message <span class="math inline">\(m\)</span>, but isn’t sure yet whether this message is known to all honest parties</li>
+<li><code>Insufficient</code>: Party <span class="math inline">\(P_i\)</span> has no confidence in its current message</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Our goal is to design a protocol that allows the parties to reach similar levels of confidence, in the sense that <em>their grades will differ by at most one</em>.</p>
+</div>
+<div class="fragment">
+<p>In more detail, we want to design the Gradecast protocol to have the following security requirements.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p><strong>Knowledge of Agreement</strong>: If an honest party outputs a message with grade of <code>Satisfactory</code>, then all honest parties output this message. That is: we will have <em>mutual knowledge</em>, even if some parties are not yet convinced.</p></li>
+<li><p><strong>Validity</strong>: If all honest parties have the same input message, then all of them output this message with a grade of <code>Satisfactory</code>. In this case, we have moved closer to <em>common knowledge</em> – every honest party knows <span class="math inline">\(m\)</span>, and knows that the other parties know <span class="math inline">\(m\)</span>.</p>
+<p><!-- But we would not yet have achieved the third level of alternation: "I know that you know that I know $m$" --></p></li>
+</ul>
+</div>
+<hr>
+<section id="the-protocol" class="level3">
+<h3 class="anchored" data-anchor-id="the-protocol">The protocol</h3>
+<p>Here is how we can build a Gradecast protocol.</p>
+<p>This protocol is shown from the perspective of a single honest party <span class="math inline">\(P_i\)</span>. All honest parties follow the same procedure (whereas malicious parties can do whatever they want).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="wa">input:</span> each party <span class="dt">P_i</span> holds a message m_i</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">Round</span> <span class="dv">1</span><span class="op">:</span> party <span class="dt">P_i</span> sends m_i to all parties</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">Round</span> <span class="dv">2</span><span class="op">:</span> <span class="cf">if</span> n<span class="op">-</span>t distinct parties sent some message x to party <span class="dt">P_i</span> <span class="cf">in</span> round <span class="dv">1</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">then</span> send x to all parties</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> send nothing</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="wa">output:</span> <span class="cf">if</span> n<span class="op">-</span>t distinct parties sent some message y to party <span class="dt">P_i</span> <span class="cf">in</span> round <span class="dv">2</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                <span class="cf">then</span> output y with grade <span class="vs">'Satisfactory'</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="cf">if</span> t<span class="op">+</span><span class="dv">1</span> distinct parties sent some message y to party <span class="dt">P_i</span> <span class="cf">in</span> round <span class="dv">2</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                <span class="cf">then</span> output y with grade <span class="vs">'Close'</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> output m_i with grade <span class="vs">'Insufficient'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>When an honest party <span class="math inline">\(P_i\)</span> sends a message to “all parties,” this includes themselves! As a result, when we count the “number of distinct parties” that sent a message to party <span class="math inline">\(P_i\)</span> we also include <span class="math inline">\(P_i\)</span>’s message to their future selves in this count.</p>
+<p>In other words: honest parties continue to be influenced by their own prior beliefs, but are not driven purely by it. If a supermajority of people disagree with them, they will change their vote between rounds 1 and 2.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>At first glance, it might appear that this pseudocode is not well-defined.</p>
+<ul>
+<li><p>In round 2: what if an honest party hears two different messages <span class="math inline">\(x\)</span> and <span class="math inline">\(x'\)</span> from <span class="math inline">\(n-t\)</span> distinct parties in round 1? <!-- Then it isn't clear what party $P_i$ should do, since we would like honest parties only to send one message in round 2. --></p></li>
+<li><p>At the output stage: what if an honest party <span class="math inline">\(P_i\)</span> hears two different messages <span class="math inline">\(y\)</span> and <span class="math inline">\(y'\)</span> from <span class="math inline">\(t+1\)</span> distinct parties in round 2? <!-- Or what if $P_i$ hears two different messages from $t+1$ distinct parties in round 2? Then it isn't clear what party $P_i$ should do, since parties are only allowed to reach one output decision. --></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Fortunately, it turns out that both of these issues cannot occur! (Try to convince yourself of this claim.)</p>
+<!--
+__Question.__ Can you see why?
+
+::: {.callout-tip}
+As a hint: remember that $n \geq 3t + 1$, and that the $n-t$ honest parties (whoever they are) will send the same message to everyone in a particular round. Only the $t$ malicious parties might send different messages to different parties.
+:::
+-->
+</div>
+<hr>
+</section>
+<section id="analysis-of-the-gradecast-protocol" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-the-gradecast-protocol">Analysis of the Gradecast protocol</h3>
+<p>Let’s show that this Gradecast protocol achieves <em>validity</em> and <em>knowledge of agreement</em>, as long as <span class="math inline">\(n \geq 3t+1\)</span>.</p>
+<div class="fragment">
+<p>We begin with validity, which if you recall is defined as:</p>
+<blockquote class="blockquote">
+<p>If all honest parties have the same input message, then all of them output this message with grade <code>Satisfactory</code>.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<div id="thm-gradecast-validity" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 11.2</strong></span> The Gradecast protocol satisfies validity.</p>
+</div>
+</div>
+<div class="fragment">
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span></p>
+<ul>
+<li>If everyone starts with the same message <span class="math inline">\(m\)</span> and <span class="math inline">\(n−t\)</span> parties are honest, then at least <span class="math inline">\(n-t\)</span> parties will send <span class="math inline">\(m\)</span> in round 1.</li>
+<li>As a result, at least <span class="math inline">\(n-t\)</span> parties will send <span class="math inline">\(m\)</span> in round 2.</li>
+<li>Hence, all honest parties output message <span class="math inline">\(m\)</span> with grade <code>Satisfactory</code>.</li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<p>It is slightly more complicated to prove the knowledge of agreement property. As a starting point, let’s prove the following lemma.</p>
+<div id="lem-gradecast" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lemma 11.1</strong></span> No two honest parties <span class="math inline">\(P_i\)</span> and <span class="math inline">\(P_j\)</span> send conflicting round 2 messages.</p>
+</div>
+</div>
+<div class="fragment">
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>Suppose for the sake of contradiction that:</p>
+<ul>
+<li>Honest party <span class="math inline">\(P_i\)</span> sees <span class="math inline">\(n−t\)</span> round 1 messages for <span class="math inline">\(x\)</span>, and</li>
+<li>Honest party <span class="math inline">\(P_j\)</span> sees <span class="math inline">\(n−t\)</span> round 1 messages for a different value <span class="math inline">\(x' \neq x\)</span></li>
+</ul>
+<p>By the pigeonhole principle:</p>
+<ul>
+<li>Any two sets of <span class="math inline">\(n - t\)</span> parties (out of <span class="math inline">\(n\)</span> total parties) must have at least <span class="math inline">\(n - 2t \geq t + 1\)</span> parties in common <!-- - Since $n \geq 3t+1$, note that $n - 2f \geq t+1$ so the two honest parties must have heard from at least $t+1$ parties in common. --></li>
+<li>Since at most <span class="math inline">\(t\)</span> parties are malicious, at least one of the common messages must have been sent by an honest party <span class="math inline">\(P_h\)</span></li>
+</ul>
+<p>However, honest parties always send one consistent message to everyone in round 1. So this is a contradiction! <!-- and it must not be the case that two honest parties can receive enough conflicting round 1 messages in order to send conflicting round 2 messages --></p>
+</div>
+</div>
+<div class="fragment">
+<p>Now we can prove the knowledge of agreement property, which states:</p>
+<blockquote class="blockquote">
+<p>If an honest party outputs a message with grade <code>Satisfactory</code>, then all honest parties output this message.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<div id="thm-gradecast-koa" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 11.3</strong></span> The Gradecast protocol satisfies knowledge of agreement.</p>
+</div>
+</div>
+<div class="fragment">
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span></p>
+<ul>
+<li>If an honest party has grade <code>Satisfactory</code>, then it sees at least <span class="math inline">\(n−t\)</span> round 2 messages</li>
+<li>In this case, all honest parties see at least <span class="math inline">\(n−2t \geq t+1\)</span> round 2 messages (only the <span class="math inline">\(t\)</span> messages from malicious parties could be different)</li>
+<li>From <a href="#lem-gradecast" class="quarto-xref">Lemma&nbsp;<span>11.1</span></a> above, we know that there cannot be <span class="math inline">\(t+1\)</span> round 2 messages for any other message</li>
+<li>As a consequence, all honest parties output <span class="math inline">\(m\)</span>, with a grade of either <code>Close</code> or <code>Satisfactory</code></li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="the-phase-king-protocol" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="the-phase-king-protocol"><span class="header-section-number">11.7</span> The phase-king protocol</h2>
+<p>Finally, let’s construct the <strong>phase-king protocol</strong>. The name comes from the fact that everyone gets a turn being the “king.”</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>There are actually many variations of the phase-king protocol. I will present just one of them in this class.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The phase-king protocol proceeds in a sequence of <span class="math inline">\(t+1\)</span> phases, each of which requires 3 rounds of interaction. In each phase:</p>
+<ul>
+<li><p>One party is chosen to be the <em>king</em> and gets to select a message <span class="math inline">\(m\)</span> to send to the others. The real leader <span class="math inline">\(P_1\)</span> is the first king, and then party <span class="math inline">\(P_2\)</span>, then <span class="math inline">\(P_3\)</span>, and so on.</p></li>
+<li><p>When a party receives this message:</p>
+<ul>
+<li>If the party is already happy with their message from previous phases (meaning that they have a Gradecast grade of <code>Satisfactory</code>) then they ignore the current king.</li>
+<li>Otherwise, the party adopts the message sent by the king.</li>
+</ul></li>
+<li><p>The parties run Gradecast to determine whether they have reached agreement on the message.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Here is some pseudocode that describes this protocol in detail. It is written from the perspective of a single party <span class="math inline">\(P_i\)</span>. Every honest party runs the same code.</p>
+<!--
+We assume that they have already agreed upon a convention for which party to label as $P_1$ (this should be the leader), $P_2$, $P_3$, and so on.
+-->
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="wa">input:</span> m  <span class="co"># at the start, only the leader has an input</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>          <span class="co"># everyone else is clueless</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize the grade</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>grade <span class="op">=</span> <span class="vs">'Insufficient'</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> each phase j from <span class="dv">1</span> to t<span class="op">+</span><span class="dv">1</span><span class="op">:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># first round of the phase</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    party <span class="dt">P_j</span> sends its message to all parties (other parties send nothing)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> grade <span class="op">!=</span> <span class="vs">'Satisfactory'</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>       <span class="cf">then</span> m <span class="op">:=</span> message received from party <span class="dt">P_j</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># remaining two rounds of the phase</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    (m, grade) <span class="op">:=</span> <span class="dt">Gradecast</span>(m)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="wa">output:</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    at the <span class="cf">end</span> of round <span class="dv">3</span>(t<span class="op">+</span><span class="dv">1</span>), output v</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<p>This protocol achieves our goals for Byzantine Broadcast.</p>
+<div id="thm-phase-king" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 11.4</strong></span> The phase-king protocol achieves termination, validity, and consistency.</p>
+</div>
+</div>
+<div class="fragment">
+<p><em>Proof.</em> This protocol clearly terminates after <span class="math inline">\(3(t+1)\)</span> rounds.</p>
+</div>
+<div class="fragment">
+<p>To see that validity holds:</p>
+<ul>
+<li>An honest leader, in the first round, sends the same message <span class="math inline">\(m\)</span> to everyone</li>
+<li>As a result, the validity property of the Gradecast protocol ensures that everyone outputs <span class="math inline">\(m\)</span> with a grade of <code>Satisfactory</code></li>
+<li>Thereafter, the honest parties ignore all proposed messages by future kings, and their final output is <span class="math inline">\(m\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Proving the consistency property is more complicated. Recall that we anoint <span class="math inline">\(t+1\)</span> different kings, in sequence. Since there are only <span class="math inline">\(t\)</span> malicious parties, at least one king is honest.</p>
+<p>Let <span class="math inline">\(P_j\)</span> denote the first honest king. We’re going to split our discussion into three parts.</p>
+</div>
+<div class="fragment">
+<p>At the end of phase <span class="math inline">\(j-1\)</span>: <!-- before $P_j$'s turn as the king --></p>
+<ul>
+<li>It might be the case that no honest parties currently have a grade of <code>Satisfactory</code>. In this case, they will be open-minded and listen to the honest king.</li>
+<li>Or it might be the case that some honest party has a grade of <code>Satisfactory</code> already. In this case, Gradecast’s knowledge of agreement property guarantees that all honest parties (including <span class="math inline">\(P_j\)</span>) also have the same message.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>During phase <span class="math inline">\(j\)</span>:</p>
+<ul>
+<li>The honest king <span class="math inline">\(P_j\)</span> will send its message to all parties. Anyone who didn’t already have a grade of <code>Satisfactory</code> will switch to it. If anyone did have a grade of <code>Satisfactory</code>, then there’s no need to switch because the honest king sent the same message.</li>
+<li>Validity of the subsequent Gradecast protocol ensures that, after phase <span class="math inline">\(j\)</span>, all honest parties will have the same message <span class="math inline">\(m\)</span>, with a grade of <code>Satisfactory</code>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>After phase <span class="math inline">\(j\)</span>: the honest parties ignore all proposed messages by future kings, and their final output is <span class="math inline">\(m\)</span>. This completes the proof of consistency.</p>
+</div>
+<hr>
+<section id="efficiency-of-phase-king" class="level3">
+<h3 class="anchored" data-anchor-id="efficiency-of-phase-king">Efficiency of phase-king</h3>
+<p>Let’s conclude today by looking at the <em>efficiency</em> of the phase-king protocol. Admittedly, it is not the fastest protocol at performing the task of Byzantine Broadcast and there are faster alternatives.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Phase-king requires <span class="math inline">\(3(t+1)\)</span> rounds of interaction. It can be shown that any deterministic protocol for Byzantine Broadcast requires at least <span class="math inline">\(t+1\)</span> rounds, so phase-king requires <span class="math inline">\(3\times\)</span> more rounds than necessary.</p></li>
+<li><p>Phase-king requires <span class="math inline">\(O(n^3)\)</span> messages to be exchanged between the parties. It turns out that there are alternative ways to perform Byzantine Broadcast that only require <span class="math inline">\(O(n^2)\)</span> messages – that is, about the number of messages required for all pairs of parties to communicate with each other.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Finally, let’s compare the <strong>Dolev-Strong</strong> protocol (shown in the appendix) with the <strong>phase-king</strong> protocol that we discussed today.</p>
+<center>
+<style>
+    .demo {
+        border:1px solid #C0C0C0;
+        border-collapse:collapse;
+        padding:5px;
+    }
+    .demo th {
+        border:1px solid #C0C0C0;
+        padding:5px;
+        background:#F0F0F0;
+    }
+    .demo td {
+        border:1px solid #C0C0C0;
+        padding:5px;
+    }
+</style>
+<table class="demo">
+<thead>
+<tr>
+<th>
+<br>
+</th>
+<th>
+Dolev-Strong<br>
+</th>
+<th>
+Phase-King<br>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Number of malicious parties <br>
+</td>
+<td>
+<span class="math inline">\(t \leq n\)</span>
+</td>
+<td>
+<span class="math inline">\(t \leq \frac{n-1}{3}\)</span>
+</td>
+</tr>
+<tr>
+<td>
+Synchronous network<br>
+</td>
+<td>
+YES
+</td>
+<td>
+YES
+</td>
+</tr>
+<tr>
+<td>
+PKI
+</td>
+<td>
+YES <br>
+</td>
+<td>
+NO
+</td>
+</tr>
+<tr>
+<td>
+Number of rounds<br>
+</td>
+<td>
+<span class="math inline">\(t+1\)</span>
+</td>
+<td>
+<span class="math inline">\(3(t+1)\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<div class="fragment">
+<p>Next time, we will discuss how to use synchronous Byzantine Broadcast in order to build a permissioned blockchain.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="appendix-dolev-strong-protocol" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="appendix-dolev-strong-protocol"><span class="header-section-number">11.8</span> Appendix: Dolev-Strong protocol</h2>
+<p>[Note: this appendix follows the <a href="https://decentralizedthoughts.github.io/2019-12-22-dolev-strong/">Decentralized Thoughts blog</a>.]</p>
+<p>The <em>Dolev-Strong protocol</em> solves the Byzantine Broadcast problem in the following settings:</p>
+<ul>
+<li>Dishonest majority (there can be as many malicious parties as Mallory wants, i.e., <span class="math inline">\(t \leq n\)</span>)</li>
+<li>Synchronous network <!-- Static adversary (also works for adaptive adversary but we are not going to talk about it) --></li>
+<li>Uses authenticated pair-wise channels <em>and</em> digital signatures with a PKI</li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:52%;">
+<p>Let’s number the parties from <span class="math inline">\(1\)</span> to <span class="math inline">\(n\)</span>. By convention, let’s say that the <em>leader</em> party is #1.</p>
+<p>We are going to do something similar to the two round Commander-Lieutenant protocol from the <a href="https://lamport.azurewebsites.net/pubs/byz.pdf">Lamport, Shostak, Pease 1982</a> paper, but we will add digital signatures to the messages in order to distinguish between the two bad cases of a malicious commander vs.&nbsp;a malicious lieutenant. Note that:</p>
+<ul>
+<li>MACs only allow Alice and Bob to know that they are communicating with each other</li>
+<li>Digital signatures also allow Bob to receive a signed message from Alice and <strong>transfer</strong> this message along to another party Carol, so that she will also know what Alice said</li>
+</ul>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11-bad-generals.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Image source: <a href="https://lamport.azurewebsites.net/pubs/byz.pdf">Lamport, Shostak, Pease 1982</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<section id="first-attempt" class="level3">
+<h3 class="anchored" data-anchor-id="first-attempt">First attempt</h3>
+<div class="fragment">
+<p>Here is our first attempt at a protocol. It has two rounds of communication, after which each party decides whether to output the message <span class="math inline">\(b = 0\)</span> or <span class="math inline">\(b = 1\)</span>.</p>
+<p>In the pseudocode that follows, we will use the notation <code>sign(m, i)</code> to mean “a digital signature of the message <span class="math inline">\(m\)</span> by party number <span class="math inline">\(i\)</span>.”</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="wa">Input:</span> leader has a bit b, other parties have no input</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">Round</span> <span class="dv">1</span><span class="op">:</span> leader (party <span class="dv">1</span>) sends message <span class="op">&lt;</span>b, sign(b,<span class="dv">1</span>)<span class="op">&gt;</span> to all parties</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">Round</span> <span class="dv">2</span><span class="op">:</span> <span class="cf">if</span> party i received <span class="op">&lt;</span>b, sign(b,<span class="dv">1</span>)<span class="op">&gt;</span> from the leader <span class="cf">in</span> round <span class="dv">1</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">then</span> add b to set <span class="dt">B_i</span> <span class="cf">and</span> send <span class="op">&lt;</span>b, sign(b,<span class="dv">1</span>)<span class="op">&gt;</span> to all parties</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dt">End</span> of round <span class="dv">2</span><span class="op">:</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>         <span class="cf">if</span> party i receives <span class="op">&lt;</span>b, sign(b,<span class="dv">1</span>)<span class="op">&gt;</span> from anyone</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">then</span> add b to <span class="dt">B_i</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="wa">Output:</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>         <span class="cf">if</span> the set <span class="dt">B_i</span> contains only a single message b,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">then</span> output b</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> output a default message (say, <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<!--
+_Round 1_:
+- Leader (party #1) sends message `<b, sign(b, 1)>` to all parties. (At least, the leader will do this if they're honest... otherwise they might send different messages to different parties!)
+- The other parties don't send anything; they just wait to hear a message from the leader. If party $i$ receives a message of the form `<b, sign(b, 1)>` from the leader with a valid signature, then they add $b$ to the set $B_i$ of messages they've heard.
+
+_Round 2_:
+- If party $i$ received a message `<b, sign(b,1)>` from the leader in round 1, then they forward this message along to all parties. In other words, each party gossips the fact that it heard the message $b$ from the leader. (Note that this message is signed with the leader's key, not their own!)
+- If party $i$ never heard anything in round 1, then they don't send anything now.
+- When party $i$ receives a message of the form `<b, sign(b,1)>` from anyone, then they check that the leader's signature is valid; if so, they add $b$ to the set $B_i$ of messages they've heard.
+
+_Output decision rule_:
+
+- If the set $B_i$ contains only a single bit $b$, then output $b$.
+- Otherwise, output a default bit $0$.
+-->
+<div class="fragment">
+<p>In words, here’s another way to describe the protocol:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>In the first round, the leader sends its message <span class="math inline">\(b\)</span> to all parties. At least, the leader will do this if they’re honest… otherwise they might send different messages to different parties!</li>
+<li>The other parties only listen in the first round. If they hear a message, then in round 2 they will gossip this message in the second round. Note that their round 2 message <code>&lt;b, sign(b,1)&gt;</code> is the message together with a signature by the <em>leader</em>, not by themselves!</li>
+<li>After the 2 rounds are complete: each party checks to see whether all of the signed messages from the leader are consistently <span class="math inline">\(b = 0\)</span> or consistently <span class="math inline">\(b = 1\)</span>. If so, they output that result. But if they have received no valid signatures, or valid signatures of both messages <code>0</code> and <code>1</code>, then the leader is clearly malicious and the party falls back to a default output of <span class="math inline">\(b = 0\)</span>. <!-- (The exact choice of this fallback selection doesn't really matter; we could have said that everyone would pick $b = 1$ by default instead. Since the leader is clearly malicious, all that matters is that everyone makes a consistent choice.) --></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> Does this protocol satisfy the Termination, Validity, and Consistency requirements of a Byzantine Broadcast protocol?</p>
+</div>
+<div class="fragment">
+<p>This protocol clearly <strong>terminates</strong> after two rounds. Also it satisfies <strong>validity</strong>, which says that if the leader is honest and wants to broadcast the bit <span class="math inline">\(b\)</span>, then everyone will hear it. In fact, everyone will hear this message directly from the leader in round 1.</p>
+<p>Hence, all honest parties will gossip this message in round 2; the malicious parties might choose not to do this, but that’s okay. Thanks to the unforgeability of the digital signature scheme, the malicious parties cannot forge the honest leader’s signature on the wrong message <span class="math inline">\(1 - b\)</span>.</p>
+<p>Ergo: at decision time, the honest parties only hear the leader’s bit <span class="math inline">\(b\)</span>, so they will output <span class="math inline">\(b\)</span>.</p>
+</div>
+<div class="fragment">
+<p>It seems like the protocol satisfies consistency too.</p>
+<ul>
+<li>Suppose the leader tries to cheat and send two different messages <span class="math inline">\(b = 0\)</span> and <span class="math inline">\(b = 1\)</span> to two different honest parties in round 1.</li>
+<li>Then in round 2, those honest parties will forward these signed messages to everyone else.</li>
+<li>Hence, at decision time, everyone will know that the leader is malicious, and all of them will output the default bit 0.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>However, the previous argument is incomplete. Here is a counter example involving a malicious leader that <strong>breaks consistency</strong>:</p>
+<ul>
+<li>The malicious leader doesn’t send any messages in round 1.</li>
+<li>In round 2, the leader sends the bit 1 only to half of the honest parties. Those honest parties will finish with bit 1, but the others will finish with the default bit 0!</li>
+</ul>
+</div>
+<div class="fragment">
+<p>The main problem here is that (some of) the honest parties only learned their message in the last round. They haven’t yet had any time to tell the honest parties about the leader’s message, because it was the last round and there’s no more time to send messages.</p>
+<p>And we do need for there to be a “last round,” or else the protocol could go on forever and not terminate.</p>
+</div>
+<hr>
+</section>
+<section id="signature-chains" class="level3">
+<h3 class="anchored" data-anchor-id="signature-chains">Signature chains</h3>
+<p>Dolev and Strong show a very elegant way to guarantee consistency, even if the message decided is revealed to some of the honest parties in the last round.</p>
+<p>It is based on the idea that for the leader’s message to be approved by honest participants, they need to see the message signed by <em>at least one honest party</em>!</p>
+<div class="fragment">
+<p>Remember that the parties have no idea who else is honest. The only thing we know for sure is that there are at most <span class="math inline">\(t\)</span> malicious parties. So if any message has been approved by <span class="math inline">\(t + 1\)</span> other people, then by the pigeonhole principle, at least one of them is honest!</p>
+</div>
+<div class="fragment">
+<p>As a result, the Dolev-Strong protocol runs for <span class="math inline">\(t + 1\)</span> rounds. When an honest party receives a message from the leader, it forwards it along and <em>adds its own</em> signature on top of it. In some sense, the honest party is <em>endorsing</em> any message that it receives.</p>
+<p>By the last round, an honest party should only accept a message if it sees <span class="math inline">\(t + 1\)</span> signatures on it.</p>
+</div>
+<div class="fragment">
+<p>More specifically: the objective is to (eventually) show all parties a <strong>signature chain</strong> where the message is initially signed by the leader and then by <span class="math inline">\(t\)</span> other parties too.</p>
+<p>You can think of a signature chain as though each party is appending its name to the bottom of a contract. So you could see:</p>
+<ul>
+<li>a message that was initially signed by party 1,</li>
+<li>and then that signed document is also signed by party 2,</li>
+<li>and then <em>that</em> double-signed document is also signed by party 3, and so on.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11-declaration-independence.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption>Declaration of Independence (image source: <a href="https://en.wikipedia.org/wiki/United_States_Declaration_of_Independence">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>The honest parties do not know which other people among them are honest.</p>
+<p>Even so: if anyone sees a message with <span class="math inline">\(t+1\)</span> distinct signatures, then they know for a fact that at least one signature comes from an honest party (by the pigeonhole principle). The key idea in the Dolev-Strong protocol is that everyone can rely on that honest party to have made sure that everyone else saw the message too.</p>
+</div>
+<hr>
+</section>
+<section id="the-actual-protocol" class="level3">
+<h3 class="anchored" data-anchor-id="the-actual-protocol">The actual protocol</h3>
+<p>To construct the signature chain in a way that satisfies the consistency rule, the Dolev-Strong protocol uses a powerful idea that we will see several times in protocols that use a synchronous network:</p>
+<blockquote class="blockquote">
+<p>The validity of a message is a function also of the time it is received!</p>
+</blockquote>
+<div class="fragment">
+<p>Here is the Dolev-Strong protocol. We describe the first round, all other rounds, and then the output decision rule.</p>
+<p>Remember that as always, we can only prescribe the actions of the honest parties. Malicious parties can do whatever they want; they don’t have to obey this procedure.</p>
+</div>
+<div class="fragment">
+<p>The input and first round remain the same as with our initial attempt.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="wa">Input:</span> leader has a bit b, other parties have no input</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">Round</span> <span class="dv">1</span><span class="op">:</span> leader (party <span class="dv">1</span>) sends message <span class="op">&lt;</span>b, sign(b,<span class="dv">1</span>)<span class="op">&gt;</span> to all parties</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<p>Now let’s see how each party <span class="math inline">\(i\)</span> acts in every subsequent round <span class="math inline">\(j\)</span> from 2 to <span class="math inline">\(t+1\)</span>.</p>
+<p>In round <span class="math inline">\(j\)</span>, an honest party will review the messages it has received from the previous round <span class="math inline">\(j-1\)</span>, and if any message has been validly signed by <span class="math inline">\(j-1\)</span> other people (starting with the leader) then it will apply its own signature and forward along to everybody else. (Otherwise, an honest party sends nothing in this round.)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">Round</span> <span class="wa">j:</span> <span class="cf">for</span> each message m received by party i <span class="cf">in</span> the previous round j<span class="op">-</span><span class="dv">1</span><span class="op">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>             <span class="cf">if</span> m is a valid (j<span class="op">-</span><span class="dv">1</span>) signature chain on v, <span class="cf">then</span><span class="op">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                    add b to the set <span class="dt">B_i</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                    send <span class="op">&lt;</span>m, sign(m, i)<span class="op">&gt;</span> to all parties</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<p>A <span class="math inline">\((j-1)\)</span> signature chain for message <span class="math inline">\(m\)</span> is deemed to be <strong>valid</strong> by party <span class="math inline">\(i\)</span> if all of the following are true:</p>
+<ul>
+<li>Each signature is valid for the message (<span class="math inline">\(M\)</span> + all prior signatures)</li>
+<li>The signature chain has length <span class="math inline">\(j-1\)</span></li>
+<li>The first signer of the signature chain is the leader</li>
+<li>All signers in the chain are distinct</li>
+<li>Party <span class="math inline">\(i\)</span> is not in the signature chain</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Finally, after all <span class="math inline">\(t+1\)</span> rounds are complete, the output decision rule is the same as in our initial attempt.</p>
+<!-- Might need to update this to process the messages sent in the final round t+1? -->
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="wa">Output:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>         <span class="cf">if</span> the set <span class="dt">B_i</span> contains only a single message b,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>            <span class="cf">then</span> output b</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span> output a default message <span class="dv">0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<!--
+_Round 1_:
+- The leader (party #1) with input $b$ sends the message `<b, sign(b,1)>` to all parties.
+- Nobody else sends anything.
+
+_Round $j$_ (where $1 < j \leq t+1$), from the perspective of party $i$ (all parties do this in parallel):
+- Party $i$ reviews all messages $m$ received from the previous round $j - 1$.
+- For any message $m$ that contains the bit $b$ together with $j - 1$ signatures from $j - 1$ distinct parties, where the first signature is from the leader, then:
+    - The party adds bit $b$ to the set $B_i$.
+    - The party sends `<m, sign(m, i)>` to all parties.
+    
+Note that this message includes signatures from previous parties. This party is signing an already-signed message, just like adding your name to the end of a contract that has already been signed by others.
+
+_Output decision rule_:
+
+At the end of round $j + 1$, party $i$ chooses its output in exactly the same way as in our first attempt.
+- If the set $B_i$ contains only a single bit $b$, then output $b$.
+- Otherwise, output a default bit $0$.
+-->
+<hr>
+</section>
+<section id="necessity-of-t1-rounds" class="level3">
+<h3 class="anchored" data-anchor-id="necessity-of-t1-rounds">Necessity of <span class="math inline">\(t+1\)</span> rounds</h3>
+<p><strong>Question.</strong> If we were to modify the protocol above to stop at <span class="math inline">\(t\)</span> rounds instead of <span class="math inline">\(t+1\)</span> rounds, can you come up with an attack against it?</p>
+<div class="fragment">
+<p><strong>Answer.</strong> Assume that the input bit <span class="math inline">\(b\)</span> is 1, and that the leader is malicious. Nobody sends anything for the first <span class="math inline">\(t - 1\)</span> rounds. Just before round <span class="math inline">\(t\)</span> finishes, all the malicious parties will send the message <span class="math inline">\(b = 1\)</span>, signed by all <span class="math inline">\(t\)</span> of them, to one honest party <span class="math inline">\(p_i\)</span>.</p>
+<p>This honest party would see it but it won’t be able to send it to any party because the round has finished! That honest party alone would finish with <span class="math inline">\(1\)</span> while every other honest party finishes with <span class="math inline">\(0\)</span>, so the honest parties have <em>not</em> agreed on a consistent answer.</p>
+</div>
+<div class="fragment">
+<p>The actual Dolev-Strong protocol avoids this issue by having <span class="math inline">\(t + 1\)</span> rounds. This way, an honest party must be part of a signature chain that is sent in the final round.</p>
+</div>
+<hr>
+</section>
+<section id="analyzing-dolev-strong" class="level3">
+<h3 class="anchored" data-anchor-id="analyzing-dolev-strong">Analyzing Dolev-Strong</h3>
+<p>The real Dolev-Strong protocol (with <span class="math inline">\(t+1\)</span> rounds) satisfies all the requirements of a Byzantine Broadcast protocol.</p>
+<p><strong>Termination</strong> and <strong>validity</strong> hold for the same reason as in the first attempt. The protocol clearly terminates after <span class="math inline">\(t+1\)</span> rounds of interaction, and if the leader is honest then everyone will receive the same message in the first round and begin the process of co-signing it in future rounds.</p>
+<div class="fragment">
+<p>Let’s reason about <strong>consistency</strong>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>If an honest party receives a <span class="math inline">\(k\)</span> distinct signatures for a bit <span class="math inline">\(b\)</span> at the end of round <span class="math inline">\(k\)</span>, where the first signature is from the leader, then it will send it to all honest parties in round <span class="math inline">\(k+1\)</span>. This holds for all rounds except the final round <span class="math inline">\(t+1\)</span>.</p></li>
+<li><p>But since the honest party can only receive <span class="math inline">\(t+1\)</span> distinct signatures for a given bit <span class="math inline">\(b\)</span> in round <span class="math inline">\(t+1\)</span> (and not send anything), and a there is least one signature from an honest party <span class="math inline">\(P_h\)</span>, then <span class="math inline">\(P_h\)</span> must have already sent <span class="math inline">\(b\)</span> along with the proper signatures to <strong>all</strong> other honest parties.</p></li>
+<li><p>Thus, every bit received by one honest party will be received by all other honest parties. If two different bits have been propagated to two different honest parties by a malicious leader, then all honest parties will detect it and default to the bit <span class="math inline">\(0\)</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Amazingly, consistency holds no matter how many malicious parties there are!</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>If <span class="math inline">\(t = n\)</span>, then everyone is malicious so there are no honest parties to protect. (This case is somewhat boring.)</p></li>
+<li><p>If <span class="math inline">\(t = n - 1\)</span>, then consistency says that all honest parties must agree on the output. There is only one honest party, and obviously it agrees with itself. (This case is also rather trivial.)</p></li>
+<li><p>If <span class="math inline">\(t = n - 2\)</span>, then consistency says that both of the two honest parties have agreed on the answer, even if they’re surrounded by <span class="math inline">\(n - 2\)</span> adversaries all around them! That’s amazing!</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>In this way, Dolev-Strong’s protocol achieves an even stronger level of security than Bitcoin, which required an honest majority. But this is not an apples-to-apples comparison, since Bitcoin is doing much more than letting one person broadcast a single message to the world.</p>
+</div>
+<div class="fragment">
+<p>In order to solve the broadcast problem, the Dolev-Strong protocol did need to make some other strong assumptions:</p>
+<ul>
+<li>Knowledge of who the other parties were, so that nobody could conduct a Sybil attack.</li>
+<li>Public key infrastructure (PKI), so that signatures could be transferred from one party to another.</li>
+<li>Synchronous network, so that parties would know when each round ends and the next one begins.</li>
+</ul>
+<p>Next week, we will see other ways to construct a broadcast protocol with fewer of these requirements.</p>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./10.html" class="pagination-link" aria-label="Bitcoin liveness and safety">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./12.html" class="pagination-link" aria-label="Synchronous blockchains">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Synchronous blockchains</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>DS 453/653 lecture notes</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

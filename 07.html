@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; Key exchange – Crypto for Data Science</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./unit2.html" rel="next">
+<link href="./06.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit1.html">Protecting data integrity</a></li><li class="breadcrumb-item"><a href="./07.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Key exchange</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="index.html" class="sidebar-logo-link">
+      <img src="./images/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Crypto for Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course description</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data integrity</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Cryptographic hash functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Password hashing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">(Pseudo)randomness</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Message authentication codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Key exchange</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data availability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bitcoin overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Proof of work mining</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Byzantine broadcast</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Synchronous blockchains</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Protecting data confidentiality</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Protecting data science</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#assumptions-and-trust" id="toc-assumptions-and-trust" class="nav-link" data-scroll-target="#assumptions-and-trust"><span class="header-section-number">7.1</span> Assumptions and Trust</a>
+  <ul class="collapse">
+  <li><a href="#avoiding-intermediaries" id="toc-avoiding-intermediaries" class="nav-link" data-scroll-target="#avoiding-intermediaries">Avoiding intermediaries</a></li>
+  <li><a href="#thinking-like-mallory" id="toc-thinking-like-mallory" class="nav-link" data-scroll-target="#thinking-like-mallory">Thinking like Mallory</a></li>
+  </ul></li>
+  <li><a href="#diffie-hellman-key-exchange" id="toc-diffie-hellman-key-exchange" class="nav-link" data-scroll-target="#diffie-hellman-key-exchange"><span class="header-section-number">7.2</span> Diffie-Hellman key exchange</a></li>
+  <li><a href="#public-key-infrastructure" id="toc-public-key-infrastructure" class="nav-link" data-scroll-target="#public-key-infrastructure"><span class="header-section-number">7.3</span> Public key infrastructure</a>
+  <ul class="collapse">
+  <li><a href="#certificate-authorities" id="toc-certificate-authorities" class="nav-link" data-scroll-target="#certificate-authorities">Certificate authorities</a></li>
+  </ul></li>
+  <li><a href="#overview-of-consensus" id="toc-overview-of-consensus" class="nav-link" data-scroll-target="#overview-of-consensus"><span class="header-section-number">7.4</span> Overview of consensus</a>
+  <ul class="collapse">
+  <li><a href="#muddy-children-puzzle" id="toc-muddy-children-puzzle" class="nav-link" data-scroll-target="#muddy-children-puzzle">Muddy children puzzle</a></li>
+  <li><a href="#reasoning-about-the-puzzle" id="toc-reasoning-about-the-puzzle" class="nav-link" data-scroll-target="#reasoning-about-the-puzzle">Reasoning about the puzzle</a></li>
+  <li><a href="#back-to-crypto" id="toc-back-to-crypto" class="nav-link" data-scroll-target="#back-to-crypto">Back to crypto</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit1.html">Protecting data integrity</a></li><li class="breadcrumb-item"><a href="./07.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Key exchange</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Key exchange</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- TODO: add some info about AI safety and its use of pseudorandomness, like Miranda's talk on watermarking, the 9/23 RESI talk on AI bot communications, and Matt Green's blog post about AI companies using digital signatures https://blog.cryptographyengineering.com/2026/09/30/is-sandboxing-sufficient-to-contain-rogue-agents/ -->
+<hr>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Homework
+<ul>
+<li>This week: HW 3 due Wed 9/30 at 8pm</li>
+<li>Next week: no homework</li>
+</ul></li>
+<li>Exam 1 during lecture on Monday 10/5, covering:
+<ul>
+<li>Lectures 1-7 (so: today’s material is in scope for Exam 1, but Wednesday will be part of Exam 2)</li>
+<li>Labs 1-4 and associated textbook reading</li>
+<li>Homework 1-3</li>
+</ul></li>
+<li>Lab 5 on this week’s reading (<a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 2.1-2.3</a>) and Exam 1 review</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>Last week, we studied <strong>message authentication codes</strong> (MACs) and <strong>digital signatures</strong>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Both can be used to ensure integrity of data at rest (e.g., on your hard drive) and in transit (e.g., sent over the Internet)</li>
+<li>MACs have one <em>symmetric key</em> <span class="math inline">\(k\)</span> that Alice and Bob can use to send messages back and forth</li>
+<li>Digital signatures are <em>asymmetric</em> and allow Alice (with <span class="math inline">\({\color{red}{sk}}\)</span>) to send a message that the entire world can verify (with <span class="math inline">\({\color{green}{pk}}\)</span>)</li>
+</ul>
+<!-- There are also (more subtle) differences regarding receiver authentication, deniability vs non-repudiation, etc -->
+</div>
+<!--
+::: {.fragment}
+Here is where we ended Lecture 6:
+
+> We left two problems unsolved this week.
+>
+> - MACs require that Alice and Bob agree on their symmetric secret key $k$. How can they do so over the Internet (without meeting in person)?
+> - Digital signatures require that Alice publish her public key ${\color{green}{pk}_{\text{Alice}}}$. How can everyone in the world reliably fetch this key ${\color{green}{pk}_{\text{Alice}}}$ without it being tampered with by Mallory?
+>
+> We will solve both of these problems next Monday.
+:::
+-->
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How Alice and Bob can <em>agree</em> on a symmetric key, without ever meeting in person</li>
+<li>How the world can reach <em>consensus</em> about Alice’s public key, without ever meeting her in person</li>
+</ul>
+<hr>
+</section>
+<section id="assumptions-and-trust" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="assumptions-and-trust"><span class="header-section-number">7.1</span> Assumptions and Trust</h2>
+<p>Looking back at Unit 1: we have rapidly built up our cryptographic toolbox! But we have made some <strong>assumptions</strong> along the way.</p>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Which of the following statements is <em>not</em> an assumption, but instead can be mathematically proved to be true based on another statement in this list?</p>
+<ol type="A">
+<li>Finding collisions in SHA-256 is practically infeasible</li>
+<li>Forging HMAC is practically infeasible</li>
+<li>Factoring very big integers is practically infeasible</li>
+<li>Computing discrete logarithms in elliptic curve groups is practically infeasible</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Here are some assumptions we have made so far in this course.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><em>Hash function assumptions</em>: SHA-256 is preimage-resistant, collision resistant, puzzle friendly, and acts like a random oracle
+<ul class="incremental">
+<li>From this assumption, we can prove that hash-based message commitments and HMAC are secure <!-- from this, we can prove the security of other symmetric key primitives like message commitments and HMAC --></li>
+</ul></li>
+<li><em>Discrete logarithm assumption</em>: If <span class="math inline">\(G^x = Y\)</span> and Mallory is given the two points <span class="math inline">\(G\)</span> and <span class="math inline">\(Y\)</span>, then it is computationally infeasible for her to find the discrete logarithm <span class="math inline">\(x\)</span>
+<ul class="incremental">
+<li>From this assumption, we can prove that Schnorr and ECDSA signatures are secure</li>
+</ul></li>
+<li>Bob is not Mallory: i.e., the person Alice wants to communicate with over the Internet is her friend and not her adversary</li>
+</ul>
+</div>
+<!--
+::: {.fragment}
+> “Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”
+>
+> – Ben Adida
+:::
+-->
+<div class="fragment">
+<p><strong>Question.</strong> <em>Are these assumptions true?</em></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Based on decades of cryptanalysis, we have strong evidence to believe that breaking SHA-256 and discrete logarithms are practically infeasible… but admittedly I cannot definitively prove these claims</p></li>
+<li><p>Whether Bob is Alice’s friend is a social question, which I cannot answer for her</p></li>
+</ul>
+</div>
+<hr>
+<section id="avoiding-intermediaries" class="level3">
+<h3 class="anchored" data-anchor-id="avoiding-intermediaries">Avoiding intermediaries</h3>
+<p>This course covers four fundamental topics.</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><em>Protecting data integrity</em>: authenticating data and its sender over the Internet, without needing to rely on intermediaries (like Internet service providers)</p></li>
+<li><p><em>Protecting data availability</em>: building consensus in financial transactions and other publicly-proclaimed statements, without needing to rely on intermediaries (like banks or social media)</p></li>
+<li><p><em>Protecting data confidentiality</em>: sharing data only with specific people on the Internet, without needing to give your data to intermediaries (like big tech companies)</p></li>
+<li><p><em>Protecting data science</em>: performing and verifying data analysis, without sharing your data with any intermediaries (like cloud providers or auditors)</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>Note the common theme across all topics:</p>
+<blockquote class="blockquote">
+<p>The tools in this course allow for data-driven decision making, without the need to place blind trust in another company or person.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>To be clear: it is perfectly fine to trust other people!</p>
+<ul>
+<li>At a personal level: forming relationships is a fundamental part of being human</li>
+<li>As a society: there is immense value to be gained by building civic, economic, legal, and political structures and then working to demonstrate their trustworthiness</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Instead, what I claim is that:</p>
+<ul>
+<li>It is bad if you are <em>forced</em> to trust a specific intermediary just to get things done <!-- (either in the physical or digital world) --></li>
+<li>It is worse if you <em>cannot verify</em> the intermediary’s behavior to know if they are worthy of your trust</li>
+<li>It is terrible if you <em>cannot change</em> who you trust because the intermediary is “too big to fail”</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="thinking-like-mallory" class="level3">
+<h3 class="anchored" data-anchor-id="thinking-like-mallory">Thinking like Mallory</h3>
+<p>This course teaches you to think from an adversarial perspective, and to learn how cryptography can be used to build <strong>secure and trustworthy</strong> data science systems that allow people to:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Reduce the level of trust required in other entities</li>
+<li>Understand exactly what they are trusting other entities to do (i.e., how things could go wrong, and what needs to happen for a bad outcome to occur)</li>
+<li>Verify that trusted entities are acting correctly</li>
+<li>Have free will to change which entities they trust, and for what purposes <!-- avoiding the "too big to fail" problem --></li>
+</ul>
+</div>
+<div class="fragment">
+<p>In other words, <em>Kerckhoffs’s principle #3</em> applies to people as well as data.</p>
+<blockquote class="blockquote">
+<p>It must be possible to communicate and remember the key without using written notes, and correspondents <strong>must be able to change or modify it at will</strong></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>It is my hope that, in this course, you develop the skill of asking (and answering) the question of “what could go wrong?” Learning to think like the adversary Mallory will help you be a better data scientist.</p>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> What could go wrong with the following code? In preparing for Exam 1, try to find as many flaws with this code block as you can.</p>
+<div id="28ea8582" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Alice_sign(message):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   secret_key <span class="op">=</span> randint(<span class="dv">0</span>, <span class="dv">2</span><span class="op">**</span><span class="dv">64</span>)                   <span class="co"># sample uniformly at random</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   public_key <span class="op">=</span> PublicKey.from_sk(secret_key)       <span class="co"># compute Alice's public key</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   random_k   <span class="op">=</span> <span class="bu">int</span>(time.time())                    <span class="co"># sample one-time randomness</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   signature  <span class="op">=</span> sign(secret_key, message, random_k) <span class="co"># run ECDSA.sign</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> public_key, message, signature            <span class="co"># send to Bob over the Internet</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Bob_verify(public_key, message, signature):     <span class="co"># received from Alice over the Internet</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> verify(public_key, message, signature)    <span class="co"># run ECDSA.verify, return the result</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This is valid Python code (with the import statements omitted for brevity). It will execute and, if everyone is honest, Alice will send a message to Bob that successfully verifies.</p>
+<p>But the code has multiple flaws, each of which renders the code entirely insecure and worthless in the presence of an adversary.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Discuss the skill of problem formulation and technical specification (e.g., via a formal definition); like issue-spotting, this is becoming more critical in an age of AI -->
+<hr>
+</section>
+</section>
+<section id="diffie-hellman-key-exchange" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="diffie-hellman-key-exchange"><span class="header-section-number">7.2</span> Diffie-Hellman key exchange</h2>
+<!-- With this idea of 'limiting trust' in mind -->
+<!--
+Today, we will resolve two open questions from prior lectures:
+
+::: {.incremental}
+1. MACs require that Alice and Bob **agree** on a symmetric key $k$. How can they do so without ever meeting in person?
+2. Digital signatures require Alice to **broadcast** her public key $\color{green}{pk}$, so that the rest of the world reaches **consensus** on which key belongs to Alice. How can we do that?
+:::
+
+::: {.fragment}
+::: {.callout-note}
+We will start the discussion of agreement, broadcast, and consensus today. Looking ahead, these topics will be a recurring theme in Unit 2.
+:::
+:::
+
+---
+
+-->
+<p>Recall that message authentication codes (MACs) allow Alice, when given any message <span class="math inline">\(m\)</span>, to append a sequence of bits called a <strong>tag</strong> that allows Bob to verify that:</p>
+<ul>
+<li>Alice sent the message <span class="math inline">\(m\)</span></li>
+<li>Mallory cannot perform a <em>meddler-in-the-middle</em> attack to tamper <span class="math inline">\(m\)</span> in transit</li>
+</ul>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="160">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<div class="fragment">
+<p>MACs rely on a symmetric secret key <span class="math inline">\(k\)</span> that Alice uses to <code>Tag</code><span class="math inline">\({}_k\)</span> and Bob uses to <code>Verify</code><span class="math inline">\({}_k\)</span>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Previously, we assumed that Alice and Bob meet one time to create the symmetric secret key <span class="math inline">\(k\)</span></li>
+<li>Today, we will use <em>discrete logarithms</em> so that Alice and Bob can have authenticated communication over the Internet even if they have never physically met before</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In the digital world, Alice and Bob need a secure way to <strong>exchange secrets in plain view</strong>.</p>
+<blockquote class="blockquote">
+<p>“The Internet is just the world passing notes in a classroom.”</p>
+<p>– Jon Stewart</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Amazingly, this can be done!</p>
+<ul>
+<li>This ingenious protocol was discovered in the late 1970s by Whitfield Diffie and Martin Hellman, and it is named <strong>Diffie-Hellman key exchange</strong> in their honor</li>
+<li>It was based on concepts developed earlier by Ralph Merkle… the same person who invented Merkle trees</li>
+</ul>
+</div>
+<hr>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \Longleftrightarrow \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<p>Based on the hardness of the discrete logarithm problem, here is an approach that Alice and Bob can take to create a symmetric secret key.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Alice can choose a secret <span class="math inline">\(a\)</span> that she keeps to herself, and send <span class="math inline">\(A = G^a\)</span> to Bob <!-- (Remember, nobody can take $A$ and reconstruct $a$... not Bob, nor anyone else!) --></li>
+<li>Bob can choose a secret exponent <span class="math inline">\(b\)</span> and send <span class="math inline">\(B = G^b\)</span> to Alice</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Alice and Bob should also digitally sign their messages <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, respectively, so they can verify that they are communicating with each other. (We will resolve soon the question of how they fetch each others’ public keys.)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Now, there is a <strong>symmetric secret key</strong> that both of them can compute: <span class="math inline">\(k = G^{ab}\)</span>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Alice can take the public value <span class="math inline">\(B\)</span> and raise it to her secret exponent <span class="math inline">\(a\)</span> to compute <span class="math inline">\(B^a = (G^b)^a = k\)</span></li>
+<li>Bob can do the opposite: <span class="math inline">\(A^b = (G^a)^b = k\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Moreover, nobody else can compute the symmetric secret key!</p>
+<ul>
+<li>Mallory knows <span class="math inline">\(G\)</span> and sees the messages <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> on the public Internet</li>
+<li>But she does not know – and cannot compute – either secret exponent <span class="math inline">\(a\)</span> or <span class="math inline">\(b\)</span></li>
+<li>So, she has no way to compute <span class="math inline">\(k\)</span></li>
+</ul>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The last line does not actually follow from the one before it. That is, it might be possible to compute the symmetric secret key <span class="math inline">\(k\)</span> without learning either secret exponent <span class="math inline">\(a\)</span> or <span class="math inline">\(b\)</span>.</p>
+<!-- Just like it is possible to find collisions in a hash function without being able to find preimages -->
+<p>Nevertheless, cryptographers do believe that the final line is true. This stronger mathematical claim is, appropriately enough, called the <strong>Diffie-Hellman assumption</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="public-key-infrastructure" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="public-key-infrastructure"><span class="header-section-number">7.3</span> Public key infrastructure</h2>
+<p>Next, let’s turn to the problem that digital signatures require Alice to <strong>broadcast</strong> her public key <span class="math inline">\(\color{green}{pk}\)</span>, so that the rest of the world reaches <strong>consensus</strong> on which key belongs to Alice. How can we do that?</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>If Alice applies a <em>digital signature</em> to the message “I Alice hereby send $1 to Bob”, then:</p>
+<ul>
+<li>Bob himself should become convinced that Alice was the signer</li>
+<li>Bob can show it to a bank, who should also be convinced and will credit Bob’s account</li>
+</ul>
+</div><div class="column" style="width:30%;">
+<p><img src="images/01-check.jpg" class="img-fluid" width="400"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Remember that the <code>Verify</code><span class="math inline">\({}_{\color{green}{pk}}\)</span> algorithm requires a public key, but it never requires Alice’s name or identity.</p>
+<p>So technically, digital signatures convince the world that “whoever holds the secret key corresponding to <span class="math inline">\(\color{green}{pk}\)</span> must have signed the message.”</p>
+</div>
+<hr>
+<p><strong>Question.</strong> How can Alice securely <strong>bind</strong> her identity to the public key?</p>
+<ul>
+<li>How can Alice securely tell the world: “I am Alice and my public key is <span class="math inline">\(\color{green}{pk}\)</span>”</li>
+<li>How can Alice stop Mallory from <em>also</em> telling the world: “I am Alice and my public key is <span class="math inline">\(\color{brown}{pk^*}\)</span>” <!-- for a different key $pk^*$ chosen by Mallory? --></li>
+</ul>
+<div class="fragment">
+<p>There is a chicken-and-egg issue here:</p>
+<ul>
+<li>In general, Alice can use signatures to convince the world that she’s the creator of any message, <em>after</em> people have associated <span class="math inline">\(\color{green}{pk}\)</span> with Alice’s identity.</li>
+<li>But to start this process, someone needs to physically check Alice’s real-world identity. Bob could do this himself, but the goal of digital signatures is to avoid the need for Alice and Bob to meet in the real world.</li>
+</ul>
+</div>
+<hr>
+<section id="certificate-authorities" class="level3">
+<h3 class="anchored" data-anchor-id="certificate-authorities">Certificate authorities</h3>
+<p>On the Internet, we rely on companies called <strong>certificate authorities</strong>. These companies are paid to:</p>
+<ul>
+<li>Verify Alice’s identity (i.e., her name, email address, and/or web domain)</li>
+<li>Attest to the rest of the world that Alice is the owner of the public key <span class="math inline">\(\color{green}{pk}\)</span></li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:57%;">
+<p>The entire system consisting of CA companies and these attestations is often called the <strong>public key infrastructure</strong>, or PKI. You can think of the PKI as similar to a telephone directory, just for cryptographic public keys rather than telephone numbers.</p>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-phone-directory.jpg" class="img-fluid figure-img" width="450"></p>
+<figcaption>Telephone directory (image source: <a href="https://en.wikipedia.org/wiki/Telephone_directory">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Let me provide two examples of digital certificates.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p>The website <code>bu.edu</code>, like all websites, uses digital signatures so that all visitors know that the data is authentic and comes from BU.</p>
+<p>If you click on the 🔒 icon in your web browser, it shows that the certificate authority “Sectigo Limited” attests that the RSA public key <code>B3 52 C6 ...</code> (in hex) belongs to the organization “Trustees of Boston University” from Feb 2026 to Feb 2027.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-cert-bu.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Digital certificate for bu.edu, as viewed in Firefox</figcaption>
+</figure>
+</div></li>
+<li><p>Here is a digital certificate for the website <code>google.com</code>. Note that Google also acts as a certificate authority, so they are attesting to their own identity. Also, this certificate expires in just 3 months, and the Google server uses ECDSA signatures with a smaller key.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-cert-google.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Digital certificate for google.com, as viewed in Firefox</figcaption>
+</figure>
+</div></li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Questions</strong> for discussion:</p>
+<ul>
+<li><p>How can we check that the attestation is really coming from “Sectigo Limited” or “Google Trust Services”? <!-- and not a false claim by Mallory --></p></li>
+<li><p>Why do certificates have expiration dates?</p></li>
+<li><p>What happens if a certificate authority makes a bad attestation, like saying that <code>B3 52 C6 ...</code> is the public key for <code>google.com</code>?</p></li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="overview-of-consensus" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="overview-of-consensus"><span class="header-section-number">7.4</span> Overview of consensus</h2>
+<p>In the PKI, all participants reach <em>consensus</em> over the binding between identities and public keys.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>But what exactly does “<strong>consensus</strong>” mean?</p></li>
+<li><p>I want to spend some time explaining how this is a deceptively powerful property. It means that everyone reaches <strong>common knowledge</strong>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Common knowledge is a powerful concept in logic.</p>
+<p>Consider the following statements. All of them are true, but note that each statement is strictly stronger than the previous ones!</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>I (the instructor) have black hair.</li>
+<li>You know that I have black hair.</li>
+<li>I know that you know that I have black hair.</li>
+<li>You know that I know that you know that I have black hair.</li>
+<li>(… and so on)</li>
+</ul>
+</div>
+<hr>
+<section id="muddy-children-puzzle" class="level3">
+<h3 class="anchored" data-anchor-id="muddy-children-puzzle">Muddy children puzzle</h3>
+<p>To see the power of common knowledge, let’s step away from crypto for a moment and consider the following problem.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>There are <span class="math inline">\(n\)</span> children who play in a playground, during which some of them get mud on their forehead (let <span class="math inline">\(m\)</span> denote the number of muddy children, but the children <em>do not know</em> <span class="math inline">\(m\)</span>)</li>
+<li>Afterward, the teacher gathers the children in a circle and announces that “one or more of you have mud on your forehead”</li>
+<li>Each child can see if others have mud on their forehead, but cannot tell whether their own forehead is muddy</li>
+<li>The children are not allowed to talk with each other</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In the first minute, the teacher says: “at this moment, if you know you have mud on your forehead, please step forward.”</p>
+<p><strong>Question.</strong> How will the children decide whether to respond? (Note: if a child is not 100% confident that they have mud on their forehead, they do nothing.)</p>
+</div>
+<div class="fragment">
+<p>One minute passes. Then in the second minute, the teacher says again “at this moment, if you know you have mud on your forehead, please step forward.”</p>
+<p>Every minute, the teacher issues the same call once again.</p>
+<p><strong>Question.</strong> What happens now? Remember that the children cannot talk with each other. Their only form of communication is to step forward if they are convinced that yes, they do have mud on their forehead.</p>
+</div>
+<hr>
+<p><strong>Interactive question.</strong> When will the first child step forward?</p>
+<ol type="A">
+<li>In minute 2</li>
+<li>In minute <span class="math inline">\(m\)</span></li>
+<li>In minute <span class="math inline">\(n\)</span></li>
+<li>No child will ever step forward</li>
+</ol>
+<hr>
+</section>
+<section id="reasoning-about-the-puzzle" class="level3">
+<h3 class="anchored" data-anchor-id="reasoning-about-the-puzzle">Reasoning about the puzzle</h3>
+<p>In this puzzle, the children:</p>
+<ul>
+<li>Start with the <strong>mutual knowledge</strong> from the teacher that “one or more of you have mud on your forehead.”</li>
+<li>Develop the <strong>common knowledge</strong> over time that nobody else is confident in answering the question just yet!</li>
+</ul>
+<div class="fragment">
+<p>Specifically, the children act as follows:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>In the first minute: if a child looks around and sees nobody with mud on their forehead, then they must be the one and only muddy child, so they step forward (and nobody else will)</li>
+<li>The children’s actions in second minute depend on what happened in the first minute
+<ul class="incremental">
+<li>If a child stepped forward in the first round: now everyone has <strong>common knowledge</strong> that there is exactly one muddy child, and nobody else will ever step forward</li>
+<li>Otherwise, each child has learned new information: based on the fact that nobody was confident to step forward in the first round, there must be at least <strong>two</strong> children with a muddy forehead!</li>
+</ul></li>
+<li>Hence in the second minute: any child who only sees one muddy forehead can be convinced that they are the second muddy child, and they will step forward</li>
+<li>If nobody steps forward in the second minute, then each child has seen at least two muddy foreheads, so they conclude there must be at least <strong>three</strong> muddy children</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Continuing by induction, it turns out that if there are <span class="math inline">\(m\)</span> muddy children, then:</p>
+<ul>
+<li>Nobody will move for <span class="math inline">\(m-1\)</span> rounds, and then</li>
+<li>In round <span class="math inline">\(m\)</span>, all <span class="math inline">\(m\)</span> muddy children will simultaneously step forward.</li>
+<li>The non-muddy children will (correctly) never step forward.</li>
+</ul>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Amazingly, the children have learned so much information from each other without saying anything at all! Remember that the children did not know the value of <span class="math inline">\(m\)</span> at the start of the puzzle.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="back-to-crypto" class="level3">
+<h3 class="anchored" data-anchor-id="back-to-crypto">Back to crypto</h3>
+<p>The public key infrastructure gives us a way to go…</p>
+<ul>
+<li>From <strong>mutual knowledge</strong> of public keys: the certificate authority (CA) knows which public keys correspond to which identities</li>
+<li>To <strong>common knowledge</strong> of public keys: I know which key corresponds to which entity (like <code>bu.edu</code> or <code>google.com</code>), and I know that you know the identity, and I know that you know that I know the identity, and so on</li>
+</ul>
+<div class="fragment">
+<p>The PKI does require us to place some trust in the certificate authorities, but this trust is <strong>verifiable</strong> and <strong>revocable</strong>.</p>
+</div>
+<div class="fragment">
+<p>In Unit 2 of this course, we will see that:</p>
+<ul>
+<li><p>Once we have achieved common knowledge about the PKI, we can build common knowledge about any other message – that is, Alice can reliably <strong>broadcast</strong> any message so anyone can read it and be convinced that everyone else can read it too</p></li>
+<li><p>If there is a collection of people and most of them are honest, then we can reliably broadcast messages and achieve <strong>consensus</strong> about them <em>without</em> relying on a PKI</p></li>
+</ul>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./06.html" class="pagination-link" aria-label="Digital signatures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./unit2.html" class="pagination-link" aria-label="Protecting data availability">
+        <span class="nav-page-text">Protecting data availability</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>DS 453/653 lecture notes</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

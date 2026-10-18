@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Message authentication codes – Crypto for Data Science</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./06.html" rel="next">
+<link href="./04.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit1.html">Protecting data integrity</a></li><li class="breadcrumb-item"><a href="./05.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Message authentication codes</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="index.html" class="sidebar-logo-link">
+      <img src="./images/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Crypto for Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course description</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data integrity</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Cryptographic hash functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Password hashing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">(Pseudo)randomness</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Message authentication codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Key exchange</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data availability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bitcoin overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Proof of work mining</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Byzantine broadcast</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Synchronous blockchains</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Protecting data confidentiality</span></span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Protecting data science</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#network-integrity" id="toc-network-integrity" class="nav-link" data-scroll-target="#network-integrity"><span class="header-section-number">5.1</span> Network integrity</a>
+  <ul class="collapse">
+  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
+  </ul></li>
+  <li><a href="#defining-macs" id="toc-defining-macs" class="nav-link" data-scroll-target="#defining-macs"><span class="header-section-number">5.2</span> Defining MACs</a>
+  <ul class="collapse">
+  <li><a href="#informal-definitions" id="toc-informal-definitions" class="nav-link" data-scroll-target="#informal-definitions">Informal definitions</a></li>
+  <li><a href="#formal-definitions" id="toc-formal-definitions" class="nav-link" data-scroll-target="#formal-definitions">Formal definitions</a></li>
+  </ul></li>
+  <li><a href="#constructing-a-hash-based-mac" id="toc-constructing-a-hash-based-mac" class="nav-link" data-scroll-target="#constructing-a-hash-based-mac"><span class="header-section-number">5.3</span> Constructing a hash-based MAC</a>
+  <ul class="collapse">
+  <li><a href="#length-extension-attacks" id="toc-length-extension-attacks" class="nav-link" data-scroll-target="#length-extension-attacks">Length extension attacks</a></li>
+  <li><a href="#sec-hmac" id="toc-sec-hmac" class="nav-link" data-scroll-target="#sec-hmac">Finalization</a></li>
+  <li><a href="#putting-everything-together" id="toc-putting-everything-together" class="nav-link" data-scroll-target="#putting-everything-together">Putting everything together</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit1.html">Protecting data integrity</a></li><li class="breadcrumb-item"><a href="./05.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Message authentication codes</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Message authentication codes</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- TODO: if possible, use this lecture to provide a concrete explanation of a security reduction. For example, can show here that "a PRF is a MAC for fixed-length inputs," with the appropriate definitions for PRF and MAC. -->
+<hr>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Homework 2 due Wed 9/23 at 8pm on <a href="https://www.gradescope.com/courses/1381249">Gradescope</a></li>
+<li>Lab 4 on this week’s reading: <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG sections 1.2–1.4</a> (pages 32-42)</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How Bob can detect whether a message received over the Internet was sent by Alice</li>
+<li>How we write formal definitions for crypto primitives, such as MACs</li>
+<li>How HMAC works, and why it addresses a limitation of SHA-2</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>Every cryptosystem attempts to provide some or all of the “CIA triad.”</p>
+<ul>
+<li><strong>C</strong>onfidentiality: hiding data</li>
+<li><strong>I</strong>ntegrity: preventing or detecting tampering of data</li>
+<li><strong>A</strong>vailability: preventing censorship of data</li>
+</ul>
+<div class="fragment">
+<p>A <strong>pseudorandom</strong> generator is:</p>
+<ul>
+<li>A <em>deterministic</em> procedure that <!-- reliably and repeatably --> produces a lot of data from a short seed</li>
+<li>But it looks <em>random</em> to an outsider who does not know the seed</li>
+</ul>
+<p>Using a cryptographic hash function and a seed <span class="math inline">\(k\)</span>, we can <em>pseudorandomly</em> generate many secrets <span class="math display">\[H(k, 0), H(k, 1), H(k, 2), \ldots\]</span></p>
+</div>
+<div class="fragment">
+<p>This idea is effective thanks to the properties of the underlying hash function.</p>
+<ul>
+<li><p>Because <span class="math inline">\(H\)</span> is preimage resistant, even if one secret (say, <span class="math inline">\(H(k, 2)\)</span>) happens to be revealed to the world, nobody can use it to reverse-engineer the main seed <span class="math inline">\(k\)</span></p></li>
+<li><p>Because <span class="math inline">\(H\)</span> acts like a random oracle, the rows of the truth table of <span class="math inline">\(H\)</span> act <strong>as if</strong> they are independent, so no two secrets have any discernible connection to each other</p></li>
+</ul>
+<blockquote class="blockquote">
+<p>If an adversary [Mallory] has not explicitly queried the oracle on some point <span class="math inline">\(x\)</span>, then the value of <span class="math inline">\(H(x)\)</span> is completely random… at least as far as [Mallory] is concerned.</p>
+<p>– Jon Katz and Yehuda Lindell, <em>Introduction to Modern Cryptography</em></p>
+</blockquote>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The actual function you need to run here is not quite <span class="math inline">\(H\)</span>, but rather a slightly more complicated construction called <code>HMAC</code> applied to the hash function.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="network-integrity" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="network-integrity"><span class="header-section-number">5.1</span> Network integrity</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-internet-1968.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>The early Internet (source: <a href="https://twitter.com/pwnallthethings/status/935395453482520576">pwnallthethings on Twitter</a>)</figcaption>
+</figure>
+</div>
+<p>Here is our motivating question for today:</p>
+<blockquote class="blockquote">
+<p>On the Internet, how do Alice and Bob know that they are talking to each other?</p>
+</blockquote>
+<div class="incremental">
+<ul class="incremental">
+<li>They could send their names to each other, but a malicious Mallory could <strong>forge</strong> that</li>
+<li>They could ask a common friend, but what if that friend turns out to be a malicious Mallory?</li>
+</ul>
+</div>
+<!--
+::: {.fragment}
+> “Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”
+>
+> – Ben Adida
+:::
+-->
+<!-- This is not to say that we should never trust anyone. But in cryptography: we want to minimize trust, and we want to understand exactly who we trust for what purpose. -->
+<div class="fragment">
+<p>To simplify things for today:</p>
+<ul>
+<li>Suppose that Alice and Bob physically meet one time (they can perform any action that you want)</li>
+<li>Afterward, Alice will send many distinct messages to Bob over the Internet</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> How would you solve this problem?</p>
+</div>
+<hr>
+<p><strong>Construction.</strong> Here is one solution attempt that relies on <em>pseudorandomness</em>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>When Alice and Bob physically meet, they jointly create a random seed <span class="math inline">\(k\)</span></li>
+<li>They agree to keep <span class="math inline">\(k\)</span> secret from the rest of the world</li>
+<li>The first time Alice wants to send a message <span class="math inline">\(m_1\)</span> to Bob, she appends the string <span class="math inline">\(H(k, 1)\)</span></li>
+<li>The second time Alice wants to send a message <span class="math inline">\(m_2\)</span> to Bob, she appends the string <span class="math inline">\(H(k, 2)\)</span></li>
+<li>…</li>
+</ul>
+<p>Note that the message itself is sent in the clear. We are not considering message confidentiality today.</p>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Does this construction guarantee to Bob that the message came from Alice?</p>
+<ol type="A">
+<li>Yes</li>
+<li>No</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> No, but we have made some progress.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Good news: Mallory cannot predict <span class="math inline">\(H(k, 1)\)</span> before Alice sends it</li>
+<li>Also even given <span class="math inline">\(H(k, 1)\)</span>, Mallory cannot predict <span class="math inline">\(H(k, 2)\)</span></li>
+<li>Bad news: once Alice sends <span class="math inline">\(m_1\)</span> and <span class="math inline">\(H(k, 1)\)</span> over the Internet, Mallory can intercept it and substitute her own message <span class="math inline">\(m_1^*\)</span></li>
+</ul>
+</div>
+<hr>
+<p><strong>New construction.</strong> Let’s make a small change to the prior attempt.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>When Alice and Bob physically meet, they jointly create a random seed <span class="math inline">\(k\)</span></li>
+<li>Whenever Alice wants to send a message <span class="math inline">\(m\)</span> to Bob, she appends the string <span class="math inline">\(H(k, m)\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Does the new construction guarantee to Bob that the message came from Alice?</p>
+<ol type="A">
+<li>Yes</li>
+<li>No</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> Yes, this should work! (Well, subject to some caveats about replay attacks and the design of <span class="math inline">\(H\)</span> that we will discuss later today.)</p>
+</div>
+<hr>
+<section id="terminology" class="level3">
+<h3 class="anchored" data-anchor-id="terminology">Terminology</h3>
+<p>Let’s take a moment to appreciate what we have built.</p>
+<!-- Using pseudorandomness -->
+<ul>
+<li>Alice and Bob created a secret <em>code</em> that only they can understand</li>
+<li>Using this code, they can <em>authenticate</em> the sender of <em>messages</em> that they receive</li>
+</ul>
+<div class="fragment">
+<p>Accordingly, this primitive is referred to by cryptographers as a <strong>message authentication code</strong>, or MAC.</p>
+<ul>
+<li>The long-lived seed <span class="math inline">\(k\)</span> that Alice and Bob remember is called their <strong>symmetric secret key</strong></li>
+<li>The appended data <span class="math inline">\(H(k, m)\)</span> is called the <strong>tag</strong> of the message <span class="math inline">\(m\)</span></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-internet-2.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Internet communication</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>As the name suggests: Alice and Bob remember the same key <span class="math inline">\(sk\)</span>.</p>
+<ul>
+<li>They must never share <span class="math inline">\(sk\)</span> with anyone else!</li>
+<li>If Alice wants to talk to Carol, they must choose a different key</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Our MAC satisfies all of <em>Kerckhoffs’ principles</em>.</p>
+<ol type="1">
+<li>The system must be practically, if not mathematically, indecipherable;</li>
+<li>[The algorithm] should not require secrecy, and it should not be a problem if it falls into enemy hands;</li>
+<li>Correspondents must be able to change or modify [the key] at will;</li>
+<li><span style="color:gray;">[no longer relevant]</span></li>
+<li><span style="color:gray;">[no longer relevant]</span></li>
+<li>The system must be easy [for people] to use.</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Example.</strong> Let me show you how easy MACs are to use. You have been using them your entire life, with most websites you have ever visited, without even knowing it!</p>
+<div id="26ad73ad" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>openssl s_client <span class="op">-</span><span class="ex">connect</span> example.com:<span class="dv">443</span> <span class="op">-</span>servername example.com <span class="op">-</span>tls1_3 <span class="op">-</span>cipher <span class="st">'ECDHE-ECDSA-AES256-SHA384'</span> <span class="op">&lt;</span> <span class="op">/</span>dev<span class="op">/</span>null <span class="dv">2</span><span class="op">&gt;/</span>dev<span class="op">/</span>null <span class="op">|</span> grep <span class="op">-</span>E <span class="st">'Cipher'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384</code></pre>
+</div>
+</div>
+<p>This web connection generates keys pseudorandomly using HMAC with the hash function SHA-384: the function in the SHA-2 family with an output length of 384 bits.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="defining-macs" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="defining-macs"><span class="header-section-number">5.2</span> Defining MACs</h2>
+<p>Let’s define the <em>operations</em> and security <em>requirements</em> for a MAC. <!-- We will do this throughout this course whenever we study a new problem --></p>
+<div class="fragment">
+<p><strong>Interactive question.</strong> How many operations do Alice and Bob need? That is, if you were to write a Python class <code>MAC</code> to run everything in our New Construction, then how many methods (or functions) would you write?</p>
+<ol type="A">
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+</ol>
+</div>
+<hr>
+<section id="informal-definitions" class="level3">
+<h3 class="anchored" data-anchor-id="informal-definitions">Informal definitions</h3>
+<p>Informally, a MAC has three operations.</p>
+<ul>
+<li>Alice and Bob choose a secret key (this must be randomized)</li>
+<li>Alice adds a (short) tag to the message before sending it</li>
+<li>Bob verifies the tag after receiving it (this must be deterministic)</li>
+</ul>
+<div class="fragment">
+<p>Informally, a MAC has two security requirements.</p>
+<ul>
+<li><p><strong>Correctness</strong>: honest receiver Bob can verify that Alice was the sender of the message and that the message was not tampered in transit</p></li>
+<li><p><strong>Unforgeability</strong>: the tag is bound to the message, and Mallory cannot use it to <em>forge</em> a tag for any other message <!-- to make it appear as though the message came from Alice --></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>There are also three limitations of MACs. These are issues that we will not fix, but rather will require that some other protocol must deal with.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p><strong>Replay attacks</strong>: if Alice sends a message + tag to Bob and he verifies it, then Mallory can later re-send the same message + tag and it will pass Bob’s verification check again</p></li>
+<li><p><strong>Staleness</strong>: if Alice sends a message + tag but Mallory intercepts it in transit, then Mallory can deliver it days/months/years later and it will pass Bob’s verification check</p></li>
+<li><p><strong>Lack of confidentiality</strong>: MACs do not attempt to hide the message <span class="math inline">\(m\)</span> (we will need encryption for that)</p></li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="formal-definitions" class="level3">
+<h3 class="anchored" data-anchor-id="formal-definitions">Formal definitions</h3>
+<p>Now, let’s use math to specify the operations and requirements more precisely.</p>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>In this course, I will often use Greek letters (like <span class="math inline">\(\kappa\)</span> and <span class="math inline">\(\tau\)</span>) to denote the length of a bytestring. Each construction must specify the specific lengths of all bytestrings used.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div id="def-mac" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 5.1 (MAC)</strong></span> A <em>message authentication code</em> contains three operations.</p>
+<ul>
+<li><code>KeyGen</code><span class="math inline">\(()\)</span>: takes no input, samples a symmetric secret key <span class="math inline">\(k\)</span> — often, uniformly at random from <span class="math inline">\(\{0,1\}^\kappa\)</span></li>
+<li><code>Tag</code><span class="math inline">\({}_k(m)\)</span>: produces a tag <span class="math inline">\(t \in \{0, 1\}^\tau\)</span></li>
+<li><code>Verify</code><span class="math inline">\({}_k(m, t)\)</span>: returns a boolean <code>true</code> or <code>false</code></li>
+</ul>
+<p>All three operations should be efficiently computable. Moreover, the MAC must satisfy two security requirements: correctness and EU-CMA.</p>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><p><strong>Correctness</strong> means that for every symmetric secret key produced by <code>KeyGen</code>, any output of <code>Tag</code> is subsequently accepted by <code>Verify</code>.</p>
+<p>In math: <span class="math inline">\(\texttt{Verify}_k( m, \text{Tag}_k(m))=\)</span> <code>true</code> for all keys <span class="math inline">\(k\)</span>, messages <span class="math inline">\(m\)</span>, and randomness used in <code>Tag</code> (if any).</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p><strong>Existential unforgeability under a chosen message attack</strong> (EU-CMA) is defined using a thought experiment in which Alice plays a game with Mallory. Even after Alice tags many messages of Mallory’s choice, Mallory still cannot forge a tag for a new message.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-eucma.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>EU-CMA security game</figcaption>
+</figure>
+</div></li>
+</ul>
+</div>
+<div class="fragment">
+<p>EU-CMA is a very strong claim: we give Mallory the power to choose</p>
+<ul>
+<li>many, many messages <span class="math inline">\(m_1, m_2, \ldots, m_\ell\)</span> that we will voluntarily tag for her</li>
+<li>which new message <span class="math inline">\(m^*\)</span> and tag <span class="math inline">\(t^*\)</span> she is quizzed on</li>
+</ul>
+<p>and she still cannot forge <strong>any</strong> new message and tag with <code>Verify</code><span class="math inline">\({}_k(m^*, t^*) =\)</span><code>true</code>. In other words, Mallory will never be able to fool Bob into accepting a message (even if the message contents are meaningless).</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="constructing-a-hash-based-mac" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="constructing-a-hash-based-mac"><span class="header-section-number">5.3</span> Constructing a hash-based MAC</h2>
+<p>Now that we have formally specified the objectives of a MAC, let’s write our new construction more precisely. It relies on a hash function <span class="math inline">\(H\)</span>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p><code>KeyGen</code>: Alice and Bob toss coins to choose a uniformly random bytestring <span class="math inline">\(k\)</span></p></li>
+<li><p><code>Tag</code><span class="math inline">\({}_k(m)\)</span>: Alice computes <span class="math inline">\(t = H(k, m)\)</span>, and she sends <span class="math inline">\((m, t)\)</span> to Bob</p></li>
+<li><p><code>Verify</code><span class="math inline">\({}_k(m, t')\)</span>: Bob checks whether <span class="math inline">\(t' \overset{?}{=} H(k, m)\)</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Note that the lengths <span class="math inline">\(\kappa\)</span> and <span class="math inline">\(\tau\)</span> are both fixed constants, but they do not have to be the same.</p>
+<ul>
+<li><span class="math inline">\(\kappa = |k|\)</span> must be large enough (say, 256 bits) that it is practically infeasible for Mallory to guess <span class="math inline">\(k\)</span></li>
+<li><span class="math inline">\(\tau = |t|\)</span> must be the output length of the hash function <span class="math inline">\(H\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<div id="thm-hash-mac" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 5.1</strong></span> If <span class="math inline">\(H\)</span> acts like a random oracle, then this MAC construction satisfies Correctness and EU-CMA. <!-- indifferentiable --></p>
+</div>
+</div>
+<div class="fragment">
+<p>Note that this is a <strong>conditional</strong> theorem: the MAC is secure if the hash function is. We saw this idea also when studying message commitments.</p>
+<blockquote class="blockquote">
+<p>If <span class="math inline">\(H\)</span> acts like a random oracle, then this construction is a secure message commitment protocol.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>This is a powerful idea that cryptographers use to build many elegant protocols from a few basic primitives that withstand the test of cryptanalysis.</p>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-venice.jpeg" class="img-fluid figure-img" width="600"></p>
+<figcaption>City of Venice, Italy (source: <a href="https://commons.wikimedia.org/wiki/File:Venezia_acqua_alta_notte_2005_modificata.jpg">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<section id="length-extension-attacks" class="level3">
+<h3 class="anchored" data-anchor-id="length-extension-attacks">Length extension attacks</h3>
+<p>To explain the full details of the hash-based MAC construction used in practice, I need to tell you some more information about the SHA-2 family of hash functions.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Good news: we believe that it is preimage resistant, collision resistant, and puzzle friendly</li>
+<li>Bad news: it does not act like a random oracle because it suffers from <em>length extension</em> attacks</li>
+</ul>
+</div>
+<div class="fragment">
+<p>As we discussed in <a href="./03.html#sec-merkle-damgard">Lecture 3</a>, SHA-256 uses a <em>Merkle–Damgård construction</em> with two parts:</p>
+<ul>
+<li>a random-looking compression function <span class="math inline">\(C\)</span> of fixed length (64 <span class="math inline">\(\to\)</span> 32 bytes) <!-- 64 bytes of input and 32 bytes of output --></li>
+<li>an iterative design that repeats <span class="math inline">\(C\)</span> as many times as needed (along with a fixed bytestring called an <em>initialization vector</em> used at the very beginning)</li>
+</ul>
+<p><img src="images/05-MerkleDamgard1.png" class="img-fluid" width="800"></p>
+</div>
+<div class="fragment">
+<p>While this design has many benefits, it is vulnerable to a <strong>length extension</strong> attack.</p>
+<p><img src="images/05-MerkleDamgard2.png" class="img-fluid" width="800"></p>
+</div>
+<!-- 
+> “The vulnerability of [a hash function] construction is due to its finite state, [a limitation that does] not apply to a random oracle.”
+>
+> – Keccak team, Cryptographic sponge functions
+-->
+<div class="fragment">
+<p>Intuitively, the issue is that Mallory could extend</p>
+<p><span class="math display">\[ H(k, \texttt{ b"Hello"}) \longrightarrow H(k, \texttt{ b"Hello world"})\]</span></p>
+<p>without ever knowing <span class="math inline">\(k\)</span>. This would break the MAC’s unforgeability.</p>
+</div>
+<hr>
+</section>
+<section id="sec-hmac" class="level3">
+<h3 class="anchored" data-anchor-id="sec-hmac">Finalization</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-MerkleDamgard3.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>Finalization</figcaption>
+</figure>
+</div>
+<p>Now that we understand the problem, the fix is simple—just do something different at the end to stop length extensions. This is called <em>finalization</em>.</p>
+<div class="fragment">
+<ul>
+<li>Bitcoin runs the entire SHA-256 function a second time</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>When designing a MAC (which has a key), it suffices to run one more iteration of the compression function <span class="math inline">\(C\)</span> with a different key <!-- this is called NMAC --></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-MerkleDamgard4.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>NMAC construction</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>This construction comes from a <a href="https://cseweb.ucsd.edu/~mihir/papers/kmd5.pdf">1996 paper</a> by Mihir Bellare, Ran Canetti, and Hugo Krawczyk <span class="citation" data-cites="Bellare1996">(<a href="references.html#ref-Bellare1996" role="doc-biblioref">Bellare et al. 1996</a>)</span>.</p>
+<p>Using some clever tricks, they also designed a variant called <strong>HMAC</strong> that only needs one key.</p>
+</div>
+<div class="fragment">
+<div id="thm-hmac" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 5.2</strong></span> If the compression function <span class="math inline">\(C\)</span> is pseudorandom, then HMAC satisfies Correctness and EU-CMA. The proof is in <a href="https://eprint.iacr.org/2006/043.pdf">a 2006 paper</a> by Mihir Bellare <span class="citation" data-cites="Bellare2006">(<a href="references.html#ref-Bellare2006" role="doc-biblioref">Bellare 2006</a>)</span>.</p>
+</div>
+</div>
+<!-- 
+## BCK 96
+
+HMAC satisfies Correctness and EU-CMA as long as:
+
+1. The compression function $C$ is pseudorandom
+2. The Merkle-Damgard iteration mechanism is collision-resistant
+:::
+
+(A [2005 paper](https://eprint.iacr.org/2006/043.pdf) by Bellare was able to show that only condition #1 is needed.)
+-->
+<hr>
+</section>
+<section id="putting-everything-together" class="level3">
+<h3 class="anchored" data-anchor-id="putting-everything-together">Putting everything together</h3>
+<p>Here is our final construction for a hash-based MAC.</p>
+<ul>
+<li><p><code>KeyGen</code>: sample a uniformly random bytestring <span class="math inline">\(k\)</span> that is 256 bits (32 bytes) long</p></li>
+<li><p><code>Tag</code><span class="math inline">\({}_k(m)\)</span>: compute <span class="math inline">\(t = \texttt{HMAC}(k, m)\)</span></p></li>
+<li><p><code>Verify</code><span class="math inline">\({}_k(m, t')\)</span>: return <code>true</code> if <span class="math inline">\(t' =\texttt{HMAC}(k, m)\)</span>, otherwise return <code>false</code></p></li>
+</ul>
+<div class="fragment">
+<p>HMAC is a popular MAC used today in web browsers and in secure messaging applications like WhatsApp.</p>
+<blockquote class="blockquote">
+<p>“Clients exchange messages that are protected with a Message Key using <code>AES256</code> in <code>CBC</code> mode for encryption and <code>HMAC-SHA256</code> for authentication.”</p>
+<p>– <a href="https://www.whatsapp.com/security/WhatsApp-Security-Whitepaper.pdf">WhatsApp Security Whitepaper, version 9 (Feb 2026)</a></p>
+</blockquote>
+<!-- This is repeated for each receiver and each receiver device. -->
+</div>
+<div class="fragment">
+<p>That said, HMAC is not the only way to build a MAC. It is the only one we will study in this course, but that there are other constructions that satisfy <a href="#def-mac" class="quarto-xref">Definition&nbsp;<span>5.1</span></a>. They also have</p>
+<ul>
+<li>Three operations: <code>KeyGen</code>, <code>MAC</code><span class="math inline">\({}_{k}\)</span>, and <code>Verify</code><span class="math inline">\({}_{k}\)</span></li>
+<li>Two security requirements: Correctness and EU-CMA</li>
+</ul>
+</div>
+<div class="fragment">
+<p>MACs are used <em>everywhere</em> to protect data at rest in file systems and in transit over the Internet. Modern cryptography follows the <strong>Cryptographic Doom Principle</strong>:</p>
+<blockquote class="blockquote">
+<p>“If you have to perform any cryptographic operation before verifying the MAC on a message you’ve received, it will somehow inevitably lead to doom!” – Moxie Marlinspike</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>We will use the Cryptographic Doom Principle extensively in this course, especially when discussing web security and secure messengers in Unit 3.</p>
+</div>
+<!--
+::: {.fragment}
+But going back to the start of today's lecture, we made one simplifying assumption.
+
+> Suppose that Alice and Bob physically meet one time
+
+This raises the question: how do Alice and Bob communicate over the Internet if they have never met before to exchange the symmetric secret key $k$? We will study this topic next week.
+:::
+
+-->
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-Bellare2006" class="csl-entry" role="listitem">
+Bellare, Mihir. 2006. <span>“New Proofs for <span>NMAC</span> and <span>HMAC:</span> Security Without Collision-Resistance.”</span> <em><span>CRYPTO</span></em>, Lecture notes in computer science, vol. 4117: 602–19.
+</div>
+<div id="ref-Bellare1996" class="csl-entry" role="listitem">
+Bellare, Mihir, Ran Canetti, and Hugo Krawczyk. 1996. <span>“Keying Hash Functions for Message Authentication.”</span> <em><span>CRYPTO</span></em>, Lecture notes in computer science, vol. 1109: 1–15.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./04.html" class="pagination-link" aria-label="(Pseudo)randomness">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">(Pseudo)randomness</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./06.html" class="pagination-link" aria-label="Digital signatures">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>DS 453/653 lecture notes</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
