@@ -289,8 +289,45 @@ window.Quarto = {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Protecting data confidentiality</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="./unit3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data confidentiality</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">One-time pads</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Authenticated encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">End-to-end encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Transport layer security</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -732,7 +769,7 @@ For context, credit card providers like Visa and Mastercard handle around $10^4$
 </div>
 <div class="fragment">
 <p><a href="https://bitcoin.org/bitcoin.pdf">Nakamoto’s whitepaper</a> includes the following function (which I translated from C++ into Python). It calculates the probability that an attacker who controls a <code>q</code> fraction of the computing power of the network can execute a double-spend attack to overwrite the last <code>z</code> blocks in the blockchain.</p>
-<div id="14b569b1" class="cell" data-execution_count="2">
+<div id="c5f8def6" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code adapted from the Bitcoin whitepaper at https://bitcoin.org/bitcoin.pdf</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> exp, <span class="bu">pow</span></span>
@@ -1000,8 +1037,8 @@ Finally, we will have a broader discussion of the impact of crypto and cybersecu
 -->
 <hr>
 </section>
-<section id="appendix-scripts-on-the-blockchain" class="level2" data-number="10.6">
-<h2 data-number="10.6" class="anchored" data-anchor-id="appendix-scripts-on-the-blockchain"><span class="header-section-number">10.6</span> Appendix: Scripts on the blockchain</h2>
+<section id="appendix-scripts-on-the-blockchain" class="level2" data-visibility="hidden" data-number="10.6">
+<h2 data-visibility="hidden" data-number="10.6" class="anchored" data-anchor-id="appendix-scripts-on-the-blockchain"><span class="header-section-number">10.6</span> Appendix: Scripts on the blockchain</h2>
 <p>So far, we have said that a transaction has the form “Alice pays 1 coin to Bob.”</p>
 <p>Actually, this is not quite true. Bitcoin allows for more complicated transactions than this.</p>
 <div class="fragment">
@@ -1137,7 +1174,6 @@ Finally, we will have a broader discussion of the impact of crypto and cybersecu
 </div>
 </div>
 </div>
-<hr>
 
 
 </section>

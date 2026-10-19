@@ -289,8 +289,45 @@ window.Quarto = {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Protecting data confidentiality</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="./unit3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data confidentiality</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">One-time pads</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Authenticated encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">End-to-end encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Transport layer security</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -306,9 +343,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
-  <li><a href="#interactive-questions" id="toc-interactive-questions" class="nav-link" data-scroll-target="#interactive-questions">Interactive questions</a></li>
-  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
   <li><a href="#review-from-last-week" id="toc-review-from-last-week" class="nav-link" data-scroll-target="#review-from-last-week">Review from last week</a></li>
   <li><a href="#digital-fingerprinting" id="toc-digital-fingerprinting" class="nav-link" data-scroll-target="#digital-fingerprinting"><span class="header-section-number">2.1</span> Digital fingerprinting</a>
   <ul class="collapse">
@@ -358,49 +393,13 @@ window.Quarto = {
 </header>
 
 
-<!--
-This link shows the effect of birthday bound on nonce sizes / # of messages:
-https://www.rfc-editor.org/rfc/rfc8452#page-14
--->
-<!-- TODO: if Merkle trees need to move to lecture 3 in future years, consider describing them after commitments and calling them a vector commitment from the start. This could help to set up the arithmetic-friendly vector commitments in Unit 4. -->
 <hr>
-<section id="announcements" class="level3">
-<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
-<ul>
-<li><em>Please pick up a card and write your name + BU ID on the back</em></li>
-<li>Office hours times and locations are now posted on <a href="https://piazza.com/bu/fall2026/ds453653/staff">Piazza</a></li>
-<li>Homework 1 will be posted on Piazza later today, due on Wed 9/16 at 8pm</li>
-<li>Make sure to follow the course policies about homework in the syllabus
-<ul>
-<li>You can collaborate with others, but cannot copy from others</li>
-<li>You can use genAI to ask about general cryptographic principles and see examples for how to use cryptographic libraries, but cannot feed some or all of the homework questions into a genAI prompt</li>
-<li>You must acknowledge all collaborators, outside sources, and code that you used or repurposed</li>
-</ul></li>
-</ul>
-<hr>
-</section>
-<section id="interactive-questions" class="level3">
-<h3 class="anchored" data-anchor-id="interactive-questions">Interactive questions</h3>
-<p>Lectures in this class contain interactive multiple-choice questions. You must display your card with the intended response side facing up, and without covering the QR code.</p>
-<p><em>Privacy note:</em> neither I nor the plickers.com website save any pictures of students. All camera processing takes place on my phone, and only your QR code results are sent to the website.</p>
-<div class="fragment">
-<p>Let’s try an example.</p>
-<p><strong>Interactive question.</strong> How would you rate this course so far?</p>
-<ol type="A">
-<li>Amazing!</li>
-<li>Excellent!</li>
-<li>Great!</li>
-<li>Superb!</li>
-</ol>
-</div>
-<hr>
-</section>
 <section id="learning-outcomes" class="level3">
 <h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
 <p>By the end of today’s lecture, you will learn:</p>
 <ul>
 <li>The security guarantees of hash functions: one-wayness, collision resistance, and acting as a random oracle</li>
-<li>How the one-wayness and collision resistance of a hash function depends on its output length, and why cryptographers are satisfied with output lengths like <span class="math inline">\(n = 256\)</span> bits</li>
+<li>How one-wayness and collision resistance depend on its output length, and why cryptographers are satisfied with output lengths like <span class="math inline">\(n = 256\)</span> bits</li>
 <li>How hash functions can be used to authenticate (sets of) files</li>
 </ul>
 <!--
@@ -669,7 +668,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>For example, here is some Python code for a popular cryptographic hash function called <strong>SHA-256</strong>, which has an output length of 256 bits.</p>
-<div id="e73640a2" class="cell" data-execution_count="1">
+<div id="c7eb019c" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install PyNaCl with "pip install pynacl"</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nacl.<span class="bu">hash</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sha256 <span class="op">=</span> <span class="kw">lambda</span> message: nacl.<span class="bu">hash</span>.sha256(message, encoder<span class="op">=</span>nacl.encoding.HexEncoder)</span>
@@ -682,7 +681,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>A hash function is deterministic: if you feed in the same input twice, you will get the same output twice.</p>
-<div id="109e4d9b" class="cell" data-execution_count="2">
+<div id="14bd3958" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sha256(<span class="st">b'Hello world!'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>b'c0535e4be2b79ffd93291305436bf889314e4a3faec05ecffcbb7df31ad9e51a'</code></pre>
@@ -691,7 +690,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>Small changes to the input of the hash function cause substantial changes to the output.</p>
-<div id="a84c1f19" class="cell" data-execution_count="3">
+<div id="c5ce16b2" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="st">b'Hello world?'</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sha256(message))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -710,7 +709,7 @@ Cloud service
 </div>
 </div>
 </div>
-<div id="2478ac2a" class="cell" data-execution_count="4">
+<div id="38fce9b8" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hexMessage <span class="op">=</span> hexlify(message)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hexDigest <span class="op">=</span> sha256(hexMessage)</span>
@@ -723,7 +722,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>As the name suggests, SHA-256 has an output length of 256 bits, or 32 bytes. The output is represented using 64 hex characters, since each hex character encodes 4 bits of data.</p>
-<div id="c9088e4d" class="cell" data-execution_count="5">
+<div id="d4d4c5ec" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(hexDigest))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>64</code></pre>
@@ -732,13 +731,13 @@ Cloud service
 </div>
 <div class="fragment">
 <p>The input to the hash function can be any size. No matter what: the output length is always 256 bits, i.e., 64 hex characters.</p>
-<div id="6bea9318" class="cell" data-execution_count="6">
+<div id="ba93c9fb" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(sha256(<span class="st">b'A'</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>64</code></pre>
 </div>
 </div>
-<div id="45412d5c" class="cell" data-execution_count="7">
+<div id="c1c9ec98" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(sha256(<span class="st">b'It was the best of times, it was the worst of times, it was the age of wisdom, </span><span class="op">\</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">                   it was the age of foolishness, it was the epoch of belief, it was the epoch of </span><span class="op">\</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">                   incredulity, it was the season of light, it was the season of darkness, it was </span><span class="op">\</span></span>
@@ -866,7 +865,7 @@ Cloud service
 </div>
 <div class="fragment">
 <p>We can calculate this expression using Python.</p>
-<div id="7e71678e" class="cell" data-execution_count="8">
+<div id="8b9df501" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>math.prod(<span class="bu">range</span>(<span class="dv">344</span>,<span class="dv">367</span>)) <span class="op">/</span> (<span class="dv">366</span><span class="op">**</span><span class="dv">23</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
@@ -887,7 +886,7 @@ Cloud service
 <p>Generalizing from the specific case of birthdays (where there are <span class="math inline">\(N = 366\)</span> options): when drawing with replacement from a set of size <span class="math inline">\(N\)</span>, then:</p>
 <p><span class="math display">\[ E[\text{\# of attempts until the first collision}] \approx 1.25 \sqrt{N}.\]</span></p>
 <p>This approximation works well even for fairly small choices of <span class="math inline">\(N\)</span>, such as <span class="math inline">\(N = 366\)</span>. And it works really well for larger <span class="math inline">\(N\)</span>.</p>
-<div id="ef8f94a8" class="cell" data-execution_count="9">
+<div id="33069dcc" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fl">1.25</span> <span class="op">*</span> math.sqrt(<span class="dv">366</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">

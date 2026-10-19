@@ -289,8 +289,45 @@ window.Quarto = {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Protecting data confidentiality</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="./unit3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data confidentiality</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">One-time pads</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Authenticated encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">End-to-end encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Transport layer security</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -535,7 +572,7 @@ window.Quarto = {
 </div>
 <div class="fragment">
 <p>Because the Bitcoin blockchain is public, anyone can read any message that has ever been stored on it. The following code connects to a Bitcoin node (hosted on <a href="https://mempool.space">mempool.space</a>) and extracts the bytestring message written within the <em>genesis</em> (first) block in the miner’s <em>coinbase transaction</em>.</p>
-<div id="c9547bd8" class="cell" data-execution_count="2">
+<div id="f803e0e8" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> unhexlify</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -826,7 +863,7 @@ print(unhexlify(response.json()[0]['vin'][0]['scriptsig_asm'].split(" ")[5]).dec
 </div>
 </div>
 </div>
-<div id="dad190ba" class="cell" data-execution_count="4">
+<div id="4b1b7747" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install "cryptos@git+https://github.com/nicolas3355/cryptos"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library by Andrej Karpathy, with edits by Nicolas Alhaddad</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -847,13 +884,13 @@ print(unhexlify(response.json()[0]['vin'][0]['scriptsig_asm'].split(" ")[5]).dec
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(addr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>generated secret key, in hex format:
-0x11146ce408f3bcf833e17ac213ebe578c0b2f58b15fd43721f02707a94cc6a36
+0x8cf4fa56f70fa8ee1ea44855d594427aa29c6f2e35c8d63844ba07fb574d1a49
 
 corresponding public key, as an elliptic curve point:
-PublicKey(curve=Curve(p=115792089237316195423570985008687907853269984665640564039457584007908834671663, a=0, b=7), x=97372424065323306128977267639433794485342648939529541765330977643219421633607, y=49465412336846526941627945542677025329540272931864111746217136332800617748617)
+PublicKey(curve=Curve(p=115792089237316195423570985008687907853269984665640564039457584007908834671663, a=0, b=7), x=69360372301586229189578728693351806873715866520021516466793078340257011672140, y=95950909383067373283436617403701525302484667433630812479174602727877706028822)
 
 compressed bitcoin address, in base 58 check format:
-1DH3UXXNWhusUhgntk8LQNxefAUQ1Ky83n</code></pre>
+12BTFP67peFVgg2K8zcRJXQf3uMqCtVhsK</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -902,7 +939,7 @@ For example, here is the coinbase transaction of block number 881,900.
 <div class="fragment">
 <p>One way to think about the proof of work puzzle is that the miners need to compute <code>SHA-256</code> hashes on random inputs until the corresponding output starts with <span class="math inline">\(\ell\)</span> zero bits in a row. The time to success scales exponentially in <span class="math inline">\(\ell\)</span>.</p>
 <!-- # what is the probability that when I hash a random string, I get a hash that starts with 4 bits that are all zeroes? -->
-<div id="5133fd22" class="cell" data-execution_count="5">
+<div id="7eb5ecf0" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># average number of SHA-256 computations until the first 4 bits == 0</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha256</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -918,12 +955,12 @@ For example, here is the coinbase transaction of block number 881,900.
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  arr.append(count)</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(arr)<span class="op">/</span>nb_of_trials) <span class="co"># average number of hashes needed, actual answer: 16</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>16.2266</code></pre>
+<pre><code>15.7708</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
-<div id="41e92a97" class="cell" data-execution_count="6">
+<div id="0777e391" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let's increase to 16 zeroes and see what happens</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha256</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -939,7 +976,7 @@ For example, here is the coinbase transaction of block number 881,900.
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  arr.append(count)</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(arr)<span class="op">/</span>nb_of_trials) <span class="co"># actual answer: 65,536</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>65506.6602</code></pre>
+<pre><code>65519.466</code></pre>
 </div>
 </div>
 </div>

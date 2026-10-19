@@ -273,8 +273,45 @@ window.Quarto = {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Protecting data confidentiality</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="./unit3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data confidentiality</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">One-time pads</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Authenticated encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">End-to-end encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Transport layer security</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -903,7 +940,7 @@ The honest party is ensured that:
 </div>
 </div>
 <div class="fragment">
-<p><em>Proof of safety</em>. This follows immediately from the consistency property of the underlying Byzantine Broadcast protocol.</p>
+<p><em>Proof of safety</em>. This follows from the consistency property of the underlying Byzantine Broadcast protocol.</p>
 <ul>
 <li>The broadcast protocol guarantees that at the end of each epoch, “all honest parties output the same message” for the block to add to the log in that epoch</li>
 <li>As a result, honest parties always have exactly the same log, because the protocol states that honest parties only append to the log at the end of each epoch</li>
@@ -935,13 +972,13 @@ The honest party is ensured that:
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li><p>It is really slow; that is, it takes awhile for your transactions to get included in a block. If each round takes 1 second and there are <span class="math inline">\(n = 301\)</span> parties running phase-king with <span class="math inline">\(t = 100\)</span> malicious parties, then each broadcast requires <span class="math inline">\(303\)</span> seconds and liveness takes <span class="math inline">\(\text{30,603}\)</span> seconds or about <span class="math inline">\(8.5\)</span> hours for your transaction to be finalized.</p>
-<p>So if you want to buy lunch, the restaurant might force you to sit there all afternoon and evening to make sure your transaction settles before they will let you leave. One nice thing about Satoshi Nakamoto’s invention is that it carefully combines Broadcast and the CommonCoin leader election system in a way that outperforms the generic combination we’ve created today.</p></li>
-<li><p>Also, we made a lot of assumptions along the way that are unrealistic or sub-optimal for a financial transaction system, such as network synchrony and the existence of a permissioned set of <span class="math inline">\(n\)</span> parties that will handle all financial transactions for the rest of time.</p>
+<li><p>It takes a long time for your transactions to get included in a block. If each round of phase-king takes 1 second and there are <span class="math inline">\(t = 100\)</span> malicious parties, then each broadcast requires <span class="math inline">\(303\)</span> seconds and liveness takes <!-- $\text{30,603}$ seconds or --> about <span class="math inline">\(8.5\)</span> hours for your transaction to be finalized.</p>
+<p>So if you want to buy lunch, the restaurant might force you to sit there all afternoon and evening to make sure your transaction settles before they will let you leave. By contrast, Bitcoin cleverly combines broadcast and leader election in a way that outperforms the generic combination we created today.</p></li>
+<li><p>Also, we made several assumptions along the way that are unrealistic or sub-optimal for a financial transaction system, such as network synchrony and the existence of a permissioned set of <span class="math inline">\(n\)</span> parties that will handle all financial transactions for the rest of time.</p>
 <p><!--
   The good news is that we can withstand any $t$ of them getting bored and deciding to quit the system... but what happens if more of them want to leave? Or what if they eventually become punch-drunk with power and decide that they want to use this power for nefarious purposes?
   --></p>
-<p>The nice thing about asynchronous, permission-less systems like Bitcoin is that they are more stable in the face of such power. For instance, Bitcoin can tolerate up to 50% of computing power being malicious whereas Byzantine Broadcast can only tolerate 33% malicious parties without a PKI. Moreover, if some people become bad – for instance, if all miners decide to censor Alice – then in a permissionless system like Bitcoin, other honest people can join the system.</p></li>
+<p>The nice thing about asynchronous, permission-less systems like Bitcoin is that they are more stable in the face of such power. Bitcoin can tolerate up to 50% of computing power being malicious, and if some miners become bad or decide to stop participating, then other honest people can <!-- buy computers and --> join to compensate.</p></li>
 </ul>
 </div>
 
