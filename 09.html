@@ -640,7 +640,7 @@ Cryptocurrencies like Bitcoin have been carefully designed to ensure that censor
 </ol>
 <div class="fragment">
 <p>Let’s calculate the answer to this question using Python. If Mallory wants to censor Alice, then she must win <strong>all</strong> <span class="math inline">\(6 \times 3 = 18\)</span> randomized leader elections that occur in this 3-hour period.</p>
-<div id="820f7fd5" class="cell" data-execution_count="1">
+<div id="820f7fd5" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="fl">.49</span> <span class="op">**</span> (<span class="dv">6</span> <span class="op">*</span> <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2.6517308458596524e-06</code></pre>
@@ -811,7 +811,7 @@ If you have a nice video graphics card, it might be able to perform a few billio
 <section id="puzzle-friendliness" class="level2" data-number="9.5">
 <h2 data-number="9.5" class="anchored" data-anchor-id="puzzle-friendliness"><span class="header-section-number">9.5</span> Puzzle Friendliness</h2>
 <p>To see the proof of work property in action, let’s look at a recent block created on the Bitcoin blockchain.</p>
-<div id="2d04ab26" class="cell" data-execution_count="2">
+<div id="2d04ab26" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetching block 969,166 that we explored in Lecture 8</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -846,7 +846,7 @@ If you have a nice video graphics card, it might be able to perform a few billio
 <li>This is very unlikely to occur by chance</li>
 <li>In binary format, the hash digest begins with 79 zeroes</li>
 </ul>
-<div id="5ad93076" class="cell" data-execution_count="3">
+<div id="5ad93076" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">format</span>(<span class="bu">int</span>(<span class="bu">id</span>, <span class="dv">16</span>), <span class="st">'#0258b'</span>)[<span class="dv">2</span>:])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0000000000000000000000000000000000000000000000000000000000000000000000000000000110110111100001100100001010000111101111100100110010101101101111101110001111111101010111001111111000000111101011001100100010001001000000110001100000100110010111011000010010100100</code></pre>

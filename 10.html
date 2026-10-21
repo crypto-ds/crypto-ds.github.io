@@ -394,16 +394,6 @@ window.Quarto = {
 
 
 <hr>
-<!-- TODO: for next year
-
-- Revert the tx + block validity parts to be factual lists rather than questions. Then ask a question about *when* you should believe that the money received in a tx is yours.
-- This can lead into finalization, which we can say first, and *then* talk about the double-spending attack + honest majority assumption to figure out what k is.
-- Say something about Bitcoin anonymity and transaction linkage?
-- Shorten the final section about the path forward. No need to say so much about Byzantine broadcast/agreement/fault tolerance here.
-
-Also: I'm removing the discussion about mnemonics this year. It should go into the discussion lab instead.
-
--->
 <section id="announcements" class="level3">
 <h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
 <ul>
@@ -769,7 +759,7 @@ For context, credit card providers like Visa and Mastercard handle around $10^4$
 </div>
 <div class="fragment">
 <p><a href="https://bitcoin.org/bitcoin.pdf">Nakamoto’s whitepaper</a> includes the following function (which I translated from C++ into Python). It calculates the probability that an attacker who controls a <code>q</code> fraction of the computing power of the network can execute a double-spend attack to overwrite the last <code>z</code> blocks in the blockchain.</p>
-<div id="c5f8def6" class="cell" data-execution_count="1">
+<div id="c5f8def6" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Code adapted from the Bitcoin whitepaper at https://bitcoin.org/bitcoin.pdf</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> exp, <span class="bu">pow</span></span>

@@ -572,7 +572,7 @@ window.Quarto = {
 </div>
 <div class="fragment">
 <p>Because the Bitcoin blockchain is public, anyone can read any message that has ever been stored on it. The following code connects to a Bitcoin node (hosted on <a href="https://mempool.space">mempool.space</a>) and extracts the bytestring message written within the <em>genesis</em> (first) block in the miner’s <em>coinbase transaction</em>.</p>
-<div id="f803e0e8" class="cell" data-execution_count="1">
+<div id="f803e0e8" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> unhexlify</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -863,7 +863,7 @@ print(unhexlify(response.json()[0]['vin'][0]['scriptsig_asm'].split(" ")[5]).dec
 </div>
 </div>
 </div>
-<div id="4b1b7747" class="cell" data-execution_count="3">
+<div id="4b1b7747" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install "cryptos@git+https://github.com/nicolas3355/cryptos"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library by Andrej Karpathy, with edits by Nicolas Alhaddad</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -939,7 +939,7 @@ For example, here is the coinbase transaction of block number 881,900.
 <div class="fragment">
 <p>One way to think about the proof of work puzzle is that the miners need to compute <code>SHA-256</code> hashes on random inputs until the corresponding output starts with <span class="math inline">\(\ell\)</span> zero bits in a row. The time to success scales exponentially in <span class="math inline">\(\ell\)</span>.</p>
 <!-- # what is the probability that when I hash a random string, I get a hash that starts with 4 bits that are all zeroes? -->
-<div id="7eb5ecf0" class="cell" data-execution_count="4">
+<div id="7eb5ecf0" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># average number of SHA-256 computations until the first 4 bits == 0</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha256</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -960,7 +960,7 @@ For example, here is the coinbase transaction of block number 881,900.
 </div>
 </div>
 <div class="fragment">
-<div id="0777e391" class="cell" data-execution_count="5">
+<div id="0777e391" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let's increase to 16 zeroes and see what happens</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hashlib <span class="im">import</span> sha256</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>

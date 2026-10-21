@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -274,8 +338,42 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review" id="toc-review" class="nav-link" data-scroll-target="#review">Review</a></li>
+  <li><a href="#secret-splitting" id="toc-secret-splitting" class="nav-link" data-scroll-target="#secret-splitting"><span class="header-section-number">13.1</span> Secret splitting</a>
+  <ul class="collapse">
+  <li><a href="#the-website" id="toc-the-website" class="nav-link" data-scroll-target="#the-website">The website</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#contributing-data" id="toc-contributing-data" class="nav-link" data-scroll-target="#contributing-data">Contributing data</a></li>
+  <li><a href="#aggregating-data" id="toc-aggregating-data" class="nav-link" data-scroll-target="#aggregating-data">Aggregating data</a></li>
+  <li><a href="#calculating-the-output" id="toc-calculating-the-output" class="nav-link" data-scroll-target="#calculating-the-output">Calculating the output</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul></li>
+  <li><a href="#encryption" id="toc-encryption" class="nav-link" data-scroll-target="#encryption"><span class="header-section-number">13.2</span> Encryption</a>
+  <ul class="collapse">
+  <li><a href="#the-power-of-encryption" id="toc-the-power-of-encryption" class="nav-link" data-scroll-target="#the-power-of-encryption">The power of encryption</a></li>
+  </ul></li>
+  <li><a href="#symmetric-key-cryptography" id="toc-symmetric-key-cryptography" class="nav-link" data-scroll-target="#symmetric-key-cryptography"><span class="header-section-number">13.3</span> Symmetric key cryptography</a>
+  <ul class="collapse">
+  <li><a href="#one-key-rather-than-two" id="toc-one-key-rather-than-two" class="nav-link" data-scroll-target="#one-key-rather-than-two">One key, rather than two</a></li>
+  <li><a href="#goals-and-non-goals" id="toc-goals-and-non-goals" class="nav-link" data-scroll-target="#goals-and-non-goals">Goals and non-goals</a></li>
+  </ul></li>
+  <li><a href="#one-time-pads" id="toc-one-time-pads" class="nav-link" data-scroll-target="#one-time-pads"><span class="header-section-number">13.4</span> One-time pads</a>
+  <ul class="collapse">
+  <li><a href="#perfect-secrecy" id="toc-perfect-secrecy" class="nav-link" data-scroll-target="#perfect-secrecy">Perfect secrecy</a></li>
+  <li><a href="#achieving-perfect-secrecy" id="toc-achieving-perfect-secrecy" class="nav-link" data-scroll-target="#achieving-perfect-secrecy">Achieving perfect secrecy</a></li>
+  <li><a href="#caesar-cipher" id="toc-caesar-cipher" class="nav-link" data-scroll-target="#caesar-cipher">Caesar cipher</a></li>
+  <li><a href="#fixing-the-cipher" id="toc-fixing-the-cipher" class="nav-link" data-scroll-target="#fixing-the-cipher">Fixing the cipher</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -299,11 +397,908 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- Alternative title: Secret splitting and one-time pads -->
 <hr>
-<p>To appear</p>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>HW 5 due today at 8pm, with a grace period until tomorrow at 10pm (<a href="https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1792591200001">NIST beacon</a>)</li>
+<li>Lab 8 on this week’s reading (<a href="https://joyofcryptography.com/pdf/book.pdf">Rosulek section 1</a>) and Exam 2 review</li>
+<li><strong>Exam 2 during lecture on Monday 10/26</strong></li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>The power of encryption to protect the confidentiality of data at rest and in transit</li>
+<li>The security objectives of symmetric key encryption</li>
+<li>How to construct a one-time pad, and why it is rarely used in practice today</li>
+</ul>
+<hr>
+</section>
+<section id="review" class="level3">
+<h3 class="anchored" data-anchor-id="review">Review</h3>
+<p><strong>Cryptology</strong> comes from two Greek word parts:</p>
+<ul>
+<li>kryptos, meaning <em>secret</em> or <em>hidden</em></li>
+<li>logy, meaning <em>the study of</em></li>
+</ul>
+<p>So the goal of cryptology is to study the art of keeping secrets.</p>
+<div class="fragment">
+<p>More generally, cryptographic systems provide some or all of the objectives in the CIA triad:</p>
+<ul>
+<li><strong>C</strong>onfidentiality, meaning to keep data or people’s identities hidden from others</li>
+<li><strong>I</strong>ntegrity, which means preventing raw data or the data science results from being altered, or at least allowing for detection of tampering</li>
+<li><strong>A</strong>vailability, or ensuring that data science remains accessible and censorship-resistant</li>
+</ul>
+</div>
+<div class="fragment">
+<p>So far, we have completed two units of this course.</p>
+<ol type="1">
+<li>Protecting data <strong>integrity</strong> using digital signatures and message authentication codes</li>
+<li>Protecting data <strong>availability</strong> with broadcast and blockchains</li>
+</ol>
+</div>
+<div class="fragment">
+<p>There are two units remaining in this course.</p>
+<ol start="3" type="1">
+<li>Protecting data <strong>confidentiality</strong> using encryption</li>
+<li>Protecting data <strong>science</strong>, i.e., working with data you cannot see</li>
+</ol>
+</div>
+<hr>
+</section>
+<section id="secret-splitting" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="secret-splitting"><span class="header-section-number">13.1</span> Secret splitting</h2>
+<p>Let me give you an early preview of Unit 4. I will show you how cryptography can protect data science by way of a story – a true story.</p>
+<div class="fragment">
+<p>In 2013, then-Boston Mayor Tom Menino commissioned a working group to:</p>
+<ul>
+<li>Write a report about how to “make Boston the premier city for working women”</li>
+<li>Establish a new group called the <a href="https://thebwwc.org/">Boston Women’s Workforce Council</a> to find and implement ways to close the gender and racial wage gap</li>
+</ul>
+</div>
+<div class="fragment">
+<p>The Council established a Compact – or pledge – that has been signed by <a href="https://thebwwc.org/current-signers">more than 250 companies</a> throughout the greater Boston area. The companies promise to do three things; I want to draw your attention to the part about <em>contributing</em> data.</p>
+<table>
+<tbody><tr>
+<th>
+<img src="images/13-report1.jpg" width="190">
+</th>
+<th>
+<img src="images/13-report2.png" width="440">
+</th>
+</tr>
+</tbody></table>
+<p>[Image source: <a href="https://thebwwc.org/compact-about">Boston Women’s Workforce Council</a>]</p>
+</div>
+<div class="fragment">
+<p>The text of the pledge reveals the tension between data confidentiality and data analysis.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p><em>Contributing their employee data anonymously</em>: everyone wants to keep their own salary data confidential</p></li>
+<li><p><em>Measurement to create a snapshot of the gender/racial wage gap in Greater Boston</em>: everyone wants to publish the results of the data analysis</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>How can the companies perform data analysis while preserving data confidentiality? The BWWC initially tried to find a trusted intermediary to hold onto the data and perform the data analysis. <!--  by 2014 it was clear that this wasn’t going to work --></p>
+</div>
+<div class="fragment">
+<p>However:</p>
+<ol type="1">
+<li>No company wanted to hand over their salary data to anyone else</li>
+<li>Nobody wanted to receive salary data from companies across the city <!-- The liability risk was too great: if the data were ever breached, they might be sued by hundreds of companies and thousands of city employees, all at the same time. --></li>
+</ol>
+</div>
+<div class="fragment">
+<p>Nevertheless, the Boston Women’s Workforce Council <strong>has</strong> run the <a href="https://thebwwc.org/wage-gap-studies">data analysis</a> to calculate the city-wide gender and racial wage gap. They have done it 6 times now. <!-- : in 2016, 2017, 2019, 2021, 2023, and 2025 --></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><img src="images/13-bwwc-2016.png" alt="2016 report" width="140"></th>
+<th style="text-align: center;"><img src="images/13-bwwc-2017.png" alt="2017 report" width="140"></th>
+<th style="text-align: center;"><img src="images/13-bwwc-2019.png" alt="2019 report" width="140"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><img src="images/13-bwwc-2021.png" alt="2021 report" width="140"></td>
+<td style="text-align: center;"><img src="images/13-bwwc-2023.png" alt="2023 report" width="140"></td>
+<td style="text-align: center;"><img src="images/13-bwwc-2025.jpg" alt="2025 report" width="140"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--
+::: {.fragment}
+So how did they do it? The answer lies in a new cryptographic primitive that we will study in detail in Unit 4: __secure multi-party computation__.
+:::
+-->
+<hr>
+<section id="the-website" class="level3">
+<h3 class="anchored" data-anchor-id="the-website">The website</h3>
+<p>Several of us at Boston University have worked with the Boston Women’s Workforce Council and the city to design, build, and deploy a web-based survey form. This form allows companies to contribute their data toward the wage gap calculation <em>without</em> anyone learning their salary data — not even us!</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:37%;">
+<p>Here’s what our website looks like.</p>
+<ul>
+<li>Someone in (say) the HR department of each participating company inputs the <em>number</em> and <em>total <!-- annual --> compensation</em> of all employees in each group of gender, race/ethnicity, and job category</li>
+<li>The spreadsheet follows the format of a U.S. Equal Employment Opportunity Commission form that all large employers must fill out every year <!-- So it is a format that our target audience is already familiar with. --></li>
+</ul>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/13-website.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>100talent.org website in 2017</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>So far, this looks like an ordinary website. The only special part about it is what happens after you click on the “submit” button.</p>
+<ul>
+<li>With a normal website, clicking “submit” would cause the data to be sent over to the server <!-- It would likely be encrypted in transit, but it would be viewable by the people running the server (in this case, us at BU). --></li>
+<li>But this website is different: when you click on the “submit” button, the data itself does not go anywhere!</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Instead, we use <strong>cryptographic secret splitting</strong> to split the data between BU and the Boston Women’s Workforce Council. We will still be able to calculate the city-wide total (i.e., the sum across all spreadsheets), but without learning any information about individual employees or employers.</p>
+</div>
+<div class="fragment">
+<p>Let’s see how this works using a smaller-scale version of the wage gap project. Suppose that:</p>
+<ul>
+<li>There are only 3 companies that participate in the data analysis</li>
+<li>We only want to calculate one cell within the spreadsheet <!-- the first one happens to ask for the number of female Latina executives at the company --></li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="setup" class="level3">
+<h3 class="anchored" data-anchor-id="setup">Setup</h3>
+<p>Let’s call the employers’ individual answers <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>, and <span class="math inline">\(c\)</span>, respectively. Our objective is for:</p>
+<ul>
+<li>The city of Boston to learn only the sum of these numbers <span class="math inline">\(a + b + c\)</span></li>
+<li>Everyone else (including us at BU) to learn nothing</li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Technically, everyone is interested in the average, not the sum. But since the number of companies is known, it is straightforward to convert from one to the other. <!-- just divide by 3 --></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="contributing-data" class="level3">
+<h3 class="anchored" data-anchor-id="contributing-data">Contributing data</h3>
+<p>Each company <!-- visits the website and --> <strong>splits</strong> their secret data between BU and the Council.</p>
+<ul>
+<li><p>The companies send random numbers (e.g., <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span>) that have a uniform distribution subject to the fact that they sum to the real secret</p>
+<p><span class="math display">\[a = a_1 + a_2 \bmod{2^\ell}\]</span></p></li>
+<li><p>Neither BU or the Council have learned anything so far; they just hold a random number</p></li>
+</ul>
+<div class="fragment">
+<p>Our overall goal is for the City of Boston to be able to compute <span class="math inline">\(a + b + c\)</span>, which is the sum of all six numbers held by BU and BWWC.</p>
+</div>
+<div class="fragment">
+<p>Here comes the key insight: because addition is commutative, it doesn’t matter whether we</p>
+<ul>
+<li>first add the numbers vertically and then horizontally, or</li>
+<li>first add the numbers horizontally and then vertically.</li>
+</ul>
+<p>And the latter option preserves data confidentiality!</p>
+</div>
+<hr>
+</section>
+<section id="aggregating-data" class="level3">
+<h3 class="anchored" data-anchor-id="aggregating-data">Aggregating data</h3>
+<p>BU and the Council add up the three numbers that they possess, and send these results over to the City.</p>
+<p>Each of these numbers individually is uniformly random, and it doesn’t reveal anything about <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>, or <span class="math inline">\(c\)</span> individually, so it preserves the companies’ privacy.</p>
+<hr>
+<center>
+<table align="center" cellpadding="8">
+<tbody><tr>
+<th>
+</th>
+<th>
+<span class="math inline">\(a\)</span> <br> <img src="images/13-hr1.png" width="50">
+</th>
+<th>
+<span class="math inline">\(b\)</span> <br> <img src="images/13-hr2.png" width="50">
+</th>
+<th>
+<span class="math inline">\(c\)</span> <br> <img src="images/13-hr3.png" width="50">
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(a + b + c\)</span> <br> <img src="images/13-city.png" width="200">
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bu-logo.gif" width="85">
+</th>
+<th>
+<span class="math inline">\(a_1\)</span>
+</th>
+<th>
+<span class="math inline">\(b_1\)</span>
+</th>
+<th>
+<span class="math inline">\(c_1\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(a_1 + b_1 + c_1\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bwwc-logo.png" width="75">
+</th>
+<th>
+<span class="math inline">\(a_2\)</span>
+</th>
+<th>
+<span class="math inline">\(b_2\)</span>
+</th>
+<th>
+<span class="math inline">\(c_2\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(a_2 + b_2 + c_2\)</span>
+</th>
+</tr>
+</tbody></table>
+</center>
+</section>
+<section id="calculating-the-output" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-the-output">Calculating the output</h3>
+<p>Finally, the City of Boston can add the numbers on the right to reconstruct the sum <span class="math inline">\(a + b + c\)</span>, which is the desired city-wide aggregate statistic. This is what our website does. <!-- behind the scenes. --></p>
+<!-- It just does it for each of the 100+ participating companies, and for each of the 600+ cells in the spreadsheet. -->
+<div class="fragment">
+<p><strong>Interactive question.</strong> All of the calculations above are done mod <span class="math inline">\(2^\ell\)</span>. Suppose instead that we split <span class="math inline">\(a = a_1 + a_2\)</span> without using modular (or clock) arithmetic. Why would that be an issue?</p>
+<ol type="A">
+<li>The math no longer works for the city to obtain the correct answer <span class="math inline">\(a + b + c\)</span></li>
+<li>It is impossible to sample <span class="math inline">\(a_1\)</span> uniformly at random from the integers or real numbers</li>
+<li>There is no longer data integrity for their true value <span class="math inline">\(a\)</span></li>
+<li>Computers cannot add large numbers without using modular arithmetic</li>
+</ol>
+</div>
+<div class="fragment">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Integers or real numbers are unbounded in size, and it is impossible to sample uniformly at random from a set of infinite size. (What would the probability of choosing each value be?)</p>
+<p>The only way to sample from an infinite set is to allow for some options to occur more often than others. But then seeing <span class="math inline">\(a_1\)</span> would allow BU to learn information about the actual secret <span class="math inline">\(a\)</span>. Also, it would take too much network and storage space to send <span class="math inline">\(a_1\)</span> to the BU server.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<p>This new way of conducting data science was made possible by cryptographic <strong>secret splitting</strong>, also known as <strong>secret sharing</strong>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Secret splitting enables a group of parties to jointly hold a secret, but in such a way that no individual person or small coalition in the group knows the secret.</p></li>
+<li><p>Each person holds only a single <strong>share</strong> of the secret – where the word “share” here is used in the sense of a stock share, not in the sense of sharing data.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>You can think of secret splitting like a special type of lockbox. Inside the box is a secret message that nobody knows.</p>
+<ul>
+<li>If enough shares are inserted, then the box will open and the secret will be revealed</li>
+<li>Otherwise, the lockbox remains closed and nobody has access to it</li>
+</ul>
+<p><img src="images/13-box.png" class="img-fluid" width="500"></p>
+</div>
+<hr>
+</section>
+</section>
+<section id="encryption" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="encryption"><span class="header-section-number">13.2</span> Encryption</h2>
+<p>In Unit 3, we will study <strong>encryption</strong> and its role in protecting data <strong>confidentiality</strong>.</p>
+<blockquote class="blockquote">
+<p>“Cryptography is about communication in the presence of an adversary.”</p>
+<p>– Prof.&nbsp;Ron Rivest</p>
+</blockquote>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="160">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<div class="fragment">
+<p>Remember that a digital signature does <strong>not</strong> provide data confidentiality. Instead, its goal is <em>unforgeability</em>.</p>
+<p>In this example, Alice sends Bob a message with a 64-byte signature. Note that the original message contents remain in the clear.</p>
+<div id="6753e121" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using libsodium</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.signing <span class="im">import</span> SigningKey, VerifyKey</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Alice's key pair</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>secret_key <span class="op">=</span> SigningKey.generate()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>public_key <span class="op">=</span> secret_key.verify_key</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Alice's message and its signature</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="st">b"Hello Bob!"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>signed_message <span class="op">=</span> secret_key.sign(message)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> public_key.verify(signed_message), <span class="st">"invalid signature"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Length of original message:"</span>, <span class="bu">len</span>(message), <span class="st">"bytes"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Length of signed message:  "</span>, <span class="bu">len</span>(signed_message), <span class="st">"bytes</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Signed message:"</span>, hexlify(signed_message[:<span class="dv">3</span>]) <span class="op">+</span> <span class="st">b"..."</span> <span class="op">+</span> <span class="op">\</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                         hexlify(signed_message[<span class="op">-</span><span class="dv">13</span>:<span class="op">-</span><span class="dv">10</span>]) <span class="op">+</span> signed_message[<span class="op">-</span><span class="dv">10</span>:])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Length of original message: 10 bytes
+Length of signed message:   74 bytes
+
+Signed message: b'9712ac...e3cf0bHello Bob!'</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Digital signatures allow:</p>
+<ul>
+<li>Alice to “lock” her message using his secret key</li>
+<li>Anyone to “unlock” the message using the corresponding public key <!-- to verify whether the message was previously locked by Alice --></li>
+</ul>
+<div class="fragment">
+<p>But what if we turn this picture around? What if:</p>
+<ul>
+<li>Anyone can lock a message using the public key</li>
+<li>Only Bob can unlock the message with his secret key</li>
+</ul>
+<p>as shown in the left half of the figure?</p>
+</div>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-public-key.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Informal description of encryption and digital signatures (source: <a href="https://idea-instructions.com/public-key/">idea-instructions.com</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The result is a <strong>public key encryption</strong> scheme. This new primitive <em>does</em> protect data confidentiality.</p>
+</div>
+<div class="fragment">
+<div id="29cf421a" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.public <span class="im">import</span> PrivateKey, PublicKey, SealedBox</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bob's key pair</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>secret_key <span class="op">=</span> PrivateKey.generate()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>public_key <span class="op">=</span> secret_key.public_key <span class="co"># share this with the world</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="0a0ffefe" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alice's message and its encryption</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>message <span class="op">=</span> <span class="st">b"Hello, Bob!"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sealed_box <span class="op">=</span> SealedBox(public_key)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>encrypted_message <span class="op">=</span> sealed_box.encrypt(message)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(encrypted_message))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'1cbb053aa56bc85853d16bdfb0289e06d342254d211b3fea602602eaae3fdf25c871718f531a058040f90c2bf94bc2ac81ac1076c736e9b8a4e1b5'</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Also as we will see, encryption schemes are <em>randomized</em>: if you encrypt the same message twice, you will get different results. Hence, encryption requires good sources of randomness.</p>
+<div id="60e07fe2" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>new_encrypted_message <span class="op">=</span> sealed_box.encrypt(message)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hexlify(new_encrypted_message))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'19e1d33faac335169f78b60ceb185c937c31af24d03ec708729d81d2a88a553043d52f2bb1140ba1ddecdc6c57f802b57deb2f1357d56afa987a96'</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The goal of Unit 3 of this course is to study encryption <!-- (both alone and in combination with signatures) --> and its role in:</p>
+<ul>
+<li>Protecting data at rest on your laptop or phone</li>
+<li>Protecting data in transit over the Internet or messaging app</li>
+</ul>
+</div>
+<hr>
+<section id="the-power-of-encryption" class="level3">
+<h3 class="anchored" data-anchor-id="the-power-of-encryption">The power of encryption</h3>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p>Historically, encryption schemes have been designed and used by governments. It played a significant role in both of the world wars in the 20th century.</p>
+<!-- The Enigma machine's design should have required about $2^{62}$ work for a brute-force attack, which would not be safe with today's computers but was almost surely strong enough for the 1940s. But cryptanalysts found patterns in Enigma that make it not act like a random oracle, patterns in the messages that they were able to exploit because Enigma did not offer "chosen message attack" security, and patterns in the keys chosen by humans. As a result, the Polish and later the British were able to build computers to run the attack and break the code before the key changed at the end of the day.
+
+(Video that might be of interest to students: https://www.youtube.com/watch?v=JsBZOcqZerk)
+-->
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-zimmerman.jpg" class="img-fluid figure-img" width="200"></p>
+<figcaption>World War I: Zimmerman telegram (source: <a href="https://www.bbc.com/news/uk-38581861">BBC</a>)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-enigma.jpg" class="img-fluid figure-img" width="200"></p>
+<figcaption>World War II: Enigma machine (source: <a href="https://en.wikipedia.org/wiki/Enigma_machine">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Modern encryption allows for confidential data exchange over the Internet. Alice can send a chat message, email, file, or database across the internet so that only Bob can read it.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-internet-2.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Internet communication, with encryption</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>As a result, encryption is a powerful tool with immense social consequences.</p>
+<blockquote class="blockquote">
+<p>“Cryptography rearranges power: it configures who can do what, from what.”</p>
+<p>– Prof.&nbsp;Phillip Rogaway (UC Davis)</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>In particular, having the secret key gives someone the power to decrypt and read a message.</p>
+</div>
+<div class="fragment">
+<p>Encryption on the Internet is often performed in one of two ways.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 53%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Client-server encryption</th>
+<th>End-to-end encryption</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alice encrypts her message with the tech company’s key (and hence, they can read it). Separately, the tech company encrypts a message to Bob.</td>
+<td>Alice encrypts her message directly to Bob. While the message passes through the server, the tech company cannot read it.</td>
+</tr>
+<tr class="even">
+<td><img src="images/13-zoom-cs.png" class="img-fluid" width="275"></td>
+<td><img src="images/13-zoom-e2e.png" class="img-fluid" width="275"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>You might wonder: <em>what if</em> a powerful attacker steals cryptographic keys? This may be possible by (for example) hacking or compelling Alice or Bob to reveal their keys. We will discuss these risks in future lectures. For today, I want to emphasize the value of universal encryption on the Internet.</p>
+<ul>
+<li>With encryption: reading someone’s messages is costly, targeted, and observable</li>
+<li>Without encryption: reading someone’s messages keys is simple, universal, and covert</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="symmetric-key-cryptography" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="symmetric-key-cryptography"><span class="header-section-number">13.3</span> Symmetric key cryptography</h2>
+<p>It is possible to construct public key encryption based on hard math problems like factoring and discrete logarithms.</p>
+<div class="fragment">
+<p>But we will not study public key encryption in this course. In fact, I’m going to make a bold claim: even though it exists, in nearly all data science applications you should <strong>not</strong> use public key encryption! I say this for two reasons.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p>Public key encryption is overkill: it allows anyone on the Internet to send you messages, but in most applications, you know exactly who is going to send you a message</p></li>
+<li><p>Public key encryption is risky: losing control of the secret key for an encryption scheme has immediate, irrecoverable consequences (we will discuss this in <a href="16.html">Lecture 16</a>)</p></li>
+</ol>
+</div>
+<hr>
+<section id="one-key-rather-than-two" class="level3">
+<h3 class="anchored" data-anchor-id="one-key-rather-than-two">One key, rather than two</h3>
+<p>As a result, we focus in Unit 3 on <em>symmetric key cryptography</em>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>We already know how to build a <em>message authentication code</em> for the two parties to send messages to each other with integrity (each party can both tag and verify)</p></li>
+<li><p><strong>Symmetric key encryption</strong> allows two parties to send messages to each other with confidentiality (each party can both encrypt and decrypt)</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Looking ahead: these primitives are nearly always used together, and the combined primitive is called <strong>authenticated encryption</strong>.</p>
+<blockquote class="blockquote">
+<p>“Confidentiality xor authenticity is not possible. If you don’t have both, often you don’t have either.”</p>
+<p>– Prof.&nbsp;Matthew Green (Johns Hopkins)</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>For today though, let’s focus on encryption by itself.</p>
+</div>
+<hr>
+</section>
+<section id="goals-and-non-goals" class="level3">
+<h3 class="anchored" data-anchor-id="goals-and-non-goals">Goals and non-goals</h3>
+<p>Let’s discuss the objectives of symmetric key encryption.</p>
+<p>Symmetric key encryption must:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Hide the contents of Alice and Bob’s messages</li>
+<li>Even if the adversary Mallory has full control over the network and can add, drop, alter, or re-order packets</li>
+<li>Optionally: even if Mallory takes over Alice or Bob’s computer for some time, we might still want to provide confidentiality at other times</li>
+</ul>
+</div>
+<div class="fragment">
+<p>However, encryption on its own is not designed to hide “metadata.”</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Encryption doesn’t provide anonymity: Mallory knows that Alice and Bob are communicating</li>
+<li>Encryption doesn’t hide message length: Mallory sees how much data is flowing across the wire</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Companies that use encryption sometimes forget about this fact!</p>
+</div>
+<div class="fragment">
+<p><strong>Example 1.</strong> Here is a real interaction between Sen.&nbsp;Ron Wyden and Match, the parent company of Tinder.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/13-match-1.png" class="img-fluid figure-img" width="350"></p>
+<figcaption>Letter from Sen.&nbsp;Ron Wyden (<a href="https://www.wyden.senate.gov/imo/media/doc/Letter%20to%20Tinder%20on%20Cybersecurity.pdf">link to source</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/13-match-2.png" class="img-fluid figure-img" width="350"></p>
+<figcaption>Response from Match Group, Inc.&nbsp;(<a href="https://www.wyden.senate.gov/imo/media/doc/Match%20response%20to%20wyden%206-27-18%20-%20signed.pdf">link to source</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Example 2.</strong> A company called Voatz tried to build an internet-based voting system for political elections… which is actually a terrible idea for many reasons that we will discuss in the last week of the semester. But they failed at the very first step.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<blockquote class="blockquote">
+<p>“The length of the encrypted packet clearly leaks which candidate was selected.”</p>
+<p>– Michael A. Specter, James Koppel, and Daniel Weitzner (<a href="https://www.usenix.org/system/files/sec20-specter.pdf">link to paper</a>)</p>
+</blockquote>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="fragment">
+<p><img src="images/13-voatz.png" class="img-fluid" width="350"></p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="one-time-pads" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="one-time-pads"><span class="header-section-number">13.4</span> One-time pads</h2>
+<p>Like signatures, an encryption scheme has three operations: <code>KeyGen</code>, <code>Enc</code>, and <code>Dec</code>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(k\)</span> from a distribution <span class="math inline">\(\mathit{K}\)</span> (say, uniformly among bytestrings of a specific length)</li>
+<li><code>Enc</code><span class="math inline">\({}_k(p; r) \to c\)</span>: Alice transforms plaintext message <span class="math inline">\(p\)</span> into a ciphertext <span class="math inline">\(c\)</span>, using one-time randomness <span class="math inline">\(r\)</span></li>
+<li><code>Dec</code><span class="math inline">\({}_k(c) \to p\)</span>: Bob transforms the ciphertext back into the original plaintext message <span class="math inline">\(p\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Encryption satisfies two requirements.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><strong>Correctness</strong> (informally): <code>Dec</code> undoes the action of <code>Enc</code> and allows Bob to read <span class="math inline">\(p\)</span> <!-- That is, for any key $k$, message $p$, and randomness $r$ it holds that $$\text{Dec}(k, \text{Enc}_k(p; r)) = p.$$ --></li>
+<li><strong>Secrecy</strong> (informally): If an attacker Mallory sees the ciphertext <span class="math inline">\(c\)</span> but not the symmetric key <span class="math inline">\(k\)</span>, then she has no chance of learning <em>any part</em> of the plaintext message <span class="math inline">\(p\)</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> How can we make the security requirement precise? In particular:</p>
+<ul>
+<li>What does it mean to learn “part” of the plaintext message <span class="math inline">\(p\)</span>?</li>
+<li>How can we take advantage of the randomness <span class="math inline">\(r\)</span> when defining and constructing an encryption scheme?</li>
+</ul>
+</div>
+<hr>
+<section id="perfect-secrecy" class="level3">
+<h3 class="anchored" data-anchor-id="perfect-secrecy">Perfect secrecy</h3>
+<p>Today, we will study one way to formalize the secrecy guarantee.</p>
+<div class="fragment">
+<div id="def-perfect-secrecy" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 13.1 (Perfect secrecy)</strong></span> An encryption scheme satisfies <em>perfect secrecy</em> if for any two messages <span class="math inline">\(p_0\)</span> and <span class="math inline">\(p_1\)</span>, and for any ciphertext <span class="math inline">\(c\)</span>,</p>
+<p><span class="math display">\[ \Pr_{k \gets \mathit{K}}[\text{Enc}_k(p_0) = c] = \Pr_{k \gets \mathit{K}}[\text{Enc}_k(p_1) = c],\]</span></p>
+<p>where this probability is taken over the random choice of the key <span class="math inline">\(k \gets \mathit{K}\)</span>.</p>
+</div>
+</div>
+<div class="fragment">
+<p>Here is one way to think about perfect secrecy.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>If <code>KeyGen</code> samples keys uniformly at random, then perfect secrecy says that for any two messages <span class="math inline">\(p_0\)</span> and <span class="math inline">\(p_1\)</span>, there are the same number of keys that will map <span class="math inline">\(p_0\)</span> to <span class="math inline">\(c\)</span> and that will map <span class="math inline">\(p_1\)</span> to <span class="math inline">\(c\)</span>.</p></li>
+<li><p>As a consequence, no amount of computing power is ever enough to recover the real message! Even if Mallory had the energy of the sun, it would not help.</p></li>
+<li><p>Even a brute force attack will fail! Or more precisely, it willl find the correct message but also all possible incorrect messages, and will have no way to detect the difference.</p></li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="achieving-perfect-secrecy" class="level3">
+<h3 class="anchored" data-anchor-id="achieving-perfect-secrecy">Achieving perfect secrecy</h3>
+<p>Let’s build an encryption scheme that satisfies perfect secrecy.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Recall that Mallory can add, drop, alter, or re-order Alice’s messages. This is admittedly a powerful adversary to thwart.</li>
+<li>So for today, we will consider a simpler adversary that only acts as a <em>passive eavesdropper</em> but does not change the contents of Alice’s messages. We call this adversary <strong>Eve</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> How can Alice encode messages so Eve cannot read them?</p>
+</div>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/13-substitution.png" class="img-fluid figure-img" width="350"></p>
+<figcaption>Option 1: substitute each character (<a href="https://en.wikipedia.org/wiki/Caesar_cipher">source: Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:45%;">
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/13-dictionaries.jpg" class="img-fluid figure-img" width="350"></p>
+<figcaption>Option 2: substitute each word or phrase</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="caesar-cipher" class="level3">
+<h3 class="anchored" data-anchor-id="caesar-cipher">Caesar cipher</h3>
+<p>Let’s try to build a cipher that substitutes one character of the message at a time.</p>
+<ul>
+<li>Our first attempt will be an idea that has been used for thousands of years; in particular, Julius Caesar used it in his private correspondences.</li>
+<li>It will <strong>not</strong> be a secure encryption scheme, but it will provide insights on how to build one.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>The idea is to choose a key between 0 and 25, and rotate all characters by this amount. This figure shows the cipher with symmetric key <span class="math inline">\(k = 3\)</span>.</p>
+<ul>
+<li><code>one</code> <span class="math inline">\(\mapsto\)</span> <code>lkb</code></li>
+<li><code>two</code> <span class="math inline">\(\mapsto\)</span> <code>qtl</code></li>
+</ul>
+</div><div class="column" style="width:30%;">
+<p><img src="images/13-substitution.png" class="img-fluid" width="350"></p>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> Put yourself in the role of Eve. Can you break this encoding?</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>If Eve observes the ciphertext <span class="math inline">\(c\)</span> for a known plaintext message <span class="math inline">\(p\)</span>, then she learns <span class="math inline">\(k\)</span></li>
+<li>Even if Eve knows a single character of <span class="math inline">\(p\)</span> and <span class="math inline">\(c\)</span>, she can encipher a new message: <code>three</code> <span class="math inline">\(\mapsto\)</span> <code>qeobb</code></li>
+</ul>
+</div>
+<div class="fragment">
+<p>The takeaway message is: reuse of the key leads to a “<em>frequency attack</em>.”</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/13-cryptogram.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Cryptogram puzzle (image source: <a href="https://cryptograms.puzzlebaron.com/">cryptograms.org</a>)</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+<section id="fixing-the-cipher" class="level3">
+<h3 class="anchored" data-anchor-id="fixing-the-cipher">Fixing the cipher</h3>
+<p>Let’s improve the Caesar cipher in two ways:</p>
+<ul>
+<li>To improve security, give each character its own key</li>
+<li>To make the cipher computer-friendly, let’s think about bits instead of characters.</li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:75%;">
+<p>The <code>xor</code> logical operation measures whether 2 inputs are identical. Given two bits <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, we can calculate their logical <code>xor</code> <span class="math inline">\(a \oplus b\)</span> with this truth table.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:20%;">
+<center>
+<table border="1">
+<thead>
+<tr>
+<th style="text-align:center">
+<span class="math inline">\(\bigoplus\)</span> &nbsp;
+</th>
+<th style="text-align:center">
+&nbsp; 0 &nbsp;
+</th>
+<th style="text-align:center">
+&nbsp; 1 &nbsp;
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th style="text-align:right">
+0 &nbsp;
+</th>
+<td style="text-align:center">
+0
+</td>
+<td style="text-align:center">
+1
+</td>
+</tr>
+<tr>
+<th style="text-align:right">
+1 &nbsp;
+</th>
+<td style="text-align:center">
+1
+</td>
+<td style="text-align:center">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The <strong>one-time pad</strong> cipher has a simple construction: the ciphertext is the XOR of the key and the message.</p>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Suppose that Alice has the plaintext and key <span class="math display">\[\begin{align*}p &amp;= \text{0110 0110 1001}\\
+k &amp;= \text{0011 1100 1110}\end{align*}\]</span></p>
+<p>Using a one-time pad, what is the ciphertext that she should send to Bob?</p>
+<ol type="A">
+<li><span class="math inline">\(\text{0010 0100 1000}\)</span> <!-- AND --></li>
+<li><span class="math inline">\(\text{0101 1010 0111}\)</span> <!-- XOR --></li>
+<li><span class="math inline">\(\text{0111 1110 1111}\)</span> <!-- OR  --></li>
+<li><span class="math inline">\(\text{1010 0101 1000}\)</span> <!-- NOT XOR --></li>
+</ol>
+</div>
+<div class="fragment">
+<p>Note that:</p>
+<ul>
+<li>OTP is like secret splitting: we use the <code>xor</code> function to split the plaintext message into two pieces, the key and the ciphertext</li>
+<li>OTP “masks” the plaintext message by applying a Caesar cipher independently to each bit</li>
+<li>Since XOR is a lossless function, this encryption scheme is invertible – in fact, XOR is its own inverse</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>      plaintext  <span class="bn">0110</span> <span class="bn">0110</span> <span class="dv">1001</span>           cipher     <span class="bn">0101</span> <span class="dv">1010</span> <span class="bn">0111</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cn">XOR</span> key        <span class="bn">0011</span> <span class="dv">1100</span> <span class="dv">1110</span>       <span class="cn">XOR</span> key        <span class="bn">0011</span> <span class="dv">1100</span> <span class="dv">1110</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>      <span class="op">-------------------------</span>           <span class="op">-------------------------</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      cipher     <span class="bn">0101</span> <span class="dv">1010</span> <span class="bn">0111</span>           plaintext  <span class="bn">0110</span> <span class="bn">0110</span> <span class="dv">1001</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<div id="thm-impossible-numparties" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 13.1</strong></span> The one-time pad satisfies perfect secrecy.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Proof</em>. </span>There is a proof of this theorem in <a href="https://joyofcryptography.com/pdf/book.pdf">Section 1 of Rosulek’s Joy of Cryptography</a>, but I encourage you to try to prove this claim on your own before looking there. Remember that perfect secrecy says that for any two plaintext messages <span class="math inline">\(p_0\)</span> and <span class="math inline">\(p_1\)</span> and any ciphertext <span class="math inline">\(c\)</span>,</p>
+<p><span class="math display">\[ \Pr_{k \gets \mathit{K}}[\text{Enc}_k(p_0) = c] = \Pr_{k \gets \mathit{K}}[\text{Enc}_k(p_1) = c].\]</span></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="limitations" class="level3">
+<h3 class="anchored" data-anchor-id="limitations">Limitations</h3>
+<p>Even though it is perfectly secret, the one-time pad is rarely used on its own in practice today for a few reasons:</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li>The symmetric key <span class="math inline">\(k\)</span> must be as long as the plaintext message <span class="math inline">\(p\)</span></li>
+<li>Reusing the same key for two or more messages breaks perfect security, and brings back the cryptograms issue</li>
+<li>The cipher is malleable! While OTP is safe against a passive eavesdropper Eve, an active attacker Mallory can manipulate the ciphertext in transit and cause the same change in the decrypted plaintext</li>
+</ol>
+</div>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>      plaintext  <span class="bn">0110</span> <span class="bn">0110</span> <span class="dv">1001</span>            cipher     <span class="bn">0101</span> <span class="dv">1010</span> <span class="op">*</span><span class="dv">1000</span><span class="op">*</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cn">XOR</span> key        <span class="bn">0011</span> <span class="dv">1100</span> <span class="dv">1110</span>        <span class="cn">XOR</span> key        <span class="bn">0011</span> <span class="dv">1100</span>  <span class="dv">1110</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      <span class="op">-------------------------</span>            <span class="op">---------------------------</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      cipher     <span class="bn">0101</span> <span class="dv">1010</span> <span class="bn">0111</span>            plaintext  <span class="bn">0110</span> <span class="bn">0110</span> <span class="op">*</span><span class="bn">0110</span><span class="op">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<p>Next week, we will:</p>
+<ul>
+<li>Use pseudorandomness to build ciphers that can encrypt many long messages from a single, short key</li>
+<li>Combine encryption and message authentication codes into a single primitive, so as to protect our data even against an active attacker Mallory</li>
+</ul>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
