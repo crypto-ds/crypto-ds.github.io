@@ -799,7 +799,7 @@ Remember than an _honest_ party is one who follows the protocol. The other parti
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li><p><strong>Knowledge of Agreement</strong>: If an honest party outputs a message with grade of <code>Satisfactory</code>, then all honest parties output this message. That is: we will have <em>mutual knowledge</em>, even if some parties are not yet convinced.</p></li>
+<li><p><strong>Knowledge of Agreement</strong>: If any honest party outputs a message with grade of <code>Satisfactory</code>, then all honest parties output this message with a grade of either <code>Close</code> or <code>Satisfactory</code>. That is: we will have <em>mutual knowledge</em>, even if some parties are not yet convinced.</p></li>
 <li><p><strong>Validity</strong>: If all honest parties have the same input message, then all of them output this message with a grade of <code>Satisfactory</code>. In this case, we have moved closer to <em>common knowledge</em> – every honest party knows <span class="math inline">\(m\)</span>, and knows that the other parties know <span class="math inline">\(m\)</span>.</p>
 <p><!-- But we would not yet have achieved the third level of alternation: "I know that you know that I know $m$" --></p></li>
 </ul>
@@ -901,7 +901,7 @@ As a hint: remember that $n \geq 3t + 1$, and that the $n-t$ honest parties (who
 <div class="fragment">
 <p>Now we can prove the knowledge of agreement property, which states:</p>
 <blockquote class="blockquote">
-<p>If an honest party outputs a message with grade <code>Satisfactory</code>, then all honest parties output this message.</p>
+<p>If any honest party outputs a message with grade of <code>Satisfactory</code>, then all honest parties output this message with a grade of either <code>Close</code> or <code>Satisfactory</code>.</p>
 </blockquote>
 </div>
 <div class="fragment">
