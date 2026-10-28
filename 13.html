@@ -312,7 +312,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -367,8 +367,8 @@ window.Quarto = {
   <li><a href="#one-time-pads" id="toc-one-time-pads" class="nav-link" data-scroll-target="#one-time-pads"><span class="header-section-number">13.4</span> One-time pads</a>
   <ul class="collapse">
   <li><a href="#perfect-secrecy" id="toc-perfect-secrecy" class="nav-link" data-scroll-target="#perfect-secrecy">Perfect secrecy</a></li>
-  <li><a href="#achieving-perfect-secrecy" id="toc-achieving-perfect-secrecy" class="nav-link" data-scroll-target="#achieving-perfect-secrecy">Achieving perfect secrecy</a></li>
-  <li><a href="#caesar-cipher" id="toc-caesar-cipher" class="nav-link" data-scroll-target="#caesar-cipher">Caesar cipher</a></li>
+  <li><a href="#meet-eve" id="toc-meet-eve" class="nav-link" data-scroll-target="#meet-eve">Meet Eve</a></li>
+  <li><a href="#sec-frequency-attack" id="toc-sec-frequency-attack" class="nav-link" data-scroll-target="#sec-frequency-attack">Caesar cipher</a></li>
   <li><a href="#fixing-the-cipher" id="toc-fixing-the-cipher" class="nav-link" data-scroll-target="#fixing-the-cipher">Fixing the cipher</a></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
   </ul></li>
@@ -1058,9 +1058,9 @@ Signed message: b'9712ac...e3cf0bHello Bob!'</code></pre>
 <p>Like signatures, an encryption scheme has three operations: <code>KeyGen</code>, <code>Enc</code>, and <code>Dec</code>.</p>
 <div class="incremental">
 <ul class="incremental">
-<li><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(k\)</span> from a distribution <span class="math inline">\(\mathit{K}\)</span> (say, uniformly among bytestrings of a specific length)</li>
-<li><code>Enc</code><span class="math inline">\({}_k(p; r) \to c\)</span>: Alice transforms plaintext message <span class="math inline">\(p\)</span> into a ciphertext <span class="math inline">\(c\)</span>, using one-time randomness <span class="math inline">\(r\)</span></li>
-<li><code>Dec</code><span class="math inline">\({}_k(c) \to p\)</span>: Bob transforms the ciphertext back into the original plaintext message <span class="math inline">\(p\)</span></li>
+<li><code>KeyGen</code>: Alice and Bob jointly sample a symmetric key <span class="math inline">\(k\)</span> <!-- from a distribution $\mathit{K}$ (say, uniformly among bytestrings of a specific length) --></li>
+<li><code>Enc</code><span class="math inline">\({}_k\)</span> transforms plaintext message <span class="math inline">\(p\)</span> into a ciphertext <span class="math inline">\(c\)</span></li>
+<li><code>Dec</code><span class="math inline">\({}_k\)</span> transforms the ciphertext back into the original plaintext message <span class="math inline">\(p\)</span></li>
 </ul>
 </div>
 <div class="fragment">
@@ -1068,7 +1068,7 @@ Signed message: b'9712ac...e3cf0bHello Bob!'</code></pre>
 </div>
 <div class="incremental">
 <ol class="incremental" type="1">
-<li><strong>Correctness</strong> (informally): <code>Dec</code> undoes the action of <code>Enc</code> and allows Bob to read <span class="math inline">\(p\)</span> <!-- That is, for any key $k$, message $p$, and randomness $r$ it holds that $$\text{Dec}(k, \text{Enc}_k(p; r)) = p.$$ --></li>
+<li><strong>Correctness</strong> (informally): <code>Dec</code> undoes the action of <code>Enc</code> and allows Bob to read <span class="math inline">\(p\)</span> <!-- That is, for any key $k$, message $p$, and randomness $r$ it holds that $$\text{Dec}(k, \text{Enc}_k(p, r)) = p.$$ --></li>
 <li><strong>Secrecy</strong> (informally): If an attacker Mallory sees the ciphertext <span class="math inline">\(c\)</span> but not the symmetric key <span class="math inline">\(k\)</span>, then she has no chance of learning <em>any part</em> of the plaintext message <span class="math inline">\(p\)</span>.</li>
 </ol>
 </div>
@@ -1102,14 +1102,20 @@ Signed message: b'9712ac...e3cf0bHello Bob!'</code></pre>
 </div>
 <hr>
 </section>
-<section id="achieving-perfect-secrecy" class="level3">
-<h3 class="anchored" data-anchor-id="achieving-perfect-secrecy">Achieving perfect secrecy</h3>
+<section id="meet-eve" class="level3">
+<h3 class="anchored" data-anchor-id="meet-eve">Meet Eve</h3>
 <p>Let’s build an encryption scheme that satisfies perfect secrecy.</p>
+<div class="fragment">
+<p>Recall that Mallory can add, drop, alter, or re-order Alice’s messages.</p>
+</div>
 <div class="incremental">
 <ul class="incremental">
-<li>Recall that Mallory can add, drop, alter, or re-order Alice’s messages. This is admittedly a powerful adversary to thwart.</li>
-<li>So for today, we will consider a simpler adversary that only acts as a <em>passive eavesdropper</em> but does not change the contents of Alice’s messages. We call this adversary <strong>Eve</strong>.</li>
+<li>This is admittedly a powerful adversary to thwart, and it will require data integrity</li>
+<li>To focus on data confidentiality for today, we will consider a simpler adversary that only acts as a <em>passive eavesdropper</em> but does not change the contents of Alice’s messages</li>
 </ul>
+</div>
+<div class="fragment">
+<p>We call this adversary <strong>Eve</strong>.</p>
 </div>
 <div class="fragment">
 <p><strong>Question.</strong> How can Alice encode messages so Eve cannot read them?</p>
@@ -1139,8 +1145,8 @@ Signed message: b'9712ac...e3cf0bHello Bob!'</code></pre>
 </div>
 <hr>
 </section>
-<section id="caesar-cipher" class="level3">
-<h3 class="anchored" data-anchor-id="caesar-cipher">Caesar cipher</h3>
+<section id="sec-frequency-attack" class="level3">
+<h3 class="anchored" data-anchor-id="sec-frequency-attack">Caesar cipher</h3>
 <p>Let’s try to build a cipher that substitutes one character of the message at a time.</p>
 <ul>
 <li>Our first attempt will be an idea that has been used for thousands of years; in particular, Julius Caesar used it in his private correspondences.</li>

@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -248,7 +312,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -274,8 +338,37 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#encryption-with-short-keys" id="toc-encryption-with-short-keys" class="nav-link" data-scroll-target="#encryption-with-short-keys"><span class="header-section-number">14.1</span> Encryption with short keys</a>
+  <ul class="collapse">
+  <li><a href="#symmetric-encryption-via-sponge-functions" id="toc-symmetric-encryption-via-sponge-functions" class="nav-link" data-scroll-target="#symmetric-encryption-via-sponge-functions">Symmetric encryption via sponge functions</a></li>
+  <li><a href="#defining-encryption" id="toc-defining-encryption" class="nav-link" data-scroll-target="#defining-encryption">Defining encryption</a></li>
+  <li><a href="#real-or-random-security" id="toc-real-or-random-security" class="nav-link" data-scroll-target="#real-or-random-security">Real-or-random security</a></li>
+  </ul></li>
+  <li><a href="#authenticated-encryption" id="toc-authenticated-encryption" class="nav-link" data-scroll-target="#authenticated-encryption"><span class="header-section-number">14.2</span> Authenticated encryption</a>
+  <ul class="collapse">
+  <li><a href="#defining-aead" id="toc-defining-aead" class="nav-link" data-scroll-target="#defining-aead">Defining AEAD</a></li>
+  <li><a href="#constructing-aead" id="toc-constructing-aead" class="nav-link" data-scroll-target="#constructing-aead">Constructing AEAD</a></li>
+  </ul></li>
+  <li><a href="#advanced-encryption-standard" id="toc-advanced-encryption-standard" class="nav-link" data-scroll-target="#advanced-encryption-standard"><span class="header-section-number">14.3</span> Advanced Encryption Standard</a>
+  <ul class="collapse">
+  <li><a href="#block-cipher" id="toc-block-cipher" class="nav-link" data-scroll-target="#block-cipher">Block cipher</a></li>
+  <li><a href="#running-aes" id="toc-running-aes" class="nav-link" data-scroll-target="#running-aes">Running AES</a></li>
+  <li><a href="#block-cipher-security" id="toc-block-cipher-security" class="nav-link" data-scroll-target="#block-cipher-security">Block cipher security</a></li>
+  </ul></li>
+  <li><a href="#modes-of-operation" id="toc-modes-of-operation" class="nav-link" data-scroll-target="#modes-of-operation"><span class="header-section-number">14.4</span> Modes of operation</a>
+  <ul class="collapse">
+  <li><a href="#counter-mode" id="toc-counter-mode" class="nav-link" data-scroll-target="#counter-mode">Counter mode</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -300,9 +393,732 @@ ul.task-list li input[type="checkbox"] {
 
 
 <hr>
-<p>To appear</p>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Homework 6 will be released today and due Wed 11/4</li>
+<li>Lab 9 on this week’s reading (<a href="https://nostarch.com/download/SeriousCryptography_Chapter4_sample.pdf">Aumasson, pages 7–12</a>)</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How to create symmetric key encryption with short keys</li>
+<li>How to combine encryption with MACs to create a single object called authenticated encryption</li>
+<li>How AES can be used to build (authenticated) encryption</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Encryption</strong> is one of the main tools that we use to protect data <strong>confidentiality</strong>.</p>
+<blockquote class="blockquote">
+<p>“Cryptography is about communication in the presence of an adversary.”</p>
+<p>– Prof.&nbsp;Ron Rivest</p>
+</blockquote>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:48%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-internet-2.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Internet communication, with encryption</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The interface for symmetric key encryption has three operations: <code>KeyGen</code>, <code>Enc</code>, and <code>Dec</code>.</p>
+</div>
+<div class="fragment">
+<p>Last time, we discussed the idea of a <strong>one-time pad</strong>. It provides <strong>perfect secrecy</strong> against a passive eavesdropper Eve. But it has several limitations.</p>
+<ol type="1">
+<li>The symmetric key <span class="math inline">\(k\)</span> must be as long as the plaintext message <span class="math inline">\(p\)</span></li>
+<li>Reusing the same key for two or more messages breaks security (as you will see in this week’s homework)</li>
+<li>While it is safe against a passive eavesdropper Eve, an active attacker Mallory can manipulate the ciphertext in transit</li>
+</ol>
+</div>
+<hr>
+</section>
+<section id="encryption-with-short-keys" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="encryption-with-short-keys"><span class="header-section-number">14.1</span> Encryption with short keys</h2>
+<p>What if we want to encrypt a long message using a short symmetric key <span class="math inline">\(k\)</span>?</p>
+<ul>
+<li>Bad news: it turns out that perfect secrecy is impossible</li>
+<li>Good news: we can resort back to computational hardness, where breaking the scheme requires “energy of the sun” work</li>
+</ul>
+<div class="fragment">
+<p>We already have a tool in our cryptographic toolbox that will fix the first two problems with a one-time pad:</p>
+<blockquote class="blockquote">
+<ol type="1">
+<li>The symmetric key <span class="math inline">\(k\)</span> must be as long as the plaintext message <span class="math inline">\(p\)</span></li>
+<li>Reusing the same key for two or more messages breaks security</li>
+</ol>
+</blockquote>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Which cryptographic protocol can we use to generate long secrets from a short key?</p>
+<ol type="A">
+<li>Blockchain</li>
+<li>Commitment</li>
+<li>Message authentication code</li>
+<li>Pseudorandomness</li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. <strong>Pseudorandomness</strong> is a deterministic procedure to generate random-looking data.</p>
+</div>
+<div class="fragment">
+<p>Here is our plan for today:</p>
+<ol type="1">
+<li>Build a pseudorandom function that allows us to <em>expand</em> a short key <span class="math inline">\(k\)</span> into a long synthetically-generated secret <span class="math inline">\(s\)</span></li>
+<li>Encrypt a plaintext message <span class="math inline">\(p\)</span> as <span class="math inline">\(c = p \oplus s\)</span> (that is: use <span class="math inline">\(s\)</span> as a one-time pad)</li>
+<li>Combine encryption with a message authentication code in order to build a combined primitive called <em>authenticated encryption</em></li>
+</ol>
+</div>
+<div class="fragment">
+<p>Since a <strong>one</strong>-time pad can only be used once, in step 1 we must generate a variety of synthetic secrets <span class="math inline">\(s\)</span>. Fortunately, <a href="04.html#sec-many-secrets">we know</a> how to do that!</p>
+<blockquote class="blockquote">
+<p>Using a cryptographic hash function and a seed <span class="math inline">\(k\)</span>, we can <em>pseudorandomly</em> generate many secrets <span class="math display">\[H(k, 0), H(k, 1), H(k, 2), \ldots\]</span></p>
+</blockquote>
+</div>
+<hr>
+<section id="symmetric-encryption-via-sponge-functions" class="level3">
+<h3 class="anchored" data-anchor-id="symmetric-encryption-via-sponge-functions">Symmetric encryption via sponge functions</h3>
+<!--
+Remember this trick question from before: which bitstring looks the "most" random and unpredictable?
+
+- `11111111`
+- `01010101`
+- `10100011`
+
+::: {.fragment}
+The answer is that if the strings are sampled uniformly at random, then each output is equally likely! So, we must evaluate pseudorandomness based on the process or _function_ used to map from short keys to long one-time secrets.
+:::
+-->
+<p>One way to solve this problem is to use a <strong>sponge function</strong> design introduced with SHA-3.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Given only:</p>
+<ul>
+<li>A short cryptographic key</li>
+<li>A short <strong>nonce</strong> (which can also be called an “initialization vector” or IV)</li>
+</ul>
+<p>we can use a sponge function to <em>absorb</em> the short inputs and then <em>squeeze</em> a long key stream that Alice and Bob can XOR with their private data.</p>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:42%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-keccak-5.png" class="img-fluid figure-img" width="450"></p>
+<figcaption>Making a one-time-use synthetic keystream (image source: <a href="https://csrc.nist.gov/csrc/media/projects/hash-functions/documents/keccak-slides-at-nist.pdf">Keccak presentation to NIST</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Always remember that:</p>
+<ul>
+<li>The key is used to provide <strong>secrecy</strong> <!-- *uncertainty* --></li>
+<li>The nonce is used to provide <strong>variety</strong></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:65%;">
+<p>For this reason, it is imperative that each nonce/IV is only used once</p>
+<ul>
+<li>If the nonce/IV is ever reused, then there will be a <a href="13.html#sec-frequency-attack">frequency attack</a>; this is called the “<strong>two-time pad</strong>” problem</li>
+<li>The good news is that the nonce does not need to be kept hidden from the adversary</li>
+</ul>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:32%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/13-cryptogram.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Cryptogram puzzle (image source: <a href="https://cryptograms.puzzlebaron.com/">cryptograms.org</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="defining-encryption" class="level3">
+<h3 class="anchored" data-anchor-id="defining-encryption">Defining encryption</h3>
+<p>Let’s formally specify an encryption scheme that allows for pseudorandomness and brings back ‘energy of the sun’ practical infeasibility.</p>
+<div id="def-enc" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.1 (Symmetric encryption)</strong></span> Nonce-based <em>symmetric encryption</em> contains three operations.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><code>KeyGen</code><span class="math inline">\(()\)</span>: takes no input, samples a symmetric secret key <span class="math inline">\(k \in \{0,1\}^\kappa\)</span> <!-- just like MACs --></li>
+<li><code>Enc</code><span class="math inline">\({}_k(p, n) \to c\)</span>: transforms plaintext message <span class="math inline">\(p\)</span> into ciphertext <span class="math inline">\(c\)</span></li>
+<li><code>Dec</code><span class="math inline">\({}_k(c, n) \to p\)</span>: recovers the original plaintext message <span class="math inline">\(p\)</span></li>
+</ul>
+</div>
+</div>
+<div class="fragment">
+<p>We require that <code>Enc</code> and <code>Dec</code> are “inverses” in the sense that <span class="math inline">\(\texttt{Dec}_k( \text{Enc}_k(p, n), n)= p\)</span> for all keys <span class="math inline">\(k\)</span>, plaintexts <span class="math inline">\(p\)</span>, and nonces <span class="math inline">\(n\)</span>. <!-- Note that the nonce $n$ is also required for decryption. --></p>
+<p>Note that <span class="math inline">\(|c| \geq |p|\)</span> as a consequence. Many constructions satisfy <span class="math inline">\(|c| = |p|\)</span>.</p>
+</div>
+<hr>
+</section>
+<section id="real-or-random-security" class="level3">
+<h3 class="anchored" data-anchor-id="real-or-random-security">Real-or-random security</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-bad-crypto-small.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>Comparing crypto primitives used in google.com and bu.edu in 2017</figcaption>
+</figure>
+</div>
+<p>In practice:</p>
+<ul>
+<li>Sponge functions are not used often, since they are relatively new <!-- SHA-3 was only standardized 1 decade ago. --></li>
+<li>The most common way to generate a synthetic keystream is to use <em>AES with Counter Mode</em> (which we will study later today)</li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>So that we can evaluate if we have done a good job, let’s define a requirement for an encryption scheme to be declared “secure.”</p>
+<p>For context, recall that EU-CMA was defined using a thought experiment in which honest Alice plays a game with the adversary Mallory.</p>
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-eucma.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>EU-CMA security game</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Let’s design a thought experiment for encryption. Remember that now our goal is <em>confidentiality</em>, not integrity.</p>
+</div>
+<div class="fragment">
+<div id="def-ror" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.2 (ROR-CPA)</strong></span> A symmetric encryption scheme is <strong>real-or-random indistinguishable under a chosen plaintext attack</strong> if Mallory cannot distinguish between real ciphertexts (for plainexts of her choice) and random data of the same length.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-ror.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>ROR-CPA security game</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>It is possible to show that our sponge construction achieves ROR-CPA if the function <span class="math inline">\(f\)</span> acts like a random permutation. In fact, it achieves a stronger claim:</p>
+<blockquote class="blockquote">
+<p>An adversary who does not know the key <span class="math inline">\(k\)</span>, but who may have observed part of an key stream, cannot predict key streams for that key it has not observed.</p>
+<p>– <a href="https://keccak.team/files/CSF-0.1.pdf">Cryptographic sponge functions</a></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Symmetric encryption addresses the first two limitations of a one-time pad.</p>
+<blockquote class="blockquote">
+<ol type="1">
+<li>The symmetric key <span class="math inline">\(k\)</span> must be as long as the plaintext message <span class="math inline">\(p\)</span></li>
+<li>Reusing the same key for two or more messages breaks security</li>
+</ol>
+</blockquote>
+</div>
+<hr>
+</section>
+</section>
+<section id="authenticated-encryption" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="authenticated-encryption"><span class="header-section-number">14.2</span> Authenticated encryption</h2>
+<p>Let’s address the last limitation of a one-time pad.</p>
+<blockquote class="blockquote">
+<ol start="3" type="1">
+<li>While it is safe against a passive eavesdropper Eve, an active attacker Mallory can manipulate the ciphertext in transit</li>
+</ol>
+</blockquote>
+<div class="fragment">
+<p>To fix this problem, we will also use a <em>message authentication code</em> to detect if Mallory changes data in transit. In other words: because symmetric encryption and MACs are so useful (and fast!) to solve their respective problems, it is common to use them together.</p>
+<blockquote class="blockquote">
+<p>“Confidentiality xor authenticity is not possible. If you don’t have both, often you don’t have either.”</p>
+<p>– Prof.&nbsp;Matthew Green (Johns Hopkins)</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>So for convenience, let’s construct a combined primitive called <strong>authenticated encryption</strong> that performs both tasks together.</p>
+<div class="columns">
+<div class="column" style="width:46%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-ror.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>ROR-CPA security game</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:8%;">
+
+</div><div class="column" style="width:46%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/05-eucma.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>EU-CMA security game</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Suppose there is a plaintext message <span class="math inline">\(p\)</span> that we want to be confidential and authenticated. What is the best way to combine encryption and MACs?</p>
+<ol type="A">
+<li>Enc and MAC</li>
+<li>MAC then Enc</li>
+<li>Enc then MAC</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-combine.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Generically combining encryption with MACs (ignoring the nonce for now)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. Let’s consider this question in two parts.</p>
+<ul>
+<li>In general, a MAC does not claim to provide data confidentiality, so option A is incorrect <!-- If you don't know anything about the specific symmetric key encryption and MAC constructions used, then the most important thing to remember is that the MAC does not provide data confidentiality --></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>To distinguish between options B and C, use the <strong>cryptographic doom principle</strong></li>
+</ul>
+<blockquote class="blockquote">
+<p>“If you have to perform any cryptographic operation before verifying the MAC on a message you’ve received, it will somehow inevitably lead to doom!”</p>
+<p>– Moxie Marlinspike</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>So the correct answer is C. Using Enc-then-MAC, we can make <em>authenticated encryption</em> by combining:</p>
+<ul>
+<li>any symmetric key encrytion scheme (like AES with Counter Mode)</li>
+<li>any message authentication code (like HMAC)</li>
+</ul>
+</div>
+<hr>
+<section id="defining-aead" class="level3">
+<h3 class="anchored" data-anchor-id="defining-aead">Defining AEAD</h3>
+<p>In general, suppose that the sender Alice has:</p>
+<ul>
+<li>Data <span class="math inline">\(p\)</span> that she wants to be confidential and authenticated</li>
+<li>Associated data <span class="math inline">\(a\)</span> that she only wants to be authenticated</li>
+<li>Nonce <span class="math inline">\(n\)</span> (sometimes also called the initialization vector)</li>
+</ul>
+<div class="fragment">
+<div id="def-aead" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 14.3 (AEAD)</strong></span> <em>Authenticated encryption with associated data</em> contains three operations:</p>
+<ul>
+<li><code>KeyGen</code>: randomly choose <span class="math inline">\(k\)</span>, as usual</li>
+<li><code>AEnc</code><span class="math inline">\({}_k(p, a, n)\)</span>: produces a combined ciphertext/tag <span class="math inline">\(ct\)</span> of length <span class="math inline">\(|ct| &gt; |p|\)</span> <!-- (often, $|ct| = |p| + 16$ bytes) --></li>
+<li><code>ADec</code><span class="math inline">\({}_k(ct, a, n)\)</span>: returns the original plaintext message <span class="math inline">\(p\)</span> or an error message</li>
+</ul>
+</div>
+</div>
+<!--
+For many AEAD schemes, the ciphertext/tag contains:
+
+- A one-time pad of the private data under a pseudorandomly-derived keystream, and
+- A message tag whose length is long enough to be unforgeable
+
+Hence, it is common for the ciphertext length $|c| = |p| + 128$ to be the plaintext length plus 128 bits for the tag.
+-->
+<div class="fragment">
+<p>The AEAD security game combines secrecy of an encryption scheme with unforgeability of a MAC. The simplest way to explain it is via the following thought experiment: Mallory cannot tell the difference between the two sides of this picture.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-aead.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>AEAD security game</figcaption>
+</figure>
+</div>
+</div>
+<!-- Just like the MAC game, we impose the restriction that Mallory cannot run `Dec` on the output of a previous call to `Enc` (since she already knows the answer, and it will pass MAC verification). -->
+<div class="fragment">
+<p>Why should we combine authentication and encryption?</p>
+<ul>
+<li>Better security: satisfies Moxie’s cryptographic doom principle</li>
+<li>Performance: save in time and space costs, also often only need 1 key</li>
+<li>Simplicity: developers have fewer decisions (and hence, opportunities for mistakes)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>For instance, <code>libsodium</code> provides a simple interface for authenticated encryption called <code>SecretBox</code>.</p>
+<div id="7f3f72ac" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.utils <span class="im">import</span> random</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nacl.secret <span class="im">import</span> SecretBox</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> random(SecretBox.KEY_SIZE)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>box <span class="op">=</span> SecretBox(key)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plaintext <span class="op">=</span> <span class="st">b"Hello, world!"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>nonce_tag_ciphertext <span class="op">=</span> box.encrypt(plaintext)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nonce_tag_ciphertext.<span class="bu">hex</span>())</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">len</span>(nonce_tag_ciphertext) <span class="op">==</span> box.NONCE_SIZE <span class="op">+</span> box.MACBYTES <span class="op">+</span> <span class="bu">len</span>(plaintext)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5eafb6398c7bbe5c7763300a38c1d10754168c8701bade792dd9fb498f31d105818d8901eb1a130960ad2d37ad11f484c31539a9dc</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="constructing-aead" class="level3">
+<h3 class="anchored" data-anchor-id="constructing-aead">Constructing AEAD</h3>
+<p>If we know the specific encryption and MAC used, then it is possible to combine them efficiently. <!-- possibly in ways that are different than the general construction --></p>
+<p><strong>Example 1 (sponge function).</strong> Let’s first design a MAC for variable length messages.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:42%;">
+<ul>
+<li>We absorb a long message <!-- (with padding to ensure that we have an integer multiple of the rate) --></li>
+<li>Then we squeeze out a pseudorandom (and thus unforgeable) MAC tag</li>
+</ul>
+</div><div class="column" style="width:1%;">
+
+</div><div class="column" style="width:57%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-keccak-4.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Keccak-based MAC (image source: <a href="https://csrc.nist.gov/csrc/media/projects/hash-functions/documents/keccak-slides-at-nist.pdf">Keccak presentation to NIST</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Second, we combine this MAC construction with our symmetric encryption scheme in order to build a combined <em>authenticated encryption</em>. <!-- The left half of this picture looks like how we built symmetric encryption, and the right side looks like the new MAC construction --></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-keccak-6.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Authenticated encryption with a sponge function (image source: <a href="https://csrc.nist.gov/csrc/media/projects/hash-functions/documents/keccak-slides-at-nist.pdf">Keccak presentation to NIST</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Example 2 (GMAC).</strong> The most popular MAC used to protect data on the Internet is called the <em>Galois Message Authentication Code</em>. <!-- ![GCM mode (source: [Wikipedia](https://en.wikipedia.org/wiki/Galois/Counter_Mode))](images/14-mode-gcm.png){width=400}--></p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>It is based on ideas from coding theory, although I won’t get into the details here</li>
+<li>When combined with AES in Counter Mode, the resulting authenticated encryption is called <em>AES with Galois/Counter mode</em>, or AES-GCM</li>
+</ul>
+<!-- Modern x86 (Intel, AMD) and ARM (Apple, Qualcomm, etc) processors have hardware instructions to calculate AES and GMAC quickly -->
+</div>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-bad-crypto-small.png" class="img-fluid figure-img" width="800"></p>
+<figcaption>Comparing crypto primitives used in google.com and bu.edu in 2017</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="advanced-encryption-standard" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="advanced-encryption-standard"><span class="header-section-number">14.3</span> Advanced Encryption Standard</h2>
+<p>The <strong>Advanced Encryption Standard</strong> (AES) is… not an encryption scheme. (Oops.) Nevertheless, it is a very useful tool that is often used in encryption.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>It was designed by Joan Daemen and Vincent Rijmen in the 1990s (before sponge functions existed)</li>
+<li>It won a NIST competition (among 15 total entries) to be named as the pseudorandom permutation used by the U.S. federal government</li>
+</ul>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“This Standard may be used by federal agencies to protect information when they have determined that encryption is appropriate.”</p>
+<p>– NIST Federal Information Processing Standards (FIPS) publication 197, “Announcing the Advanced Encryption Standard (AES)” (<a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf">link</a>)</p>
+</blockquote>
+</div>
+<!--
+::: {.fragment}
+:::: {.columns}
+::: {.column width="40%"}
+Recall from last time that we discussed two ways for Alice to encode her messages. AES follows option #2.
+:::
+::: {.column width="28%"}
+![Option 1: substitute each character ([source: Wikipedia](https://en.wikipedia.org/wiki/Caesar_cipher))](images/13-substitution.png){width=350}
+:::
+::: {.column width="4%"}
+:::
+::: {.column width="28%"}
+![Option 2: substitute each word or phrase](images/13-dictionaries.jpg){width=350}
+:::
+::::
+:::
+-->
+<hr>
+<section id="block-cipher" class="level3">
+<h3 class="anchored" data-anchor-id="block-cipher">Block cipher</h3>
+<p>AES is a <strong>block cipher</strong>, which is a family of pseudorandom permutations <span class="math inline">\(B_k: \{0, 1\}^n \to \{0, 1\}^n\)</span>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>For each <span class="math inline">\(B_k\)</span>, the input and output lengths are equal (specifically, 16 bytes)</li>
+<li>There are no collisions (this makes AES easier to build, and therefore faster, than a hash function)</li>
+<li>There is a forward direction <span class="math inline">\(B_k\)</span> called <em>enciphering</em> and an inverse direction <span class="math inline">\(B^{-1}_k\)</span> called <em>deciphering</em></li>
+<li>Each function <span class="math inline">\(B_k\)</span> is deterministic but “looks random” to anyone who does not know <span class="math inline">\(k\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:62%;">
+<p>Think of AES like a big library.</p>
+<ul>
+<li><p>Each individual <span class="math inline">\(B_k\)</span> is a codebook that encodes bytestrings… but remember that using the exact same input twice will result in the same output</p></li>
+<li><p>There are many, many possible choices of <span class="math inline">\(k\)</span>: each one is a different codebook in the library</p></li>
+</ul>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:35%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-library.jpg" class="img-fluid figure-img" width="300"></p>
+<figcaption>Library of codebooks</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="running-aes" class="level3">
+<h3 class="anchored" data-anchor-id="running-aes">Running AES</h3>
+<p>Let’s see how to use AES. In contrast to a hash function: <!-- Let's look I show below an example of the AES permutation (for a randomly-chosen key). --></p>
+<div class="incremental">
+<ul class="incremental">
+<li>AES has a fixed input and output length of 16 bytes; it <em>does not work</em> for any other size</li>
+<li>There is a symmetric secret key that Mallory must not know (there are 3 possible key lengths, and the respective functions are called AES-128, AES-192, and AES-256)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>The code below runs AES with a randomly-chosen key.</p>
+<div id="f9307c4b" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Cryptodome.Cipher <span class="im">import</span> AES</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> binascii <span class="im">import</span> hexlify, unhexlify</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> os <span class="im">import</span> urandom</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> urandom(<span class="dv">32</span>) <span class="co"># key is 32 bytes / 256 bits long</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> aes256(x):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    cipher <span class="op">=</span> AES.new(key, AES.MODE_ECB)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> hexlify(cipher.encrypt(unhexlify(x)))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(aes256(<span class="st">b'00'</span> <span class="op">*</span> <span class="dv">15</span>))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Input too short"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Input too short</code></pre>
+</div>
+</div>
+<div id="d5249aab" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(aes256(<span class="st">b'00'</span> <span class="op">*</span> <span class="dv">17</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Input too long"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Input too long</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>As one would expect from a random-looking function: making small changes to the input results in substantial changes to the output. This property is called <em>diffusion</em>.</p>
+<div id="9ecae174" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(aes256(<span class="st">b'00'</span> <span class="op">*</span> <span class="dv">16</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(aes256(<span class="st">b'00'</span> <span class="op">*</span> <span class="dv">15</span> <span class="op">+</span> <span class="st">b'01'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>b'b3956fe9231e2652ad774cf63614fca0'
+b'7c8b86a4e110e21de12f5e2a304b10a9'</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="block-cipher-security" class="level3">
+<h3 class="anchored" data-anchor-id="block-cipher-security">Block cipher security</h3>
+<div class="fragment">
+<p>Recall that any instantiation of a low-level cryptographic primitive must satisfy three informal rules: simple, makes no sense, and simple to see why it makes no sense.</p>
+</div>
+<div class="fragment">
+<p><strong>Simple.</strong> AES is used <em>everywhere</em>, so it must be really fast to run.</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:53%;">
+<p>All modern computer processors provide hardware acceleration support for AES in order to process gigabytes of data per second.</p>
+<ul>
+<li>Intel and AMD CPUs include specific hardware instructions for AES</li>
+<li>Apple built a dedicated AES co-processor that sits between the RAM and hard drive <!--
+> “Every Apple device with a Secure Enclave also has a dedicated AES256 crypto engine (the “AES Engine”) built into the direct memory access (DMA) path between the NAND (nonvolatile) flash storage and main system memory, making file encryption highly efficient.”
+--></li>
+</ul>
+</div><div class="column" style="width:47%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-apple-aes.png" class="img-fluid figure-img" width="350"></p>
+<figcaption>AES crypto engine on iPhones (source: <a href="https://support.apple.com/guide/security/secure-enclave-sec59b0b31ff/web">Apple</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Makes no sense.</strong> AES has survived significant attempts at cryptanalysis over:</p>
+<ul>
+<li>4 years of the NIST competition (1997-2000)</li>
+<li>25+ years afterward</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Simple to see why it makes no sense.</strong> The designers of AES provided mathematical analysis to show that:</p>
+<ul>
+<li>AES can withstand specific cryptanalysis attacks that doomed other ciphers</li>
+<li>It is likely that AES is “as hard to break” as any other block cipher of its size (this security requirement is called <em>strong pseudorandomness</em>)</li>
+</ul>
+</div>
+<!--
+::: {.fragment}
+Formally, we assume that AES is strongly pseudorandom.
+
+::: {#def-block-cipher}
+We say that a block cipher is _strongly pseudorandom_ if every adversary Mallory who is resource-bounded (say, looks at $\leq q$ entries of the codebook's truth table and runs in $\leq t$ time) can only distinguish the real cipher $B_k$ from a truly random permutation $\Pi: \{0, 1\}^n \to \{0, 1\}^n$ with very small probability $\varepsilon$ (say, around $q \cdot 2^{-128}$).
+:::
+
+![Strong pseudorandomness game, where the right-hand side library is of size $(2^n)!$](images/14-pseudorandom.png){width=800}
+:::
+-->
+<hr>
+</section>
+</section>
+<section id="modes-of-operation" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="modes-of-operation"><span class="header-section-number">14.4</span> Modes of operation</h2>
+<div class="columns">
+<div class="column" style="width:75%;">
+<p>AES only processes 16 bytes of data at a time. So how do we use it to encrypt long messages?</p>
+<p>There are many algorithms, called <strong>modes of operation</strong>, that dictate how to run AES multiple times in order to process lots of data.</p>
+</div><div class="column" style="width:25%;">
+<p><img src="images/14-modes.png" class="img-fluid" width="200"></p>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Bad example.</strong> One naive idea is to split the plaintext message into 16-byte blocks, run each of them through AES, and use the result as the ciphertext. This is called <em>electronic codebook</em> (ECB) mode.</p>
+</div>
+<div class="fragment">
+<p>However, ECB is <strong>very, very bad</strong> and should <strong>never</strong> be used! I will prove this to you with a picture. ECB mode has the frequency attack / cryptograms problem!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-mode-ecb.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>ECB mode leads to sad Linux penguins (source: <a href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+<section id="counter-mode" class="level3">
+<h3 class="anchored" data-anchor-id="counter-mode">Counter mode</h3>
+<p>A better approach is to use AES to produce a synthetic keystream. This is called <em>counter</em> (CTR) mode.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-mode-ctr-enc.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>CTR mode encryption (source: <a href="https://en.wikipedia.org/wiki/Galois/Counter_Mode">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-mode-ctr-dec.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>CTR mode decryption (still uses <span class="math inline">\(B_k\)</span>, not <span class="math inline">\(B_k^{-1}\)</span>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>CTR mode is both strong and fast.</p>
+<div id="thm-ctr" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 14.1</strong></span> If AES is a strongly pseudorandom block cipher and the <code>nonce</code> is never reused, then AES-CTR is real-or-random indistinguishable under a chosen plaintext attack. <!-- If $B_k$ is a strongly pseudorandom block cipher and the `nonce` is never reused, then CTR mode produces a strong encryption scheme. --></p>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Proof sketch
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="columns">
+<div class="column" style="width:47%;">
+<ul>
+<li>If we replace AES with a truly random permutation <span class="math inline">\(\Pi\)</span>, then the result <em>is</em> a truly random keystream</li>
+<li>If the nonce is never repeated, this keystream is a one-time pad</li>
+<li>So, CTR mode with <span class="math inline">\(\Pi\)</span> achieves perfect secrecy</li>
+<li>Strong pseudorandomness says that a real block cipher <span class="math inline">\(B_k\)</span> is “as good as” the ideal <span class="math inline">\(\Pi\)</span></li>
+</ul>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-ctr-security.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>CTR mode with a truly random permutation <span class="math inline">\(\Pi\)</span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>CTR mode has only two weaknesses.</p>
+<ul>
+<li>It does not provide message integrity. Fortunately, this can be achieved by adding a MAC to form AES-GCM.</li>
+<li>If the <code>nonce</code> is ever repeated, then the adversary can run a two-time pad attack and recover the key. There exist newer modes of operation that are <em>misuse resistant</em> against accidental repetition of the <code>nonce</code>. <!--  they reveal when a message/nonce pair is repeated but nothing more --></li>
+</ul>
+</div>
+<!--
+::: {.fragment}
+When CTR mode is used in practice, the `nonce` is 96 bits long and the `counter` is 32 bits long. Hence:
+:::
+
+::: {.incremental}
+- Each call to AES-CTR can encrypt a message of up to $2^{32}$ blocks in length, which is about 68 GB
+- If Alice and Bob maintain a counter as a nonce, they can encrypt up to $2^{96} \approx 79$ octillion messages (so they're good for life)
+- If Alice and Bob choose each `nonce` uniformly at random, then by the birthday bound a collision is likely to occur after $2^{48} \approx 280$ trillion messages, so they should switch to a new key long before then
+:::
+-->
+<div class="fragment">
+<p>Next time, we will use block ciphers and authenticated encryption to protect data at rest on your hard drive.</p>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -712,8 +1528,8 @@ ul.task-list li input[type="checkbox"] {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./15.html" class="pagination-link" aria-label="Disk encryption">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./15.html" class="pagination-link" aria-label="Encrypting data at rest">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
