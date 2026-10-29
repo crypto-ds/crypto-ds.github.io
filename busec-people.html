@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>BUSEC People</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root { --bg:#f9fafb; --card:#fff; --muted:#6b7280; --border:#e5e7eb; --shadow:0 2px 10px rgba(0,0,0,.08); }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif; background:var(--bg); color:#111827; }
+  header { padding:28px 20px 8px; text-align:center; }
+  header h1 { margin:0; font-size:28px; font-weight:700; }
+  main { padding: 10px 20px 40px; max-width: 1100px; margin: 0 auto; }
+  section { margin: 36px 0 54px; }
+  section h2 { margin:0 0 16px; font-size:22px; border-bottom:2px solid var(--border); padding-bottom:6px; }
+  /* Cards */
+  .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:18px; }
+  .card, .card-link {
+    background:var(--card); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; padding:16px; text-decoration:none; color:inherit; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover, .card-link:hover { transform: translateY(-4px); box-shadow:0 6px 18px rgba(0,0,0,.12); }
+  .photo { width:100%; aspect-ratio: 1 / 1; object-fit:cover; border-radius:10px; margin-bottom:10px; background:#f3f4f6; }
+  .name { font-size:18px; font-weight:700; margin:4px 0 6px; }
+  .interest { white-space:pre-wrap; font-size:14px; color:#374151; margin:4px 0 8px; }
+  .meta { font-size:13px; color:#374151; margin:2px 0; }
+  .label { font-weight:600; }
+  /* Tables */
+  table { width:100%; border-collapse: collapse; background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  thead th { text-align:left; background:#f3f4f6; padding:10px 12px; font-size:13px; color:#111827; border-bottom:1px solid var(--border); }
+  tbody td { padding:10px 12px; border-top:1px solid var(--border); font-size:14px; color:#111827; vertical-align:top; }
+  tbody tr:nth-child(even) td { background:#fafafa; }
+  /* Small screens */
+  @media (max-width:520px) {
+    header h1 { font-size:22px; }
+    section h2 { font-size:18px; }
+  }
+</style>
+</head>
+<body>
+  <header><h1>BUSEC People</h1></header>
+  <main id="content">Loading…</main>
+
+<script>
+// ---------- CONFIG ----------
+const PUBLISH_ID = "2PACX-1vRnnYOgOAMeGU1AiEWdJO6TGi-XoK6yMgqkgt392iYeGW2jVBoaBCgsyRxs6ya6MiZyUOB5nrP3e9XL";
+const TABS = [
+  { name: "Faculty", gid: "0" },
+  { name: "Postdocs", gid: "1675538953" },
+  { name: "Graduate Students", gid: "731182970" },
+  { name: "Undergraduate Researchers", gid: "901931863" },
+  { name: "Past Faculty and Visitors", gid: "841115769" },
+  { name: "Visiting faculty", gid: "1304163824" },
+  { name: "Past Postdocs", gid: "1910190841" },
+  { name: "Graduated PhD Students", gid: "1368661932" },
+  { name: "Graduated Masters Students", gid: "897303540" },
+  { name: "Graduated Undergraduate Researchers", gid: "1398614705" },
+  { name: "Other Visitors", gid: "396440823" }
+];
+
+// ---------- CSV PARSER (handles quotes, commas, and newlines inside quotes) ----------
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"') {
+      if (inQuotes && text[i+1] === '"') { field += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if (c === ',' && !inQuotes) {
+      row.push(field); field = "";
+    } else if (c === '\r' && text[i+1] === '\n' && !inQuotes) {
+      row.push(field); rows.push(row); row = []; field = ""; i++;
+    } else if ((c === '\n' || c === '\r') && !inQuotes) {
+      row.push(field); rows.push(row); row = []; field = "";
+    } else {
+      field += c;
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  // trim cells and drop completely empty trailing columns (blank headers)
+  const headers = (rows[0] || []).map(h => (h || "").trim());
+  const validIdx = headers.map((h, i) => ({h, i})).filter(x => x.h !== "");
+  const compacted = rows.map(r => validIdx.map(x => (r[x.i] ?? "").trim()));
+  return compacted.filter(r => r.some(c => c !== "")); // drop fully-empty rows
+}
+
+// ---------- SANITIZATION HELPERS ----------
+function setText(el, text) { el.textContent = text || ""; }
+function safeURL(url) {
+  if (!url) return "";
+  const u = url.trim();
+  try {
+    const p = new URL(u, window.location.origin);
+    if (p.protocol === "http:" || p.protocol === "https:") return p.href;
+  } catch {}
+  return "";
+}
+
+// Choose a display name column (supports Name/Student/PhD Student/etc.)
+function pickNameCol(headersLower) {
+  const prefs = ["name","student","phd student","masters student","undergraduate researcher","visitor","visitor or past faculty"];
+  for (const p of prefs) {
+    const idx = headersLower.indexOf(p);
+    if (idx !== -1) return idx;
+  }
+  return -1;
+}
+
+// ---------- RENDERERS ----------
+function renderCards(sectionTitle, headers, rows) {
+  const wrap = document.createElement("section");
+  const h2 = document.createElement("h2"); setText(h2, sectionTitle);
+  wrap.appendChild(h2);
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  wrap.appendChild(grid);
+
+  const headersLower = headers.map(h => h.toLowerCase());
+  const picIdx = headersLower.indexOf("picture");
+  const siteIdx = headersLower.indexOf("website");
+  const interestIdx = headersLower.indexOf("interest");
+  const nameIdx = pickNameCol(headersLower);
+
+  rows.forEach(row => {
+    const hasContent = row.some(v => v && v.trim() !== "");
+    if (!hasContent) return;
+
+    const linkURL = siteIdx >= 0 ? safeURL(row[siteIdx]) : "";
+    const container = document.createElement(linkURL ? "a" : "div");
+    container.className = linkURL ? "card-link" : "card";
+    if (linkURL) { container.href = linkURL; container.target = "_blank"; container.rel = "noopener noreferrer"; }
+
+    // Picture (if any)
+    if (picIdx >= 0) {
+      const imgURL = safeURL(row[picIdx]);
+      if (imgURL) {
+        const img = document.createElement("img");
+        img.className = "photo";
+        img.src = imgURL;
+        img.alt = (nameIdx >= 0 ? row[nameIdx] : sectionTitle) + " photo";
+        container.appendChild(img);
+      }
+    }
+
+    // Name
+    if (nameIdx >= 0 && row[nameIdx]) {
+      const nm = document.createElement("div"); nm.className = "name"; setText(nm, row[nameIdx]); container.appendChild(nm);
+    }
+
+    // Interest / bio paragraph
+    if (interestIdx >= 0 && row[interestIdx]) {
+      const it = document.createElement("div"); it.className = "interest"; setText(it, row[interestIdx]); container.appendChild(it);
+    }
+
+    // Any remaining fields as labeled metadata (except Picture/Website/Interest/Name)
+    headers.forEach((h, i) => {
+      if (i === picIdx || i === siteIdx || i === interestIdx || i === nameIdx) return;
+      const val = row[i];
+      if (!val) return;
+      const meta = document.createElement("div"); meta.className = "meta";
+      const label = document.createElement("span"); label.className = "label"; setText(label, h + ": ");
+      const txt = document.createElement("span"); setText(txt, val);
+      meta.appendChild(label); meta.appendChild(txt);
+      container.appendChild(meta);
+    });
+
+    grid.appendChild(container);
+  });
+
+  document.getElementById("content").appendChild(wrap);
+}
+
+function renderTable(sectionTitle, headers, rows) {
+  const wrap = document.createElement("section");
+  const h2 = document.createElement("h2"); setText(h2, sectionTitle);
+  wrap.appendChild(h2);
+
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const trh = document.createElement("tr");
+  headers.forEach(h => { const th = document.createElement("th"); setText(th, h); trh.appendChild(th); });
+  thead.appendChild(trh); table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    headers.forEach((h, i) => { const td = document.createElement("td"); setText(td, r[i] || ""); tr.appendChild(td); });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+
+  wrap.appendChild(table);
+  document.getElementById("content").appendChild(wrap);
+}
+
+// Decide renderer per tab: cards if it has a non-empty Picture column; else table
+function renderSection(title, allRows) {
+  if (!allRows.length) return;
+  const headers = allRows[0];
+  const rows = allRows.slice(1);
+  const headersLower = headers.map(h => h.toLowerCase());
+  const picIdx = headersLower.indexOf("picture");
+  const hasAnyPicture = picIdx >= 0 && rows.some(r => safeURL(r[picIdx]));
+
+  if (hasAnyPicture) renderCards(title, headers, rows);
+  else renderTable(title, headers, rows);
+}
+
+// ---------- FETCH & BUILD ----------
+(async function build() {
+  const content = document.getElementById("content");
+  content.textContent = "";
+
+  for (const tab of TABS) {
+    const url = `https://docs.google.com/spreadsheets/d/e/${PUBLISH_ID}/pub?gid=${tab.gid}&single=true&output=csv`;
+    try {
+      const csv = await fetch(url).then(r => r.text());
+      const data = parseCSV(csv);
+      if (data.length) renderSection(tab.name, data);
+    } catch (err) {
+      console.error("Fetch error for tab", tab.name, err);
+      const s = document.createElement("section");
+      const h2 = document.createElement("h2"); setText(h2, tab.name);
+      const p = document.createElement("p"); setText(p, "Unable to load this section.");
+      s.appendChild(h2); s.appendChild(p); content.appendChild(s);
+    }
+  }
+})();
+</script>
+</body>
+</html>
+
