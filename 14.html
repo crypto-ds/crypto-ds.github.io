@@ -354,7 +354,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#authenticated-encryption" id="toc-authenticated-encryption" class="nav-link" data-scroll-target="#authenticated-encryption"><span class="header-section-number">14.2</span> Authenticated encryption</a>
   <ul class="collapse">
-  <li><a href="#defining-aead" id="toc-defining-aead" class="nav-link" data-scroll-target="#defining-aead">Defining AEAD</a></li>
+  <li><a href="#sec-defining-aead" id="toc-sec-defining-aead" class="nav-link" data-scroll-target="#sec-defining-aead">Defining AEAD</a></li>
   <li><a href="#constructing-aead" id="toc-constructing-aead" class="nav-link" data-scroll-target="#constructing-aead">Constructing AEAD</a></li>
   </ul></li>
   <li><a href="#advanced-encryption-standard" id="toc-advanced-encryption-standard" class="nav-link" data-scroll-target="#advanced-encryption-standard"><span class="header-section-number">14.3</span> Advanced Encryption Standard</a>
@@ -717,8 +717,8 @@ The answer is that if the strings are sampled uniformly at random, then each out
 </ul>
 </div>
 <hr>
-<section id="defining-aead" class="level3">
-<h3 class="anchored" data-anchor-id="defining-aead">Defining AEAD</h3>
+<section id="sec-defining-aead" class="level3">
+<h3 class="anchored" data-anchor-id="sec-defining-aead">Defining AEAD</h3>
 <p>In general, suppose that the sender Alice has:</p>
 <ul>
 <li>Data <span class="math inline">\(p\)</span> that she wants to be confidential and authenticated</li>
@@ -1097,9 +1097,12 @@ We say that a block cipher is _strongly pseudorandom_ if every adversary Mallory
 <div class="fragment">
 <p>CTR mode has only two weaknesses.</p>
 <ul>
-<li>It does not provide message integrity. Fortunately, this can be achieved by adding a MAC to form AES-GCM.</li>
-<li>If the <code>nonce</code> is ever repeated, then the adversary can run a two-time pad attack and recover the key. There exist newer modes of operation that are <em>misuse resistant</em> against accidental repetition of the <code>nonce</code>. <!--  they reveal when a message/nonce pair is repeated but nothing more --></li>
+<li>If the <code>nonce</code> is ever repeated, then the adversary can run a two-time pad attack and recover the key. There are newer modes of operation that are <em>misuse resistant</em> against accidental repetition of the <code>nonce</code>.</li>
+<li>It does not provide message integrity. Fortunately, this can be achieved by adding a MAC to form AES-GCM. <!--  they reveal when a message/nonce pair is repeated but nothing more --></li>
 </ul>
+</div>
+<div id="thm-gcm" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 14.2</strong></span> If AES is a strongly pseudorandom block cipher, the <code>nonce</code> is never reused, and the Galois MAC satisfies EU-CMA, then AES-GCM is a secure authenticated encryption scheme. Specifically, it is practically infeasible for Mallory to win the <a href="14.html#sec-defining-aead">AEAD security game</a>.</p>
 </div>
 <!--
 ::: {.fragment}

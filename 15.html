@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>15&nbsp; Disk encryption – Crypto for Data Science</title>
+<title>15&nbsp; Encrypting data at rest – Crypto for Data Science</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -25,6 +25,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -89,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit3.html">Protecting data confidentiality</a></li><li class="breadcrumb-item"><a href="./15.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit3.html">Protecting data confidentiality</a></li><li class="breadcrumb-item"><a href="./15.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -248,7 +312,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -274,15 +338,45 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#protecting-data-at-rest" id="toc-protecting-data-at-rest" class="nav-link" data-scroll-target="#protecting-data-at-rest"><span class="header-section-number">15.1</span> Protecting data at rest</a>
+  <ul class="collapse">
+  <li><a href="#scenario" id="toc-scenario" class="nav-link" data-scroll-target="#scenario">Scenario</a></li>
+  </ul></li>
+  <li><a href="#sector-level-encryption" id="toc-sector-level-encryption" class="nav-link" data-scroll-target="#sector-level-encryption"><span class="header-section-number">15.2</span> Sector-level encryption</a>
+  <ul class="collapse">
+  <li><a href="#xts-mode" id="toc-xts-mode" class="nav-link" data-scroll-target="#xts-mode">XTS mode</a></li>
+  </ul></li>
+  <li><a href="#key-management" id="toc-key-management" class="nav-link" data-scroll-target="#key-management"><span class="header-section-number">15.3</span> Key management</a>
+  <ul class="collapse">
+  <li><a href="#password-based-key-derivation" id="toc-password-based-key-derivation" class="nav-link" data-scroll-target="#password-based-key-derivation">Password-based key derivation</a></li>
+  <li><a href="#key-wrapping" id="toc-key-wrapping" class="nav-link" data-scroll-target="#key-wrapping">Key wrapping</a></li>
+  </ul></li>
+  <li><a href="#file-level-encryption" id="toc-file-level-encryption" class="nav-link" data-scroll-target="#file-level-encryption"><span class="header-section-number">15.4</span> File-level encryption</a>
+  <ul class="collapse">
+  <li><a href="#bag-of-keys" id="toc-bag-of-keys" class="nav-link" data-scroll-target="#bag-of-keys">Bag of keys</a></li>
+  </ul></li>
+  <li><a href="#encryption-and-society" id="toc-encryption-and-society" class="nav-link" data-scroll-target="#encryption-and-society"><span class="header-section-number">15.5</span> Encryption and society</a>
+  <ul class="collapse">
+  <li><a href="#apple-vs.-fbi-case" id="toc-apple-vs.-fbi-case" class="nav-link" data-scroll-target="#apple-vs.-fbi-case">Apple vs.&nbsp;FBI case</a></li>
+  <li><a href="#crypto-wars" id="toc-crypto-wars" class="nav-link" data-scroll-target="#crypto-wars">Crypto wars</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit3.html">Protecting data confidentiality</a></li><li class="breadcrumb-item"><a href="./15.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit3.html">Protecting data confidentiality</a></li><li class="breadcrumb-item"><a href="./15.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></h1>
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></h1>
 </div>
 
 
@@ -300,9 +394,830 @@ ul.task-list li input[type="checkbox"] {
 
 
 <hr>
-<p>To appear</p>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Homework 6 is due on Wed 11/4</li>
+<li>Lab 10 on this week’s reading (<a href="https://signal.org/docs/specifications/doubleratchet/">Signal’s double ratchet algorithm</a>)</li>
+<li>My office hours are canceled on Tues 11/3; send me a private Piazza note if you want to talk</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How to protect data confidentiality on a computer or phone with sector- or file-level encryption</li>
+<li>Some of the public policy questions that stem from the widespread use of encryption within society</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<blockquote class="blockquote">
+<p>“Cryptography is about communication in the presence of an adversary.”</p>
+<p>– Prof.&nbsp;Ron Rivest</p>
+</blockquote>
+<p>To protect <em>data confidentiality</em>, we built <strong>authenticated encryption</strong> in three steps.</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><strong>Pseudorandomness</strong>: from a short symmetric key <span class="math inline">\(k\)</span> and one-time nonce <span class="math inline">\(n\)</span>, pseudorandomly generate a long synthetically-generated secret <span class="math inline">\(s\)</span></li>
+<li><strong>One-time pad</strong>: encrypt a plaintext message <span class="math inline">\(p\)</span> as <span class="math inline">\(c = p \oplus s\)</span></li>
+<li><strong>Tag</strong>: Create a MAC tag <span class="math inline">\(t\)</span> of the ciphertext <span class="math inline">\(c\)</span> (and optionally, some associated data <span class="math inline">\(a\)</span>)</li>
+</ol>
+</div>
+<div class="fragment">
+<p>The most common way to perform the first step is to use AES in Counter Mode.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>AES is a fixed-length <em>block cipher</em> that is implemented in hardware in all modern computers and phones <!-- (a family of fixed-length pseudorandom permutations) --></li>
+<li>Counter mode is a <em>mode of operation</em> that builds a variable-length synthetic keystream <span class="math inline">\(s\)</span> to <code>XOR</code> with the plaintext</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>The most popular authenticated encryption scheme used on the web is AES-GCM.</p>
+<ul>
+<li>It is Counter Mode along with a custom MAC (which also has a hardware instruction)</li>
+<li>Following the cryptographic doom principle, it performs <strong>Encrypt-then-MAC</strong></li>
+</ul>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:27%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-mode-gcm.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>GCM mode (source: <a href="https://en.wikipedia.org/wiki/Galois/Counter_Mode">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:53%;">
+<p>We have now discussed all of the foundational math assumptions that we will use in this course.</p>
+<div class="fragment">
+<p>Symmetric key cryptography:</p>
+<ul>
+<li>SHA-256 acts like a random oracle <!-- and therefore is also preimage resistant, collision resistant, and puzzle friendly --></li>
+<li>AES is strongly pseudorandom</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Public key cryptography:</p>
+<ul>
+<li>Calculating discrete logarithms is hard <!-- in modular arithmetic fields and elliptic curve groups --></li>
+<li>Factoring the product of two large primes is hard</li>
+</ul>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-venice.jpeg" class="img-fluid figure-img" width="600"></p>
+<figcaption>City of Venice, Italy (source: <a href="https://commons.wikimedia.org/wiki/File:Venezia_acqua_alta_notte_2005_modificata.jpg">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Every cryptosystem that we build in this course – message commitment, digital signature, encryption, MAC, and more – can be proved to be secure based on one or more of these four assumptions.</p>
+</div>
+<hr>
+</section>
+<section id="protecting-data-at-rest" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="protecting-data-at-rest"><span class="header-section-number">15.1</span> Protecting data at rest</h2>
+<p>Our goal for today is to study encryption of data on your computer or phone.</p>
+<div class="fragment">
+<p>All major operating systems support disk encryption, often by default.</p>
+<!-- Windows introduces BitLocker in 2007 with Windows Vista -->
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 37%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Operating system</th>
+<th style="text-align: left;">Product</th>
+<th style="text-align: left;">On by default since…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Windows</td>
+<td style="text-align: left;">Microsoft Bitlocker</td>
+<td style="text-align: left;">Windows 8 (2012)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mac OS X</td>
+<td style="text-align: left;">Apple FileVault</td>
+<td style="text-align: left;">OS X Yosemite 10.10 (2014)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Linux</td>
+<td style="text-align: left;">Linux Unified Key Setup (luks)</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Multi OS 3rd party tools</td>
+<td style="text-align: left;">VeraCrypt, SecureDoc, …</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">iOS</td>
+<td style="text-align: left;">[built into OS]</td>
+<td style="text-align: left;">iOS 8 (2013)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Android</td>
+<td style="text-align: left;">[built into OS]</td>
+<td style="text-align: left;">Android 6.0 (2015)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<section id="scenario" class="level3">
+<h3 class="anchored" data-anchor-id="scenario">Scenario</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Future Alice
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="160">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:46%;">
+<p>Our objective is to protect data confidentiality against an adversary Mallory who temporarily obtains physical access to Alice’s computer or phone. <!-- Here is the scenario with Alice and Mallory that we will consider today. --></p>
+</div>
+</div>
+<div class="fragment">
+<p>Alice’s actions</p>
+<ul>
+<li>Knows a symmetric key <span class="math inline">\(k\)</span> (say, one that is derived from her password using a slow hash function)</li>
+<li>Encrypts each sector or file of her hard drive using <span class="math inline">\(k\)</span></li>
+<li>Inputs <span class="math inline">\(k\)</span> every time she boots or unlocks the device</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Mallory’s capabilities</p>
+<ul>
+<li>Steals the device while it is powered off</li>
+<li>Reads, and potentially modifies, any location of the encrypted drive</li>
+<li>We might even give Mallory the superpower to ask Alice to decrypt a few locations of the drive</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Our objective: even with these powers, Mallory still cannot</p>
+<ul>
+<li>Read the plaintext data (except by asking Alice)</li>
+<li>Tamper with any sector or file of data in an undetectable way</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Non-objective: Mallory <em>can</em> replay earlier contents of the hard drive. We will not be able to use crypto to stop this.</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:15%;">
+<p><img src="images/15-disk.png" class="img-fluid" width="100"></p>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:81%;">
+<p>We will consider two options.</p>
+<ol type="1">
+<li>We control the <strong>hardware</strong> and can encrypt sectors of the hard drive.</li>
+<li>We control the <strong>operating system</strong> and can encrypt files on the hard drive.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:56%;">
+<p>In both cases, it is critical that the crypto is <strong>fast</strong>. We must:</p>
+<ul>
+<li>encrypt data faster than we can write it to the drive</li>
+<li>decrypt data faster than we can read it from the drive</li>
+</ul>
+<p>This is one reason why all modern computers have dedicated hardware instructions to execute AES.</p>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:42%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-disk-speed.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Write speed of Macbook SSDs (source: <a href="https://www.reddit.com/r/mac/comments/1gvovdt/the_ultimate_guide_to_mac_ssd_speeds/">Reddit</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sector-level-encryption" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="sector-level-encryption"><span class="header-section-number">15.2</span> Sector-level encryption</h2>
+<p>Imagine you are the manufacturer of the hard drive and other hardware. Your goal is to build a cryptosystem that automatically encrypts the drive.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="fragment">
+<p><strong>Example.</strong> Let’s explore how hard drives work.</p>
+</div>
+<div class="fragment">
+<div id="f7b890cb" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>echo <span class="st">"Hello world"</span> <span class="op">&gt;</span> test<span class="op">-</span><span class="bu">file</span>.txt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cat test<span class="op">-</span><span class="bu">file</span>.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Hello world</code></pre>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:35%;">
+<div class="fragment">
+<p><img src="images/15-sector.png" class="img-fluid" width="300"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The basic unit of data within a hard drive is called a <strong>sector</strong>. Sectors have a fixed length specified by the drive manufacturer.</p>
+<ul>
+<li>Common options are 512, 520, 2048, or 4096 bytes</li>
+<li>The number of sectors on the drive depends on the drive’s total storage</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Here are the 4 types of hardware that we are going to consider today.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-hardware1.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Hardware used in sector-level encryption</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Remember that having the secret key gives someone the power to decrypt and read a message.</p>
+</div>
+<div class="fragment">
+<p>So: whenever you see encryption used in practice, you should ask how the keys are stored and protected.</p>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> In sector-level encryption, where should we store the symmetric key?</p>
+</div>
+<div class="fragment">
+<p>An appealing, but ultimately incorrect, idea is to store the symmetric key in hard drive. After all, we already use the hard drive to store everything else.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-hardware2.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Incorrect workflow</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> Why is this a mistake?</p>
+</div>
+<div class="fragment">
+<p>Instead, a better workflow is to store the key in a tamper-resistant piece of hardware when the computer is off, and move the key into the RAM after the computer is turned on and the password is entered.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-hardware3.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Correct workflow</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Suppose that Mallory steals your computer. With sector-level encryption, in which scenarios will your data remain confidential?</p>
+<ol type="A">
+<li>Only if the computer is off</li>
+<li>That, or if the computer is on but asleep</li>
+<li>That, or if the computer is on and awake but all programs are closed</li>
+<li>Always</li>
+</ol>
+</div>
+<hr>
+<section id="xts-mode" class="level3">
+<h3 class="anchored" data-anchor-id="xts-mode">XTS mode</h3>
+<p>Sector-level encryption uses a special symmetric encryption scheme, called AES-XTS. Why is that?</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Ideally, we would want to use authenticated encryption</li>
+<li>But after we encrypt a sector, there is no extra space to put the MAC tag <!-- - But we cannot for space reasons: after we encrypt the sector, there's no extra space to put the MAC --> <!-- In fact, we don't even have space to pad the message up to an integer multiple of the PRP block length --></li>
+<li>Still, we want to do <em>something</em> to mitigate tampering attacks
+<ul class="incremental">
+<li>Within 1 sector: want encryption to provide <em>some</em> resistance to tampering</li>
+<li>Between sectors: encryption should work “independently” for each sector, so Mallory cannot move ciphertexts between sectors <!-- - Recall our non-goal: Mallory can perform a replay attack to restore a single sector to an earlier version --></li>
+</ul></li>
+<li>AES-XTS pseudorandomly generates the one-time pad as a function of the block sector number</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="key-management" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="key-management"><span class="header-section-number">15.3</span> Key management</h2>
+<p>Remember that encryption is all-or-nothing: if you have the keys, then you can read and edit the data. So, whenever encryption is used in practice, you should ask:</p>
+<div class="incremental">
+<ul class="incremental">
+<li><strong>who</strong> has access to the keys?</li>
+<li><strong>when</strong> are the keys accessible?</li>
+<li><strong>where</strong> are the keys located when in use (and when not in use)?</li>
+</ul>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“Crypto is a tool for turning a whole swathe of problems into key management problems.”</p>
+<p>– Lea Kissner <a href="https://x.com/LeaKissner/status/1198595109756887040">(source)</a></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Let’s discuss two cryptographic tools that are useful for key management: <em>key derivation functions</em> and <em>key wrapping</em>.</p>
+</div>
+<hr>
+<section id="password-based-key-derivation" class="level3">
+<h3 class="anchored" data-anchor-id="password-based-key-derivation">Password-based key derivation</h3>
+<div class="columns">
+<div class="column" style="width:82%;">
+<p>The Trusted Platform Module (TPM) does not actually store a cryptographic key. Instead, the TPM <em>derives</em> the symmetric key <span class="math inline">\(k\)</span> at boot time from:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Alice’s password</li>
+<li>The current state of the computer, to prevent booting into a malicious operating system that steals data</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Importantly: when the device is powered off, it lacks the ability to derive its own secret key!</p>
+</div>
+</div><div class="column" style="width:18%;">
+<p><img src="images/15-tpm.png" class="img-fluid" width="200"></p>
+</div>
+</div>
+<div class="fragment">
+<p>Recall from <a href="03.html">Unit 1</a> that we built a <em>password hash function</em>.</p>
+<ul>
+<li>It is deliberately slow, to frustrate brute-force attacks</li>
+<li>It is useful when your goal is to compare <strong>equality</strong> of the current password attempt with the correct password provided during account registration</li>
+</ul>
+</div>
+<!--
+::: {.fragment}
+:::: {.columns}
+::: {.column width="62%"}
+Recall from [Unit 1](03.html) that we built a _password hash function_.
+
+- It is deliberately slow, to frustrate brute-force attacks
+- It is useful when your goal is to compare **equality** of the current password attempt with the correct password provided during account registration
+:::
+::: {.column width="3%"}
+:::
+::: {.column width="35%"}
+![Password hashing from a sponge function (image source: [Keccak presentation to NIST](https://csrc.nist.gov/csrc/media/projects/hash-functions/documents/keccak-slides-at-nist.pdf))](images/03-keccak-3.png){width=200}
+:::
+::::
+:::
+-->
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-nist-pbkdf.png" class="img-fluid figure-img" width="200"></p>
+<figcaption>NIST Special Publication 800-132 (image source: <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf">NIST</a>)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:68%;">
+<p>In today’s lecture, we want to do something even stronger.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Rather than checking whether the password is correct, we want to use the password to pseudorandomly <em>derive</em> a symmetric key <!-- in a deterministic but pseudorandom fashion --></li>
+<li>Concretely, we want a function that maps password <span class="math inline">\(P\)</span> to key <span class="math inline">\(K\)</span></li>
+<li>We call this primitive a <strong>password-based key derivation function</strong></li>
+<li>The current NIST standard is called PBKDF2</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>This is the best way to derive symmetric keys from a <em>non-interactive</em> login procedure (i.e., on your computer, rather than a web server) because the device never stores its own long-term secrets.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Alice must choose a strong enough password to stop Mallory from brute-forcing <span class="math inline">\(K\)</span> given enough CPU + RAM and the hashed password file in <code>/etc/passwd</code></li>
+<li>Offline dictionary attack: Mallory can perform this brute-force attack on her own computer beforehand</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>PBKDF2 uses a pseudorandom function (PRF) like AES or HMAC-SHA256, and it has four inputs.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><span class="math inline">\(P\)</span>: Alice’s secret password, which is used as the “secret key” for the PRF (even though it is not actually a key)</li>
+<li><span class="math inline">\(S\)</span>: public salt (aka nonce), which is used for variety (so that the derived keys on two computers are different, even if they used the same password)</li>
+<li><span class="math inline">\(C\)</span>: iteration count</li>
+<li><span class="math inline">\(len\)</span>: desired key length</li>
+</ul>
+</div>
+<div class="fragment">
+<p>The output is the symmetric key <span class="math inline">\(MK\)</span>.</p>
+</div>
+</div><div class="column" style="width:1%;">
+
+</div><div class="column" style="width:49%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-pbkdf2.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Internal operation of PBKDF2 (image source: <a href="https://en.wikipedia.org/wiki/PBKDF2">Wikipedia</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="key-wrapping" class="level3">
+<h3 class="anchored" data-anchor-id="key-wrapping">Key wrapping</h3>
+<p>What if several keys should grant access to the data on the hard drive?</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Different accounts on one machine (each with their own password-derived key)</li>
+<li>Recovery key stored in a separate, safe place</li>
+</ul>
+</div>
+<div class="fragment">
+<p>However, we do <em>not</em> want to encrypt the entire drive several times.</p>
+<p><span class="math display">\[
+\operatorname{Enc}_{\text{K1}}(\text{sector}) \quad
+\operatorname{Enc}_{\text{K2}}(\text{sector}) \quad
+\operatorname{Enc}_{\text{K3}}(\text{sector})
+\]</span></p>
+<p><strong>Question.</strong> What can we do instead?</p>
+</div>
+<div class="fragment">
+<p><strong>Key wrapping</strong> is a special kind of encryption that allows us to protect one key under another.</p>
+</div>
+<div class="fragment">
+<ul>
+<li>For each sector, we can generate an ephemeral (one-time) key to encrypt the file</li>
+<li>Then we can wrap this key under all of the password-derived keys for all accounts that are authorized to read the file</li>
+</ul>
+<p><span class="math display">\[
+\operatorname{Wrap}_{\text{K1}}(ek) \quad
+\operatorname{Wrap}_{\text{K2}}(ek) \quad
+\operatorname{Wrap}_{\text{K3}}(ek) \quad
+\operatorname{Enc}_{\text{ek}}(\text{sector})
+\]</span></p>
+</div>
+<div class="fragment">
+<p>Key wrapping is built as follows:</p>
+<ul>
+<li>Use authenticated encryption that we built <a href="14.html">last time</a>, where the ephemeral key <span class="math inline">\(ek\)</span> acts as the “message”</li>
+<li>But remove the nonce from AEAD, since the message <span class="math inline">\(ek\)</span> itself will only be used once so it already provides variety</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>More details
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>There is a subtle reason that ordinary encryption does not work to protect secret keys.</p>
+<ul>
+<li>Recall that the ROR-CPA game for <code>Enc</code> allows Mallory to encrypt any messages of her choice, and even then the next ciphertext still looks pseudorandom</li>
+<li>But Mallory cannot <em>choose</em> to encrypt secret keys, because she does not know them</li>
+<li>Hence, the (otherwise strong) ROR-CPA security requirement doesn’t technically cover the scenario of encrypting one secret key using another</li>
+<li>A 2006 paper by <a href="https://web.cs.ucdavis.edu/~rogaway/papers/keywrap.pdf">Rogaway and Shrimpton</a> builds the correct security game for key wrapping and shows that deterministic authenticated encryption is the right tool to use here</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>There are two downsides to this approach:</p>
+<ul>
+<li>If a file is shared between different accounts, we will need public key encryption to encrypt to the other parties even if we do not know their password-derived secret keys.</li>
+<li>The encrypted data plus the keywraps no longer fit inside of the original sector.</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="file-level-encryption" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="file-level-encryption"><span class="header-section-number">15.4</span> File-level encryption</h2>
+<p>Next, we will explore how modern operating systems encrypt data at the <em>filesystem</em> level. This approach is more flexible because we don’t have to fit the encrypted data back into a fixed-size sector.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>As a case study, we will examine the design of Apple’s data encryption system on iPhones. This part of the lecture is based on the descriptions in Apple’s <a href="https://support.apple.com/en-ca/guide/security/sece3bee0835/1/web/">security guide</a>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Apple has provided full disk encryption since iOS 8, with TPM-like hardware protection of key material since the iPhone 5s (released in September 2013)</li>
+<li>File-level encryption works similarly on other phones and computers</li>
+</ul>
+</div>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:27%;">
+<p><img src="images/15-apple-guide.png" class="img-fluid" width="400"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The core idea is: <em>data should only be decryptable in the right context</em>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Encrypt each file before writing it to the drive (and decrypt before reading)</li>
+<li>Hardware also provides some protection against brute-forcing passwords</li>
+</ul>
+</div>
+<hr>
+<section id="bag-of-keys" class="level3">
+<h3 class="anchored" data-anchor-id="bag-of-keys">Bag of keys</h3>
+<p>The iOS file-level encryption system uses a <strong>lot</strong> of symmetric keys.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-apple-keys.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>iOS key derivation</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p>Let’s work our way through this image from right to left. There is (at least) one symmetric key for each file that is stored on the drive.</p>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“Every time a file on the data volume is created, Data Protection creates a new 256-bit key (the <em>per-file key</em>) and gives it to the hardware AES Engine, which uses the key to <strong>encrypt the file as it’s being written to flash storage</strong>.</p>
+<p>On A14 through A18 and M1 or later devices, the encryption uses AES-256 in XTS mode, where the 256-bit per-file-key goes through a <strong>Key Derivation Function</strong> (NIST Special Publication 800-108) to derive a 256-bit value and a 256-bit cipher key.”</p>
+<p>– Apple Platform Security guide <a href="https://support.apple.com/en-ca/guide/security/secf6276da8a/1/web/">(link)</a></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Since Apple controls both the software and hardware:</p>
+<ul>
+<li>Their Secure Enclave includes a hardware component to generate keys at random.</li>
+<li>Their fast AES engine is placed between the RAM and hard drive.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Moving left, each of the file keys is itself key-wrapped using a “class key,” which determines <strong>when</strong> the file needs to be readable and writable.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 15%">
+<col style="width: 56%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Availability</th>
+<th style="text-align: left;">Example</th>
+<th style="text-align: left;">Key erased if phone is…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Always</td>
+<td style="text-align: left;">SIM PIN</td>
+<td style="text-align: left;">Wiped</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">After 1st unlock</td>
+<td style="text-align: left;">WiFi password</td>
+<td style="text-align: left;">Shut down</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">When unlocked</td>
+<td style="text-align: left;">Browser bookmarks</td>
+<td style="text-align: left;">10s after unlock (without biometric)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">When locked</td>
+<td style="text-align: left;">Incoming email</td>
+<td style="text-align: left;">(works differently)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>This keywrap goes in the file’s metadata. Whenever the file is read, the filesystem is designed to retrieve this metadata along with the encrypted file contents.</p>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> How does the phone get the class keys?</p>
+</div>
+<div class="fragment">
+<p>Remember our mantra for today: <strong>derive</strong> keys rather than storing them! Once again we use keywrapping to protect the class keys with a <em>passcode key</em> that is derived from:</p>
+<ul>
+<li>The alphanumeric PIN used to log into the phone.</li>
+<li>A unique string fused into the chip at manufacture time, unknown outside Secure Enclave.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Note that there exist other ways to derive the class keys, in order to enable:</p>
+<ul>
+<li>Biometric-based login (TouchID and FaceID)</li>
+<li>Operating system updates</li>
+<li>Overnight iCloud backups</li>
+<li>Corporate device management</li>
+<li>Customer service (i.e., the company helping you to regain control of your data if you forget your password)</li>
+<li>…</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:65%;">
+<p>There are two countermeasures built into the phone in order to make brute forcing the PIN as difficult as possible.</p>
+<ul>
+<li>Crypto: use 10,000 iterations of PBKDF2 to derive the key (~80 ms per guess)</li>
+<li>Hardware: pause between tries, and optionally wipe the phone</li>
+</ul>
+</div><div class="column" style="width:10%;">
+
+</div><div class="column" style="width:25%;">
+<p><img src="images/15-apple-delays.png" class="img-fluid" width="200"></p>
+</div>
+</div>
+</div>
+<hr>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Suppose that an iPhone is turned completely off and back on again, but the passcode has not been entered. It turns out that the phone makes a cellular connection but will <em>not</em> connect to wifi. Why is that?</p>
+<ol type="A">
+<li>The phone does not know the key needed to decrypt the file containing the wifi password</li>
+<li>The phone is still busy conducting iterations of PBKDF2 in order to decrypt the wifi password</li>
+<li>The encrypted file containing the wifi password has not yet been placed in RAM, so the AES coprocessor is not able to decrypt it</li>
+<li>The Secure Enclave TPM is waiting for TouchID or FaceID approval in order to release the key to decrypt files</li>
+</ol>
+</div>
+<hr>
+</section>
+</section>
+<section id="encryption-and-society" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="encryption-and-society"><span class="header-section-number">15.5</span> Encryption and society</h2>
+<p>Remember that encryption is a powerful tool with immense social consequences.</p>
+<blockquote class="blockquote">
+<p>“Cryptography rearranges power: it configures who can do what, from what.”</p>
+<p>– Prof.&nbsp;Phillip Rogaway (UC Davis)</p>
+</blockquote>
+<div class="fragment">
+<p>Let’s briefly discuss some of the legal questions raised by the use of encryption.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Can the police force you to decrypt your device?</li>
+<li>Can the police force the device manufacturer to decrypt your device?</li>
+</ul>
+</div>
+<hr>
+<section id="apple-vs.-fbi-case" class="level3">
+<h3 class="anchored" data-anchor-id="apple-vs.-fbi-case">Apple vs.&nbsp;FBI case</h3>
+<div class="fragment">
+<p>The latter question gained significant attention in early 2016, when the FBI wanted data on a locked iPhone 5c in its possession, but they did not have the PIN.</p>
+</div>
+<div class="fragment">
+<p>Remember that <code>key</code> = pbkdf2(<code>pin</code>, <code>uid</code>), so to read the files they could:</p>
+<ul>
+<li>Brute-force the <code>pin</code> on the phone itself, or</li>
+<li>Pry open the phone to find the hardware <code>uid</code> and then brute-force the <code>pin</code> on a faster computer</li>
+</ul>
+</div>
+<div class="fragment">
+<p>FBI wanted Apple to modify its operating system to enable a brute-force search of the PINs:</p>
+<ul>
+<li>Allow PINs to be submitted via external interface, not by hand</li>
+<li>Remove the delay between incorrect guesses (not the crypto delay, but the other one)</li>
+<li>Remove the “poison pill” wiping of the phone after 10 misses</li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note: the iPhone 5c does not have a Secure Enclave, so its delay is software-enforced rather than hardware-enforced.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> If these are software-only protections, why couldn’t the FBI change the operating system code on its own?</p>
+</div>
+<div class="fragment">
+<p>Here we need to discuss the crypto used for updates to the operating system. Since the code itself is not a secret, the security goal in software updates is <strong>integrity</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-apple-updates.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Code signing of iOS over-the-air updates</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>The server’s digital signature contains:</p>
+<ul>
+<li>Device ID to personalize the response to this particular phone</li>
+<li>Nonce to connect the response to the initial request, in order to prevent replay attacks</li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Many (though not all!) automatic software update systems for operating systems and individual programs work similarly.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>The FBI wanted Apple to produce and digitally sign an updated “GovtOS” without the delay and poison pill. Only Apple could create this software update, or else the phone would reject it.</p>
+</div>
+<div class="fragment">
+<p>This court case was never fully resolved.</p>
+<ul>
+<li>The FBI withdrew their request after finding a company who could break into the phone without Apple’s assistance</li>
+<li>While we do not know the exact methods used with that specific phone, here is a <a href="https://www.vice.com/en/article/how-to-brute-force-iphones-graykey/">Vice magazine article</a> that describes a device and procedure that law enforcement agencies in the United States use to decrypt other phones</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/15-vice.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Brute force attack on iPhones (image source: <a href="https://www.vice.com/en/article/how-to-brute-force-iphones-graykey/">Vice</a>)</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+<section id="crypto-wars" class="level3">
+<h3 class="anchored" data-anchor-id="crypto-wars">Crypto wars</h3>
+<p>There has been a long-running debate for the past 50 years about government access to encrypted content. This is often informally referred to as the <em>crypto wars</em>.</p>
+<div class="fragment">
+<p>In fact, there have been (at least) three distinct types of debates.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><strong>Key length</strong>: In the 1970s and 1980s, governments tried to build cryptosystems whose key length is short enough for them to brute-force but long enough that it would be onerous for anyone else to brute force <!-- This approach ultimately doomed the Data Encryption Standard (DES) from the 1970s, and led to its successor AES in the 1990s --></p></li>
+<li><p><strong>Key escrow</strong>: In the 1990s, governments tried to build cryptosystems where the encryption key was sent to a government server</p></li>
+<li><p><strong>Avoiding end-to-end encryption</strong>: As the Apple-FBI example shows, the current debate often involves the distinction between client-server encryption (where the tech company also has a copy of the key) or end-to-end encryption (where they don’t)</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>We will discuss more interactions between cryptography and the law toward the end of the semester.</p>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
