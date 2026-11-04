@@ -76,6 +76,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -274,8 +303,36 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#signal-overview" id="toc-signal-overview" class="nav-link" data-scroll-target="#signal-overview"><span class="header-section-number">16.1</span> Signal overview</a></li>
+  <li><a href="#cryptographic-deniability" id="toc-cryptographic-deniability" class="nav-link" data-scroll-target="#cryptographic-deniability"><span class="header-section-number">16.2</span> Cryptographic deniability</a>
+  <ul class="collapse">
+  <li><a href="#deniability-in-pictures" id="toc-deniability-in-pictures" class="nav-link" data-scroll-target="#deniability-in-pictures">Deniability, in pictures</a></li>
+  </ul></li>
+  <li><a href="#forward-and-backward-secrecy" id="toc-forward-and-backward-secrecy" class="nav-link" data-scroll-target="#forward-and-backward-secrecy"><span class="header-section-number">16.3</span> Forward and backward secrecy</a>
+  <ul class="collapse">
+  <li><a href="#symmetric-ratchet" id="toc-symmetric-ratchet" class="nav-link" data-scroll-target="#symmetric-ratchet">Symmetric ratchet</a></li>
+  <li><a href="#public-ratchet" id="toc-public-ratchet" class="nav-link" data-scroll-target="#public-ratchet">Public ratchet</a></li>
+  </ul></li>
+  <li><a href="#double-ratchet" id="toc-double-ratchet" class="nav-link" data-scroll-target="#double-ratchet"><span class="header-section-number">16.4</span> Double ratchet</a>
+  <ul class="collapse">
+  <li><a href="#simplified-version-of-signal-in-pictures-2" id="toc-simplified-version-of-signal-in-pictures-2" class="nav-link" data-scroll-target="#simplified-version-of-signal-in-pictures-2">Simplified version of Signal, in pictures</a></li>
+  <li><a href="#public-ratchet-seeds-the-symmetric-ratchets-3" id="toc-public-ratchet-seeds-the-symmetric-ratchets-3" class="nav-link" data-scroll-target="#public-ratchet-seeds-the-symmetric-ratchets-3">Public ratchet seeds the symmetric ratchets</a></li>
+  <li><a href="#the-root-chain" id="toc-the-root-chain" class="nav-link" data-scroll-target="#the-root-chain">The root chain</a></li>
+  </ul></li>
+  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">16.5</span> Putting it all together</a>
+  <ul class="collapse">
+  <li><a href="#start-of-a-conversation" id="toc-start-of-a-conversation" class="nav-link" data-scroll-target="#start-of-a-conversation">Start of a conversation</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -299,11 +356,595 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- Old title: Signal end-to-end encrypted messaging -->
 <hr>
-<p>To appear</p>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Homework 6 is due today at 8pm, with a grace period until tomorrow at 10pm (<a href="https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1793804400001">NIST beacon</a>)</li>
+<li>Homework 7 will be released today and due Wed 11/11</li>
+<li>Lab 10 on this week’s reading (<a href="https://signal.org/docs/specifications/doubleratchet/">Signal’s double ratchet algorithm</a>)</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>The double ratchet protocol used in the Signal and WhatsApp end-to-end encrypted messaging apps</li>
+<li>How deniability, forward secrecy, and backward secrecy provide partial security even if a phone is temporarily compromised by Mallory</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<div class="fragment">
+<p><strong>Encryption</strong> is one of the main tools that we use to protect data <strong>confidentiality</strong>. The goal of Unit 3 of this course is to study encryption and its role in:</p>
+<ul>
+<li>Protecting data at rest on your laptop or phone (<a href="15.html">last time</a>)</li>
+<li>Protecting data in transit over the Internet or messaging app (today + Monday)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Whenever encryption is used in practice, remember to think about:</p>
+<ul>
+<li>Where are the keys? (Who has them, and in what circumstances?)</li>
+<li>What if something goes wrong? (For instance, a device temporarily becomes under Mallory’s control)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Two techniques used in data-at-rest encryption:</p>
+<ol type="1">
+<li><strong>Derive</strong> symmetric keys (from a password) rather than storing them on the device</li>
+<li>Use <strong>key wrapping</strong> to encrypt one key under another</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Encryption on the Internet is often performed in one of two ways.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 53%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Client-server encryption</th>
+<th>End-to-end encryption</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alice encrypts her message with the tech company’s key (and hence, they can read it). Separately, the tech company encrypts a message to Bob.</td>
+<td>Alice encrypts her message directly to Bob. While the message passes through the server, the tech company cannot read it.</td>
+</tr>
+<tr class="even">
+<td><img src="images/13-zoom-cs.png" class="img-fluid" width="350"></td>
+<td><img src="images/13-zoom-e2e.png" class="img-fluid" width="350"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</section>
+<section id="signal-overview" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="signal-overview"><span class="header-section-number">16.1</span> Signal overview</h2>
+<p>Today, we will study the <strong>Signal protocol</strong> for end-to-end encrypted messaging. This protocol is used in:</p>
+<ul>
+<li>Signal’s own app</li>
+<li><a href="https://engineering.fb.com/wp-content/uploads/2023/12/MessengerEnd-to-EndEncryptionOverview_12-6-2023.pdf">WhatsApp</a> and Facebook Messenger, both owned by Meta</li>
+<li>Google Messages (for text messages between Android devices)</li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Text messages sent between Apple devices using iMessage, and RCS text messages between Android and Apple phones, are also end-to-end encrypted but do not use the Signal protocol specifically.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="130">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\longrightarrow\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<p>The scenario for today is that Alice wants to have a text message conversation with her friend Bob. Here are her objectives:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Protect messages in transit over the network, to ensure message confidentiality and sender authenticity
+<ul class="incremental">
+<li>Authenticated encryption will do this, if Alice and Bob have a shared symmetric key <span class="math inline">\(k\)</span></li>
+</ul></li>
+<li>Protect messages even if one of their phones is temporarily compromised
+<ul class="incremental">
+<li>This is new to us! We will study <em>deniability</em> and <em>forward/backward secrecy</em> today</li>
+</ul></li>
+<li>Ensure that the text conversation can be <em>asynchronous</em>, meaning that each party go offline and then later come back online and immediately receive messages</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Here are some non-goals in Signal:</p>
+<ul>
+<li>Hiding metadata (e.g., Alice and Bob’s identities, the fact that they are talking to each other, message size)</li>
+<li>Censorship resistance (if you want that, combine today’s lecture with Unit 2)</li>
+</ul>
+</div>
+<!--
+- Stopping replay attacks, censorship attacks, and delay/re-ordering of messages in transit
+-->
+<div class="fragment">
+<p>In summary: the goal of Signal is to act like an ephemeral in-person conversation. Two people talk to each other, and the transcript of the conversation need not live forever.</p>
+</div>
+<!--
+::: {.fragment}
+Here is an overview of the cryptographic ideas within Signal that we will discuss today.
+
+- **Deniability**: There is no cryptography that proves whether Alice or Bob wrote any particular message
+- **Key ratcheting**: Use each key to protect just 1 message, then delete it!
+:::
+-->
+<hr>
+</section>
+<section id="cryptographic-deniability" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="cryptographic-deniability"><span class="header-section-number">16.2</span> Cryptographic deniability</h2>
+<p>Let’s begin by discussing the notion of <strong>deniability</strong> in crypto. It is perhaps easiest to start with its opposite: what does non-deniable crypto look like?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-xkcd-wrench.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Image source: <a href="https://xkcd.com/538/">xkcd</a></figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p>Deniable crypto has two seemingly-contradictory requirements:</p>
+<ul>
+<li>Today, Alice can send a message to Bob, with confidentiality and integrity <!-- so Bob will know that it comes from Alice --></li>
+<li>Tomorrow, if Mallory coerces Alice to reveal the message, then Alice can pretend she said something else</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>It is not actually our goal to incentivize Alice to lie. Instead, we want to disincentivize Mallory from coercing anyone in the first place, by making it useless to do so.</p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>Interactive question.</strong> Which method(s) for data integrity cannot be deniable?</p>
+<ol type="A">
+<li>Digital signatures</li>
+<li>Message authentication codes</li>
+<li>Both</li>
+</ol>
+<div class="fragment">
+<p><em>Answer</em>. Digital signatures are inherently non-deniable since the whole world can tell that Alice is the creator of a message.</p>
+<ul>
+<li>That can be a <em>good</em> thing in some applications like Bitcoin where everyone needs to identify who created a transaction</li>
+<li>But here it is a <em>bad</em> thing because we do not want a permanent record of what Alice said to Bob</li>
+</ul>
+</div>
+<hr>
+<div class="fragment">
+<p>Let’s compare MACs and digital signatures, in the scenario that Alice sends a message <span class="math inline">\(m\)</span> to Bob.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Property</th>
+<th style="text-align: center;">MAC</th>
+<th style="text-align: center;">Sign</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Message authenticity: Bob can detect if <span class="math inline">\(m\)</span> has been tampered in transit</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sender authenticity: Bob knows Alice sent <span class="math inline">\(m\)</span></td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Receiver authenticity: Bob knows that <span class="math inline">\(m\)</span> is intended for him</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✗</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Partial deniability: Alice can deny to Mallory that she created <span class="math inline">\(m\)</span></td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✗</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--
+::: {.fragment}
+**Question.** Can you think of an authenticated encryption scheme that is deniable?
+:::
+-->
+<hr>
+<section id="deniability-in-pictures" class="level3">
+<h3 class="anchored" data-anchor-id="deniability-in-pictures">Deniability, in pictures</h3>
+<p>Deniable crypto allows Alice and Bob to pretend they said something else.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-deniability-1.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Cryptographic deniability</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Remember that deniability only protects the cryptographic keys. If the messages themselves are still stored on Alice or Bob’s phone at the time of compromise, Mallory can read them. In other words: this approach works well together with disappearing messages.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<!--
+### Deniability, in pictures
+-->
+<p>A one-time pad (with any MAC) provides <em>perfect message deniability</em>. Alice and Bob can separately deny the contents of the message. Mallory cannot distinguish between the truth, Alice’s lie, and Bob’s lie.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-deniability-2.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Denying the message contents and sender</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Bad news: it can be proved that perfect message deniability requires long keys: <span class="math inline">\(|k| \geq |p|\)</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<!--
+### Deniability, in pictures
+-->
+<p>Every authenticated encryption scheme provides <em>partial sender deniability</em>. If Mallory does not observe the ciphertext in transit over the Internet, then there is nothing Bob can do later to prove mathematically to Mallory that Alice is the sender.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-deniability-3.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Denying only the sender</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>For this reason, the Signal message protocol uses <em>authenticated encryption</em> to protect each message. It <strong>never</strong> uses digital signatures.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="forward-and-backward-secrecy" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="forward-and-backward-secrecy"><span class="header-section-number">16.3</span> Forward and backward secrecy</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Next, let’s see why Signal does not use public key encryption either.</p>
+<div class="fragment">
+<p>I said in a previous lecture that:</p>
+<blockquote class="blockquote">
+<p>Public key encryption is risky: losing control of the secret key for an encryption scheme has immediate, irrecoverable consequences</p>
+</blockquote>
+<p>Why is that?</p>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-public-key.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Informal description of encryption and digital signatures (source: <a href="https://idea-instructions.com/public-key/">idea-instructions.com</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Suppose that Alice sends a message to Bob. What happens if Mallory learns either of their secret keys?</p>
+<ul>
+<li><p>With a digital signature scheme, Mallory can forge messages as Alice in the <strong>future</strong>. In response, Alice can <em>revoke</em> its key – that is, tell everyone not to trust it anymore.</p></li>
+<li><p>With a public key encryption scheme, Mallory can read messages sent to Bob in the <strong>past</strong>. There is no way to recover from this data breach.</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/14-fwd-back.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Forward and backward secrecy</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Formally, we say that a cryptosystem satisfies:</p>
+<ul>
+<li><strong>Forward secrecy</strong>, also known as <em>pre-compromise secrecy</em>, if the messages sent today are safe even if one’s device is compromised at a later time</li>
+<li><strong>Backward secrecy</strong>, also known as <em>post-recovery secrecy</em>, if the messages sent today are safe even if one’s device was compromised at a prior time</li>
+</ul>
+</div>
+<div class="fragment">
+<p>To achieve this goal: Signal only uses symmetric AuthEnc with <em>short-term keys</em>. In fact, each key will only be used to encrypt <strong>one message</strong>, and then it is discarded!</p>
+</div>
+<div class="fragment">
+<p>Remember our mantra from before: derive keys rather than generating them! Since Signal is designed to be asynchronous, we consider two types of key derivation (or <em>ratcheting</em>).</p>
+<ul>
+<li><em>Symmetric ratcheting</em> occurs when only Alice (or only Bob) are sending messages</li>
+<li><em>Public ratcheting</em> occurs when we alternate the direction of who is sending/receiving messages</li>
+</ul>
+</div>
+<hr>
+<section id="symmetric-ratchet" class="level3">
+<h3 class="anchored" data-anchor-id="symmetric-ratchet">Symmetric ratchet</h3>
+<p><strong>Question</strong>: Suppose that Alice and Bob already have a shared symmetric key <span class="math inline">\(k_1\)</span> for authenticated encryption. How can they <em>update</em> to a new key <span class="math inline">\(k_2\)</span>:</p>
+<ul>
+<li><em>without communicating</em>,</li>
+<li>such that if Mallory learns <span class="math inline">\(k_2\)</span> then she still <em>cannot learn</em> <span class="math inline">\(k_1\)</span>? <!-- This is forward secrecy --> <!-- Basically, we seek Authenticated Encryption with a key update mechanism --></li>
+</ul>
+<div class="fragment">
+<p>Here is an idea: once we have a single shared key <span class="math inline">\(k\)</span>, expand it using a chain of hash functions (or more precisely, a key derivation function <span class="math inline">\(H\)</span> like <code>HMAC</code>).</p>
+<p><span class="math display">\[
+\begin{align*}
+k_2 &amp;= H(k_1) \\
+k_3 &amp;= H(k_2) = H(H(k_1)) \\
+k_4 &amp;= H(k_3) = H(H(H(k_1))) \\
+&amp;\;\vdots
+\end{align*}
+\]</span></p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Here is Alice and Bob’s plan:</p>
+<ul>
+<li>Alice sends message <span class="math inline">\(i\)</span> with key <span class="math inline">\(k_i\)</span></li>
+<li>Then Alice ratchets to key <span class="math inline">\(k_{i+1}\)</span> <em>and deletes</em> <span class="math inline">\(k_i\)</span></li>
+<li>After Bob receives and decrypts the message, he also ratchets to the next key <span class="math inline">\(k_{i+1}\)</span> and deletes <span class="math inline">\(k_i\)</span></li>
+<li>This ratcheting procedure is non-interactive: Alice and Bob can perform it independently on their own phones and reach the same result</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img src="images/16-symmetric-ratchet.png" class="img-fluid" width="300"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Which security requirement(s) does symmetric ratcheting achieve?</p>
+<ol type="A">
+<li>Forward (pre-compromise) secrecy</li>
+<li>Backward (post-recovery) secrecy</li>
+<li>Both</li>
+<li>Neither</li>
+</ol>
+</div>
+<hr>
+</section>
+<section id="public-ratchet" class="level3">
+<h3 class="anchored" data-anchor-id="public-ratchet">Public ratchet</h3>
+<p>Backward secrecy requires interaction. So, we will add it on top of Diffie-Hellman key exchange.</p>
+<ul>
+<li>We already know it takes 2 communications to establish a shared secret</li>
+<li>It turns out that 1 communication suffices to update it!</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-public-ratchet.png" class="img-fluid figure-img" width="700"></p>
+<figcaption>Public ratchet</figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p>Suppose that Alice and Bob alternate sending messages: Alice sends one message <span class="math inline">\(m_1\)</span>, then Bob sends one message <span class="math inline">\(m_2\)</span>, and so on. Then they can communicate as follows.</p>
+<ul>
+<li>They use Diffie-Hellman key exchange to produce the first shared secret <span class="math inline">\(k_1 = g^{a_1 b_1}\)</span></li>
+<li>Alice uses <span class="math inline">\(k_1\)</span> to encrypt the first message <span class="math inline">\(m_1\)</span></li>
+<li>Bob chooses <span class="math inline">\(b_2\)</span> and derives a new key <span class="math inline">\(k_2 = g^{a_1 b_2}\)</span>, and sends to Alice <span class="math inline">\(g^{b_2}\)</span> along with <code>AuthEnc</code><span class="math inline">\({}_{k_2}(m_2)\)</span></li>
+<li>Alice chooses <span class="math inline">\(a_2\)</span> and derives a new key <span class="math inline">\(k_3 = g^{a_2 b_2}\)</span>, and sends to Bob <span class="math inline">\(g^{a_2}\)</span> along with <code>AuthEnc</code><span class="math inline">\({}_{k_3}(m_3)\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>This procedure has <em>backward</em>, or <em>post-recovery</em>, secrecy because Alice and Bob use a random number generator to select each <span class="math inline">\(a_i\)</span> or <span class="math inline">\(b_i\)</span> secret exponents. So even if Mallory compromised a phone yesterday, she could not have stolen today’s secret exponents because they did not exist yet.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="double-ratchet" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="double-ratchet"><span class="header-section-number">16.4</span> Double ratchet</h2>
+<p>In reality, Alice and Bob will not to interleave their messages perfectly. So the real Signal protocol for end-to-end encrypted messaging uses <em>both</em> the symmetric and public ratchets. Here is how it works:</p>
+<ul>
+<li>Alice and Bob maintain two sets of keys: one for Alice-to-Bob messages, and another for Bob-to-Alice messages</li>
+<li>When a message is sent or received, a <em>symmetric ratchet</em> step is applied to the sending or receiving chain to derive a new message key</li>
+<li>When alternating the direction of communication, a <em>public ratchet</em> step updates the chain keys that are used in the symmetric ratchet</li>
+</ul>
+<hr>
+<section id="simplified-version-of-signal-in-pictures-2" class="level3">
+<h3 class="anchored" data-anchor-id="simplified-version-of-signal-in-pictures-2">Simplified version of Signal, in pictures</h3>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ol type="1">
+<li>Symmetric ratchet
+<ul>
+<li>Each message key is used once, then deleted</li>
+<li>Provides forward secrecy</li>
+</ul></li>
+<li>Add chain keys
+<ul>
+<li>“Message keys aren’t used to derive other keys… useful for handling lost/out-of-order messages”</li>
+</ul></li>
+<li>Public ratchet
+<ul>
+<li>Provides backward secrecy as well</li>
+</ul></li>
+</ol>
+</div><div class="column" style="width:40%;">
+<p><img src="images/16-double-ratchet-3.png" class="img-fluid" width="500"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="public-ratchet-seeds-the-symmetric-ratchets-3" class="level3">
+<h3 class="anchored" data-anchor-id="public-ratchet-seeds-the-symmetric-ratchets-3">Public ratchet seeds the symmetric ratchets</h3>
+<p>Signal uses a KDF for both ratchets. The public ratchet produces the “shared secret” that is used to start the symmetric ratchet.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-connection-4.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Two ratchets (image source: <a href="https://signal.org/docs/specifications/doubleratchet/">Signal</a>)</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="the-root-chain" class="level3">
+<h3 class="anchored" data-anchor-id="the-root-chain">The root chain</h3>
+<p>Signal actually has a <em>third</em> chain called the <strong>root chain</strong>. It sits in between the public and symmetric ratchets, and it provides improved backward (post-recovery) secrecy. The <a href="https://signal.org/docs/specifications/doubleratchet/">Signal documentation</a> provides more details.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-root-chain.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Root chain (image source: <a href="https://signal.org/docs/specifications/doubleratchet/">Signal</a>)</figcaption>
+</figure>
+</div>
+<!--
+### Alice's full state
+
+![Ratcheting with the root chain (image source: [Signal](https://signal.org/docs/specifications/doubleratchet/))](images/16-full-1.png){width=400}
+
+Alice has been initialized with
+- Bob's ratchet public key
+- A shared secret which is the initial root key
+
+From this info, Alice derives
+- A new root key, whose “constant” depends on the public ratchet
+- The first sending key chain
+
+---
+
+### Alice's full state
+
+![Ratcheting with the root chain (image source: [Signal](https://signal.org/docs/specifications/doubleratchet/))](images/16-full-2.png){width=400}
+
+Alice sends her first message by
+- Ratcheting the sending key
+- Using the resulting single use message key to protect her new message
+
+::: {.fragment}
+**Question.** Note that Bob must send $g^{b1}$ before Alice can send Bob a message. So, how can Alice send messages if Bob isn't online?
+:::
+
+::: {.fragment}
+_Answer_. Bob puts his original $g^{b1}$ on an untrusted, always-online server. This is the only place where he will use a digital signature. Anyone can retrieve it when they want to start a conversation with Bob.
+:::
+-->
+<hr>
+</section>
+</section>
+<section id="putting-it-all-together" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="putting-it-all-together"><span class="header-section-number">16.5</span> Putting it all together</h2>
+<p><img src="images/16-combined.png" class="img-fluid" width="600"></p>
+<p>Let’s recap why the Signal protocol provides strong security.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p><strong>Forward secrecy</strong> is achieved using the symmetric ratchet</p>
+<blockquote class="blockquote">
+<p>“The parties derive new keys for every Double Ratchet message so that earlier keys cannot be calculated from later ones.”</p>
+</blockquote></li>
+<li><p><strong>Backward secrecy</strong> is achieved using the public ratchet</p>
+<blockquote class="blockquote">
+<p>“The parties also send Diffie-Hellman public values attached to their messages. The results of Diffie-Hellman calculations are mixed into the derived keys so that later keys cannot be calculated from earlier ones.”</p>
+</blockquote></li>
+<li><p><strong>Deniability</strong> is achieved by only using authenticated encryption with ephemeral (one-time use) keys</p></li>
+</ul>
+</div>
+<hr>
+<section id="start-of-a-conversation" class="level3">
+<h3 class="anchored" data-anchor-id="start-of-a-conversation">Start of a conversation</h3>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>One final thought: if you don’t have any long-term state, then <em>who are you</em>?</p>
+<div class="incremental">
+<ul class="incremental">
+<li>How would Alice know that she has established deniable encryption with Bob… and not directly with Mallory?</li>
+<li>Resolution: the Signal protocol uses a long-term key, but only once in the very first Diffie-Hellman key exchange (also, Signal/Meta maintain a PKI)</li>
+<li>Also, Bob pre-computes his first <span class="math inline">\(g^{b1}\)</span> on an untrusted always-online server, so that anyone can pick it up and start a conversation with Bob even if he is offline</li>
+</ul>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-x3dh.jpeg" class="img-fluid figure-img" width="400"></p>
+<figcaption>X3DH for initial key exchange</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Some links with more information on end-to-end encrypted messaging apps:</p>
+<ul>
+<li><a href="https://www.securemessagingapps.com/">securemessagingapps.com</a></li>
+<li><a href="https://www.eff.org/deeplinks/2018/03/secure-messaging-more-secure-mess">EFF articles on secure messaging</a></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Next time, we will discuss encryption in transit in a different setting: how your browser communicates with websites on the Internet.</p>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
