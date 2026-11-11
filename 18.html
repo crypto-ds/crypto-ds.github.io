@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-08c7c73ee1d666a514b19d801db5aa3e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -578,7 +578,7 @@ window.Quarto = {
 <ul class="incremental">
 <li><p><em>Correctness</em> states that if you <code>split</code> any secret <span class="math inline">\(s\)</span>, then <code>reconstruct</code> always recovers the original secret <span class="math inline">\(s\)</span>.</p></li>
 <li><p><span class="math inline">\(t\)</span>-<em>perfect secrecy</em> is defined similarly as with a one-time pad: for any two possible secrets <span class="math inline">\(s\)</span> and <span class="math inline">\(r\)</span>, and for any vector of <span class="math inline">\(t\)</span> or fewer secret shares <span class="math inline">\(\vec{x} = \{x_{i_1}, x_{i_2}, \ldots, x_{i_t}\}\)</span>, it is the case that:</p>
-<p><span class="math display">\[ \Pr[\text{all }x_i = s_i \mid \vec{s} = \text{split}(s, t, n)] = \Pr[\text{all }x_i = r_i \mid \vec{s} = \text{split}(r, t, n)].\]</span></p>
+<p><span class="math display">\[ \Pr[\text{all }x_i = s_i \mid \vec{s} = \text{split}(s, t, n)] = \Pr[\text{all }x_i = r_i \mid \vec{r} = \text{split}(r, t, n)].\]</span></p>
 <p>In words: perfect secrecy says that the shares held by a coalition of <span class="math inline">\(\leq t\)</span> parties have an equal probability of being shares of <span class="math inline">\(s\)</span> or shares of <span class="math inline">\(r\)</span>.</p></li>
 </ul>
 </div>
@@ -967,7 +967,7 @@ c &amp;= a \cdot b \\
 <p>Today, I will show you one way (though not the only way!) to resolve this conundrum. It relies on two useful insights.</p>
 <div class="fragment">
 <div class="columns">
-<div class="column" style="width:37%;">
+<div class="column" style="width:40%;">
 <p><strong>Insight #1:</strong> Add a third computing party.</p>
 <div class="fragment">
 <p>This initially looks to make the calculation harder to perform. Now the distributive law says that we must calculate:</p>
@@ -978,9 +978,9 @@ c &amp;= (a_1 + a_2 + a_3) (b_1 + b_2 + b_3) \\
 &amp;\quad + a_3 b_1 + a_3 b_2 + a_3 b_3. \\
 \end{align*}\]</span></p>
 </div>
-</div><div class="column" style="width:3%;">
+</div><div class="column" style="width:2%;">
 
-</div><div class="column" style="width:60%;">
+</div><div class="column" style="width:58%;">
 <center>
 <table align="center" cellpadding="8">
 <tbody><tr>
@@ -1052,7 +1052,7 @@ c &amp;= (a_1 + a_2 + a_3) (b_1 + b_2 + b_3) \\
 </div>
 </div>
 <div class="columns">
-<div class="column" style="width:37%;">
+<div class="column" style="width:40%;">
 <p><strong>Insight #2:</strong> Give each computing party <em>two</em> of the three shares. This is called <strong>replicated secret sharing</strong>.</p>
 <div class="incremental">
 <ul class="incremental">
@@ -1060,9 +1060,9 @@ c &amp;= (a_1 + a_2 + a_3) (b_1 + b_2 + b_3) \\
 <li>But now any 2 of the <span class="math inline">\(n = 3\)</span> parties have enough data to reconstruct</li>
 </ul>
 </div>
-</div><div class="column" style="width:3%;">
+</div><div class="column" style="width:2%;">
 
-</div><div class="column" style="width:60%;">
+</div><div class="column" style="width:58%;">
 <center>
 <table align="center" cellpadding="8">
 <tbody><tr>
@@ -1266,7 +1266,7 @@ c &amp;= (a_1 + a_2 + a_3) (b_1 + b_2 + b_3) \\
 </section>
 <section id="mpc-against-mallory" class="level2" data-number="18.5">
 <h2 data-number="18.5" class="anchored" data-anchor-id="mpc-against-mallory"><span class="header-section-number">18.5</span> MPC against Mallory</h2>
-<p>So far, our MPC protocol is only secure against a passive eavesdropper Eve. That’s because a malicious computing party Mallory can tamper with the result by adding some number to her own share.</p>
+<p>So far, our MPC protocol is only secure against a passive eavesdropper Eve. This is because a malicious computing party Mallory can tamper with the result by adding some number to her own share.</p>
 <center>
 <table align="center" cellpadding="8">
 <tbody><tr>

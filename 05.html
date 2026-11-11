@@ -101,7 +101,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-08c7c73ee1d666a514b19d801db5aa3e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -331,7 +331,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Disk encryption</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -349,8 +349,57 @@ window.Quarto = {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Protecting data science</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="./unit4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Multi-party computation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Verifiable MPC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Zero knowledge proofs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Faster &amp; smaller ZK proofs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Private cryptocurrencies</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Crypto and elections</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Crypto and the law</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
     </ul>
     </div>
@@ -375,7 +424,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#constructing-a-hash-based-mac" id="toc-constructing-a-hash-based-mac" class="nav-link" data-scroll-target="#constructing-a-hash-based-mac"><span class="header-section-number">5.3</span> Constructing a hash-based MAC</a>
   <ul class="collapse">
-  <li><a href="#length-extension-attacks" id="toc-length-extension-attacks" class="nav-link" data-scroll-target="#length-extension-attacks">Length extension attacks</a></li>
+  <li><a href="#sec-length-extension" id="toc-sec-length-extension" class="nav-link" data-scroll-target="#sec-length-extension">Length extension attacks</a></li>
   <li><a href="#sec-hmac" id="toc-sec-hmac" class="nav-link" data-scroll-target="#sec-hmac">Finalization</a></li>
   <li><a href="#putting-everything-together" id="toc-putting-everything-together" class="nav-link" data-scroll-target="#putting-everything-together">Putting everything together</a></li>
   </ul></li>
@@ -410,7 +459,7 @@ window.Quarto = {
 <p>By the end of today’s lecture, you will learn:</p>
 <ul>
 <li>How Bob can detect whether a message received over the Internet was sent by Alice</li>
-<li>How we write formal definitions for crypto primitives, such as MACs</li>
+<li>How we write formal definitions for crypto primitives, such as a message authentication code (MAC)</li>
 <li>How HMAC works, and why it addresses a limitation of SHA-2</li>
 </ul>
 <hr>
@@ -731,8 +780,8 @@ window.Quarto = {
 </div>
 </div>
 <hr>
-<section id="length-extension-attacks" class="level3">
-<h3 class="anchored" data-anchor-id="length-extension-attacks">Length extension attacks</h3>
+<section id="sec-length-extension" class="level3">
+<h3 class="anchored" data-anchor-id="sec-length-extension">Length extension attacks</h3>
 <p>To explain the full details of the hash-based MAC construction used in practice, I need to tell you some more information about the SHA-2 family of hash functions.</p>
 <div class="incremental">
 <ul class="incremental">
