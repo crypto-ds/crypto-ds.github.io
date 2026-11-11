@@ -76,6 +76,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -274,8 +303,35 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#tls-overview" id="toc-tls-overview" class="nav-link" data-scroll-target="#tls-overview"><span class="header-section-number">17.1</span> TLS overview</a></li>
+  <li><a href="#digital-certificates" id="toc-digital-certificates" class="nav-link" data-scroll-target="#digital-certificates"><span class="header-section-number">17.2</span> Digital certificates</a>
+  <ul class="collapse">
+  <li><a href="#certificate-revocation" id="toc-certificate-revocation" class="nav-link" data-scroll-target="#certificate-revocation">Certificate revocation</a></li>
+  </ul></li>
+  <li><a href="#meddler-in-the-middle" id="toc-meddler-in-the-middle" class="nav-link" data-scroll-target="#meddler-in-the-middle"><span class="header-section-number">17.3</span> Meddler-in-the-middle</a>
+  <ul class="collapse">
+  <li><a href="#an-aside-apple-imessage" id="toc-an-aside-apple-imessage" class="nav-link" data-scroll-target="#an-aside-apple-imessage">An aside: Apple iMessage</a></li>
+  </ul></li>
+  <li><a href="#tls-handshake" id="toc-tls-handshake" class="nav-link" data-scroll-target="#tls-handshake"><span class="header-section-number">17.4</span> TLS handshake</a>
+  <ul class="collapse">
+  <li><a href="#selecting-crypto-algorithms" id="toc-selecting-crypto-algorithms" class="nav-link" data-scroll-target="#selecting-crypto-algorithms">Selecting crypto algorithms</a></li>
+  <li><a href="#authenticated-key-exchange" id="toc-authenticated-key-exchange" class="nav-link" data-scroll-target="#authenticated-key-exchange">Authenticated key exchange</a></li>
+  <li><a href="#verifying-the-handshake" id="toc-verifying-the-handshake" class="nav-link" data-scroll-target="#verifying-the-handshake">Verifying the handshake</a></li>
+  </ul></li>
+  <li><a href="#tls-session" id="toc-tls-session" class="nav-link" data-scroll-target="#tls-session"><span class="header-section-number">17.5</span> TLS session</a>
+  <ul class="collapse">
+  <li><a href="#session-resumption" id="toc-session-resumption" class="nav-link" data-scroll-target="#session-resumption">Session resumption</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -300,9 +356,754 @@ ul.task-list li input[type="checkbox"] {
 
 
 <hr>
-<p>To appear</p>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Wed 11/11 at 8pm: Homework 7 due</li>
+<li>Fri 11/13: Lab 11 on this week’s reading (<a href="https://securecomputation.org/docs/pragmaticmpc.pdf">EKR sections 1.2–1.3</a> and <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG section 4.3</a>)</li>
+<li>Mon 11/16: Exam 3 (today is the final lecture <em>in scope</em> for Exam 3)</li>
+<li>Fri 11/20 at 10pm: Exam 2 retries due</li>
+<li>Mon 11/23 at 8pm: Homework 8 due</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How we protect messages in transit on the Internet in applications like web browsing and fetching emails</li>
+<li>Why digital certificates are designed to expire and to be revocable</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>The goal of Unit 3 of this course is to study encryption and its role in:</p>
+<ul>
+<li>Protecting data at rest on your laptop or phone (last week)</li>
+<li>Protecting data in transit over the Internet or messaging app (this week)</li>
+</ul>
+<div class="fragment">
+<p><strong>Deniable</strong> crypto has two seemingly-contradictory requirements:</p>
+<ul>
+<li>Today, Alice can send a message to Bob, with confidentiality and integrity</li>
+<li>Tomorrow, if Mallory coerces Alice to reveal the message, then Alice can pretend she said something else</li>
+</ul>
+</div>
+<div class="fragment">
+<p>We say that a cryptosystem satisfies:</p>
+<ul>
+<li><strong>Forward secrecy</strong>, also known as <em>pre-compromise secrecy</em>, if the messages sent today are safe even if one’s device is compromised at a later time</li>
+<li><strong>Backward secrecy</strong>, also known as <em>post-recovery secrecy</em>, if the messages sent today are safe even if one’s device was compromised at a prior time</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/16-fwd-back.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>Forward and backward secrecy</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>To achieve these goals, the Signal messaging protocol is intentionally designed only to use:</p>
+<ul>
+<li>Diffie-Hellman key exchange and symmetric authenticated encryption with <em>short-term keys</em></li>
+<li>A long-term public/secret key pair only once, in order to derive the very first key at the start of the conversation</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Encryption between people on the Internet is often performed in one of two ways.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 53%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Client-server encryption</th>
+<th>End-to-end encryption</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alice encrypts her message with the tech company’s key (and hence, they can read it).</td>
+<td>Alice encrypts her message directly to Bob. While the message passes through the server, the tech company cannot read it.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</section>
+<section id="tls-overview" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="tls-overview"><span class="header-section-number">17.1</span> TLS overview</h2>
+<p>Today, we will study discuss encryption in transit in a different scenario: <em>client-server encryption</em> between your computer and websites on the Internet.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:75%;">
+<p>The <strong>Transport Layer Security</strong> protocol, or TLS, is the most popular way to provide client-server encryption on the Internet.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Higher-level applications like your web brower and email client can use TLS to protect data in transit</li>
+<li>TLS is built on top of the existing (insecure) low-level Internet infrastructure for “passing notes in a classroom,” like the TCP/IP networking protocol</li>
+</ul>
+</div>
+<div class="fragment">
+<p>TLS was initially designed in the 1990s. The two versions still used in practice today are:</p>
+<ul>
+<li>TLS 1.2, standardized in 2008</li>
+<li>TLS 1.3, standardized in 2018</li>
+</ul>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:20%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/17-stack.png" class="img-fluid figure-img" width="200"></p>
+<figcaption>Networking stack (source: <a href="https://hpbn.co/transport-layer-security-tls/">High Performance Browser Networking</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Let’s discuss the setting and objectives of TLS.</p>
+<ul>
+<li>Alice does <strong>not</strong> need any long-term cryptographic keys</li>
+<li>The website <code>example.com</code> has a long-term public/secret key pair for a digital signature scheme</li>
+<li>There is a PKI to allow Alice to retrieve and check the website’s <em>digital certificate</em></li>
+<li>The parties want to communicate with server authenticity, <!-- Alice knows she is talking to the right website --> message confidentiality, <!-- their data is hidden --> and message integrity <!-- detect tampering in transit --></li>
+<li>When possible, we also want deniability, forward secrecy, and backward secrecy</li>
+</ul>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+example.com
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \Longleftrightarrow \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="130">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \Longleftrightarrow \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/server.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<hr>
+</section>
+<section id="digital-certificates" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="digital-certificates"><span class="header-section-number">17.2</span> Digital certificates</h2>
+<p>Remember that a <em>digital certificate</em> is the only way for Alice to know with confidence that she is talking to <code>example.com</code>. As a result, the public key infrastructure (PKI) is the lynchpin of security on the public Internet.</p>
+<div class="fragment">
+<p>We have seen digital certificates before.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-cert-bu.png" class="img-fluid figure-img" width="350"></p>
+<figcaption>Digital certificate for bu.edu, as viewed in Firefox</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/07-cert-google.png" class="img-fluid figure-img" width="350"></p>
+<figcaption>Digital certificate for google.com, as viewed in Firefox</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Digital certificates have an expiration date. Why is that?</p>
+<ol type="A">
+<li>To improve deniability</li>
+<li>To improve forward (pre-compromise) secrecy</li>
+<li>To improve backward (post-recovery) secrecy</li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. Certificate expiration improves <em>backward secrecy</em>. If Mallory secretly steals the secret key for the server <code>example.com</code>, then eventually it will expire and <code>example.com</code> will generate a new key that Mallory does not know.</p>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Certificate expiration also helps to deal with Moore’s law: keys need to become longer over time, so very old keys might be broken now.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+<section id="certificate-revocation" class="level3">
+<h3 class="anchored" data-anchor-id="certificate-revocation">Certificate revocation</h3>
+<p>What if <code>example.com</code> actually realizes that it has lost control of its secret key? The PKI also provides methods for <strong>certificate revocation</strong>.</p>
+<ul>
+<li>Essentially, revocation allows the server to force the certificate to expire sooner than originally intended</li>
+<li>The server-side process for revocation is simple: it digitally signs a message to the certificate authority (CA) requesting revocation</li>
+</ul>
+<div class="fragment">
+<p><strong>Question.</strong> How would you build a system for Alice to learn whether the digital certificate for <code>example.com</code> has been revoked?</p>
+</div>
+<div class="fragment">
+<p>Here are three options that are used on the web.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><em>Certificate revocation list</em> (CRL): the certificate authority publishes a list of all certificates that are revoked but unexpired (the certificate itself contains a link to the CRL)</p></li>
+<li><p><em>Online certificate status protocol</em> (OCSP): the certificate authority runs a web server, and Alice can ask it “has this key for <code>example.com</code> been revoked?”</p></li>
+<li><p><em>OCSP stapling</em>: the <code>example.com</code> server itself receives signed statement from the certificate authority that its own certificate is still not revoked, and sends this to Alice in the handshake</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>The website <a href="https://badssl.com/">badssl.com</a> contains many examples of expired, revoked, and otherwise bad certificates.</p>
+</div>
+<!--
+
+---
+
+### Intermediate certificates
+
+It is common that certificate authorities build _intermediate_ certificates rather than digitally signing a server's public key with their certification authority keys directly.
+
+:::: {.columns}
+::: {.column width="48%"}
+![bu.edu certificate, as viewed in Safari](images/06-cert2.png){width=400}
+:::
+::: {.column width="4%"}
+:::
+::: {.column width="48%"}
+::: {.fragment}
+![CA certificate $\to$ intermediate certificate $\to$ server certificate (source: [High Performance Browser Networking](https://hpbn.co/transport-layer-security-tls/))](images/17-certs.png){width=400}
+:::
+:::
+::::
+
+::: {.fragment}
+**Question.** Why is that?
+:::
+
+::: {.fragment}
+_Answer_. CAs use revocation and expiration for their own certificates too! 
+:::
+
+::: {.incremental}
+- The CA root public key is pre-installed on all computers and phones. It is intended to last a very long time (say, decades).
+- If the CA root secret key is compromised, it will be difficult for them to install a new key on everyone's devices.
+- So, they store the CA root secret key in a safe place (not on Internet-connected computers), and use it rarely to sign a CA _intermediate_ public key.
+- The CA intermediate secret key can live on Internet-connected devices, and the CA can use that to sign the keys of ordinary websites like `example.com`.
+- If the CA intermediate secret key is compromised, it can be revoked and the CA can make a new one.
+:::
+
+-->
+<hr>
+</section>
+</section>
+<section id="meddler-in-the-middle" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="meddler-in-the-middle"><span class="header-section-number">17.3</span> Meddler-in-the-middle</h2>
+<p>An important threat to consider is a <strong>meddler-in-the-middle attack</strong> (MitM) in which Mallory injects herself in between the client and server.</p>
+<div class="fragment">
+<p><strong>Example.</strong> Alice wants to be convinced that she is talking to the real web server <code>example.com</code>. Here is an idea: let’s allow each client to challenge <code>example.com</code> to digitally sign a random message <span class="math inline">\(m\)</span> of their choosing.</p>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+example.com
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \underset{\operatorname{Sign}_{sk}(m)}{\overset{m}{\rightleftharpoons}} \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/server.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<p>Unfortunately, this idea does not work because Mallory can inject herself in the middle of this conversation and play both sides off against each other.</p>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+example.com
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \underset{\operatorname{Sign}_{sk}(m)}{\overset{m}{\rightleftharpoons}} \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="130">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \underset{\operatorname{Sign}_{sk}(m)}{\overset{m}{\rightleftharpoons}} \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/server.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<hr>
+<section id="an-aside-apple-imessage" class="level3">
+<h3 class="anchored" data-anchor-id="an-aside-apple-imessage">An aside: Apple iMessage</h3>
+<p>As a brief aside from our discussion of TLS: let me say a word about Apple’s iMessage. <!-- This anecdote will give us a better understanding of meddler-in-the-middle attacks --></p>
+<div class="incremental">
+<ul class="incremental">
+<li>iMessage debuted in 2011 and is perhaps the oldest end-to-end encrypted messenger in widespread use</li>
+<li>The Signal protocol (then called TextSecure) was released in early 2014 and incorporated into WhatsApp starting in late 2014</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Signal and iMessage differ in their use of digital signatures.</p>
+<ul>
+<li>Recall from <a href="16.html">last time</a> that Signal is designed <em>never</em> to use digital signatures, only authenticated encryption with Encrypt-then-MAC</li>
+<li>But remember that some public key cryptography is needed to know who you are communicating with</li>
+<li>So, Apple decided to use symmetric-key encryption and public-key digital signatures in iMessage</li>
+</ul>
+<!-- The Apple engineers wanted digital signatures anyway to make sure that the receiver knew who the sender was, and then the MAC seemed unnecessary for integrity so they removed it -->
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \underset{\operatorname{Sign}_{{sk}_A}(c)}{\overset{c = \operatorname{Enc}_{k_{AB}}(m)}{\longrightarrow}} \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> Is Enc-then-Sign safe and secure to use? (Ignore deniability for now.)</p>
+</div>
+<div class="fragment">
+<p><strong>Answer.</strong> Surprisingly, no! A <a href="https://www.usenix.org/system/files/conference/usenixsecurity16/sec16_paper_garman.pdf">research paper</a> in 2016 showed that it breaks Apple’s iMessage. (Apple has since fixed this bug.)</p>
+</div>
+<hr>
+<p>What is the issue here?</p>
+<div class="incremental">
+<ul class="incremental">
+<li>In the symmetric case, we learned that Enc-then-MAC is the best option</li>
+<li>It ensures that Bob <strong>only</strong> uses his decryption key after he is convinced that the message comes from Alice</li>
+<li>A digital signature guarantees that Alice is the sender, but <strong>not</strong> that the message was created for him</li>
+</ul>
+</div>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \underset{\operatorname{Sign}_{{sk}_A}(c)}{\overset{c = \operatorname{Enc}_{k_{AB}}(m)}{\longrightarrow}} \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="130">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \underset{\operatorname{Sign}_{{sk}_A}(c)}{\overset{c}{\longrightarrow}} \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<div class="fragment">
+<p>In Enc-then-Sign, when Bob decrypts the ciphertext <span class="math inline">\(c\)</span>, will it return a well-formed message?</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Sometimes yes, but also sometimes it is not well-formed and Bob sends an error message to Mallory</li>
+<li>This distinction is enough for Mallory to find Alice and Bob’s symmetric key <span class="math inline">\(k_{AB}\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“We outline a novel chosen ciphertext attack… which allows retrospective decryption of some iMessage payloads in less than <span class="math inline">\(2^{18}\)</span> queries. The practical implication of these attacks is that any party who gains access to iMessage ciphertexts may potentially decrypt them remotely and after the fact.”</p>
+<p>– <em>Dancing on the Lip of the Volcano: Chosen Ciphertext Attacks on Apple iMessage</em> <!-- [@GarmanEtAl2016] --></p>
+</blockquote>
+<p>This is the power of meddler-in-the-middle attacks!</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="tls-handshake" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="tls-handshake"><span class="header-section-number">17.4</span> TLS handshake</h2>
+<p>Returning back to our topic for today, remember that TLS runs between a client Alice (with no cryptographic secrets) and a website <code>example.com</code> (with signature public key in the PKI). The TLS protocol runs in a few stages.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Handshake: the parties select crypto ciphers and keys to use</li>
+<li>Session: the parties use <code>AuthEnc</code> to send and receive data</li>
+<li>Session resumption: the parties resume a previous TLS connection without needing a new handshake</li>
+</ul>
+</div>
+<div class="fragment">
+<p>As the name suggests, a TLS <strong>handshake</strong> is the first thing Alice and the server do when they meet each other. The first few messages are, appropriately enough, called <code>ClientHello</code> and <code>ServerHello</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/17-handshake.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>TLS 1.2 handshake (source: <a href="https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/">Cloudflare</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<p>Recall a comment I made in <a href="01.html">Lecture 1</a>: we use crypto in transit all the time, so it must be automatic and fast. If the crypto is cumbersome or slow to use, then people will ignore it and move to other, less secure options.</p>
+<div class="columns">
+<div class="column" style="width:38%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-lets-encrypt.png" class="img-fluid figure-img" width="380"></p>
+<figcaption>Percentage of web pages loaded by Firefox using HTTPS (source: <a href="https://letsencrypt.org/stats/">Let’s Encrypt</a>)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:2%;">
+
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/01-cloudflare.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>How “expensive” is crypto anyway? (source: <a href="https://blog.cloudflare.com/how-expensive-is-crypto-anyway/">Cloudflare</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Let me make two additional observations from the Cloudflare picture on the right-hand side.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Public key cryptography is <em>significantly</em> slower than symmetric key cryptography, so we should use the latter as much as possible</li>
+<li>Why is a single server running so many <em>different</em> cryptographic algorithms?</li>
+</ul>
+</div>
+<hr>
+<section id="selecting-crypto-algorithms" class="level3">
+<h3 class="anchored" data-anchor-id="selecting-crypto-algorithms">Selecting crypto algorithms</h3>
+<p>Unlike the Signal/WhatsApp encrypted messengers that we discussed last time, on the Internet every web browser or email application might support different types of cryptography.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Some web browsers might be outdated and not have the code for the newest ciphers</li>
+<li>Some people may configure their web browser to prefer one cryptosystem over another</li>
+</ul>
+</div>
+<div class="fragment">
+<p>For this reason:</p>
+<ul>
+<li>TLS supports <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Algorithms">several cryptographic algorithms</a> for key exchange, symmetric encryption, digital signatures, and MACs</li>
+<li>One improvement made in the newest TLS 1.3 standard is to <em>reduce</em> the number of possible options, for simplicity and to remove broken crypto</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Within a TLS handshake:</p>
+<ul>
+<li>The client Alice sends in the <code>ClientHello</code> message a list of all cryptography that her computer can support</li>
+<li>The server <code>example.com</code> sends in the <code>ServerHello</code> message its preferred choice among the crypto that Alice supports</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note that these <code>Hello</code> messages do <em>not</em> yet have confidentiality or integrity, because the parties have not yet agreed on what crypto to use!</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="authenticated-key-exchange" class="level3">
+<h3 class="anchored" data-anchor-id="authenticated-key-exchange">Authenticated key exchange</h3>
+<p>The TLS handshake also allows Alice and the server to agree on the symmetric key to use for the ensuing session. There are two ways that they can do so:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Use Diffie-Hellman key exchange, i.e., send <span class="math inline">\(g^a\)</span> and <span class="math inline">\(g^b\)</span> in the <code>Hello</code> messages</li>
+<li>Use public key encryption like RSA, i.e., the client Alice choses the key <span class="math inline">\(k\)</span> and encrypts a message to the server containing this key</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Using RSA public key encryption is no longer allowed in the newest TLS 1.3 standard. What is the problem with using RSA public key encryption?</p>
+<ol type="A">
+<li>It is a broken cryptosystem, because Mallory can quickly factor integers</li>
+<li>It does not have forward (pre-compromise) secrecy, so if Mallory steals the server’s keys then messages sent in the past become insecure</li>
+<li>It does not have backward (post-recovery) secrecy, so if Mallory steals the server’s keys then messages sent in the future will be insecure</li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. Public key encryption does not have <em>forward secrecy</em>.</p>
+<ul>
+<li><p>Messages I send today are at risk if Mallory gets the server’s secret key in the future</p></li>
+<li><p>This is why TLS 1.3 only supports <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Key_exchange_or_key_agreement">key exchange</a> protocols based on Diffie-Hellman key exchange with <strong>ephemeral</strong> (i.e., one time use) exponents <span class="math inline">\(g^a\)</span> and <span class="math inline">\(g^b\)</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>If the server uses a one-time exponent <span class="math inline">\(g^b\)</span>, then how does Alice know who she is talking to?</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Answer: the server use a <em>digital signature</em> to sign <span class="math inline">\(g^b\)</span>, which results in <strong>authenticated key exchange</strong></li>
+<li>The server sends <span class="math inline">\(g^b\)</span>, the signature, and its <em>digital certificate</em> in the <code>ServerHello</code> message <!-- We will discuss later today what happens if the server loses its secret signing key --></li>
+</ul>
+</div>
+<div class="fragment">
+<p>The client Alice sends <span class="math inline">\(g^a\)</span> in its <code>ClientFinished</code> message</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/17-handshake.png" class="img-fluid figure-img" width="600"></p>
+<figcaption>TLS 1.2 handshake (source: <a href="https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/">Cloudflare</a>)</figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+<section id="verifying-the-handshake" class="level3">
+<h3 class="anchored" data-anchor-id="verifying-the-handshake">Verifying the handshake</h3>
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+example.com
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \Longleftrightarrow \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="130">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \Longleftrightarrow \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/server.png" class="quarto-figure quarto-figure-center" height="100">
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+<p>If we stopped the handshake here, then TLS would be vulnerable to a meddler-in-the-middle attack. Mallory could inject herself in between the client and server. She can:</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Pretend to be <code>example.com</code> when talking to Alice, in order to negotiate a shared symmetric key <span class="math inline">\(k_{AM}\)</span></li>
+<li>Pretend to be Alice when talking to <code>example.com</code>, in order to negotiate a shared symmetric key <span class="math inline">\(k_{ME}\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> What can the server do in the <code>ServerFinished</code> message to stop a MitM attack?</p>
+<ol type="A">
+<li>Send a cryptographic hash of all messages sent in the handshake</li>
+<li>Send a digital signature of all messages sent in the handshake</li>
+<li>Send an encryption of all messages sent in the handshake</li>
+<li>Send a MAC of all messages sent in the handshake</li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. The <code>ServerFinished</code> message takes a hash of the handshake so far (to save space), and then applies <strong>both</strong> a digital signature and a MAC!</p>
+</div>
+<div class="fragment">
+<p>The signature and MAC both provide data integrity, but in <a href="https://www.iacr.org/cryptodb/archive/2003/CRYPTO/1495/1495.pdf">different ways</a>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>The digital signature provides <em>sender authenticity</em>: convincing Alice that she is talking to the real server <code>example.com</code> (whereas a MAC would only convince Alice that she is talking to the same person she previously shared a symmetric key with, but this might be Mallory)</li>
+<li>The MAC provides <em>receiver authenticity</em>: convincing Alice that the message is intended for her (remember that a digital signature does not provide receiver authenticity)</li>
+<li>The MAC goes last, so that Alice verifies it first in accordance with the <em>cryptographic doom principle</em> (and this order also improves <em>forward secrecy</em>)</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>TLS 1.3 uses some clever ideas to compress the TLS handshake down from 4 messages to 2 messages, while still achieving the same objectives. This reduces the latency of the handshake protocol so that Alice can download the website data quicker.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="tls-session" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="tls-session"><span class="header-section-number">17.5</span> TLS session</h2>
+<p>Now that client Alice and server <code>example.com</code> have a shared symmetric key <span class="math inline">\(k\)</span>, they can use authenticated encryption to protect all of their data in transit during the TLS session.</p>
+<div class="fragment">
+<p>There are two reasons that we use AuthEnc from now onward.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p>Authenticated encryption provides partial <em>deniability</em>, as we discussed last time</p></li>
+<li><p>Symmetric key crypto is significantly faster than public key crypto</p>
+<pre><code>&gt; openssl speed ecdh
+
+Doing 256 bits  ecdh's for 10s: 62243 256-bits ECDH ops in 9.98s
+
+&gt; openssl speed aes
+
+Doing aes-256-cbc for 3s on 16 size blocks: 109181284 aes-256-cbc's in 2.89s
+Doing aes-256-cbc for 3s on 64 size blocks: 48944484 aes-256-cbc's in 2.79s
+Doing aes-256-cbc for 3s on 256 size blocks: 14364367 aes-256-cbc's in 2.99s
+Doing aes-256-cbc for 3s on 1024 size blocks: 3644790 aes-256-cbc's in 2.99s
+Doing aes-256-cbc for 3s on 8192 size blocks: 454524 aes-256-cbc's in 2.97s
+Doing aes-256-cbc for 3s on 16384 size blocks: 227706 aes-256-cbc's in 2.99s</code></pre></li>
+</ol>
+</div>
+<hr>
+<section id="session-resumption" class="level3">
+<h3 class="anchored" data-anchor-id="session-resumption">Session resumption</h3>
+<p>Imagine the following scenario.</p>
+<ol type="1">
+<li>You are sitting in this classroom, and you establish a TLS connection to <a href="https://ds653.cds.bu.edu/">ds653.cds.bu.edu</a></li>
+<li>After class ends, you close your laptop and walk home</li>
+<li>At home, you open your laptop and read the new lecture notes on <a href="https://ds653.cds.bu.edu/">ds653.cds.bu.edu</a></li>
+</ol>
+<div class="fragment">
+<p>In step 3: your browser might still remember the shared symmetric key with the server. But the web server long ago assumed that you left, and it deleted the key (for forward secrecy).</p>
+<p><strong>Question.</strong> What can you do here?</p>
+</div>
+<div class="fragment">
+<ul>
+<li>You can certainly run a new TLS handshake in step 3 to produce a new shared key with the server… but that is slow</li>
+<li>During the original TLS handshake in step 1, you and the server can prepare for the possibility that you might later want to <em>resume</em> your session</li>
+</ul>
+</div>
+<div class="fragment">
+<p>TLS <strong>session resumption</strong> allows the client and server to create a <code>ticket</code> that can be used later to resume a session.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>The <code>ticket</code> contains a symmetric key <span class="math inline">\(k_{sr}\)</span> along with the contents of the previous handshake (including the crypto algorithms that you agreed to use)</li>
+<li>The <code>ticket</code> itself is protected with a key that only the server knows</li>
+<li>For deniability, this “protection” uses AuthEnc rather than public key encryption</li>
+<li>For forward secrecy, this new symmetric key <span class="math inline">\(k_{sr}\)</span> is <em>different</em> than the key of the original session</li>
+<li>For backward secrecy, the <code>ticket</code> has an expiration date so that it cannot be used forever</li>
+</ul>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
