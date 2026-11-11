@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>18&nbsp; Multi-party computation – Crypto for Data Science</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./19.html" rel="next">
+<link href="./unit4.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit4.html">Protecting data science</a></li><li class="breadcrumb-item"><a href="./18.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Multi-party computation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="index.html" class="sidebar-logo-link">
+      <img src="./images/logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Crypto for Data Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course description</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Course overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data integrity</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Cryptographic hash functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Password hashing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">(Pseudo)randomness</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Message authentication codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Digital signatures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Key exchange</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data availability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Bitcoin overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Proof of work mining</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bitcoin liveness and safety</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Byzantine broadcast</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Synchronous blockchains</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data confidentiality</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">One-time pads</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Authenticated encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Encrypting data at rest</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">End-to-end encryption</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Transport layer security</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./unit4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protecting data science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Multi-party computation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Verifiable MPC</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Zero knowledge proofs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Faster &amp; smaller ZK proofs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Private cryptocurrencies</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Crypto and elections</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Crypto and the law</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#protecting-data-in-use" id="toc-protecting-data-in-use" class="nav-link" data-scroll-target="#protecting-data-in-use"><span class="header-section-number">18.1</span> Protecting data in use</a></li>
+  <li><a href="#secret-sharing" id="toc-secret-sharing" class="nav-link" data-scroll-target="#secret-sharing"><span class="header-section-number">18.2</span> Secret sharing</a>
+  <ul class="collapse">
+  <li><a href="#defining-secret-sharing" id="toc-defining-secret-sharing" class="nav-link" data-scroll-target="#defining-secret-sharing">Defining secret sharing</a></li>
+  <li><a href="#boolean-secret-sharing" id="toc-boolean-secret-sharing" class="nav-link" data-scroll-target="#boolean-secret-sharing">Boolean secret sharing</a></li>
+  <li><a href="#arithmetic-secret-sharing" id="toc-arithmetic-secret-sharing" class="nav-link" data-scroll-target="#arithmetic-secret-sharing">Arithmetic secret sharing</a></li>
+  </ul></li>
+  <li><a href="#secure-multi-party-computation" id="toc-secure-multi-party-computation" class="nav-link" data-scroll-target="#secure-multi-party-computation"><span class="header-section-number">18.3</span> Secure multi-party computation</a>
+  <ul class="collapse">
+  <li><a href="#defining-mpc" id="toc-defining-mpc" class="nav-link" data-scroll-target="#defining-mpc">Defining MPC</a></li>
+  </ul></li>
+  <li><a href="#mpc-against-eve" id="toc-mpc-against-eve" class="nav-link" data-scroll-target="#mpc-against-eve"><span class="header-section-number">18.4</span> MPC against Eve</a>
+  <ul class="collapse">
+  <li><a href="#mpc-of-addition-3" id="toc-mpc-of-addition-3" class="nav-link" data-scroll-target="#mpc-of-addition-3">MPC of addition</a></li>
+  <li><a href="#mpc-of-linear-functions" id="toc-mpc-of-linear-functions" class="nav-link" data-scroll-target="#mpc-of-linear-functions">MPC of linear functions</a></li>
+  <li><a href="#mpc-of-multiplication" id="toc-mpc-of-multiplication" class="nav-link" data-scroll-target="#mpc-of-multiplication">MPC of multiplication</a></li>
+  <li><a href="#replicated-secret-sharing" id="toc-replicated-secret-sharing" class="nav-link" data-scroll-target="#replicated-secret-sharing">Replicated secret sharing</a></li>
+  <li><a href="#mpc-of-everything" id="toc-mpc-of-everything" class="nav-link" data-scroll-target="#mpc-of-everything">MPC of everything</a></li>
+  </ul></li>
+  <li><a href="#mpc-against-mallory" id="toc-mpc-against-mallory" class="nav-link" data-scroll-target="#mpc-against-mallory"><span class="header-section-number">18.5</span> MPC against Mallory</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unit4.html">Protecting data science</a></li><li class="breadcrumb-item"><a href="./18.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Multi-party computation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Multi-party computation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<hr>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Wed 11/11 at 8pm: Homework 7 due, with a grace period until today at 10pm (<a href="https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1794409200001">NIST beacon</a>)</li>
+<li>Fri 11/13: Lab 11 on <a href="https://securecomputation.org/docs/pragmaticmpc.pdf">EKR sections 1.2–1.3</a> and <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG section 4.3</a></li>
+<li>Mon 11/16: Exam 3</li>
+<li>Fri 11/20 at 10pm: Exam 2 retries due</li>
+<li>Mon 11/23 at 8pm: Homework 8 due</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>The difference between protecting data at rest, in transit, and in use</li>
+<li>How to construct MPC against a passive Eve from cryptographic secret sharing</li>
+<li>How to construct MPC against an active Mallory using replication</li>
+</ul>
+<hr>
+</section>
+<section id="protecting-data-in-use" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="protecting-data-in-use"><span class="header-section-number">18.1</span> Protecting data in use</h2>
+<p>We have now completed 3 units of the course, and have just 1 unit remaining.</p>
+<ol type="1">
+<li>Protecting data <em>integrity</em> using digital signatures and message authentication codes</li>
+<li>Protecting data <em>availability</em> with broadcast and blockchains</li>
+<li>Protecting data <em>confidentiality</em> using encryption</li>
+<li>Protecting data <em>science</em> i.e., working with data you cannot see</li>
+</ol>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:57%;">
+<p>We already saw a preview into Unit 4 when we discussed the <strong>Boston wage gap study</strong>.</p>
+<ul>
+<li>Companies want contribute payroll data to the study, while protecting data confidentiality</li>
+<li>We use cryptographic <strong>secret sharing</strong> to split the data</li>
+<li>We can calculate the city-wide aggregate without learning any information about individual employees or employers</li>
+</ul>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/13-website.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>100talent.org website in 2017</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>In Unit 4, we continue our investigation into data confidentiality, and we will sometimes also discuss data integrity and availability.</p>
+</div>
+<div class="fragment">
+<p>We can sub-divide data confidentiality into three different scenarios.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><strong>Protecting data at rest</strong>, such as encrypting data on your local own hard drive <!-- This involves encryption from Alice to future-Alice, in order to stop someone who steals her laptop or phone from reading her data. --></p></li>
+<li><p><strong>Protecting data in transit</strong>, for instance by using end-to-end encrypted messengers like Signal, WhatsApp, or iMessage <!-- This involves encryption from Alice to Bob, in order to stop anyone else on the Internet from reading their messages. (But note that Alice and Bob implicitly trust each other with the message contents.) --></p></li>
+<li><p><strong>Protecting data in use</strong>, so that Alice can outsource her computation to Bob while still not allowing Bob himself to read the data!</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>Note how counterintuitive this sounds. In modern cloud computing, if you want someone to conduct data analysis for you, you have to give them your data.</p>
+</div>
+<div class="fragment">
+<p>We will spend the next few weeks exploring the problem of protecting data in use. My goal is to convince you that it is possible to <strong>conduct data science without data sharing</strong>.</p>
+</div>
+<div class="fragment">
+<p>To solve this problem, we will need a new data confidentiality tool besides encryption.</p>
+<ul>
+<li>Encryption has an all-or-nothing property: anyone who knows the symmetric key (like Alice or Bob) can read everything, whereas anyone without the key (like Mallory) learns nothing</li>
+<li>In Unit 4, the people you’re working with, the people you don’t fully trust, and your potential adversaries <strong>are the same people</strong> (in other words, perhaps Bob is also Mallory)</li>
+</ul>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>“Cryptography is how people get things done when they need one another, don’t fully trust one another, and have adversaries actively trying to screw things up.”</p>
+<p>– Ben Adida</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>To use an analogy:</p>
+<ul>
+<li>Encryption is like putting your data inside a lockbox</li>
+<li>The new tools we will design in Unit 4 are like working with the data while it is inside the box</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/19-glovebox.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption>Image source: <a href="https://www.nasa.gov/image-article/vacuum-dry-box/">NASA</a></figcaption>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+<section id="secret-sharing" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="secret-sharing"><span class="header-section-number">18.2</span> Secret sharing</h2>
+<p>For this journey, we will look at the one-time pad in a new way. Recall that a one-time pad uses the <code>xor</code> function <span class="math inline">\(\oplus\)</span> to protect a secret message <span class="math inline">\(P\)</span> by performing <span class="math inline">\(P = K \oplus C\)</span>.</p>
+<div class="fragment">
+<p>If the attacker sees the ciphertext <span class="math inline">\(C\)</span> but not the key <span class="math inline">\(K\)</span>, then the cipher is <em>perfectly secret</em>.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The adversary has learned <em>nothing</em> about the secret message, in a probabilistic sense</p></li>
+<li><p>Concretely, an adversary who only sees <span class="math inline">\(C\)</span> but not <span class="math inline">\(K\)</span> cannot distinguish between any two possible values <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P_1\)</span> of the secret message</p>
+<p><span class="math display">\[ \Pr[\text{secret is } P_0\text{, given ciphertext } C] = \Pr[\text{secret is } P_1\text{, given ciphertext } C]\]</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Here is an interesting thought experiment: what if we switch the roles of <span class="math inline">\(K\)</span> and <span class="math inline">\(C\)</span>? That is, what if:</p>
+<ul>
+<li>Mallory sees the key <span class="math inline">\(K\)</span> but</li>
+<li>Mallory does not see the ciphertext <span class="math inline">\(C\)</span>?</li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>With a one-time pad, this scenario should never happen. But it’s illustrative to think about it anyway.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Is a one-time pad perfectly secret if the adversary sees the key <span class="math inline">\(K\)</span> but not the ciphertext <span class="math inline">\(C\)</span>?</p>
+<ol type="A">
+<li>Yes</li>
+<li>No</li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>Answer.</em> Amazingly, yes!</p>
+<ul>
+<li>In the equation <span class="math inline">\(P = K \oplus C\)</span>, we can think of <span class="math inline">\(K\)</span> as a “mask” that hides <span class="math inline">\(C\)</span></li>
+<li>But it is equally valid to think about <span class="math inline">\(C\)</span> as a mask that hides <span class="math inline">\(K\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>This insight leads to the idea of <strong>cryptographic secret sharing</strong>! With secret sharing:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>A group of parties jointly hold a secret, but</li>
+<li>No small coalition in the group knows the secret</li>
+</ul>
+</div>
+<hr>
+<section id="defining-secret-sharing" class="level3">
+<h3 class="anchored" data-anchor-id="defining-secret-sharing">Defining secret sharing</h3>
+<p>Informally, a <span class="math inline">\((t, n)\)</span>-secret sharing scheme splits the secret <span class="math inline">\(s\)</span> into <span class="math inline">\(n\)</span> shares, such that any <span class="math inline">\(t\)</span> of the shares reveal <em>no information</em> about <span class="math inline">\(s\)</span>, while any <span class="math inline">\(t + 1\)</span> shares allow complete reconstruction of the secret <span class="math inline">\(s\)</span>.</p>
+<p>A formal definition follows.</p>
+<div class="fragment">
+<div id="def-ss" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 18.1</strong></span> Starting from a secret <span class="math inline">\(s\)</span>, a <em>cryptographic secret sharing</em> scheme is defined by two algorithms:</p>
+<ol type="1">
+<li><p><code>split</code><span class="math inline">\((s,t,n)\)</span> is a randomized algorithm that splits a secret <span class="math inline">\(s\)</span> into a vector of <span class="math inline">\(n\)</span> shares <span class="math inline">\([s_1, s_2, \ldots, s_n]\)</span>, such that any subset of shares of size <span class="math inline">\(t + 1\)</span> can reconstruct the original secret.</p></li>
+<li><p><code>reconstruct</code><span class="math inline">\((s_{i_1}, \ldots, s_{i_{t+1}})\)</span> is a deterministic algorithm that takes <span class="math inline">\(t + 1\)</span> distinct secret shares (i.e., a sub-vector of <span class="math inline">\(\vec{s}\)</span>) and calculates the original secret <span class="math inline">\(s\)</span>.</p></li>
+</ol>
+</div>
+</div>
+<div class="fragment">
+<p>The scheme must satisfy two security requirements.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p><em>Correctness</em> states that if you <code>split</code> any secret <span class="math inline">\(s\)</span>, then <code>reconstruct</code> always recovers the original secret <span class="math inline">\(s\)</span>.</p></li>
+<li><p><span class="math inline">\(t\)</span>-<em>perfect secrecy</em> is defined similarly as with a one-time pad: for any two possible secrets <span class="math inline">\(s\)</span> and <span class="math inline">\(r\)</span>, and for any vector of <span class="math inline">\(t\)</span> or fewer secret shares <span class="math inline">\(\vec{x} = \{x_{i_1}, x_{i_2}, \ldots, x_{i_t}\}\)</span>, it is the case that:</p>
+<p><span class="math display">\[ \Pr[\text{all }x_i = s_i \mid \vec{s} = \text{split}(s, t, n)] = \Pr[\text{all }x_i = r_i \mid \vec{s} = \text{split}(r, t, n)].\]</span></p>
+<p>In words: perfect secrecy says that the shares held by a coalition of <span class="math inline">\(\leq t\)</span> parties have an equal probability of being shares of <span class="math inline">\(s\)</span> or shares of <span class="math inline">\(r\)</span>.</p></li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="boolean-secret-sharing" class="level3">
+<h3 class="anchored" data-anchor-id="boolean-secret-sharing">Boolean secret sharing</h3>
+<p>Today, we will contruct two (related) secret sharing algorithms.</p>
+<div class="fragment">
+<p><strong>Scenario.</strong> Suppose that Susie has a secret <span class="math inline">\(s\)</span> that she wants to split between two of her friends Alice and Bob. <!-- However, Susie does not trust either Alice or Bob enough to hand over her secret. --> She wants each friend to hold onto one <em>share</em> of the secret on their hard drive. This way:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>If Susie loses her secret in the future, she can recover it by talking to both of them.</li>
+<li>If either one of Alice or Bob are actually adversarial (or have their hard drive compromised), the secret is still protected. This limits the trust that Suzie must place in each friend.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Here is a construction that allows Susie to accomplish this goal. It will <code>split</code> her <span class="math inline">\(\ell\)</span>-bit secret <span class="math inline">\(s\)</span> into two shares.</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li>Choose the share <span class="math inline">\(s_1\)</span> uniformly at random among all bitstrings of length <span class="math inline">\(\ell\)</span></li>
+<li>Calculate <span class="math inline">\(s_2 \gets s \oplus s_1\)</span> (where <span class="math inline">\(\oplus\)</span> denotes the boolean-<code>xor</code> operation)</li>
+<li>Send <span class="math inline">\(s_1\)</span> to Alice, and send <span class="math inline">\(s_2\)</span> to Bob</li>
+</ol>
+</div>
+<div class="fragment">
+<p>To <code>reconstruct</code> the secret later, calculate <span class="math inline">\(s \gets s_1 \oplus s_2\)</span>.</p>
+</div>
+<div class="fragment">
+<div id="thm-ss" class="theorem">
+<p><span class="theorem-title"><strong>Theorem 18.1</strong></span> This construction is a secret sharing scheme among <span class="math inline">\(n = 2\)</span> parties that is perfectly secret against any <span class="math inline">\(t = 1\)</span> adversarial party.</p>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Correctness is easy to check. Both the split and reconstruct algorithms rely on the fact that <span class="math inline">\(s = s_1 \oplus s_2\)</span>.</p></li>
+<li><p>Perfect secrecy follows a similar argument as a one-time pad.</p>
+<ul class="incremental">
+<li>From Alice’s perspective: she knows <span class="math inline">\(s_1\)</span> but not <span class="math inline">\(s_2\)</span> or <span class="math inline">\(s\)</span>. To her, the scheme looks just like a one-time pad where <span class="math inline">\(s_1\)</span> is akin to the ciphertext, and the unknown <span class="math inline">\(s_2\)</span> acts as the key that perfectly hides the message <span class="math inline">\(s\)</span>.</li>
+<li>From Bob’s perspective: the situation is the same! He knows <span class="math inline">\(s_2\)</span>, but to him this looks just like a OTP ciphertext, and the unknown <span class="math inline">\(s_1\)</span> acts as the key that perfectly hides the message.</li>
+</ul></li>
+</ul>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Math details
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="fragment">
+<p>This argument relies on a subtle but essential fact from probability: a uniformly-random bytestring <span class="math inline">\(s_1\)</span> <code>xor</code>ed with an arbitrary bytestring <span class="math inline">\(s\)</span> has the uniform distribution. Therefore, <span class="math inline">\(s_2\)</span> on its own has the uniform distribution over all length-<span class="math inline">\(\ell\)</span> bitstrings.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>For example, suppose that the secret <span class="math inline">\(s = \texttt{111..1}\)</span></li>
+<li>Then, <span class="math inline">\(s_2 = \texttt{111..1} \oplus s_1\)</span> is the result of taking a uniformly-random bitstring and flipping all of its bits… which results in the uniform distribution</li>
+<li>The same idea holds for any choice of the secret <span class="math inline">\(s\)</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="arithmetic-secret-sharing" class="level3">
+<h3 class="anchored" data-anchor-id="arithmetic-secret-sharing">Arithmetic secret sharing</h3>
+<p>We can also construct a secret sharing scheme using addition, rather than the <code>xor</code> operation. Here’s an alternative approach for Susie to <code>split</code> her secret:</p>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li>Choose the share <span class="math inline">\(s_1\)</span> uniformly at random among all numbers that are <span class="math inline">\(\ell\)</span> bits long (i.e., the numbers 0 to <span class="math inline">\(2^\ell-1\)</span>).</li>
+<li>Calculate <span class="math inline">\(s_2 \gets s - s_1 \bmod{2^\ell}\)</span>.</li>
+<li>Send <span class="math inline">\(s_1\)</span> to Alice, and send <span class="math inline">\(s_2\)</span> to Bob.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>To <code>reconstruct</code> the secret later, calculate <span class="math inline">\(s \gets s_1 + s_2 \bmod{2^\ell}\)</span>. Correctness and perfect secrecy hold for essentially the same reasons as before. (Do you see why?)</p>
+</div>
+<div class="fragment">
+<p>Also, both boolean and arithmetic secret sharing immediately generalize to the <span class="math inline">\(n\)</span> party setting.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Susie can <code>split</code> her secret <span class="math inline">\(s\)</span> among <span class="math inline">\(n\)</span> parties by sampling shares such that: <span class="math display">\[ s = s_1 + s_2 + \cdots + s_n \bmod{2^\ell}\]</span></li>
+<li>All <span class="math inline">\(n\)</span> parties must honestly participate in order to <code>reconstruct</code> the original secret <span class="math inline">\(s\)</span></li>
+<li>Perfect secrecy is achieved against any subset of <span class="math inline">\(t = n - 1\)</span> parties, because the final share acts like a one-time pad to hide the secret</li>
+</ul>
+</div>
+<hr>
+</section>
+</section>
+<section id="secure-multi-party-computation" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="secure-multi-party-computation"><span class="header-section-number">18.3</span> Secure multi-party computation</h2>
+<p>Let’s consider the following setting:</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>There are <span class="math inline">\(m\)</span> people who possess sensitive data <span class="math inline">\(x_1, x_2, \ldots, x_m\)</span></p></li>
+<li><p>They want to outsource this data to a collection of <span class="math inline">\(n\)</span> <strong>computing parties</strong> <span class="math inline">\(P_1, P_2, \ldots, P_n\)</span></p>
+<ul class="incremental">
+<li>The computing parties could be the same people as the data holders</li>
+<li>Or they could be different companies like cloud providers</li>
+</ul></li>
+<li><p>A <strong>data scientist</strong> proposes to compute a function <span class="math inline">\(f\)</span> of all sensitive data</p></li>
+<li><p>Everyone agrees to contribute their data toward data analysis <span class="math inline">\(f\)</span>, and everyone believes that at most <span class="math inline">\(t\)</span> of the <span class="math inline">\(n\)</span> parties are adversarial</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Cryptographically <strong>secure multi-party computation</strong> (often abbreviated as MPC) allows the parties to:</p>
+<ul>
+<li>Work together to calculate <span class="math inline">\(y = f(x_1, \ldots, x_m)\)</span></li>
+<li>Ensure that no coalition of up to <span class="math inline">\(t\)</span> computing parties can learn anything about the input data</li>
+<li>The data scientist (who receives the output <span class="math inline">\(y\)</span>) learns nothing about the inputs beyond what can be inferred from <span class="math inline">\(y\)</span>, in a Bayesian sense</li>
+</ul>
+</div>
+<hr>
+<section id="defining-mpc" class="level3">
+<h3 class="anchored" data-anchor-id="defining-mpc">Defining MPC</h3>
+<p>Now that we understand how MPC works informally, this is usually where I would provide a scientific definition. I’m not going to do that this time though, because the formal definition of MPC is somewhat complicated. You will read about it in next week’s <a href="https://eprint.iacr.org/2008/197.pdf">required reading</a>.</p>
+<div class="fragment">
+<p>Instead, I reproduce below some text from a recent bill in the U.S. Congress that provides a legal definition of MPC. (Emphasis added by me.)</p>
+<blockquote class="blockquote">
+<p>The term “secure multi-party computation” means a computerized system that enables <strong>different participating entities</strong> in possession of private sets of data to <strong>link and aggregate their data sets</strong> for the exclusive purpose of performing a finite number of pre-approved computations <strong>without transferring or otherwise revealing any private data</strong> to each other or anyone else.</p>
+<p>– <a href="https://www.congress.gov/bill/117th-congress/senate-bill/3952/text#id0c1c7f87d1ba4b27ac9d9025ff5fd0e5">2022 U.S. Senate bill S.3952</a></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>We can consider MPC against two kinds of adversaries (the same ones we considered for encryption):</p>
+<ul>
+<li>The passive eavesdropper Eve</li>
+<li>The actively-malicious adversary Mallory <!-- She doesn't follow any rules, and will do whatever she can to learn or tamper with the data --></li>
+</ul>
+<p>Let’s begin by considering MPC against a passive eavesdropper Eve. Remember that Eve promises to follow the rules of a cryptographic protocol, but she tries to learn sensitive data along the way.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="mpc-against-eve" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="mpc-against-eve"><span class="header-section-number">18.4</span> MPC against Eve</h2>
+<p>In general, <em>secure multi-party computation</em> (MPC) protocols have three steps:</p>
+<ol type="1">
+<li>The data holders <strong>split</strong> their secrets <span class="math inline">\(x_1, x_2, \ldots, x_m\)</span>, and send one share to each computing party</li>
+<li>The computing parties perform some <strong>calculation</strong> over the secret shares</li>
+<li>The computing parties give shares of the result to the data scientist, who can <strong>reconstruct</strong> <span class="math inline">\(y = f(\vec{x})\)</span></li>
+</ol>
+<p>Steps 1 and 3 come directly from the <code>split</code> and <code>reconstruct</code> operations of the secret sharing construction.</p>
+<hr>
+<section id="mpc-of-addition-3" class="level3">
+<h3 class="anchored" data-anchor-id="mpc-of-addition-3">MPC of addition</h3>
+<p>We have already seen how arithmetic secret sharing can be used to build a secure computation of addition. This is how we solved the Boston Women’s Workforce Council’s problem.</p>
+<center>
+<table align="center" cellpadding="8">
+<tbody><tr>
+<th>
+</th>
+<th>
+<span class="math inline">\(a\)</span> <br> <img src="images/13-hr1.png" width="50">
+</th>
+<th>
+<span class="math inline">\(b\)</span> <br> <img src="images/13-hr2.png" width="50">
+</th>
+<th>
+<span class="math inline">\(c\)</span> <br> <img src="images/13-hr3.png" width="50">
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(a + b + c\)</span> <br><br> <img src="images/13-city.png" width="150">
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bu-logo.gif" width="85">
+</th>
+<th>
+<span class="math inline">\(a_1\)</span>
+</th>
+<th>
+<span class="math inline">\(b_1\)</span>
+</th>
+<th>
+<span class="math inline">\(c_1\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(a_1 + b_1 + c_1\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bwwc-logo.png" width="75">
+</th>
+<th>
+<span class="math inline">\(a_2\)</span>
+</th>
+<th>
+<span class="math inline">\(b_2\)</span>
+</th>
+<th>
+<span class="math inline">\(c_2\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(a_2 + b_2 + c_2\)</span>
+</th>
+</tr>
+</tbody></table>
+</center>
+<div class="fragment">
+<p>So we already have designed our first MPC algorithm… well, as long as the only data analysis we want to perform is addition.</p>
+</div>
+<div class="fragment">
+<p>The good news is that you can perform cryptographically secure multi-party computation of <strong>any</strong> function!</p>
+</div>
+<hr>
+</section>
+<section id="mpc-of-linear-functions" class="level3">
+<h3 class="anchored" data-anchor-id="mpc-of-linear-functions">MPC of linear functions</h3>
+<p>The BWWC idea easily extends to cover all <em>linear</em> functions (in the sense of linear algebra).</p>
+<div class="incremental">
+<ul class="incremental">
+<li>For instance, rather than calculating <span class="math inline">\(a + b + c\)</span>, suppose that we actually wanted to compute <span class="math inline">\(2a + 3b - c + 10\)</span></li>
+<li>Since we are using arithmetic secret sharing, and scalar multiplication also commutes over addition, each party can just compute its share of the result</li>
+</ul>
+</div>
+<div class="fragment">
+<center>
+<table align="center" cellpadding="8">
+<tbody><tr>
+<th>
+</th>
+<th>
+<span class="math inline">\(a\)</span> <br> <img src="images/13-hr1.png" width="50">
+</th>
+<th>
+<span class="math inline">\(b\)</span> <br> <img src="images/13-hr2.png" width="50">
+</th>
+<th>
+<span class="math inline">\(c\)</span> <br> <img src="images/13-hr3.png" width="50">
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(2a + 3b - c + 10\)</span> <br><br> <img src="images/13-city.png" width="150">
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bu-logo.gif" width="85">
+</th>
+<th>
+<span class="math inline">\(a_1\)</span>
+</th>
+<th>
+<span class="math inline">\(b_1\)</span>
+</th>
+<th>
+<span class="math inline">\(c_1\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(2a_1 + 3b_1 - c_1 + 10\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bwwc-logo.png" width="75">
+</th>
+<th>
+<span class="math inline">\(a_2\)</span>
+</th>
+<th>
+<span class="math inline">\(b_2\)</span>
+</th>
+<th>
+<span class="math inline">\(c_2\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(2a_2 + 3b_2 - c_2 + 0\)</span>
+</th>
+</tr>
+</tbody></table>
+</center>
+</div>
+<hr>
+</section>
+<section id="mpc-of-multiplication" class="level3">
+<h3 class="anchored" data-anchor-id="mpc-of-multiplication">MPC of multiplication</h3>
+<p>Next, let’s try to multiply two secrets <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> from two data holders. <!-- Can we somehow calculate secret shares of the product $c = a \cdot b$? --></p>
+<center>
+<table align="center" cellpadding="8">
+<tbody><tr>
+<th>
+</th>
+<th>
+<span class="math inline">\(a\)</span> <br> <img src="images/13-hr1.png" width="50">
+</th>
+<th>
+<span class="math inline">\(b\)</span> <br> <img src="images/13-hr2.png" width="50">
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c = a \cdot b\)</span> <br><br> <img src="images/13-city.png" width="150">
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bu-logo.gif" width="85">
+</th>
+<th>
+<span class="math inline">\(a_1\)</span>
+</th>
+<th>
+<span class="math inline">\(b_1\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(\color{red}{??}\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bwwc-logo.png" width="75">
+</th>
+<th>
+<span class="math inline">\(a_2\)</span>
+</th>
+<th>
+<span class="math inline">\(b_2\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(\color{red}{??}\)</span>
+</th>
+</tr>
+</tbody></table>
+</center>
+<div class="fragment">
+<p><strong>Interactive question.</strong> Can we use the same idea to calculate secret shares of the product <span class="math inline">\(c = a \cdot b\)</span>? That is: can each party take the product of their own shares and set <span class="math inline">\(c_i = a_i \cdot b_i\)</span>?</p>
+<ol type="A">
+<li>Yes</li>
+<li>No</li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. This is not as easy to compute. This time we cannot rely solely on commutativity of addition; we need to consider the distributive law as well.</p>
+<p>Recall the relationships between the secret variables and their arithmetic shares (all equations will be mod <span class="math inline">\(2^\ell\)</span>, but from now on I’m going to omit writing the modulus for brevity): <span class="math display">\[\begin{align*}
+a &amp;= a_1 + a_2 \\
+b &amp;= b_1 + b_2.
+\end{align*}\]</span></p>
+</div>
+<div class="fragment">
+<p>Hence, we want to compute: <span class="math display">\[\begin{align*}
+c &amp;= a \cdot b \\
+&amp;= (a_1 + a_2) (b_1 + b_2) \\
+&amp;= a_1 b_1 + a_1 b_2 + a_2 b_1 + a_2 b_2.
+\end{align*}\]</span></p>
+</div>
+<div class="fragment">
+<p>Here we reach a condundrum.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>BU can compute the term <span class="math inline">\(a_1 b_1\)</span> on its own, and the Council can compute <span class="math inline">\(a_2 b_2\)</span> on its own</li>
+<li>But it’s unclear how to compute the cross-terms <span class="math inline">\(a_1 b_2\)</span> and <span class="math inline">\(a_2 b_1\)</span> (remember that the computing parties cannot send their shares to each other, since that would break data confidentiality)</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="replicated-secret-sharing" class="level3">
+<h3 class="anchored" data-anchor-id="replicated-secret-sharing">Replicated secret sharing</h3>
+<p>Today, I will show you one way (though not the only way!) to resolve this conundrum. It relies on two useful insights.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:37%;">
+<p><strong>Insight #1:</strong> Add a third computing party.</p>
+<div class="fragment">
+<p>This initially looks to make the calculation harder to perform. Now the distributive law says that we must calculate:</p>
+<p><span class="math display">\[\begin{align*}
+c &amp;= (a_1 + a_2 + a_3) (b_1 + b_2 + b_3) \\
+&amp;= a_1 b_1 + a_1 b_2 + a_1 b_3 \\
+&amp;\quad + a_2 b_1 + a_2 b_2 + a_2 b_3 \\
+&amp;\quad + a_3 b_1 + a_3 b_2 + a_3 b_3. \\
+\end{align*}\]</span></p>
+</div>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:60%;">
+<center>
+<table align="center" cellpadding="8">
+<tbody><tr>
+<th>
+</th>
+<th>
+<span class="math inline">\(a\)</span> <br> <img src="images/13-hr1.png" width="50">
+</th>
+<th>
+<span class="math inline">\(b\)</span> <br> <img src="images/13-hr2.png" width="50">
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c = a \cdot b\)</span> <br><br> <img src="images/13-city.png" width="125">
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bu-logo.gif" width="70">
+</th>
+<th>
+<span class="math inline">\(a_1\phantom{, a_2}\)</span>
+</th>
+<th>
+<span class="math inline">\(b_1\phantom{, b_2}\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(\color{red}{??}\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bwwc-logo.png" width="60">
+</th>
+<th>
+<span class="math inline">\(a_2\phantom{, a_3}\)</span>
+</th>
+<th>
+<span class="math inline">\(b_2\phantom{, b_3}\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(\color{red}{??}\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/19-server.tif" width="60">
+</th>
+<th>
+<span class="math inline">\(a_3\phantom{, a_1}\)</span>
+</th>
+<th>
+<span class="math inline">\(b_3\phantom{, b_1}\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(\color{red}{??}\)</span>
+</th>
+</tr>
+</tbody></table>
+</center>
+</div>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:37%;">
+<p><strong>Insight #2:</strong> Give each computing party <em>two</em> of the three shares. This is called <strong>replicated secret sharing</strong>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>This is still not enough information for any <span class="math inline">\(t = 1\)</span> party to reconstruct any secrets</li>
+<li>But now any 2 of the <span class="math inline">\(n = 3\)</span> parties have enough data to reconstruct</li>
+</ul>
+</div>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:60%;">
+<center>
+<table align="center" cellpadding="8">
+<tbody><tr>
+<th>
+</th>
+<th>
+<span class="math inline">\(a\)</span> <br> <img src="images/13-hr1.png" width="50">
+</th>
+<th>
+<span class="math inline">\(b\)</span> <br> <img src="images/13-hr2.png" width="50">
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c = a \cdot b\)</span> <br><br> <img src="images/13-city.png" width="125">
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bu-logo.gif" width="70">
+</th>
+<th>
+<span class="math inline">\(a_1, a_2\)</span>
+</th>
+<th>
+<span class="math inline">\(b_1, b_2\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_1\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bwwc-logo.png" width="60">
+</th>
+<th>
+<span class="math inline">\(a_2, a_3\)</span>
+</th>
+<th>
+<span class="math inline">\(b_2, b_3\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_2\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/19-server.tif" width="60">
+</th>
+<th>
+<span class="math inline">\(a_3, a_1\)</span>
+</th>
+<th>
+<span class="math inline">\(b_3, b_1\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_3\)</span>
+</th>
+</tr>
+</tbody></table>
+</center>
+</div>
+</div>
+<!--
+:::: {.columns}
+::: {.column width="37%"}
+**Insight #2:** Let's give each computing party _two_ of the three shares. This is called **replicated secret sharing**.
+
+- This is still not enough information for any $t = 1$ party to reconstruct any secrets
+- But now any 2 of the $n = 3$ parties have enough data to reconstruct
+:::
+::: {.column width="3%"}
+:::
+::: {.column width="60%"}
+<center>
+
+<table class="caption-top" data-quarto-postprocess="true" data-align="center" data-cellpadding="8">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th"></td>
+<td data-quarto-table-cell-role="th">$a$<br />
+<img src="images/13-hr1.png" class="img-fluid" width="50" /></td>
+<td data-quarto-table-cell-role="th">$b$<br />
+<img src="images/13-hr2.png" class="img-fluid" width="50" /></td>
+<td data-quarto-table-cell-role="th"></td>
+<td data-quarto-table-cell-role="th">$c = a \cdot b$<br />
+<br />
+<img src="images/13-city.png" class="img-fluid" width="125" /></td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th"><img src="images/13-bu-logo.gif" class="img-fluid" width="70" /></td>
+<td data-quarto-table-cell-role="th">$a_1, a_2$</td>
+<td data-quarto-table-cell-role="th">$b_1, b_2$</td>
+<td data-quarto-table-cell-role="th"></td>
+<td data-quarto-table-cell-role="th">$c_1 = a_1b_1 + a_1b_2 + a_2b_1$</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th"><img src="images/13-bwwc-logo.png" class="img-fluid" width="60" /></td>
+<td data-quarto-table-cell-role="th">$a_2, a_3$</td>
+<td data-quarto-table-cell-role="th">$b_2, b_3$</td>
+<td data-quarto-table-cell-role="th"></td>
+<td data-quarto-table-cell-role="th">$c_2 = a_2b_2 + a_2b_3 + a_3b_2$</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th"><img src="images/19-server.tif" class="img-fluid" width="60" /></td>
+<td data-quarto-table-cell-role="th">$a_3, a_1$</td>
+<td data-quarto-table-cell-role="th">$b_3, b_1$</td>
+<td data-quarto-table-cell-role="th"></td>
+<td data-quarto-table-cell-role="th">$c_3 = a_3b_3 + a_3b_1 + a_1b_3$</td>
+</tr>
+</tbody>
+</table>
+
+</center>
+:::
+::::
+-->
+<div class="fragment">
+<p>Moreover: there exists a computing party that can calculate each of the 9 terms in this product. So the three computing parties can calculate <span class="math inline">\(a \cdot b\)</span> by working together in such a way that nobody has learned either <span class="math inline">\(a\)</span> or <span class="math inline">\(b\)</span>.</p>
+<p><span class="math display">\[c =
+\underset{c_1}{\boxed{\color{red}{a_1 b_1 + a_1 b_2 + a_2 b_1}}} +
+\underset{c_2}{\boxed{\color{blue}{a_2 b_2 + a_2 b_3 + a_3 b_2}}} +
+\underset{c_3}{\boxed{\color{gray}{a_3 b_3 + a_3 b_1 + a_1 b_3}}}\]</span></p>
+</div>
+<div class="fragment">
+<p>There is only one downside here:</p>
+<ul>
+<li>The computing parties begin with <em>two</em> shares of the multiplicands <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, but end with only <em>one</em> share of the product <span class="math inline">\(c\)</span></li>
+<li>So we cannot continue and multiply <span class="math inline">\(c\)</span> times some other secret</li>
+</ul>
+</div>
+<div class="fragment">
+<p>This is easy to fix with some communication: each computing party gives its share to one other party. Now our invariant is maintained: each computing party holds 2 out of 3 shares of each secret number.</p>
+<ul>
+<li><span class="math inline">\(P_1\)</span> sends <span class="math inline">\(c_1 + z_1\)</span> to <span class="math inline">\(P_3\)</span></li>
+<li><span class="math inline">\(P_2\)</span> sends <span class="math inline">\(c_2 + z_2\)</span> to <span class="math inline">\(P_1\)</span></li>
+<li><span class="math inline">\(P_3\)</span> sends <span class="math inline">\(c_3 + z_3\)</span> to <span class="math inline">\(P_2\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>To provide secrecy, we add some additional shares <span class="math inline">\(z_1\)</span>, <span class="math inline">\(z_2\)</span>, <span class="math inline">\(z_3\)</span> that are designed to sum to zero.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Hence, the <span class="math inline">\(z\)</span> shares individually serve as one-time pads but cancel out in the aggregate total</li>
+<li>It is simple to build the <span class="math inline">\(z\)</span> shares using pseudorandomness (try this for yourself!)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>To summarize, we have constructed a secure multiplication scheme with:</p>
+<ul>
+<li>One round of network communication between the computing parties</li>
+<li>Correctness, since the <span class="math inline">\(n = 3\)</span> parties work together to calculate all 9 terms of <span class="math inline">\(c\)</span></li>
+<li>Perfect secrecy against <span class="math inline">\(t = 1\)</span> party, since this party only holds two shares of each secret</li>
+<li>Reconstruction by any two parties, since they collectively hold all 3 shares of the output</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="mpc-of-everything" class="level3">
+<h3 class="anchored" data-anchor-id="mpc-of-everything">MPC of everything</h3>
+<p>So far, we have seen one way to perform secure multi-party computation of <span class="math inline">\(+\)</span> and <span class="math inline">\(\times\)</span>.</p>
+<div class="fragment">
+<p>Importantly: <span class="math inline">\(+\)</span> and <span class="math inline">\(\times\)</span> are a Turing-complete set of gates! That is, we can write <em>any</em> data analytic as a circuit with <span class="math inline">\(+\)</span> and <span class="math inline">\(\times\)</span> gates. (This may not be the <em>fastest</em> way to compute <span class="math inline">\(f\)</span>, but it will always work in principle.)</p>
+</div>
+<div class="fragment">
+<p>For instance, given the circuit below along with secret shares of <span class="math inline">\(s\)</span>, <span class="math inline">\(t\)</span>, and <span class="math inline">\(x\)</span> it is possible for the 3 computing parties to work together to calculate:</p>
+<ul>
+<li>secret shares of the intermediate value <span class="math inline">\(w\)</span></li>
+<li>secret shares of the final result <span class="math inline">\(y\)</span></li>
+</ul>
+<p>and then <code>reconstruct</code> only the output <span class="math inline">\(y\)</span>.</p>
+<p><img src="images/19-circuit.png" class="img-fluid" width="400"></p>
+</div>
+<div class="fragment">
+<p>Hence, the protocol we have constructed today can do a secure computation of <em>any</em> function, as long as:</p>
+<ul>
+<li>You decompose the data analysis <span class="math inline">\(f\)</span> into a sequence of additions and multiplications</li>
+<li>There is an honest majority of 2 honest parties out of 3 total parties</li>
+<li>The one adversarial party is run by a passive eavesdropper Eve (i.e., it still follows the protocol)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>It turns out that <em>none</em> of these conditions are necessary: you can also perform MPC in other ways, with a dishonest majority, and against an actively-malicious adversary Mallory.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="mpc-against-mallory" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="mpc-against-mallory"><span class="header-section-number">18.5</span> MPC against Mallory</h2>
+<p>So far, our MPC protocol is only secure against a passive eavesdropper Eve. That’s because a malicious computing party Mallory can tamper with the result by adding some number to her own share.</p>
+<center>
+<table align="center" cellpadding="8">
+<tbody><tr>
+<th>
+</th>
+<th>
+<span class="math inline">\(a\)</span> <br> <img src="images/13-hr1.png" width="50">
+</th>
+<th>
+<span class="math inline">\(b\)</span> <br> <img src="images/13-hr2.png" width="50">
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c = a \cdot b \color{red}{+ 10}\)</span> <br><br> <img src="images/13-city.png" width="125">
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bu-logo.gif" width="70">
+</th>
+<th>
+<span class="math inline">\(a_1, a_2\)</span>
+</th>
+<th>
+<span class="math inline">\(b_1, b_2\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_1 = a_1b_1 + a_1b_2 + a_2b_1 \color{red}{+ 10}\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bwwc-logo.png" width="60">
+</th>
+<th>
+<span class="math inline">\(a_2, a_3\)</span>
+</th>
+<th>
+<span class="math inline">\(b_2, b_3\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_2 = a_2b_2 + a_2b_3 + a_3b_2\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/19-server.tif" width="60">
+</th>
+<th>
+<span class="math inline">\(a_3, a_1\)</span>
+</th>
+<th>
+<span class="math inline">\(b_3, b_1\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_3 = a_3b_3 + a_3b_1 + a_1b_3\)</span>
+</th>
+</tr>
+</tbody></table>
+</center>
+<div class="fragment">
+<p>Here is one way to stop Mallory: we can add a <em>fourth</em> computing party for even more redundancy.</p>
+</div>
+<div class="fragment">
+<ul>
+<li>Using replicated secret sharing, we can build a secure computation protocol with <span class="math inline">\(n = 4\)</span> parties such that any <span class="math inline">\(t = 1\)</span> party learns nothing</li>
+<li>The data holders send 3 of 4 arithmetic shares to each computing party</li>
+</ul>
+<center>
+<table align="center" cellpadding="8">
+<tbody><tr>
+<th>
+</th>
+<th>
+<span class="math inline">\(a\)</span> <br> <img src="images/13-hr1.png" width="50">
+</th>
+<th>
+<span class="math inline">\(b\)</span> <br> <img src="images/13-hr2.png" width="50">
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c = a \cdot b\)</span> <br><br> <img src="images/13-city.png" width="125">
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bu-logo.gif" width="70">
+</th>
+<th>
+<span class="math inline">\(a_1, a_2, a_3\)</span>
+</th>
+<th>
+<span class="math inline">\(b_1, b_2, b_3\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_1\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/13-bwwc-logo.png" width="60">
+</th>
+<th>
+<span class="math inline">\(a_2, a_3, a_4\)</span>
+</th>
+<th>
+<span class="math inline">\(b_2, b_3, b_4\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_2\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/19-server.tif" width="60">
+</th>
+<th>
+<span class="math inline">\(a_3, a_4, a_1\)</span>
+</th>
+<th>
+<span class="math inline">\(b_3, b_4, b_1\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_3\)</span>
+</th>
+</tr>
+<tr>
+<th>
+<img src="images/19-another-server.tif" width="60">
+</th>
+<th>
+<span class="math inline">\(a_4, a_1, a_2\)</span>
+</th>
+<th>
+<span class="math inline">\(b_4, b_1, b_2\)</span>
+</th>
+<th>
+</th>
+<th>
+<span class="math inline">\(c_4\)</span>
+</th>
+</tr>
+</tbody></table>
+</center>
+</div>
+<div class="fragment">
+<p>The math for multiplication has gotten more tedious.</p>
+<p><span class="math display">\[\begin{align*}
+c &amp;= (a_1 + a_2 + a_3 + a_4) (b_1 + b_2 + b_3 + b_4) \\
+&amp;= a_1 b_1 + a_1 b_2 + a_1 b_3 + a_1 b_4 \\
+&amp;\quad + \; a_2 b_1 + a_2 b_2 + a_2 b_3 + a_2 b_4 \\
+&amp;\quad + \; a_3 b_1 + a_3 b_2 + a_3 b_3 + a_3 b_4 \\
+&amp;\quad + \; a_4 b_1 + a_4 b_2 + a_4 b_3 + a_4 b_4
+\end{align*}\]</span></p>
+</div>
+<div class="fragment">
+<p>This time, I won’t write out explicitly how the shares of <span class="math inline">\(c\)</span> are calculated. But the idea is simple:</p>
+<ul>
+<li>For each of the 16 terms, there exist <strong>two</strong> parties who know how to compute it</li>
+<li>So for any computation that Mallory performs, there is an honest party who can check her math and call her out if she cheats!</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Let’s take a step back and admire what we have done so far.</p>
+<ul>
+<li>We have been able to design MPC protocols that can compute <strong>any data analysis</strong> <!-- TODO: add examples of data analyses that people want to perform in practice, like database queries or machine learning inference --></li>
+<li>We can protect <strong>data confidentiality</strong> and <strong>data integrity</strong> against a malicious Mallory</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Next time:</p>
+<ul>
+<li>We will add <strong>data availability</strong> to secret sharing and MPC, in order to complete the CIA triad</li>
+<li>I will give some intuition about how cryptographers construct MPC protocols that are secure against more than <span class="math inline">\(t = 1\)</span> adversarial party</li>
+</ul>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./unit4.html" class="pagination-link" aria-label="Protecting data science">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Protecting data science</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./19.html" class="pagination-link" aria-label="Verifiable MPC">
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Verifiable MPC</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>DS 453/653 lecture notes</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
