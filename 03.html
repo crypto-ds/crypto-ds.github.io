@@ -540,7 +540,22 @@ window.Quarto = {
 <li><span class="math inline">\(O(n^2)\)</span>, i.e., quadratic in <span class="math inline">\(n\)</span></li>
 </ol>
 <div class="fragment">
-<p><strong>Answer.</strong> The proof contains the digests of all siblings along the path from the leaf to the root of the binary tree. This path is of length <span class="math inline">\(O(\log n)\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The proof contains the digests of all siblings along the path from the leaf to the root of the binary tree. This path is of length <span class="math inline">\(O(\log n)\)</span>.</p>
+</div>
+</div>
+</div>
 </div>
 <hr>
 </section>
@@ -623,13 +638,28 @@ There is a clear problem here: if Alice won't reveal the image $x$ until after N
 </ol>
 </div>
 <div class="fragment">
-<p><strong>Answer.</strong> No.&nbsp;This algorithm satisfies Bob’s integrity requirement, but not Alice’s confidentiality requirement.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>No.&nbsp;This algorithm satisfies Bob’s integrity requirement, but not Alice’s confidentiality requirement.</p>
 <div class="incremental">
 <ul class="incremental">
 <li><p>Intuitively, the construction is appealing because <span class="math inline">\(H\)</span> is deterministic (so hashing the same file twice will produce the same answer) and preimage resistant (so it should not be possible for Bob in 2007 to compute a pre-image of <span class="math inline">\(d\)</span>)</p></li>
 <li><p>But preimage resistance only holds for a uniformly random digest <span class="math inline">\(d\)</span>, not when <span class="math inline">\(d\)</span> corresponds to one of a small number of images!</p></li>
 </ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <hr>
 <section id="defining-commitments" class="level3">
@@ -998,7 +1028,7 @@ d00bbe65d80f6d53d5c15da7c6b4f0a655c5a86a</code></pre>
 <section id="sec-merkle-damgard" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="sec-merkle-damgard"><span class="header-section-number">3.4</span> SHA-2’s Merkle-Damgård design</h2>
 <p>Let me provide some general advice for this course and beyond.</p>
-<div class="callout callout-style-simple callout-tip">
+<div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>

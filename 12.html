@@ -576,10 +576,10 @@ Number of rounds<br>
 <p>We are not going to prove this theorem generically. But let’s see why it is true for the phase-king protocol specifically.</p>
 <ul>
 <li>Consistency is only guaranteed after a phase that is run by an honest party</li>
-<li>In the worst case, it could be the case that our adversary has corrupted the first <span class="math inline">\(t\)</span> parties, so we need <span class="math inline">\(t+1\)</span> phases</li>
+<li>In the worst case, it could be the case that our adversary has compromised the first <span class="math inline">\(t\)</span> parties, so we need <span class="math inline">\(t+1\)</span> phases</li>
 </ul>
 <!--
-- Even more nefariously: our adversary might wait until we decide upon an ordering of the parties, and then _adaptively_ corrupt the first $t$ parties in the ordered list.
+- Even more nefariously: our adversary might wait until we decide upon an ordering of the parties, and then _adaptively_ compromise the first $t$ parties in the ordered list.
 -->
 </div>
 <!--
@@ -603,12 +603,29 @@ The Dolev-Strong protocol has a similar issue, even though it does not follow th
 <p><strong>Question.</strong> Using a CommonCoin protocol over the Internet, can we build a Byzantine broadcast protocol that completes in fewer than <span class="math inline">\(t+1\)</span> rounds?</p>
 </div>
 <div class="fragment">
-<p><em>Answer</em>. Here is one option:</p>
-<ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Here is one option:</p>
+<div class="incremental">
+<ul class="incremental">
 <li>The leader acts as the king in the first phase, as usual</li>
 <li>In between phases, run the CommonCoin protocol to toss many coins, and use the sequence of heads/tails to select a new king</li>
 <li>Then run an iteration of the normal phase-king protocol: the randomly-elected king sends a message, and parties will adopt it unless they were already happy in a previous phase</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="fragment">
 <p>Suppose that <span class="math inline">\(n = 3t + 1\)</span>; that is, there are approximately <span class="math inline">\(2/3\)</span> honest parties and <span class="math inline">\(1/3\)</span> malicious parties. Let’s calculate how many phases of this protocol we need to run, in order to be convinced that there has been one phase led by an honest party with overwhelming probability.</p>
@@ -642,11 +659,28 @@ The Dolev-Strong protocol has a similar issue, even though it does not follow th
 </ol>
 </div>
 <div class="fragment">
-<p><em>Answer</em>. Deterministic phase-king scales linearly with the number of parties, whereas randomized phase-king only depends on the probability of error.</p>
-<ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Deterministic phase-king scales linearly with the number of parties, whereas randomized phase-king only depends on the probability of error.</p>
+<div class="incremental">
+<ul class="incremental">
 <li>To be 100% certain of reaching consensus, we must run phase-king for <span class="math inline">\(t+1 = \text{500,001}\)</span> phases</li>
 <li>To be 99.9999999999% certain of reaching consensus (i.e., up to 1 in a trillion error), we must run 26 phases</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <hr>
 </section>

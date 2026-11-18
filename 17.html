@@ -376,8 +376,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
-  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
   <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
   <li><a href="#tls-overview" id="toc-tls-overview" class="nav-link" data-scroll-target="#tls-overview"><span class="header-section-number">17.1</span> TLS overview</a></li>
   <li><a href="#digital-certificates" id="toc-digital-certificates" class="nav-link" data-scroll-target="#digital-certificates"><span class="header-section-number">17.2</span> Digital certificates</a>
@@ -424,18 +423,6 @@ window.Quarto = {
 
 
 <hr>
-<section id="announcements" class="level3">
-<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
-<ul>
-<li>Please pick up your card</li>
-<li>Wed 11/11 at 8pm: Homework 7 due</li>
-<li>Fri 11/13: Lab 11 on this week’s reading (<a href="https://securecomputation.org/docs/pragmaticmpc.pdf">EKR sections 1.2–1.3</a> and <a href="https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf">NBFMG section 4.3</a>)</li>
-<li>Mon 11/16: Exam 3 (today is the final lecture <em>in scope</em> for Exam 3)</li>
-<li>Fri 11/20 at 10pm: Exam 2 retries due</li>
-<li>Mon 11/23 at 8pm: Homework 8 due</li>
-</ul>
-<hr>
-</section>
 <section id="learning-outcomes" class="level3">
 <h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
 <p>By the end of today’s lecture, you will learn:</p>
@@ -618,16 +605,22 @@ example.com
 </ol>
 </div>
 <div class="fragment">
-<p><em>Answer</em>. Certificate expiration improves <em>backward secrecy</em>. If Mallory secretly steals the secret key for the server <code>example.com</code>, then eventually it will expire and <code>example.com</code> will generate a new key that Mallory does not know.</p>
-</div>
-<div class="fragment">
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p>Certificate expiration also helps to deal with Moore’s law: keys need to become longer over time, so very old keys might be broken now.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Certificate expiration improves <em>backward secrecy</em>. If Mallory secretly steals the secret key for the server <code>example.com</code>, then eventually it will expire and <code>example.com</code> will generate a new key that Mallory does not know.</p>
+<div class="fragment">
+<p>Relatedly, certificate expiration is also useful due to Moore’s law: keys generally become longer over time, and very old keys might be brute-forceable now by Mallory (or anyone else).</p>
+</div>
 </div>
 </div>
 </div>
@@ -825,7 +818,22 @@ Bob
 <p><strong>Question.</strong> Is Enc-then-Sign safe and secure to use? (Ignore deniability for now.)</p>
 </div>
 <div class="fragment">
-<p><strong>Answer.</strong> Surprisingly, no! A <a href="https://www.usenix.org/system/files/conference/usenixsecurity16/sec16_paper_garman.pdf">research paper</a> in 2016 showed that it breaks Apple’s iMessage. (Apple has since fixed this bug.)</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Surprisingly, no! A <a href="https://www.usenix.org/system/files/conference/usenixsecurity16/sec16_paper_garman.pdf">research paper</a> in 2016 showed that it breaks Apple’s iMessage (<span class="citation" data-cites="GarmanEtAl2016">Garman et al. (<a href="references.html#ref-GarmanEtAl2016" role="doc-biblioref">2016</a>)</span>). Apple has since fixed this bug.</p>
+</div>
+</div>
+</div>
 </div>
 <hr>
 <p>What is the issue here?</p>
@@ -1000,24 +1008,42 @@ Bob
 <li>It does not have backward (post-recovery) secrecy, so if Mallory steals the server’s keys then messages sent in the future will be insecure</li>
 </ol>
 </div>
+<!-- Note: backward secrecy inherently requires changing the key, and public key encryption is safe after that happens -->
 <div class="fragment">
-<p><em>Answer</em>. Public key encryption does not have <em>forward secrecy</em>.</p>
-<ul>
-<li><p>Messages I send today are at risk if Mallory gets the server’s secret key in the future</p></li>
-<li><p>This is why TLS 1.3 only supports <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Key_exchange_or_key_agreement">key exchange</a> protocols based on Diffie-Hellman key exchange with <strong>ephemeral</strong> (i.e., one time use) exponents <span class="math inline">\(g^a\)</span> and <span class="math inline">\(g^b\)</span></p></li>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Public key encryption does not have <em>forward secrecy</em>.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>Messages I send today are at risk if Mallory gets the server’s secret key in the future</li>
+<li>This is why TLS 1.3 only supports <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Key_exchange_or_key_agreement">key exchange</a> protocols based on Diffie-Hellman key exchange with <strong>ephemeral</strong> (i.e., one time use) exponents <span class="math inline">\(g^a\)</span> and <span class="math inline">\(g^b\)</span></li>
 </ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="fragment">
 <p>If the server uses a one-time exponent <span class="math inline">\(g^b\)</span>, then how does Alice know who she is talking to?</p>
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li>Answer: the server use a <em>digital signature</em> to sign <span class="math inline">\(g^b\)</span>, which results in <strong>authenticated key exchange</strong></li>
+<li>The server uses a <em>digital signature</em> to sign <span class="math inline">\(g^b\)</span>, which results in <strong>authenticated key exchange</strong></li>
 <li>The server sends <span class="math inline">\(g^b\)</span>, the signature, and its <em>digital certificate</em> in the <code>ServerHello</code> message <!-- We will discuss later today what happens if the server loses its secret signing key --></li>
 </ul>
 </div>
 <div class="fragment">
-<p>The client Alice sends <span class="math inline">\(g^a\)</span> in its <code>ClientFinished</code> message</p>
+<p>The client Alice sends <span class="math inline">\(g^a\)</span> in its <code>ClientFinished</code> message. (Note that this message is <em>not</em> digitally signed, because Alice doesn’t have any digital signature keys that are attested by a certificate authority.)</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/17-handshake.png" class="img-fluid figure-img" width="600"></p>
@@ -1086,7 +1112,7 @@ example.com
 </ol>
 </div>
 <div class="fragment">
-<p><em>Answer</em>. The <code>ServerFinished</code> message takes a hash of the handshake so far (to save space), and then applies <strong>both</strong> a digital signature and a MAC!</p>
+<p>This is a difficult question. It turns out that the <code>ServerFinished</code> message takes a <em>hash</em> of the handshake so far (to save space), and then applies <strong>both</strong> a <em>digital signature</em> and a <em>MAC</em>!</p>
 </div>
 <div class="fragment">
 <p>The signature and MAC both provide data integrity, but in <a href="https://www.iacr.org/cryptodb/archive/2003/CRYPTO/1495/1495.pdf">different ways</a>.</p>
@@ -1105,7 +1131,7 @@ example.com
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>TLS 1.3 uses some clever ideas to compress the TLS handshake down from 4 messages to 2 messages, while still achieving the same objectives. This reduces the latency of the handshake protocol so that Alice can download the website data quicker.</p>
+<p>TLS 1.3 uses some clever ideas to compress the TLS handshake down from 4 messages to 2 messages, while still achieving the same objectives. A faster handshake means that Alice can download the website data sooner.</p>
 </div>
 </div>
 </div>

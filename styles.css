@@ -8,3 +8,11 @@
 .sidebar-item-toggle {
   display: none;
 }
+
+/* make callout title + hext the same font size as normal text */
+div.callout .callout-body,
+div.callout .callout-body-container,
+div.callout .callout-title,
+div.callout .callout-title-container {
+  font-size: inherit !important;
+}

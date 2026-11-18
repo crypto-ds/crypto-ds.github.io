@@ -586,7 +586,22 @@ Last time, we showed how to thwart 3 types of potential attacks on Bitcoin.
 <li>Contain a valid digital signature from everyone who is receiving money</li>
 </ol>
 <div class="fragment">
-<p><em>Answer</em>. D is incorrect. Bitcoin nodes and miners should check statements A, B, and C.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>D is incorrect. Bitcoin nodes and miners should check statements A, B, and C.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="fragment">
 <p>If I show a single transaction to a light client, then</p>
@@ -607,18 +622,23 @@ Last time, we showed how to thwart 3 types of potential attacks on Bitcoin.
 <li>Contain a <code>nonce</code> such that the hash of the block satisfies the difficulty rule <!-- (i.e., where the hash of the block begins with some large number of `0`s) --></li>
 </ol>
 <div class="fragment">
-<div class="columns">
-<div class="column" style="width:55%;">
-<p><em>Answer</em>. A is incorrect. Nodes and miners must check the other statements when they hear a new block on the gossip network.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p>There are some other constraints in the Bitcoin software beyond the ones we discussed in this course.</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>A is incorrect. Nodes and miners must check statements B, C, and D when they hear a new block on the gossip network.</p>
+<div class="fragment">
+<p>Note that there are more checks performed by the Bitcoin software in addition to the ones we discuss in this course.</p>
 </div>
 </div><div class="column" style="width:5%;">
 
@@ -628,6 +648,9 @@ Last time, we showed how to thwart 3 types of potential attacks on Bitcoin.
 <p><img src="images/08-blockchain.png" class="img-fluid figure-img" width="400"></p>
 <figcaption>Block header and transactions (image source: <a href="https://bitcoin.org/bitcoin.pdf">Nakamoto whitepaper</a>)</figcaption>
 </figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

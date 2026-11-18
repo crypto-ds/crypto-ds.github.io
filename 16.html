@@ -357,8 +357,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
-  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
   <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
   <li><a href="#signal-overview" id="toc-signal-overview" class="nav-link" data-scroll-target="#signal-overview"><span class="header-section-number">16.1</span> Signal overview</a></li>
   <li><a href="#cryptographic-deniability" id="toc-cryptographic-deniability" class="nav-link" data-scroll-target="#cryptographic-deniability"><span class="header-section-number">16.2</span> Cryptographic deniability</a>
@@ -406,16 +405,6 @@ window.Quarto = {
 
 
 <hr>
-<section id="announcements" class="level3">
-<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
-<ul>
-<li>Please pick up your card</li>
-<li>Homework 6 is due today at 8pm, with a grace period until tomorrow at 10pm (<a href="https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1793804400001">NIST beacon</a>)</li>
-<li>Homework 7 will be released today and due Wed 11/11</li>
-<li>Lab 10 on this week’s reading (<a href="https://signal.org/docs/specifications/doubleratchet/">Signal’s double ratchet algorithm</a>)</li>
-</ul>
-<hr>
-</section>
 <section id="learning-outcomes" class="level3">
 <h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
 <p>By the end of today’s lecture, you will learn:</p>
@@ -607,11 +596,28 @@ Here is an overview of the cryptographic ideas within Signal that we will discus
 <li>Both</li>
 </ol>
 <div class="fragment">
-<p><em>Answer</em>. Digital signatures are inherently non-deniable since the whole world can tell that Alice is the creator of a message.</p>
-<ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Digital signatures are inherently non-deniable since the whole world can tell that Alice is the creator of a message.</p>
+<div class="incremental">
+<ul class="incremental">
 <li>That can be a <em>good</em> thing in some applications like Bitcoin where everyone needs to identify who created a transaction</li>
 <li>But here it is a <em>bad</em> thing because we do not want a permanent record of what Alice said to Bob</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <hr>
 <div class="fragment">
@@ -935,7 +941,11 @@ Alice sends her first message by
 :::
 
 ::: {.fragment}
-_Answer_. Bob puts his original $g^{b1}$ on an untrusted, always-online server. This is the only place where he will use a digital signature. Anyone can retrieve it when they want to start a conversation with Bob.
+::: {.callout-tip appearance="default" collapse="true"}
+## Answer
+
+Bob puts his original $g^{b1}$ on an untrusted, always-online server. This is the only place where he will use a digital signature. Anyone can retrieve it when they want to start a conversation with Bob.
+:::
 :::
 -->
 <hr>

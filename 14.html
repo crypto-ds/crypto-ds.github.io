@@ -392,8 +392,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
-  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
   <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
   <li><a href="#encryption-with-short-keys" id="toc-encryption-with-short-keys" class="nav-link" data-scroll-target="#encryption-with-short-keys"><span class="header-section-number">14.1</span> Encryption with short keys</a>
   <ul class="collapse">
@@ -442,15 +441,6 @@ window.Quarto = {
 
 
 <hr>
-<section id="announcements" class="level3">
-<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
-<ul>
-<li>Please pick up your card</li>
-<li>Homework 6 will be released today and due Wed 11/4</li>
-<li>Lab 9 on this week’s reading (<a href="https://nostarch.com/download/SeriousCryptography_Chapter4_sample.pdf">Aumasson, pages 7–12</a>)</li>
-</ul>
-<hr>
-</section>
 <section id="learning-outcomes" class="level3">
 <h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
 <p>By the end of today’s lecture, you will learn:</p>
@@ -522,7 +512,22 @@ window.Quarto = {
 </ol>
 </div>
 <div class="fragment">
-<p><em>Answer</em>. <strong>Pseudorandomness</strong> is a deterministic procedure to generate random-looking data.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Pseudorandomness</strong> is a deterministic procedure to generate random-looking data.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="fragment">
 <p>Here is our plan for today:</p>
@@ -744,7 +749,20 @@ The answer is that if the strings are sampled uniformly at random, then each out
 </div>
 </div>
 <div class="fragment">
-<p><em>Answer</em>. Let’s consider this question in two parts.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Let’s consider this question in two parts.</p>
+<div class="fragment">
 <ul>
 <li>In general, a MAC does not claim to provide data confidentiality, so option A is incorrect <!-- If you don't know anything about the specific symmetric key encryption and MAC constructions used, then the most important thing to remember is that the MAC does not provide data confidentiality --></li>
 </ul>
@@ -764,6 +782,10 @@ The answer is that if the strings are sampled uniformly at random, then each out
 <li>any symmetric key encrytion scheme (like AES with Counter Mode)</li>
 <li>any message authentication code (like HMAC)</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
 </div>
 <hr>
 <section id="sec-defining-aead" class="level3">
@@ -797,7 +819,7 @@ Hence, it is common for the ciphertext length $|c| = |p| + 128$ to be the plaint
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/14-aead.png" class="img-fluid figure-img" width="400"></p>
-<figcaption>AEAD security game</figcaption>
+<figcaption>Nonce-based AEAD security game</figcaption>
 </figure>
 </div>
 </div>
@@ -842,9 +864,9 @@ Hence, it is common for the ciphertext length $|c| = |p| + 128$ to be the plaint
 <li>We absorb a long message <!-- (with padding to ensure that we have an integer multiple of the rate) --></li>
 <li>Then we squeeze out a pseudorandom (and thus unforgeable) MAC tag</li>
 </ul>
-</div><div class="column" style="width:1%;">
+</div><div class="column" style="width:4%;">
 
-</div><div class="column" style="width:57%;">
+</div><div class="column" style="width:54%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/14-keccak-4.png" class="img-fluid figure-img" width="400"></p>
@@ -863,9 +885,8 @@ Hence, it is common for the ciphertext length $|c| = |p| + 128$ to be the plaint
 </figure>
 </div>
 </div>
-<div class="fragment">
+<hr>
 <p><strong>Example 2 (GMAC).</strong> The most popular MAC used to protect data on the Internet is called the <em>Galois Message Authentication Code</em>. <!-- ![GCM mode (source: [Wikipedia](https://en.wikipedia.org/wiki/Galois/Counter_Mode))](images/14-mode-gcm.png){width=400}--></p>
-</div>
 <div class="incremental">
 <ul class="incremental">
 <li>It is based on ideas from coding theory, although I won’t get into the details here</li>
@@ -1109,7 +1130,7 @@ We say that a block cipher is _strongly pseudorandom_ if every adversary Mallory
 </div>
 <div class="fragment">
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -1118,7 +1139,7 @@ We say that a block cipher is _strongly pseudorandom_ if every adversary Mallory
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="columns">
 <div class="column" style="width:47%;">

@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -76,6 +111,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -323,8 +387,34 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#review-from-last-lecture" id="toc-review-from-last-lecture" class="nav-link" data-scroll-target="#review-from-last-lecture">Review from last lecture</a></li>
+  <li><a href="#threshold-cryptography" id="toc-threshold-cryptography" class="nav-link" data-scroll-target="#threshold-cryptography"><span class="header-section-number">19.1</span> Threshold cryptography</a>
+  <ul class="collapse">
+  <li><a href="#shamir-secret-sharing" id="toc-shamir-secret-sharing" class="nav-link" data-scroll-target="#shamir-secret-sharing">Shamir secret sharing</a></li>
+  <li><a href="#group-signatures" id="toc-group-signatures" class="nav-link" data-scroll-target="#group-signatures">Group signatures</a></li>
+  </ul></li>
+  <li><a href="#verifiable-secret-sharing" id="toc-verifiable-secret-sharing" class="nav-link" data-scroll-target="#verifiable-secret-sharing"><span class="header-section-number">19.2</span> Verifiable secret sharing</a>
+  <ul class="collapse">
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The problem</a></li>
+  <li><a href="#a-construction" id="toc-a-construction" class="nav-link" data-scroll-target="#a-construction">A construction</a></li>
+  <li><a href="#adding-broadcast" id="toc-adding-broadcast" class="nav-link" data-scroll-target="#adding-broadcast">Adding broadcast</a></li>
+  </ul></li>
+  <li><a href="#mpc-from-verifiable-secret-sharing" id="toc-mpc-from-verifiable-secret-sharing" class="nav-link" data-scroll-target="#mpc-from-verifiable-secret-sharing"><span class="header-section-number">19.3</span> MPC from verifiable secret sharing</a>
+  <ul class="collapse">
+  <li><a href="#commitments-from-discrete-log" id="toc-commitments-from-discrete-log" class="nav-link" data-scroll-target="#commitments-from-discrete-log">Commitments from discrete log</a></li>
+  <li><a href="#feldman-commitments" id="toc-feldman-commitments" class="nav-link" data-scroll-target="#feldman-commitments">Feldman commitments</a></li>
+  <li><a href="#additive-homomorphism" id="toc-additive-homomorphism" class="nav-link" data-scroll-target="#additive-homomorphism">Additive homomorphism</a></li>
+  <li><a href="#putting-everything-together" id="toc-putting-everything-together" class="nav-link" data-scroll-target="#putting-everything-together">Putting everything together</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -349,24 +439,639 @@ ul.task-list li input[type="checkbox"] {
 
 
 <hr>
-<p>To appear</p>
+<section id="announcements" class="level3">
+<h3 class="anchored" data-anchor-id="announcements">Announcements</h3>
+<ul>
+<li>Please pick up your card</li>
+<li>Fri 11/20: Lab 12 on <a href="https://eprint.iacr.org/2008/197.pdf">Lindell-Pinkas section 2.1</a></li>
+<li>Fri 11/20 at 10pm: <strong>Exam 2 retries due</strong></li>
+<li>Mon 11/23 at 8pm: Homework 8 due</li>
+</ul>
+<hr>
+</section>
+<section id="learning-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="learning-outcomes">Learning outcomes</h3>
+<p>By the end of today’s lecture, you will learn:</p>
+<ul>
+<li>How to construct Shamir secret sharing with any threshold for reconstruction</li>
+<li>How to construct verifiable secret sharing, and how it can be used as the basis for MPC</li>
+</ul>
+<hr>
+</section>
+<section id="review-from-last-lecture" class="level3">
+<h3 class="anchored" data-anchor-id="review-from-last-lecture">Review from last lecture</h3>
+<p>Unit 4 of the course is about <em>protecting data science</em>. My goal is to convince you that it is possible to <em>conduct data science without data sharing</em>.</p>
+<div class="fragment">
+<p>Cryptographically <strong>secure multi-party computation</strong> (MPC) allows parties to:</p>
+<ul>
+<li>Work together to calculate <span class="math inline">\(y = f(\vec{x})\)</span></li>
+<li>Ensure that no coalition of <span class="math inline">\(\leq t\)</span> computing parties can learn anything about the input data</li>
+</ul>
+</div>
 <!--
-### Announcements
+::: {.fragment}
+In general, _secure multi-party computation_ (MPC) protocols have three steps:
 
-- Please pick up your card
-- Wed 11/11 at 8pm: Homework 7 due ([NIST beacon](https://beacon.nist.gov/beacon/2.0/pulse/time/previous/1794409200001))
-- Fri 11/13: Lab 11 on [EKR sections 1.2--1.3](https://securecomputation.org/docs/pragmaticmpc.pdf) and [NBFMG section 4.3](https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf)
-- Mon 11/16: Exam 3
-- Fri 11/20 at 10pm: Exam 2 retries due
-- Mon 11/23 at 8pm: Homework 8 due
-
----
-
-### Learning outcomes
-
+1. The data holders **split** their secrets $x_1, x_2, \ldots, x_m$, and send one share to each computing party
+2. The computing parties perform some **calculation** over the secret shares
+3. The computing parties give shares of the result to the data analyst, who can **reconstruct** $y = f(\vec{x})$
+:::
 -->
+<div class="fragment">
+<p>Last time, we constructed several MPC protocols:</p>
+<ul>
+<li>Secure linear algebra with <span class="math inline">\(n = 2\)</span> parties that tolerates <span class="math inline">\(t = 1\)</span> passive eavesdropper Eve</li>
+<li>Secure computation with <span class="math inline">\(n = 3\)</span> parties that tolerates <span class="math inline">\(t = 1\)</span> passive eavesdropper Eve</li>
+<li>Secure computation with <span class="math inline">\(n = 4\)</span> parties that tolerates <span class="math inline">\(t = 1\)</span> actively malicious Mallory</li>
+</ul>
+</div>
+<div class="fragment">
+<p>As a building block toward MPC, we also studied <span class="math inline">\((t, n)\)</span>-<strong>secret sharing</strong> protocols that:</p>
+<ul>
+<li><em>split</em> a secret into <span class="math inline">\(n\)</span> shares, such that any <span class="math inline">\(t + 1\)</span> shares allow complete <em>reconstruction</em> of the secret</li>
+<li>satisfies <span class="math inline">\(t\)</span>-<em>perfect secrecy</em>, which says that the shares held by a coalition of <span class="math inline">\(\leq t\)</span> parties reveal <em>no information</em> about the secret</li>
+</ul>
+</div>
+<div class="fragment">
+<p>We constructed two ways to split a secret <span class="math inline">\(s\)</span> that are perfectly secret against a passive eavesdropper Eve who sees <span class="math inline">\(t = n - 1\)</span> shares. The last share serves as a ‘one-time pad’ to protect the secret <span class="math inline">\(s\)</span>.</p>
+<ul>
+<li>Boolean secret sharing: <span class="math inline">\(s = s_1 \oplus s_2 \oplus \cdots \oplus s_n\)</span></li>
+<li>Arithmetic secret sharing: <span class="math inline">\(s = s_1 + s_2 + \cdots + s_n \bmod{2^\ell}\)</span></li>
+</ul>
+</div>
+<!--
+::: {.fragment}
+Looking at the CIA triad:
+
+- Last time, we constructed MPC that protects _data confidentiality_ and _data integrity_ against a malicious Mallory
+
+- Today, we will add _data availability_ so that all computing parties have shares of the data, and they know that everyone else has shares too
+:::
+-->
+<hr>
+</section>
+<section id="threshold-cryptography" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="threshold-cryptography"><span class="header-section-number">19.1</span> Threshold cryptography</h2>
+<!--
+### Fault tolerance
+-->
+<p>In some sense, we have designed the “best possible” secret sharing schemes.</p>
+<div class="incremental">
+<ul class="incremental">
+<li>We can tolerate <span class="math inline">\(t = n-1\)</span> adversarial parties, meaning that there is just one honest party</li>
+<li>If all <span class="math inline">\(n\)</span> parties are adversarial, then cryptography does nothing since there is no honest party left to protect</li>
+</ul>
+</div>
+<div class="fragment">
+<p>But: should we always choose the highest confidentiality threshold <span class="math inline">\(t = n - 1\)</span>?</p>
+</div>
+<div class="fragment">
+<blockquote class="blockquote">
+<p>We are writing in connection with the recent IACR 2025 election conducted using the Helios electronic voting system. … Three members of the IACR 2025 Election Committee acted as independent trustees, each holding a portion of the cryptographic key material required to jointly decrypt the results. This aspect of Helios’ design ensures that <strong>no two trustees could collude to determine the outcome of an election</strong> or the contents of individual votes on their own: all trustees must provide their decryption shares.</p>
+<p>Unfortunately, <strong>one of the three trustees has irretrievably lost their private key</strong>, an honest but unfortunate human mistake, and therefore cannot compute their decryption share. As a result, Helios is unable to complete the decryption process, and it is <strong>technically impossible for us to obtain or verify the final outcome of this election</strong>. …</p>
+<p>After careful consideration, we have decided that the only responsible course of action is to void this election and start a new election from scratch.</p>
+<p>– <a href="https://iacr.org/news/item/27138">Statement by the IACR 2025 election committee</a> in November 2025 (emphasis mine)</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>There is an inherent tradeoff between:</p>
+<ul>
+<li><em>confidentiality</em> against intentional adversaries</li>
+<li><em>fault tolerance</em> against accidental mistakes</li>
+</ul>
+</div>
+<hr>
+<section id="shamir-secret-sharing" class="level3">
+<h3 class="anchored" data-anchor-id="shamir-secret-sharing">Shamir secret sharing</h3>
+<p>There is a more flexible way to design secret sharing to allow for <em>any</em> confidentiality threshold <span class="math inline">\(t\)</span>. It was discovered by <a href="https://dl.acm.org/doi/abs/10.1145/359168.359176">Adi Shamir in 1979</a>, and it is named <em>Shamir secret sharing</em> in his honor.</p>
+<div class="fragment">
+<p>This secret sharing protocol uses <em>polynomials</em> to encode a secret. First, a quick math refresher.</p>
+<p><strong>Interactive question.</strong> How many points in space are required to uniquely determine a line?</p>
+<ol type="A">
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> How many points in space are required to uniquely determine a parabola?</p>
+<ol type="A">
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+</ol>
+</div>
+<div class="fragment">
+<p>This idea generalizes to higher-degree polynomials:</p>
+<!--
+- Any 2 points uniquely define a line (i.e., a polynomial of degree 1)
+- Any 3 points uniquely define a parabola (i.e., a polynomial of degree 2)
+-->
+<ul>
+<li>Any 4 points uniquely define a cubic (i.e., a polynomial of degree 3)</li>
+<li>Any 5 points uniquely define a quartic (i.e., a polynomial of degree 4)</li>
+<li>…and so on</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Shamir secret sharing uses this idea to encode a secret <span class="math inline">\(s\)</span> with any confidentiality threshold <span class="math inline">\(t\)</span>.</p>
+<ul>
+<li><code>split</code> <span class="math inline">\(s\)</span> by randomly choosing a polynomial <span class="math inline">\(p\)</span> of degree <span class="math inline">\(t\)</span> with <span class="math inline">\(p(0) = s\)</span>, and then form the shares <span class="math inline">\(s_1 = p(1)\)</span>, <span class="math inline">\(s_2 = p(2)\)</span>, …</li>
+<li><code>reconstruct</code> a secret from any <span class="math inline">\(t + 1\)</span> shares using polynomial interpolation to compute <span class="math inline">\(p\)</span>, and then output the secret <span class="math inline">\(s = p(0)\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Example.</strong> In order to split a secret among 5 parties such that any 3 of the 5 people can reconstruct the secret, randomly sample a polynomial of degree <span class="math inline">\(t = 2\)</span> whose <span class="math inline">\(y\)</span>-intercept is the secret.</p>
+<div id="47f3ddff" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="dv">0</span>                            <span class="co"># the secret</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>xvals <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)       <span class="co"># define x values</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>yvals <span class="op">=</span> []                       <span class="co"># define y values</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> xvals:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  yvals.append(s <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> x <span class="op">-</span> x<span class="op">**</span><span class="dv">2</span>) <span class="co"># polynomial with secret at the y-intercept</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><img src="images/20-shamir.png" class="img-fluid" width="700"></p>
+</div>
+<hr>
+</section>
+<section id="group-signatures" class="level3">
+<h3 class="anchored" data-anchor-id="group-signatures">Group signatures</h3>
+<div class="columns">
+<div class="column" style="width:66%;">
+<p>This idea of <em>threshold crypto</em> can be applied directly to digital signature and encryption schemes as well. For today, let’s consider a <strong>threshold digital signature</strong> scheme to demonstrate that a group of <span class="math inline">\(n\)</span> people have all agreed to sign a common message <span class="math inline">\(M\)</span>.</p>
+<div class="fragment">
+<p>It is perfectly fine for each member of the group to produce their own digital signature, and to show all <span class="math inline">\(n\)</span> of them to the world. EU-CMA guarantees that no individual’s signature within the group can be forged.</p>
+</div>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11-declaration-independence.jpg" class="img-fluid figure-img" width="400"></p>
+<figcaption>Declaration of Independence</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>With Schnorr signatures, there is a better way for everyone to collectively produce a <strong>single</strong> signature for the entire group.</p>
+</div>
+<div class="fragment">
+<p>To see how this works, let’s revisit the signing protocol <code>Sign</code><span class="math inline">\((x, M)\)</span> for Schnorr signatures, given a secret key <span class="math inline">\(\color{red}{x}\)</span>.</p>
+<ol type="1">
+<li>Choose a secret random exponent <span class="math inline">\(\color{red}{k}\)</span> from the allowed set.</li>
+<li>Compute <span class="math inline">\({\color{green}{R}} = G^{{\color{red}{k}}}\)</span>.</li>
+<li>Compute <span class="math inline">\({\color{green}{e}} = H({\color{green}{R}}, {\color{green}{M}})\)</span>, where <span class="math inline">\(H\)</span> denotes a cryptographic hash function.</li>
+<li>Compute <span class="math inline">\({\color{green}{s}} = {\color{red}{k}} − {\color{red}{x}} {\color{green}{e}}\)</span>.</li>
+<li>Output the pair <span class="math inline">\({\color{green}{\sigma}} = ({\color{green}{s}}, {\color{green}{e}})\)</span>.</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Here are two observations about Schnorr signatures:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>The color-coding indicates which variables must be kept secret (the long-term secret key <span class="math inline">\(\color{red}{x}\)</span> and one-time randomness <span class="math inline">\(\color{red}{k}\)</span>) and which variables are safe to reveal <!-- But the other variables can be public: $s$ and $e$ are part of the signature and $R$ can be derived from them. --> <!-- It is okay to post $R$ publicly, because $k$ is still hidden due to the discrete logarithm assumption. --></li>
+<li>Steps 2 and 4 of the protocol are <strong>linear</strong>, in the algebraic sense</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Suppose that <span class="math inline">\(n\)</span> signers each have secret keys <span class="math inline">\(x_1, x_2, \ldots, x_n\)</span> with corresponding public keys <span class="math inline">\(Y_1, Y_2, \ldots, Y_n\)</span>. They refuse to share their secret keys with each other.</p>
+</div>
+<div class="fragment">
+<p>Even so, they can work together to produce a <em>single</em> Schnorr signature corresponding to a common public key <span class="math inline">\(Y = \prod Y_i = G^{x_1 + x_2 + \cdots + x_n}\)</span>. (Changes from ordinary Schorr signatures are shown in <em>italics</em>.)</p>
+</div>
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p><em>Each signer</em> chooses a secret random exponent <span class="math inline">\(\color{red}{k_i}\)</span> from the allowed set.</p></li>
+<li><p><em>Each signer</em> computes <span class="math inline">\({\color{green}{R_i}} = G^{{\color{red}{k_i}}}\)</span>.</p></li>
+<li><p><em>Every signer broadcasts</em> <span class="math inline">\(\color{green}{R_i}\)</span> <em>and they all compute</em>: <span class="math display">\[\begin{align*}
+    {\color{green}{R}} &amp;= \prod {\color{green}{R_i}} = G^{\sum k_i} \\
+    {\color{green}{e}} &amp;= H({\color{green}{R}}, {\color{green}{M}}).
+    \end{align*}\]</span></p></li>
+<li><p><em>Each signer</em> computes <span class="math inline">\({\color{green}{s_i}} = {\color{red}{k_i}} − {\color{red}{x_i}} {\color{green}{e}}\)</span>. <em>Then, every signer broadcasts</em> <span class="math inline">\(\color{green}{s_i}\)</span> <em>and they all compute</em> <span class="math inline">\({\color{green}{s}} = \sum {\color{green}{s_i}}\)</span>.</p></li>
+<li><p>Output the pair <span class="math inline">\({\color{green}{\sigma}} = ({\color{green}{s}}, {\color{green}{e}})\)</span>.</p></li>
+</ol>
+</div>
+<div class="fragment">
+<p>You can check for yourself that this exactly matches the Schnorr signature protocol, thanks to linearity!</p>
+</div>
+<div class="fragment">
+<p>This is yet another instance of secure multi-party computation.</p>
+<blockquote class="blockquote">
+<p>Different participating entities… [can perform] a finite number of pre-approved computations without transferring or otherwise revealing any private data to each other or anyone else.</p>
+<p>– <a href="https://www.congress.gov/bill/117th-congress/senate-bill/3952/text#id0c1c7f87d1ba4b27ac9d9025ff5fd0e5">2022 U.S. Senate bill S.3952</a></p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Cryptocurrencies like Bitcoin use this idea to improve the security and fault tolerance of their secret signing keys. They can:</p>
+<ul>
+<li>Create many different signing keys <span class="math inline">\(sk_1, sk_2, \ldots, sk_n\)</span></li>
+<li>Store them in different places <!-- a laptop, a physical safe at home, on a friend's computer, and so on --></li>
+<li>To receive money: give the combined public key <span class="math inline">\(pk\)</span> to their friends</li>
+<li>To send money: use threshold signing among all the keys</li>
+</ul>
+<p>This strategy provides resilience: if one key laptop is lost or stolen, the other keys still allow you to move your money.</p>
+<!--
+<img src="images/20-threshold-sig.png" alt="Multisignatures vs threshold signatures" width="500">
+
+[Image source: [cointelegraph.com](https://cointelegraph.com/bitcoin-for-beginners/a-beginners-guide-to-the-bitcoin-taproot-upgrade)]
+-->
+</div>
+</section>
+</section>
+<section id="verifiable-secret-sharing" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="verifiable-secret-sharing"><span class="header-section-number">19.2</span> Verifiable secret sharing</h2>
+<p>For the rest of today’s lecture, I want to discuss an alternative – and more foundational – way to build general-purpose MPC that is secure against an actively-malicious adversary Mallory.</p>
+<p><span class="math display">\[\begin{eqnarray*}
+\text{passively secure SS} &amp; \longrightarrow &amp; \text{passively secure MPC} \\
+\downarrow &amp; &amp; \downarrow \\
+\text{actively secure SS} &amp; \longrightarrow &amp; \text{actively secure MPC}
+\end{eqnarray*}\]</span></p>
+<div class="fragment">
+<p>Recall how arithmetic secret sharing works. Suppose that Alice has secret data <span class="math inline">\(x\)</span> and converts it into a collection of <span class="math inline">\(n\)</span> secret shares:</p>
+<p><span class="math display">\[ x = x_1 + x_2 + \cdots + x_n \bmod{2^\ell}\]</span></p>
+</div>
+<div class="fragment">
+<p>For now, suppose that Alice doesn’t even want to compute over this data; she just wants to outsource the data to several cloud providers and reconstruct it at some later date.</p>
+<ul>
+<li><p>Alice can <strong>disperse</strong> the message among the cloud providers by giving share <span class="math inline">\(x_i\)</span> to provider <span class="math inline">\(i\)</span></p></li>
+<li><p>Many months or years later, Alice can <strong>retrieve</strong> the secret data by fetching all shares and adding them together</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>This provides excellent data confidentiality: the cloud providers can perform their job of holding onto Alice’s data for a long time, but no coalition of <span class="math inline">\(n-1\)</span> or fewer of them can ever learn the data.</p>
+</div>
+<div class="fragment">
+<p>However, the shares are <strong>mallable</strong> and the parties have no way to <strong>agree</strong> on what the correct shares are.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Suppose one party stores an incorrect share <span class="math inline">\(x_i^* = x_i + \Delta\)</span>… either because this party is malicious or because Alice is malicious and gave an incorrect share from the start</p></li>
+<li><p>Then, reconstruction will also be incorrect by <span class="math inline">\(\Delta\)</span>: <span class="math display">\[x_1 + x_2 + \cdots + (x_i + \Delta) + \cdots + x_n = x + \Delta \bmod{2^\ell}\]</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>This is bad news…</p>
+<ul>
+<li>For Alice, because her data is corrupted and there is no way for her to pinpoint which cloud provider is to blame</li>
+<li>For the honest cloud providers, because Alice might refuse to pay them as a result of the data corruption, even though they properly did their job and held onto their share <span class="math inline">\(x_i\)</span> for a long time</li>
+</ul>
+</div>
+<hr>
+<section id="the-problem" class="level3">
+<h3 class="anchored" data-anchor-id="the-problem">The problem</h3>
+<p>In other words, this problem looks similar to the Byzantine generals question. Alice is a leader and is providing information to many other parties.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/11-Byzantine-generals.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>Image source: <a href="https://upload.wikimedia.org/wikipedia/commons/f/fc/Byzantine_Generals.png">Wikipedia</a></figcaption>
+</figure>
+</div>
+<div class="fragment">
+<p>The main differences here are that:</p>
+<ul>
+<li>We are adding <em>confidentiality</em> through secret sharing, and</li>
+<li>There are two stages to the protocol: a <code>dispersal</code> stage and a <code>retrieval</code> stage</li>
+</ul>
+<p>But the other trust questions from the Byzantine generals problem remain. Alice does not necessarily trust the other parties entirely, and they don’t entirely trust Alice either.</p>
+</div>
+<div class="fragment">
+<p><strong>Question.</strong> How can we provide each party with an <em>integrity</em> guarantee? That is:</p>
+<ul>
+<li>During <code>dispersal</code>, the cloud providers want to be convinced that they’re holding onto a share of a real secret that Alice will pay them for</li>
+<li>During <code>retrieval</code>, Alice wants to be convinced that the shares are correct, <!-- (even though you have forgotten the secret yourself) --> or be able to pinpoint which provider(s) are sending her bad shares</li>
+</ul>
+</div>
+<div class="fragment">
+<p>In fact, today’s approach will provide data <em>confidentiality</em>, <em>integrity</em>, and <em>availability</em>. That is, all computing parties have shares of the data, and they know that everyone else has shares too.</p>
+</div>
+<hr>
+</section>
+<section id="a-construction" class="level3">
+<h3 class="anchored" data-anchor-id="a-construction">A construction</h3>
+<p>One way to solve this problem is to use Merkle trees. Recall that Merkle trees allow for uploading many files to the cloud, so that the cloud can prove that each file is part of the overall collection.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-merkle-gen.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Generating a Merkle proof (source: Alin Tomescu, <a href="https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/"><em>Decentralized Thoughts blog</em></a>)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/02-merkle-verify.png" class="img-fluid figure-img" width="500"></p>
+<figcaption>Verifying a Merkle proof (source: Alin Tomescu, <a href="https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/"><em>Decentralized Thoughts blog</em></a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Concretely, here is a protocol that everyone can follow to disperse the shares and later retrieve the message.</p>
+</div>
+<div class="fragment">
+<p>In <code>dispersal</code>:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Alice creates secret shares such that <span class="math inline">\(x = \sum x_i\)</span>, and builds a Merkle tree of all shares <span class="math inline">\(x_i\)</span> (let’s call the Merkle root <span class="math inline">\(h\)</span>)</li>
+<li>Alice sends each cloud provider its share <span class="math inline">\(x_i\)</span>, the Merkle root <span class="math inline">\(h\)</span>, and a Merkle proof <span class="math inline">\(\pi_i\)</span></li>
+<li>The provider checks proof <span class="math inline">\(\pi_i\)</span> to verify that the provided share <span class="math inline">\(x_i\)</span> is consistent with the Merkle root <span class="math inline">\(h\)</span></li>
+<li>Alice saves the (small) Merkle root <span class="math inline">\(h\)</span> and deletes everything else <!-- since the purpose of cloud outsourcing is not to have to keep the secret $x$ herself --></li>
+</ul>
+</div>
+<div class="fragment">
+<p>In <code>retrieval</code>:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Each cloud provider sends their share <span class="math inline">\(x_i\)</span> and proof <span class="math inline">\(\pi_i\)</span> to the leader</li>
+<li>Alice verifies each proof, and pays the corresponding provider if it’s correct</li>
+<li>If a provider has cheated, Alice detects the error and takes appropriate action (e.g., sue the cloud provider in court, or take money that the provider has placed in escrow in a smart contract, etc)</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Interactive question.</strong> There is actually a bug in this protocol. What is it?</p>
+<!--
+A) A malicious cloud provider might not save its share after dispersal is complete, and honest leader Alice cannot detect this
+B) A malicious cloud provider might send an incorrect share $x_i$ during retrieval, and honest leader Alice cannot detect this
+C) A malicious leader Alice might send shares that are inconsistent with the Merkle root $h$, and honest providers cannot detect this
+D) A malicious leader Alice might send different Merkle roots $h$ to each provider, and honest providers cannot detect this
+-->
+<ol type="A">
+<li>A malicious cloud provider can confuse honest leader Alice by not saving its share after dispersal is complete</li>
+<li>A malicious cloud provider can confuse honest leader Alice by sending an incorrect share <span class="math inline">\(x_i\)</span> during retrieval</li>
+<li>A malicious leader Alice can confuse honest providers by sending shares that are inconsistent with the Merkle root <span class="math inline">\(h\)</span></li>
+<li>A malicious leader Alice can confuse honest providers by sending different Merkle roots <span class="math inline">\(h\)</span> to each provider</li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. Actually, all of these responses indicate issues we will need to tackle today.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Attacks <code>A</code> and <code>B</code> by a malicious cloud provider are detectable by Alice thanks to the Merkle proof, but currently Alice has no recourse against this attack since <em>all</em> shares are required to reconstruct the secret (we can use Shamir secret sharing to add fault tolerance!)</li>
+<li>Attack <code>C</code> is detectable by an honest provider, but the above pseudocode doesn’t say what the provider should do in response</li>
+<li>Attack <code>D</code> is <strong>not</strong> detectable: if malicious Alice sends an incorrect Merkle tree root <span class="math inline">\(h^*\)</span>, then an honest cloud provider might verify that its share <span class="math inline">\(x_i\)</span> is consistent with the wrong root and later be accused of cheating during the <code>retrieval</code> phase</li>
+</ul>
+</div>
+<div class="fragment">
+<p>We can fix this problem using techniques from earlier parts of this course! To reach <em>agreement</em> on the Merkle root <span class="math inline">\(h\)</span>, we can have the leader post the Merkle root <span class="math inline">\(h\)</span> to a blockchain or run Byzantine Broadcast to disperse <span class="math inline">\(h\)</span> to all providers.</p>
+</div>
+<hr>
+</section>
+<section id="adding-broadcast" class="level3">
+<h3 class="anchored" data-anchor-id="adding-broadcast">Adding broadcast</h3>
+<p>In <code>dispersal</code>:</p>
+<ul>
+<li>Alice creates secret shares such that <span class="math inline">\(x = \sum x_i\)</span>, and builds a Merkle tree of all shares <span class="math inline">\(x_i\)</span> (let’s call the Merkle root <span class="math inline">\(h\)</span>)</li>
+<li><em>Alice and providers conduct a Byzantine Broadcast to disperse the Merkle root <span class="math inline">\(h\)</span> to all parties</em></li>
+<li>Alice sends each cloud provider its share <span class="math inline">\(x_i\)</span>, the Merkle root <span class="math inline">\(h\)</span>, and a Merkle proof <span class="math inline">\(\pi_i\)</span></li>
+<li>The provider checks proof <span class="math inline">\(\pi_i\)</span> to verify that the provided share <span class="math inline">\(x_i\)</span> is consistent with the Merkle root <span class="math inline">\(h\)</span> <em>and the provider refuses to participate further if this proof is incorrect</em></li>
+<li>Alice saves the (small) Merkle root <span class="math inline">\(h\)</span> and deletes everything else</li>
+</ul>
+<div class="fragment">
+<p>The <code>retrieval</code> stage can work the same as before. And in fact, the leader doesn’t even need to store the Merkle root <span class="math inline">\(h\)</span> because it can just request it from all providers later: if there is an honest majority or a PKI, then the leader can distinguish the correct <span class="math inline">\(h\)</span> from an incorrect one sent by a faulty cloud provider.</p>
+</div>
+<hr>
+</section>
+</section>
+<section id="mpc-from-verifiable-secret-sharing" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="mpc-from-verifiable-secret-sharing"><span class="header-section-number">19.3</span> MPC from verifiable secret sharing</h2>
+<p>So far, this technique works to disperse secret data and then retrieve it later.</p>
+<p>Let’s bring back the idea of computing over secrets.</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Suppose the leader Alice dispersed two secrets <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> using this protocol… or maybe two different leaders dispersed two different secrets, such as their company’s payroll data</p></li>
+<li><p>Now, we only want to retrieve the overall sum <span class="math inline">\(x + y\)</span> of the two secrets, rather than retrieving <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> individually</p></li>
+<li><p>As we saw last time: if we can take the sum of two secrets, then it is straightforward to extend the idea in order to perform any <em>linear algebra operation</em> over several secrets</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Can we do this? Well… not quite.</p>
+<ul>
+<li>The good news is that the secret sharing protocol is linear, so the providers can just send shares <span class="math inline">\(x_i + y_i\)</span> rather than separately sending each of the two summands</li>
+<li>The bad news is that the Merkle tree is <em>not</em> linear, so provider <span class="math inline">\(i\)</span> cannot prove that it is sending the right value <span class="math inline">\(x_i + y_i\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>So let’s replace the Merkle tree with something else.</p>
+<p>Using the discrete log problem, we can create a new way to <em>commit and prove</em> properties of the secrets that is amenable to computation.</p>
+</div>
+<hr>
+<section id="commitments-from-discrete-log" class="level3">
+<h3 class="anchored" data-anchor-id="commitments-from-discrete-log">Commitments from discrete log</h3>
+<p>Recall that a <strong>message commitment</strong> is the digital analog to putting a written message inside of an envelope and placing it on a table. Commitments satisfy two security requirements.</p>
+<ul>
+<li><em>Binding</em>: even against a malicious committer, it is infeasible for the committer to show a different message <span class="math inline">\(m^*\)</span> in the <code>open</code> step than the message <span class="math inline">\(m\)</span> that it originally used during the <code>commit</code> routine.
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Mallory
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Bob
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="150">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\quad \overset{c}{\longrightarrow} \quad\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/bob.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+</tr>
+</tbody>
+</table>
+</center></li>
+<li><em>Hiding</em>: even against a malicious receiver, from only the commitment <span class="math inline">\(c\)</span> it is infeasible to learn anything about the message <span class="math inline">\(m\)</span>.
+<center>
+<table align="center">
+<thead>
+<tr>
+<th style="text-align:center">
+Alice
+</th>
+<th style="text-align:center">
+</th>
+<th style="text-align:center">
+Mallory
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">
+<img src="images/alice.png" class="quarto-figure quarto-figure-center" height="125">
+</td>
+<td style="text-align:center; vertical-align: middle">
+<span class="math inline">\(\overset{c}{\longrightarrow}\)</span>
+</td>
+<td style="text-align:center">
+<img src="images/mallory.png" class="quarto-figure quarto-figure-center" height="150">
+</td>
+</tr>
+</tbody>
+</table>
+</center></li>
+</ul>
+<div class="fragment">
+<p><strong>Question.</strong> Is a Merkle tree a message commitment?</p>
+</div>
+<div class="fragment">
+<p><em>Answer</em>. No… but it’s close.</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>It satisfies binding due to collision resistance</li>
+<li>It can satisfy hiding <em>only if</em> the messages are uniformly random (otherwise Mallory can guess-and-check the hash preimages)</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Cryptographic secret shares are uniformly random! So perhaps “hiding for random messages” is a sufficient requirement for today.</p>
+</div>
+<hr>
+</section>
+<section id="feldman-commitments" class="level3">
+<h3 class="anchored" data-anchor-id="feldman-commitments">Feldman commitments</h3>
+<p>Let’s construct another commitment protocol that is binding and hiding for uniformly random messages. As is the norm in this course by now, we will construct commitments based on the hardness of some math problem, so that they are easy to compute but hard to invert.</p>
+<div class="fragment">
+<p>Specifically, we will use the hardness of the <em>discrete log problem</em>. Recall that this problem states that for a publicly-known <span class="math inline">\(g\)</span> and a uniformly random choice of <span class="math inline">\(x\)</span>: <!-- it is easy to exponentiate but hard to take logarithms --></p>
+<ul>
+<li><span class="math inline">\((g, x) \mapsto h = g^x\)</span> is easy to compute, but</li>
+<li><span class="math inline">\((g, h) \mapsto x = \log_g(h)\)</span> is hard to compute</li>
+</ul>
+</div>
+<!--
+(Note: if $x$ isn't chosen uniformly at random, and as a result $h$ doesn't have the uniform distribution either, then it might be the case that it is easy to compute the logarithm. For instance, if we only choose $x \in \{1, 2\}$ then we could just try both choices of the discrete log and see which one works.)
+-->
+<!--
+::: {.fragment}
+__Question.__ How can we construct a commitment protocol from discrete logs?
+:::
+-->
+<!--
+::: {.fragment}
+For today, we will only consider a simplified version of the problem where message $m$ to be committed is itself chosen uniformly at random.
+
+- This isn't usually the case: for instance, the messages that you send to your friends over the Internet probably have a lot of structure to them, such as being phrases or sentences of English words
+- But this will be the case for cryptographic secret shares, and that will suffice for us today
+:::
+-->
+<div class="fragment">
+<p>Here is a commitment protocol designed by <a href="https://www.cs.umd.edu/~gasarch/TOPICS/secretsharing/feldmanVSS.pdf">Paul Feldman in 1987</a>. <!-- As a starting point, assume that all parties agree upon some base element $g$ (e.g., it is specified in some open standard). --></p>
+<ul>
+<li><code>commit</code>(m): create the commitment <span class="math inline">\(c = g^m\)</span></li>
+<li><code>open</code>(c, m): reveal <span class="math inline">\(m\)</span>, so that the receiver can calculate <span class="math inline">\(g^m\)</span> itself and check that it is equal to <span class="math inline">\(c\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<p>This commitment protocol achieves:</p>
+<ul>
+<li>Binding, because there is a one-to-one mapping between messages <span class="math inline">\(m\)</span> and commitments <span class="math inline">\(c\)</span>, so it is impossible to open to any other message</li>
+<li>Hiding for uniformly random messages, due to the discrete log assumption</li>
+</ul>
+</div>
+<hr>
+</section>
+<section id="additive-homomorphism" class="level3">
+<h3 class="anchored" data-anchor-id="additive-homomorphism">Additive homomorphism</h3>
+<p>We can use commitments to resolve the conundrum from before! As a reminder: we wanted to find a way to disperse several secrets, say <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, and then provide the option for the cloud providers to retrieve only the sum <span class="math inline">\(x + y\)</span>.</p>
+<div class="fragment">
+<p>Specifically, we will use Feldman commitments to construct a new <em>verifiable secret sharing</em> protocol. The key insights here are that:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Each secret share individually is chosen uniformly at random, so we can use them in Feldman commitments</li>
+<li>Feldman commitments are <em>linear</em>… well, sorta. Specifically, given the commitments to two messages <span class="math inline">\(g^{m_1}\)</span> and <span class="math inline">\(g^{m_2}\)</span>, we can compute the commitment to their sum <span class="math inline">\(g^{m_1} \times g^{m_2} = g^{m_1 + m_2}\)</span></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Technically, this is not linearity in the sense of linear algebra, because we need to <em>multiply</em> the commitments in order to <em>add</em> the underlying messages. So let’s give this property a fancy new name: <strong>additive homomorphism</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="putting-everything-together" class="level3">
+<h3 class="anchored" data-anchor-id="putting-everything-together">Putting everything together</h3>
+<p>Let’s see how to build a verifiable secret sharing scheme that allows for secure addition. <!-- (It turns out that secure multiplication is also possible, though I don't have time to show it.) --></p>
+<p>Here is a new verifiable secret sharing protocol that we can use to disperse a secret over <span class="math inline">\(n\)</span> cloud providers. As a starting point, we assume that there are <span class="math inline">\(n\)</span> public constants <span class="math inline">\(g_1, g_2, \ldots, g_n\)</span> that everybody knows before the protocol starts; importantly, they have nothing to do with our secrets.</p>
+<div class="fragment">
+<p>In <code>dispersal</code>:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>The leader creates all secret shares such that <span class="math inline">\(x = \sum x_i\)</span>, and calculates a commitment <span class="math inline">\(c_i = {g_i}^{x_i}\)</span> to each share. Let’s call the vector of commitments <span class="math inline">\(\vec{c} = [c_1, c_2, \ldots, c_n]\)</span>.</li>
+<li>The leader and providers conduct a Byzantine Broadcast to disperse all commitments <span class="math inline">\(\vec{c}\)</span>. <!-- (That is, every provider agrees on the commitment for everyone, not just themselves.) --></li>
+<li>Then, the leader sends each cloud provider its share <span class="math inline">\(x_i\)</span>. The provider can check for itself that <span class="math inline">\({g_i}^{x_i}\)</span> equals the public commitment <span class="math inline">\(c_i\)</span>, and refuses to participate further if the value is incorrect.</li>
+<li>The leader saves the commitment vector <span class="math inline">\(\vec{c}\)</span> and deletes everything else.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Suppose the leader <!-- (or two different leaders!) --> has dispersed two secrets <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> with corresponding commitment vectors <span class="math inline">\(\vec{c}_x = [g_i^{x_i}]_{i \in \{1, \ldots, n\}}\)</span> and <span class="math inline">\(\vec{c}_y = [g_i^{y_i}]_{i \in \{1, \ldots, n\}}\)</span>. The providers can securely calculate a verifiable secret sharing of the sum <span class="math inline">\(z = x + y\)</span> by:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Adding their individual shares <span class="math inline">\(z_i = x_i + y_i\)</span>.</li>
+<li>Componentwise-multiplying <span class="math inline">\(\vec{c}_x\)</span> and <span class="math inline">\(\vec{c}_y\)</span> to form a new vector of commitments <span class="math inline">\(\vec{c}_z = [g_i^{x_i} g_i^{y_i}]_{i \in \{1, \ldots, n\}}\)</span>. This works thanks to additive homomorphism!</li>
+</ul>
+<!-- The new commitment corresponding to $z_i$ equals $g_i^{x_i} \times g_i^{y_i} = g_i^{x_i + y_i}$, which is a valid Feldman commitment that will properly open and verify during the `retrieval` stage -->
+</div>
+<div class="fragment">
+<p><code>Retrieval</code> of any secret, say <span class="math inline">\(z\)</span>, works similarly as before:</p>
+<ul>
+<li>Each cloud provider sends their share <span class="math inline">\(z_i\)</span>.</li>
+<li>The leader can check that <span class="math inline">\({g_i}^{z_i}\)</span> equals the appropriate commitment inside the vector.</li>
+</ul>
+<p>So: we can retrieve <span class="math inline">\(z\)</span> without ever learning the summands <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> individually!</p>
+</div>
+<!---
+(In fact, using what you learned in yesterday's lab, you could even create a smart contract to automate payment from the leader to the cloud provider upon delivery of $x_i$!)
+-->
+<div class="fragment">
+<p>While I do not have time to show it today, it is also possible to:</p>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li>Securely multiply two VSS secrets, and therefore to do <strong>verifiable</strong> secure computation of <em>any data analysis</em>!</li>
+<li>Create a short Feldman commitment that is just 32 bytes in length (like a Merkle root), rather than the current vector of <span class="math inline">\(n\)</span> commitments</li>
+<li>Create a smart contract to automate payment from the leader to each cloud provider upon delivery of the secret share <span class="math inline">\(z_i\)</span></li>
+<li>Perform all of this over an <em>asynchronous</em> communication network that can have arbitrary delays</li>
+</ul>
+</div>
+<div class="fragment">
+<p>To my knowledge, the fastest asynchronous verifiable secret sharing protocol was created by former BU PhD student Nicolas Alhaddad, former BU undergrad Ziling Yang, and me. <!--
+- It is based on Shamir secret sharing
+- It is dual-threshold
+- It is a building block toward the construction of MPC in the asynchronous setting
+--> If you’re interested, here is the research paper with all of the details: <a href="https://cic.iacr.org/p/1/4/3">cic.iacr.org/p/1/4/3</a></p>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
